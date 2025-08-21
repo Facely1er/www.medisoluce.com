@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import { visualizer } from 'rollup-plugin-visualizer';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   plugins: [
     react(),
     VitePWA({
@@ -63,14 +62,8 @@ export default defineConfig(({ mode }) => ({
           }
         ]
       }
-    }),
-    mode === 'analyze' && visualizer({
-      open: true,
-      filename: 'dist/stats.html',
-      gzipSize: true,
-      brotliSize: true
     })
-  ].filter(Boolean),
+  ],
   server: {
     port: 5173,
     host: true,
@@ -91,13 +84,12 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: 'dist',
-    sourcemap: mode === 'production' ? 'hidden' : true,
-    minify: mode === 'production' ? 'terser' : false,
+    sourcemap: process.env.NODE_ENV !== 'production',
+    minify: 'terser',
     target: 'es2015',
     cssTarget: 'chrome80',
-    cssMinify: mode === 'production',
     reportCompressedSize: true,
-    terserOptions: mode === 'production' ? {
+    terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true,
@@ -111,7 +103,7 @@ export default defineConfig(({ mode }) => ({
         comments: false,
         ecma: 2015
       }
-    } : undefined,
+    },
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
@@ -145,15 +137,13 @@ export default defineConfig(({ mode }) => ({
             return 'vendor';
           }
         }
-      },
-      external: mode === 'production' ? [] : []
+      }
     }
   },
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
     __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
-    __COMMIT_HASH__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'development'),
-    'process.env.NODE_ENV': JSON.stringify(mode)
+    __COMMIT_HASH__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'development')
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
@@ -163,4 +153,4 @@ export default defineConfig(({ mode }) => ({
     legalComments: 'none',
     target: 'es2015'
   }
-}));
+});
