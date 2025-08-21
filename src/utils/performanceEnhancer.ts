@@ -323,7 +323,7 @@ class PerformanceEnhancer {
       if (!element.isConnected) {
         // Element is detached, clear its listeners
         const newElement = element.cloneNode(true);
-        element.parentNode?.replaceChild(newElement, element);
+        // element.parentNode?.replaceChild(newElement, element); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -352,13 +352,13 @@ class PerformanceEnhancer {
   private removeUnusedElements(): void {
     // Remove elements marked as unused
     document.querySelectorAll('[data-unused="true"]').forEach(element => {
-      element.remove();
+      // element.remove(); // Commented out to prevent conflicts with React DOM management
     });
     
     // Remove empty elements
     document.querySelectorAll('div:empty, span:empty').forEach(element => {
       if (!element.hasAttribute('data-keep-empty')) {
-        element.remove();
+        // element.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -370,9 +370,9 @@ class PerformanceEnhancer {
       if (parent && !parent.hasAttribute('data-structure-required')) {
         // Move child's content to parent
         while (child.firstChild) {
-          parent.insertBefore(child.firstChild, child);
+          // parent.insertBefore(child.firstChild, child); // Commented out to prevent conflicts with React DOM management
         }
-        child.remove();
+        // child.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
