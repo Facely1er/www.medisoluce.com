@@ -363,7 +363,7 @@ const enTranslation = {
 },
 
 // Patient impact translations (referenced in useI18nFormatters.ts)
-"impact": {
+"patientImpact": {
   "patient": {
     "minimal": "Minimal Impact",
     "low": "Low Impact",
@@ -422,34 +422,6 @@ const enTranslation = {
     "high": "Significant care delivery impact", 
     "medium": "Moderate operational impact",
     "low": "Minimal business impact"
-  }
-},
-
-// Enhanced training translations
-"training": {
-  "title": "Compliance Training",
-  "subtitle": "Comprehensive training programs to ensure your staff understands and follows healthcare compliance requirements.",
-  "start_training": "Start Training",
-  "view_catalog": "View Catalog", 
-  "training_modules": "Training Modules",
-  "hipaa_essentials": "HIPAA Essentials",
-  "security_awareness": "Security Awareness",
-  "incident_response": "Incident Response",
-  "compliance_updates": "Compliance Updates",
-  "training_features": "Training Features", 
-  "interactive_learning": "Interactive Learning",
-  "progress_tracking": "Progress Tracking",
-  "certification": "Certification",
-  "ready_start": "Ready to start training your team?",
-  "start_trial": "Start Free Trial",
-  "progress_message": "{{completed}} of {{total}} modules completed ({{percentage}}%)",
-  "progress_with_milestone": "{{completed}}/{{total}} modules completed ({{percentage}}%) - {{milestone}}",
-  "milestones": {
-    "getting_started": "Just getting started",
-    "beginner": "Building foundation",
-    "intermediate": "Making good progress", 
-    "advanced": "Nearly there",
-    "expert": "Compliance expert!"
   }
 },
 
