@@ -143,7 +143,7 @@ const enTranslation = {
   },
   
   // Business Impact page
-  "impact": {
+  "businessImpact": {
     "title": "Business Impact Analysis",
     "subtitle": "Assess and understand how technology disruptions affect your healthcare operations and patient care delivery.",
     "start_analysis": "Start Analysis",
@@ -192,7 +192,7 @@ const enTranslation = {
   },
   
   // Training page
-  "training": {
+  "trainingPage": {
     "title": "Compliance Training",
     "subtitle": "Comprehensive training programs to ensure your staff understands and follows healthcare compliance requirements.",
     "start_training": "Start Training",
@@ -246,7 +246,7 @@ const enTranslation = {
   },
   
   // Contact page
-  "contact": {
+  "contactPage": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our healthcare compliance experts. We're here to help.",
     "phone": "Phone",
@@ -363,7 +363,7 @@ const enTranslation = {
 },
 
 // Patient impact translations (referenced in useI18nFormatters.ts)
-"impact": {
+"patientImpact": {
   "patient": {
     "minimal": "Minimal Impact",
     "low": "Low Impact",

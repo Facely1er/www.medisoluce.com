@@ -117,7 +117,7 @@ export const healthcareTranslations = {
     else if (percentage >= 50) milestone = 'intermediate';
     else if (percentage >= 25) milestone = 'beginner';
     
-    return t('training.progress_with_milestone', {
+    return t('trainingPage.progress_with_milestone', {
       completed,
       total,
       percentage,

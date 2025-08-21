@@ -461,17 +461,17 @@ For a customized analysis of your organization, start your assessment at: ${wind
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              {t('impact.title')}
+              {t('businessImpact.title')}
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              {t('impact.subtitle')}
+              {t('businessImpact.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" onClick={() => setShowAnalyzer(true)}>
-                {t('impact.start_analysis')}
+                {t('businessImpact.start_analysis')}
               </Button>
               <Button variant="outline" size="lg" onClick={downloadSampleReport}>
-                {t('impact.view_sample')}
+                {t('businessImpact.view_sample')}
               </Button>
             </div>
 
@@ -505,7 +505,7 @@ For a customized analysis of your organization, start your assessment at: ${wind
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-heading font-bold text-center text-gray-900 dark:text-white mb-12">
-              {t('impact.key_areas')}
+              {t('businessImpact.key_areas')}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -552,17 +552,17 @@ For a customized analysis of your organization, start your assessment at: ${wind
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-4">
-              {t('impact.ready_analyze')}
+              {t('businessImpact.ready_analyze')}
             </h2>
             <p className="text-primary-100 mb-8">
-              {t('impact.ready_analyze_subtitle')}
+              {t('businessImpact.ready_analyze_subtitle')}
             </p>
             <Button 
               variant="outline" 
               className="!bg-white !text-primary-600 !border-white hover:!bg-primary-50 hover:!text-primary-700 hover:!border-primary-50"
               onClick={() => setShowAnalyzer(true)}
             >
-              {t('impact.begin_analysis')}
+              {t('businessImpact.begin_analysis')}
             </Button>
           </div>
         </div>

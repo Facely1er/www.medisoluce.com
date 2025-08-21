@@ -117,20 +117,20 @@ const ContactPage: React.FC = () => {
   const contactMethods = [
     {
       icon: <Phone className="h-6 w-6" />,
-      title: t('contact.phone'),
-      description: t('contact.phone_desc'),
+      title: t('contactPage.phone'),
+      description: t('contactPage.phone_desc'),
       contact: '+1 (240) 599-0102',
     },
     {
       icon: <Mail className="h-6 w-6" />,
-      title: t('contact.email'),
-      description: t('contact.email_desc'),
+      title: t('contactPage.email'),
+      description: t('contactPage.email_desc'),
       contact: 'support@medisoluce.com',
     },
     {
       icon: <MapPin className="h-6 w-6" />,
-      title: t('contact.office'),
-      description: t('contact.office_desc'),
+      title: t('contactPage.office'),
+      description: t('contactPage.office_desc'),
       contact: '8300 McCullough Lane Suite 203, Gaithersburg, MD 20877',
     },
   ];
@@ -141,10 +141,10 @@ const ContactPage: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              {t('contact.title')}
+              {t('contactPage.title')}
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              {t('contact.subtitle')}
+              {t('contactPage.subtitle')}
             </p>
           </div>
 
@@ -181,10 +181,10 @@ const ContactPage: React.FC = () => {
               <div className="text-center mb-8">
                 <MessageSquare className="h-8 w-8 text-primary-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-2">
-                  {t('contact.send_message')}
+                  {t('contactPage.send_message')}
                 </h2>
                 <p className="text-gray-600 dark:text-gray-300">
-                  {t('contact.send_message_desc')}
+                  {t('contactPage.send_message_desc')}
                 </p>
               </div>
 
@@ -192,7 +192,7 @@ const ContactPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('contact.name')}
+                      {t('contactPage.name')}
                     </label>
                     <input
                       type="text"
@@ -230,7 +230,7 @@ const ContactPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('contact.phone_field')}
+                      {t('contactPage.phone_field')}
                     </label>
                     <input
                       type="tel"
@@ -242,7 +242,7 @@ const ContactPage: React.FC = () => {
 
                   <div>
                     <label htmlFor="organization" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {t('contact.organization')}
+                      {t('contactPage.organization')}
                     </label>
                     <input
                       type="text"
@@ -255,7 +255,7 @@ const ContactPage: React.FC = () => {
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {t('contact.message')}
+                    {t('contactPage.message')}
                   </label>
                   <textarea
                     id="message"
@@ -275,7 +275,7 @@ const ContactPage: React.FC = () => {
                     icon={<Mail className="h-4 w-4" />}
                     iconPosition="left"
                   >
-                    {t('contact.send')}
+                    {t('contactPage.send')}
                   </Button>
                 </div>
               </form>

@@ -129,7 +129,7 @@ export const useHealthcareFormatters = () => {
       return {
         percentage: formatters.formatPercentage(percentage),
         fraction: `${formatters.formatNumber(completed)}/${formatters.formatNumber(total)}`,
-        message: formatters.t('training.progress_message', { completed, total, percentage })
+        message: formatters.t('trainingPage.progress_message', { completed, total, percentage })
       };
     }
   };

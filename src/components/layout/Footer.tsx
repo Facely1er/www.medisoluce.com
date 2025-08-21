@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -27,9 +27,9 @@ const Footer: React.FC = () => {
       links: [
         { name: t('hipaa.title'), url: '/hipaa-check', icon: <ShieldCheck className="h-4 w-4" /> },
         { name: t('dependency.title'), url: '/dependency-manager', icon: <Server className="h-4 w-4" /> },
-        { name: t('impact.title'), url: '/business-impact', icon: <BarChart className="h-4 w-4" /> },
+        { name: t('businessImpact.title'), url: '/business-impact', icon: <BarChart className="h-4 w-4" /> },
         { name: t('continuity.title'), url: '/continuity', icon: <LifeBuoy className="h-4 w-4" /> },
-        { name: t('training.title'), url: 'https://toolkit.medisoluce.com', icon: <BookOpen className="h-4 w-4" /> },
+        { name: t('trainingPage.title'), url: 'https://toolkit.medisoluce.com', icon: <BookOpen className="h-4 w-4" /> },
       ],
     },
     {
@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
     {
       title: t('footer.company'),
       links: [
-        { name: t('contact.title'), url: '/contact', icon: <MessageSquare className="h-4 w-4" /> },
+        { name: t('contactPage.title'), url: '/contact', icon: <MessageSquare className="h-4 w-4" /> },
         { name: 'Privacy Policy', url: '/privacy', icon: <Lock className="h-4 w-4" /> },
         { name: 'Terms of Service', url: '/terms', icon: <FileText className="h-4 w-4" /> },
         { name: 'Cookie Policy', url: '/cookie-policy', icon: <Cookie className="h-4 w-4" /> },
