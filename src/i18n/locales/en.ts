@@ -3,7 +3,7 @@ const enTranslation = {
   "app_name": "MediSoluce",
   "login": "Login",
   "register": "Register",
-  "contact": "Contact",
+  "contact_nav": "Contact",
   "logout": "Logout",
   "email": "Email",
   "password": "Password",
@@ -417,7 +417,7 @@ const enTranslation = {
   "critical_systems": "Critical Systems",
   "high_risk_systems": "High Risk Systems",
   "criticality_explanation": "{{level}} {{systemType}} - {{impact}}",
-  "impact": {
+  "systemImpact": {
     "critical": "Patient safety at immediate risk",
     "high": "Significant care delivery impact", 
     "medium": "Moderate operational impact",

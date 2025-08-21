@@ -290,7 +290,7 @@ const HIPAACheckPage: React.FC = () => {
   };
 
   const handleComplete = (result: AssessmentResult) => {
-    console.log('Assessment completed:', result);
+    !import.meta.env.PROD && console.log('Assessment completed:', result);
     // Here you could save the result, show additional UI, etc.
   };
 

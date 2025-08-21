@@ -763,7 +763,7 @@ export const validateLinkStructure = () => {
       
       if (hasBackLink) {
         // This is fine for closely related content, just note it
-        console.log(`Bidirectional link detected: ${fromPage} ↔ ${link.path}`);
+        !import.meta.env.PROD && console.log(`Bidirectional link detected: ${fromPage} ↔ ${link.path}`);
       }
     });
   });

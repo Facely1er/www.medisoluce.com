@@ -466,7 +466,7 @@ class SystemHealthManager {
     this.autoFixesApplied.push(...autoFixes);
     
     if (autoFixes.length > 0) {
-      console.log('Auto-recovery completed:', autoFixes);
+      !import.meta.env.PROD && console.log('Auto-recovery completed:', autoFixes);
       this.notifyAutoRecovery(autoFixes);
     }
   }
@@ -918,7 +918,7 @@ class SystemHealthManager {
       try {
         originalSetItem.call(this, key, value);
       } catch (error) {
-        console.warn('localStorage quota exceeded, cleaning up...');
+        !import.meta.env.PROD && console.warn('localStorage quota exceeded, cleaning up...');
         // Auto-cleanup on quota exceeded
         const systemHealthManager = (window as any).systemHealthManager;
         if (systemHealthManager) {
@@ -938,12 +938,12 @@ class SystemHealthManager {
   private setupNetworkRecovery() {
     // Monitor network issues
     window.addEventListener('online', () => {
-      console.log('Network connection restored');
+      !import.meta.env.PROD && console.log('Network connection restored');
       this.notifyNetworkRecovery();
     });
 
     window.addEventListener('offline', () => {
-      console.log('Network connection lost');
+      !import.meta.env.PROD && console.log('Network connection lost');
       this.notifyNetworkIssue();
     });
   }
@@ -970,7 +970,7 @@ class SystemHealthManager {
     requestAnimationFrame(() => {
       const delay = performance.now() - start;
       if (delay > 100) { // >100ms indicates UI thread blocking
-        console.warn('UI responsiveness issue detected');
+        !import.meta.env.PROD && console.warn('UI responsiveness issue detected');
         this.performMemoryCleanup();
       }
     });
@@ -981,7 +981,7 @@ class SystemHealthManager {
     new PerformanceObserver((list) => {
       list.getEntries().forEach((entry: any) => {
         if (entry.entryType === 'measure' && entry.duration > 100) {
-          console.warn('Slow operation detected:', entry);
+          !import.meta.env.PROD && console.warn('Slow operation detected:', entry);
         }
       });
     }).observe({ entryTypes: ['measure'] });

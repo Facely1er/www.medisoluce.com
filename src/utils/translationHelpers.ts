@@ -103,7 +103,7 @@ export const healthcareTranslations = {
     return t('systems.criticality_explanation', {
       level: t(`systems.criticality.${level.toLowerCase()}`),
       systemType,
-      impact: t(`systems.impact.${level.toLowerCase()}`)
+      impact: t(`systems.systemImpact.${level.toLowerCase()}`)
     });
   },
 

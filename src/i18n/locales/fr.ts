@@ -3,7 +3,7 @@ const frTranslation = {
   "app_name": "MediSoluce",
   "login": "Connexion",
   "register": "S'inscrire",
-  "contact": "Contact",
+  "contact_nav": "Contact",
   "logout": "Déconnexion",
   "email": "E-mail",
   "password": "Mot de passe",

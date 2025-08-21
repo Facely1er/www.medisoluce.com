@@ -159,7 +159,7 @@ class PerformanceOptimizer {
     // Register service worker for advanced caching
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        console.log('SW registered:', registration);
+        !import.meta.env.PROD && console.log('SW registered:', registration);
         
         // Update service worker when new version is available
         registration.addEventListener('updatefound', () => {
@@ -175,7 +175,7 @@ class PerformanceOptimizer {
         });
       })
       .catch((error) => {
-        console.log('SW registration failed:', error);
+        !import.meta.env.PROD && console.log('SW registration failed:', error);
       });
   }
 
@@ -273,7 +273,7 @@ class PerformanceOptimizer {
   }
 
   private performEmergencyCleanup() {
-    console.warn('Emergency memory cleanup triggered');
+    !import.meta.env.PROD && console.warn('Emergency memory cleanup triggered');
     
     // Aggressive cleanup
     this.clearAllCaches();
@@ -355,7 +355,7 @@ class PerformanceOptimizer {
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
-        console.warn(`Failed to cleanup ${key}:`, error);
+        !import.meta.env.PROD && console.warn(`Failed to cleanup ${key}:`, error);
       }
     });
   }
@@ -475,7 +475,7 @@ class PerformanceOptimizer {
         // Alert if memory usage is high
         const usagePercentage = (usage.used / usage.limit) * 100;
         if (usagePercentage > 80) {
-          console.warn('High memory usage detected:', usage);
+          !import.meta.env.PROD && console.warn('High memory usage detected:', usage);
           this.reportMetric('MemoryUsage', usagePercentage);
         }
       }, 30000); // Check every 30 seconds
