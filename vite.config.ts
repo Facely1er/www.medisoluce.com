@@ -8,7 +8,31 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'supabase-api-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              }
+            }
+          }
+        ]
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'medisoluce.png'],
       manifest: {
@@ -18,6 +42,8 @@ export default defineConfig({
         theme_color: '#0073e6',
         background_color: '#ffffff',
         display: 'standalone',
+        start_url: '/',
+        scope: '/',
         icons: [
           {
             src: 'medisoluce.png',
@@ -46,6 +72,11 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_debugger: true,
+        drop_console: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
+      },
+      mangle: {
+        safari10: true
       }
     },
     chunkSizeWarningLimit: 1000,
@@ -59,10 +90,16 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           ui: ['framer-motion', 'lucide-react'],
           charts: ['recharts'],
-          i18n: ['i18next', 'react-i18next']
+          i18n: ['i18next', 'react-i18next'],
+          supabase: ['@supabase/supabase-js'],
+          forms: ['react-hook-form']
         }
       }
-    }
+    },
+    // Production optimizations
+    cssCodeSplit: true,
+    reportCompressedSize: true,
+    emptyOutDir: true
   },
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
@@ -70,6 +107,11 @@ export default defineConfig({
     __COMMIT_HASH__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || 'development')
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'lucide-react']
+    include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
+    exclude: ['@sentry/browser']
+  },
+  // Production-specific optimizations
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
   }
 });
