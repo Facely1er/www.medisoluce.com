@@ -68,6 +68,7 @@ const enTranslation = {
     "stats_subtitle": "The healthcare sector faces unprecedented cybersecurity challenges that directly impact patient care.",
     "features_title": "Comprehensive Healthcare Compliance Solutions",
     "features_subtitle": "MediSoluce brings together all the elements needed for healthcare organizations to achieve compliance and technology resilience.",
+    "compliance_journey_subtitle": "Follow our proven 4-step methodology to achieve comprehensive healthcare compliance",
     "why_choose": "Why Choose MediSoluce?",
     "why_choose_subtitle": "Our unique approach integrates compliance with technology resilience to protect what matters most.",
     "healthcare_specific": "Healthcare-Specific Focus",

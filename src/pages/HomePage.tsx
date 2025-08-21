@@ -96,7 +96,7 @@ const HomePage: React.FC = () => {
       color: 'bg-secondary-500',
     },
     {
-      title: t('impact.title'),
+      title: t('businessImpact.title'),
       description: t('features.impact_description'),
       icon: <BarChart className="w-6 h-6 text-white" />,
       linkTo: '/business-impact',
@@ -134,7 +134,6 @@ const HomePage: React.FC = () => {
       />
 
    
-
       {/* Stats Section */}
       <section className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,10 +165,10 @@ const HomePage: React.FC = () => {
                 {/* Source citation: visible and accessible */}
                 <div className="mt-3">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {t('source', { defaultValue: 'Source' })}:{' '}
-                    <a
-                      href={stat.sourceUrl}
-                      target="_blank"
+                    {t('home.source')}: {' '}
+                    <a 
+                      href={stat.sourceUrl} 
+                      target="_blank" 
                       rel="noopener noreferrer"
                       className="underline hover:text-primary-500"
                     >
@@ -221,7 +220,7 @@ const HomePage: React.FC = () => {
               {t('home.compliance_journey')}
             </h3>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Follow our proven 4-step methodology to achieve comprehensive healthcare compliance
+              {t('home.compliance_journey_subtitle')}
             </p>
             
             {/* Journey Steps */}

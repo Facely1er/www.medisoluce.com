@@ -68,6 +68,7 @@ const frTranslation = {
     stats_subtitle: 'Le secteur de la santé fait face à des défis de cybersécurité sans précédent qui ont un impact direct sur les soins aux patients.',
     features_title: 'Solutions Complètes de Conformité pour la Santé',
     features_subtitle: 'MediSoluce réunit tous les éléments nécessaires pour aider les organisations de santé à atteindre la conformité et la résilience technologique.',
+    compliance_journey_subtitle: 'Suivez notre méthode en 4 étapes pour atteindre une conformité de santé complète',
     quick_access: {
       title: 'Accès Rapide',
       subtitle: 'Rechercher dans toutes vos évaluations, systèmes et progrès de formation'
