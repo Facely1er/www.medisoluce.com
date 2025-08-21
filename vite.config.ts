@@ -7,8 +7,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        inlineWorkboxRuntime: false,
+        navigateFallback: undefined,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
@@ -31,6 +34,16 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
               }
             }
+          },
+          {
+            urlPattern: /^https?.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'offlineCache',
+              expiration: {
+                maxEntries: 200,
+              },
+            },
           }
         ]
       },
@@ -67,7 +80,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: process.env.NODE_ENV !== 'production',
     minify: 'terser',
-    target: 'es2015',
+    target: 'esnext',
     cssTarget: 'chrome80',
     terserOptions: {
       compress: {

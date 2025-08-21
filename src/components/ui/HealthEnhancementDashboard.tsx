@@ -67,7 +67,7 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
   const performEnhancement = async () => {
     setIsEnhancing(true);
     try {
-      console.log('🔧 Starting comprehensive health enhancement...');
+      !import.meta.env.PROD && console.log('🔧 Starting comprehensive health enhancement...');
       
       // Run all enhancements
       const [healthResult, performanceResult] = await Promise.allSettled([

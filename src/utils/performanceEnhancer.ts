@@ -60,7 +60,7 @@ class PerformanceEnhancer {
   }
 
   async enhancePerformance(): Promise<PerformanceMetrics> {
-    console.log('🚀 Starting performance enhancement...');
+    !import.meta.env.PROD && console.log('🚀 Starting performance enhancement...');
     
     const before = this.captureMetrics();
     
@@ -80,7 +80,7 @@ class PerformanceEnhancer {
 
     this.metrics = { before, after, improvement };
     
-    console.log('✅ Performance enhancement completed:', improvement);
+    !import.meta.env.PROD && console.log('✅ Performance enhancement completed:', improvement);
     this.notifyPerformanceImprovement(improvement);
     
     return this.metrics;
@@ -101,7 +101,7 @@ class PerformanceEnhancer {
         try {
           await optimization.fn();
           this.optimizations.push(optimization.name);
-          console.log(`✅ ${optimization.name} completed`);
+          !import.meta.env.PROD && console.log(`✅ ${optimization.name} completed`);
         } catch (error) {
           console.error(`❌ ${optimization.name} failed:`, error);
         }
@@ -312,7 +312,7 @@ class PerformanceEnhancer {
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
-        console.warn(`Failed to cleanup ${key}:`, error);
+        !import.meta.env.PROD && console.warn(`Failed to cleanup ${key}:`, error);
       }
     });
   }
@@ -323,7 +323,7 @@ class PerformanceEnhancer {
       if (!element.isConnected) {
         // Element is detached, clear its listeners
         const newElement = element.cloneNode(true);
-        element.parentNode?.replaceChild(newElement, element);
+        // element.parentNode?.replaceChild(newElement, element); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -352,13 +352,13 @@ class PerformanceEnhancer {
   private removeUnusedElements(): void {
     // Remove elements marked as unused
     document.querySelectorAll('[data-unused="true"]').forEach(element => {
-      element.remove();
+      // element.remove(); // Commented out to prevent conflicts with React DOM management
     });
     
     // Remove empty elements
     document.querySelectorAll('div:empty, span:empty').forEach(element => {
       if (!element.hasAttribute('data-keep-empty')) {
-        element.remove();
+        // element.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -370,9 +370,9 @@ class PerformanceEnhancer {
       if (parent && !parent.hasAttribute('data-structure-required')) {
         // Move child's content to parent
         while (child.firstChild) {
-          parent.insertBefore(child.firstChild, child);
+          // parent.insertBefore(child.firstChild, child); // Commented out to prevent conflicts with React DOM management
         }
-        child.remove();
+        // child.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -420,7 +420,7 @@ class PerformanceEnhancer {
     setInterval(() => {
       const memoryUsage = this.getMemoryUsage();
       if (memoryUsage > 85) {
-        console.log('🔧 Auto-optimizing due to high memory usage...');
+        !import.meta.env.PROD && console.log('🔧 Auto-optimizing due to high memory usage...');
         this.optimizeMemory();
       }
     }, 30000);

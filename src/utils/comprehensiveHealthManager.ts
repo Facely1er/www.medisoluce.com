@@ -236,7 +236,7 @@ class ComprehensiveHealthManager {
       if (error.message?.includes('Missing Supabase environment variables')) {
         return true; // Not configured, but not a failure
       }
-      console.warn('Supabase connectivity test failed:', error);
+      !import.meta.env.PROD && console.warn('Supabase connectivity test failed:', error);
       return false;
     }
   }

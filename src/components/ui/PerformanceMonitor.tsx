@@ -90,7 +90,7 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             }).observe({ entryTypes: ['layout-shift'] });
 
           } catch (error) {
-            console.warn('Error collecting Web Vitals:', error);
+            !import.meta.env.PROD && console.warn('Error collecting Web Vitals:', error);
           }
 
           setMetrics(newMetrics);

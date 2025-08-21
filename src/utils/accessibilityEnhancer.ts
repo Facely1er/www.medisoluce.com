@@ -376,7 +376,7 @@ class AccessibilityEnhancer {
 
       // Warn about missing alt text in development
       if (!import.meta.env.PROD && !img.getAttribute('alt')) {
-        console.warn('Image missing alt text:', img);
+        !import.meta.env.PROD && console.warn('Image missing alt text:', img);
       }
     });
   }
@@ -389,7 +389,7 @@ class AccessibilityEnhancer {
       if (heading.tagName === 'H1') {
         h1Count++;
         if (h1Count > 1) {
-          console.warn('Multiple H1 elements detected - consider using only one per page');
+          !import.meta.env.PROD && console.warn('Multiple H1 elements detected - consider using only one per page');
         }
       }
 
@@ -444,7 +444,7 @@ class AccessibilityEnhancer {
         element.setAttribute('alt', altText);
       });
       
-      console.log(`✅ Auto-fixed: Added alt text to ${imagesWithoutAlt.length} images`);
+      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added alt text to ${imagesWithoutAlt.length} images`);
     }
 
     // Enhanced heading hierarchy check with recommendations
@@ -491,7 +491,7 @@ class AccessibilityEnhancer {
     });
     
     if (fixedElements > 0) {
-      console.log(`✅ Auto-fixed: Added roles and keyboard support to ${fixedElements} elements`);
+      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added roles and keyboard support to ${fixedElements} elements`);
     }
 
     // Enhanced form inputs check with auto-fix
@@ -513,7 +513,7 @@ class AccessibilityEnhancer {
     });
     
     if (fixedInputs > 0) {
-      console.log(`✅ Auto-fixed: Added labels to ${fixedInputs} form inputs`);
+      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added labels to ${fixedInputs} form inputs`);
     }
     
     // Enhanced contrast checking
@@ -531,7 +531,7 @@ class AccessibilityEnhancer {
 
     if (issues.length > 0) {
       console.group('Accessibility Issues Detected:');
-      issues.forEach(issue => console.warn(issue));
+      issues.forEach(issue => !import.meta.env.PROD && console.warn(issue));
       console.groupEnd();
     }
 
@@ -648,7 +648,7 @@ class AccessibilityEnhancer {
         }
       `;
       document.head.appendChild(style);
-      console.log('✅ Auto-fixed: Added enhanced focus indicators');
+      !import.meta.env.PROD && console.log('✅ Auto-fixed: Added enhanced focus indicators');
     }
   }
 

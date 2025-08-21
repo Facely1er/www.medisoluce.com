@@ -101,7 +101,7 @@ class RobustErrorHandler {
         const usagePercentage = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
         
         if (usagePercentage > 90) {
-          console.warn('🚨 Critical memory usage detected, initiating recovery...');
+          !import.meta.env.PROD && console.warn('🚨 Critical memory usage detected, initiating recovery...');
           this.recoverFromMemoryError();
         }
       }
@@ -149,7 +149,7 @@ class RobustErrorHandler {
   }
 
   private async attemptRecovery(type: string, error: any, context: any): Promise<boolean> {
-    console.log(`🔄 Attempting recovery for ${type} error...`);
+    !import.meta.env.PROD && console.log(`🔄 Attempting recovery for ${type} error...`);
 
     switch (type) {
       case 'javascript':
@@ -197,14 +197,14 @@ class RobustErrorHandler {
     try {
       if (error.message?.includes('fetch')) {
         // Network-related promise rejection
-        console.log('📡 Detected network error, switching to offline mode...');
+        !import.meta.env.PROD && console.log('📡 Detected network error, switching to offline mode...');
         this.enableOfflineMode();
         return true;
       }
       
       if (error.message?.includes('quota')) {
         // Storage quota exceeded
-        console.log('💾 Storage quota exceeded, cleaning up...');
+        !import.meta.env.PROD && console.log('💾 Storage quota exceeded, cleaning up...');
         this.cleanupStorage();
         return true;
       }
@@ -243,7 +243,7 @@ class RobustErrorHandler {
 
   private recoverFromMemoryError(): boolean {
     try {
-      console.log('🧹 Initiating emergency memory cleanup...');
+      !import.meta.env.PROD && console.log('🧹 Initiating emergency memory cleanup...');
       
       // Aggressive cleanup
       this.cleanupStorage();
@@ -310,7 +310,7 @@ class RobustErrorHandler {
     
     if (breaker.failures >= breaker.threshold) {
       breaker.state = 'open';
-      console.warn(`🔴 Circuit breaker opened for ${key}`);
+      !import.meta.env.PROD && console.warn(`🔴 Circuit breaker opened for ${key}`);
     }
   }
 
@@ -340,7 +340,7 @@ class RobustErrorHandler {
         }
         
         const delay = this.config.retryDelay * Math.pow(2, attempt);
-        console.log(`🔄 Retry ${attempt + 1}/${this.config.maxRetries} after ${delay}ms for ${key}`);
+        !import.meta.env.PROD && console.log(`🔄 Retry ${attempt + 1}/${this.config.maxRetries} after ${delay}ms for ${key}`);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -359,7 +359,7 @@ class RobustErrorHandler {
     document.querySelectorAll('script[src]').forEach(script => {
       const src = script.getAttribute('src') || '';
       if (src.includes('analytics') || src.includes('tracking')) {
-        script.remove();
+        // script.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -501,7 +501,7 @@ class RobustErrorHandler {
 
   public enableGracefulMode(mode: string): void {
     this.gracefulModes.add(mode);
-    console.log(`🛡️ Graceful mode enabled: ${mode}`);
+    !import.meta.env.PROD && console.log(`🛡️ Graceful mode enabled: ${mode}`);
     
     // Apply graceful degradation strategies
     switch (mode) {

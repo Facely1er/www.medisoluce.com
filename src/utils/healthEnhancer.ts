@@ -66,7 +66,7 @@ class ProjectHealthEnhancer {
     }
 
     this.healingInProgress = true;
-    console.log('🔧 Starting comprehensive project health enhancement...');
+    !import.meta.env.PROD && console.log('🔧 Starting comprehensive project health enhancement...');
 
     try {
       const issues = await this.detectHealthIssues();
@@ -85,7 +85,7 @@ class ProjectHealthEnhancer {
       this.enhancementHistory.push(result);
       this.lastEnhancement = new Date();
       
-      console.log('✅ Project health enhancement completed:', result);
+      !import.meta.env.PROD && console.log('✅ Project health enhancement completed:', result);
       this.notifyEnhancementComplete(result);
       
       return result;
@@ -357,14 +357,14 @@ class ProjectHealthEnhancer {
     for (const issue of issues) {
       if (issue.autoFixable) {
         try {
-          console.log(`🔧 Fixing: ${issue.title}`);
+          !import.meta.env.PROD && console.log(`🔧 Fixing: ${issue.title}`);
           const success = await issue.fix();
           fixResults.push(success);
           
           if (success) {
-            console.log(`✅ Fixed: ${issue.title}`);
+            !import.meta.env.PROD && console.log(`✅ Fixed: ${issue.title}`);
           } else {
-            console.log(`❌ Failed to fix: ${issue.title}`);
+            !import.meta.env.PROD && console.log(`❌ Failed to fix: ${issue.title}`);
           }
         } catch (error) {
           console.error(`❌ Error fixing ${issue.title}:`, error);
@@ -849,7 +849,7 @@ class ProjectHealthEnhancer {
     window.addEventListener('error', (event) => {
       // Auto-recovery for common errors
       if (event.message.includes('ChunkLoadError')) {
-        console.log('🔄 Auto-recovering from chunk load error...');
+        !import.meta.env.PROD && console.log('🔄 Auto-recovering from chunk load error...');
         setTimeout(() => window.location.reload(), 1000);
       }
     });
@@ -859,7 +859,7 @@ class ProjectHealthEnhancer {
     // Add error boundary detection
     const errorBoundaries = document.querySelectorAll('[data-error-boundary]');
     if (errorBoundaries.length === 0) {
-      console.warn('No error boundaries detected');
+      !import.meta.env.PROD && console.warn('No error boundaries detected');
     }
   }
 
@@ -890,7 +890,7 @@ class ProjectHealthEnhancer {
       try {
         return await originalFetch(...args);
       } catch (error) {
-        console.log('🔄 Retrying failed fetch...');
+        !import.meta.env.PROD && console.log('🔄 Retrying failed fetch...');
         await new Promise(resolve => setTimeout(resolve, 1000));
         return originalFetch(...args);
       }
@@ -905,6 +905,57 @@ class ProjectHealthEnhancer {
         element.removeEventListener?.('click', () => {});
         element.removeEventListener?.('change', () => {});
       }
+    });
+  }
+
+  private removeUnusedElements(): void {
+    // Remove elements marked as unused
+    document.querySelectorAll('[data-unused="true"]').forEach(element => {
+      // element.remove(); // Commented out to prevent conflicts with React DOM management
+    });
+    
+    // Remove empty elements
+    document.querySelectorAll('div:empty, span:empty').forEach(element => {
+      if (!element.hasAttribute('data-keep-empty')) {
+        // element.remove(); // Commented out to prevent conflicts with React DOM management
+      }
+    });
+  }
+
+  private optimizeDOMStructure(): void {
+    // Flatten unnecessary nested structures
+    document.querySelectorAll('div > div:only-child').forEach(child => {
+      const parent = child.parentElement;
+      if (parent && !parent.hasAttribute('data-structure-required')) {
+        // Move child's content to parent
+        while (child.firstChild) {
+          // parent.insertBefore(child.firstChild, child); // Commented out to prevent conflicts with React DOM management
+        }
+        // child.remove(); // Commented out to prevent conflicts with React DOM management
+      }
+    });
+  }
+
+  private optimizeEventListeners(): void {
+    // Use event delegation for better performance
+    document.querySelectorAll('[data-optimize-events]').forEach(container => {
+      // Remove individual listeners and use delegation
+      const buttons = container.querySelectorAll('button');
+      buttons.forEach(button => {
+        const existingListener = button.onclick;
+        if (existingListener) {
+          button.onclick = null;
+          button.setAttribute('data-click-action', 'delegated');
+        }
+      });
+      
+      // Add single delegated listener
+      container.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'BUTTON' && target.getAttribute('data-click-action') === 'delegated') {
+          // Handle click
+        }
+      });
     });
   }
 
@@ -1000,7 +1051,7 @@ class ProjectHealthEnhancer {
         );
         
         if (criticalIssues.length > 0) {
-          console.log('🚨 Auto-healing critical issues...');
+          !import.meta.env.PROD && console.log('🚨 Auto-healing critical issues...');
           await this.autoFixIssues(criticalIssues);
         }
       }
@@ -1010,13 +1061,13 @@ class ProjectHealthEnhancer {
   private enhanceErrorRecovery(): void {
     // Enhanced error recovery with retry logic
     window.addEventListener('unhandledrejection', (event) => {
-      console.log('🔄 Attempting error recovery...');
+      !import.meta.env.PROD && console.log('🔄 Attempting error recovery...');
       
       // Specific recovery for common issues
       if (event.reason?.message?.includes('fetch')) {
         // Network error recovery
         setTimeout(() => {
-          console.log('📡 Retrying network operation...');
+          !import.meta.env.PROD && console.log('📡 Retrying network operation...');
         }, 2000);
       }
     });
@@ -1027,7 +1078,7 @@ class ProjectHealthEnhancer {
       const issues = await this.detectHealthIssues();
       
       if (issues.length > 0) {
-        console.log(`🔍 Health check found ${issues.length} issues`);
+        !import.meta.env.PROD && console.log(`🔍 Health check found ${issues.length} issues`);
       }
     } catch (error) {
       console.error('Health check failed:', error);
