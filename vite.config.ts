@@ -7,8 +7,23 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        inlineWorkboxRuntime: false,
+        navigateFallback: undefined,
+        runtimeCaching: [
+          {
+            urlPattern: /^https?.*/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'offlineCache',
+              expiration: {
+                maxEntries: 200,
+              },
+            },
+          },
+        ],
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'medisoluce.png'],
       manifest: {
