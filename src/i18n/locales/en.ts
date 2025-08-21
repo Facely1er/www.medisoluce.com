@@ -295,6 +295,10 @@ const enTranslation = {
   // Language selector
   "language": {
     "select": "Select language",
+    "select_language": "Select Language",
+    "current": "Current language: {{language}}",
+    "switch_to": "Switch to {{language}}",
+    "auto_detected": "Auto-detected",
     "en": "English",
     "fr": "Français"
   },

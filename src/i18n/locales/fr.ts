@@ -486,6 +486,10 @@ const frTranslation = {
   // Language selector
   "language": {
     "select": "Choisir la langue",
+    "select_language": "Sélectionner la Langue",
+    "current": "Langue actuelle : {{language}}",
+    "switch_to": "Passer à {{language}}",
+    "auto_detected": "Détecté automatiquement",
     "en": "English",
     "fr": "Français"
   },
