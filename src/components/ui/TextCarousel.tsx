@@ -13,41 +13,43 @@ const TextCarousel: React.FC<TextCarouselProps> = ({
   className = ''
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const safeTexts = Array.isArray(texts) ? texts.filter(Boolean) : [];
 
   useEffect(() => {
-    if (texts.length <= 1) return;
+    if (safeTexts.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % safeTexts.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [texts.length, interval]);
+  }, [safeTexts.length, interval]);
 
-  if (texts.length === 0) return null;
+  if (safeTexts.length === 0) return null;
 
   return (
     <div className={`relative ${className}`}>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={currentIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ 
-            duration: 0.5,
-            ease: "easeInOut"
-          }}
-          className="block"
-        >
-          {texts[currentIndex]}
-        </motion.span>
-      </AnimatePresence>
+      {safeTexts.length > 1 ? (
+        <AnimatePresence initial={false} mode="sync">
+          <motion.span
+            key={currentIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="block"
+          >
+            {safeTexts[currentIndex]}
+          </motion.span>
+        </AnimatePresence>
+      ) : (
+        <span className="block">{safeTexts[0]}</span>
+      )}
       
       {/* Progress indicators */}
-      {texts.length > 1 && (
+      {safeTexts.length > 1 && (
         <div className="flex justify-center mt-4 space-x-2">
-          {texts.map((_, index) => (
+          {safeTexts.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
