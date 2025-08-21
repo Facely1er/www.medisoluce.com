@@ -54,7 +54,7 @@ describe('Validation Utilities', () => {
   describe('sanitizeInput', () => {
     it('trims whitespace and removes dangerous characters', () => {
       expect(sanitizeInput('  normal text  ')).toBe('normal text');
-      expect(sanitizeInput('<script>alert("xss")</script>')).toBe('scriptalert("xss")/script');
+      expect(sanitizeInput('<script>alert("xss")</script>')).toBe('');
       expect(sanitizeInput('safe > content < here')).toBe('safe  content  here');
     });
   });
