@@ -46,6 +46,7 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_debugger: true,
+        drop_console: true
       }
     },
     chunkSizeWarningLimit: 1000,

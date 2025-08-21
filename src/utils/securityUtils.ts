@@ -1270,9 +1270,7 @@ class SecurityManager {
     return this.threatHistory;
   }
 
-  public async scanForVulnerabilities(): Promise<SecurityVulnerability[]> {
-    return this.vulnerabilities;
-  }
+  // Duplicate public method removed to avoid class member conflict
 
   public cleanup(): void {
     if (this.monitoringInterval) {
