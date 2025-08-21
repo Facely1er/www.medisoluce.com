@@ -557,7 +557,6 @@ const frTranslation = {
     "loading": "Chargement en cours",
     "search_results": "Résultats de recherche"
   },
-<<<<<<< HEAD
 
 "time_enhanced": {
   "today": "Aujourd'hui",
