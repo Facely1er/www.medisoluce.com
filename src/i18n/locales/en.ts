@@ -246,7 +246,7 @@ const enTranslation = {
   },
   
   // Contact page
-  "contact": {
+  "contact_page": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our healthcare compliance experts. We're here to help.",
     "phone": "Phone",
@@ -363,7 +363,7 @@ const enTranslation = {
 },
 
 // Patient impact translations (referenced in useI18nFormatters.ts)
-"impact": {
+"patient_impact": {
   "patient": {
     "minimal": "Minimal Impact",
     "low": "Low Impact",
@@ -426,7 +426,7 @@ const enTranslation = {
 },
 
 // Enhanced training translations
-"training": {
+"training_enhanced": {
   "title": "Compliance Training",
   "subtitle": "Comprehensive training programs to ensure your staff understands and follows healthcare compliance requirements.",
   "start_training": "Start Training",

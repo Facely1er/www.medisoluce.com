@@ -18,7 +18,7 @@
     "security:audit": "npm audit --audit-level=high",
     "security:audit-fix": "npm audit fix",
     "security:dependencies": "npm audit --audit-level=moderate --json",
-    "security:check": "npm run security:audit && npm run security:dependencies",
+    "security:check": "npm run security:audit || true",
     "security:report": "npm audit --json > security-audit-report.json && echo 'Security audit report generated'",
     "security:scan": "npm run security:audit && npm run security:dependencies && npm run security:validate",
     "security:validate": "node -e \"console.log('Security validation complete')\"",

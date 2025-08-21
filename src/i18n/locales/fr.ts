@@ -246,7 +246,7 @@ const frTranslation = {
   },
   
   // Contact page
-  "contact": {
+  "contact_page": {
     "title": "Contactez-Nous",
     "subtitle": "Prenez contact avec nos experts en conformité de santé. Nous sommes là pour vous aider.",
     "phone": "Téléphone",
@@ -558,7 +558,7 @@ const frTranslation = {
     "search_results": "Résultats de recherche"
   },
 
-"time": {
+"time_enhanced": {
   "today": "Aujourd'hui",
   "yesterday": "Hier",
   "tomorrow": "Demain",
@@ -589,7 +589,7 @@ const frTranslation = {
 },
 
 // Patient impact translations
-"impact": {
+"patient_impact": {
   "patient": {
     "minimal": "Impact Minimal",
     "low": "Impact Faible", 
@@ -600,7 +600,7 @@ const frTranslation = {
 },
 
 // Enhanced assessment translations
-"assessment": {
+"assessment_enhanced": {
   "organization_name": "Nom de l'Organisation",
   "assessment_type": "Type d'Évaluation",
   "conducted_by": "Réalisé par",
@@ -627,7 +627,7 @@ const frTranslation = {
 },
 
 // Enhanced systems translations
-"systems": {
+"systems_enhanced": {
   "system_name": "Nom du Système",
   "category": "Catégorie",
   "criticality": "Criticité",
@@ -652,7 +652,7 @@ const frTranslation = {
 },
 
 // Enhanced training translations
-"training": {
+"training_enhanced": {
   "title": "Formation en Conformité",
   "subtitle": "Programmes de formation complets pour s'assurer que votre personnel comprend et suit les exigences de conformité en santé.",
   "start_training": "Commencer la Formation",
@@ -691,7 +691,7 @@ const frTranslation = {
 },
 
 // Planning translations
-"planning": {
+"planning_enhanced": {
   "plan_name": "Nom du Plan",
   "description": "Description",
   "risk_category": "Catégorie de Risque",
@@ -711,7 +711,7 @@ const frTranslation = {
 },
 
 // Education translations  
-"education": {
+"education_enhanced": {
   "training_modules": "Modules de Formation",
   "progress": "Progrès",
   "completed": "Terminé",
@@ -725,7 +725,7 @@ const frTranslation = {
 },
 
 // Resource management translations
-"resources": {
+"resources_enhanced": {
   "resource_type": "Type de Ressource",
   "download": "Télécharger",
   "preview": "Aperçu",
@@ -739,7 +739,7 @@ const frTranslation = {
 },
 
 // Navigation translations
-"navigation": {
+"navigation_enhanced": {
   "home": "Accueil",
   "back": "Retour",
   "next": "Suivant",
@@ -756,7 +756,7 @@ const frTranslation = {
 },
 
 // Status translations
-"status": {
+"status_enhanced": {
   "complete": "Terminé",
   "incomplete": "Incomplet",
   "pending": "En Attente",
@@ -770,7 +770,7 @@ const frTranslation = {
 },
 
 // Form translations
-"forms": {
+"forms_enhanced": {
   "required": "Requis",
   "optional": "Optionnel",
   "save_draft": "Sauvegarder le Brouillon",
@@ -792,7 +792,7 @@ const frTranslation = {
 },
 
 // Error messages
-"errors": {
+"errors_enhanced": {
   "required_field": "Ce champ est requis",
   "invalid_email": "Adresse e-mail invalide",
   "password_too_short": "Le mot de passe doit contenir au moins 6 caractères",
@@ -805,7 +805,7 @@ const frTranslation = {
 },
 
 // Success messages
-"success": {
+"success_enhanced": {
   "saved": "Enregistré avec succès",
   "updated": "Mis à jour avec succès",
   "deleted": "Supprimé avec succès",
@@ -815,7 +815,7 @@ const frTranslation = {
 },
 
 // Accessibility
-"accessibility": {
+"accessibility_enhanced": {
   "skip_to_content": "Passer au contenu principal",
   "close_modal": "Fermer la modal",
   "open_menu": "Ouvrir le menu",
@@ -837,7 +837,7 @@ const frTranslation = {
 // "FranÃ§ais" → "Français"
 
 // Example fixes for your existing translations:
-"nav": {
+  "nav_enhanced": {
   "demo": "Démo",  // was "DÃ©mo"
   "hipaa_assessment": "Évaluation HIPAA",  // was "Ã‰valuation HIPAA"
   // ... continue for all encoded characters
