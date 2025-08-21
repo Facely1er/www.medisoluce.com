@@ -47,7 +47,7 @@ const secureSupabaseWrapper = {
           try {
             decrypted[field] = securityUtils.decryptSensitiveData(decrypted[field]);
           } catch (decryptError) {
-            console.warn(`Failed to decrypt field ${field}:`, decryptError);
+            !import.meta.env.PROD && console.warn(`Failed to decrypt field ${field}:`, decryptError);
           }
         }
       });

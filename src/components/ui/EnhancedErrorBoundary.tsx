@@ -108,7 +108,7 @@ class EnhancedErrorBoundary extends Component<Props, State> {
     this.retryCount++;
     
     if (this.retryCount <= this.maxRetries) {
-      console.log(`Retrying... (${this.retryCount}/${this.maxRetries})`);
+      !import.meta.env.PROD && console.log(`Retrying... (${this.retryCount}/${this.maxRetries})`);
       
       // Reset error state
       this.setState({

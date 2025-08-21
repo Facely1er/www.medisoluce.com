@@ -188,7 +188,7 @@ class Analytics {
 
       // Also log to console in development
       if (!this.isProduction) {
-        console.log('Analytics Event:', { event, category, action, label, value });
+        !import.meta.env.PROD && console.log('Analytics Event:', { event, category, action, label, value });
       }
     } catch (error) {
       this.log('Error tracking event:', error);
@@ -270,7 +270,7 @@ class Analytics {
   // Private logging method
   private log(...args: any[]) {
     if (!this.isProduction) {
-      console.log('[Analytics]', ...args);
+      !import.meta.env.PROD && console.log('[Analytics]', ...args);
     }
   }
 }

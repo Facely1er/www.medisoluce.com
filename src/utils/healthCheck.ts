@@ -247,7 +247,7 @@ class HealthChecker {
 
       // Log to console in development
       if (!import.meta.env.PROD) {
-        console.log('Health Check:', result);
+        !import.meta.env.PROD && console.log('Health Check:', result);
       }
 
       // Store health check results

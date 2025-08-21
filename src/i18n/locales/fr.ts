@@ -3,7 +3,7 @@ const frTranslation = {
   "app_name": "MediSoluce",
   "login": "Connexion",
   "register": "S'inscrire",
-  "contact": "Contact",
+  "contact_nav": "Contact",
   "logout": "Déconnexion",
   "email": "E-mail",
   "password": "Mot de passe",
@@ -557,6 +557,7 @@ const frTranslation = {
     "loading": "Chargement en cours",
     "search_results": "Résultats de recherche"
   },
+<<<<<<< HEAD
 
 "time_enhanced": {
   "today": "Aujourd'hui",
@@ -843,7 +844,6 @@ const frTranslation = {
   // ... continue for all encoded characters
 }
 
-  
 };
 
 export default frTranslation;

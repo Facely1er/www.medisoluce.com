@@ -507,7 +507,7 @@ class EnhancedHealthChecker {
       
       // Log degraded performance
       if (result.status === 'degraded' || result.status === 'unhealthy') {
-        console.warn('Health Check Warning:', result);
+        !import.meta.env.PROD && console.warn('Health Check Warning:', result);
       }
     }, interval);
   }

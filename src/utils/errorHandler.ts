@@ -106,7 +106,7 @@ class ErrorHandler {
         
         this.log('External error monitoring initialized');
       }).catch((error) => {
-        console.warn('Failed to initialize external error monitoring:', error);
+        !import.meta.env.PROD && console.warn('Failed to initialize external error monitoring:', error);
       });
     }
   }
@@ -593,7 +593,7 @@ class ErrorHandler {
         totalAnalyzed: recentLogs.length
       };
     } catch (error) {
-      console.warn('Error context analysis failed:', error);
+      !import.meta.env.PROD && console.warn('Error context analysis failed:', error);
       return {
         errorsByPage: {},
         commonActionBeforeError: {},

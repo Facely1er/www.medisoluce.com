@@ -94,7 +94,7 @@ export class LocaleFormatter {
         ...options
       }).format(amount);
     } catch (error) {
-      console.warn('Currency formatting failed:', error);
+      !import.meta.env.PROD && console.warn('Currency formatting failed:', error);
       return `${this.config.currency} ${amount.toLocaleString()}`;
     }
   }
@@ -107,7 +107,7 @@ export class LocaleFormatter {
     try {
       return new Intl.NumberFormat(this.locale, options).format(number);
     } catch (error) {
-      console.warn('Number formatting failed:', error);
+      !import.meta.env.PROD && console.warn('Number formatting failed:', error);
       return number.toString();
     }
   }
@@ -143,7 +143,7 @@ export class LocaleFormatter {
         ...options
       }).format(dateObj);
     } catch (error) {
-      console.warn('Date formatting failed:', error);
+      !import.meta.env.PROD && console.warn('Date formatting failed:', error);
       return date.toString();
     }
   }

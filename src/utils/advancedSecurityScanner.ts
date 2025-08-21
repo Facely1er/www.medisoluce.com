@@ -123,7 +123,7 @@ class AdvancedSecurityScanner {
     const startTime = Date.now();
     
     try {
-      console.log('🔍 Starting advanced security scan...');
+      !import.meta.env.PROD && console.log('🔍 Starting advanced security scan...');
 
       const [vulnerabilities, complianceIssues] = await Promise.all([
         this.scanForVulnerabilities(),
@@ -150,8 +150,8 @@ class AdvancedSecurityScanner {
       this.scanHistory.push(result);
       this.maintainScanHistory();
       
-      console.log(`✅ Security scan completed in ${result.scanDuration}ms`);
-      console.log(`📊 Results: ${threatsDetected} threats, ${threatsBlocked} auto-blocked`);
+      !import.meta.env.PROD && console.log(`✅ Security scan completed in ${result.scanDuration}ms`);
+      !import.meta.env.PROD && console.log(`📊 Results: ${threatsDetected} threats, ${threatsBlocked} auto-blocked`);
 
       return result;
     } finally {
@@ -605,7 +605,7 @@ class AdvancedSecurityScanner {
     const dangerousAttributes = ['onclick', 'onload', 'onerror', 'onmouseover'];
     dangerousAttributes.forEach(attr => {
       if (element.hasAttribute(attr)) {
-        console.warn(`🚨 Dangerous attribute detected: ${attr} on ${element.tagName}`);
+        !import.meta.env.PROD && console.warn(`🚨 Dangerous attribute detected: ${attr} on ${element.tagName}`);
         
         // Auto-remove dangerous attributes
         element.removeAttribute(attr);
@@ -618,7 +618,7 @@ class AdvancedSecurityScanner {
     if (srcElements.includes(element.tagName.toLowerCase())) {
       const src = element.getAttribute('src');
       if (src && this.isSuspiciousSource(src)) {
-        console.warn(`🚨 Suspicious source detected: ${src}`);
+        !import.meta.env.PROD && console.warn(`🚨 Suspicious source detected: ${src}`);
         element.remove();
       }
     }

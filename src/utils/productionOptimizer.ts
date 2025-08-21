@@ -47,7 +47,7 @@ class ProductionOptimizer {
   }
 
   private async runProductionOptimizations() {
-    console.log('Running production optimizations...');
+    !import.meta.env.PROD && console.log('Running production optimizations...');
     this.isOptimizing = true;
 
     const optimizations = await Promise.allSettled([
@@ -65,7 +65,7 @@ class ProductionOptimizer {
       error: result.status === 'rejected' ? result.reason : null
     }));
 
-    console.log('Production optimizations completed:', results);
+    !import.meta.env.PROD && console.log('Production optimizations completed:', results);
   }
 
   private async optimizePerformance(): Promise<void> {
@@ -284,7 +284,7 @@ class ProductionOptimizer {
           localStorage.setItem(key, JSON.stringify(optimized));
         }
       } catch (error) {
-        console.warn(`Failed to optimize ${key}:`, error);
+        !import.meta.env.PROD && console.warn(`Failed to optimize ${key}:`, error);
       }
     });
   }
@@ -303,7 +303,7 @@ class ProductionOptimizer {
     );
 
     if (missingHeaders.length > 0) {
-      console.warn('Missing security headers:', missingHeaders);
+      !import.meta.env.PROD && console.warn('Missing security headers:', missingHeaders);
     }
   }
 
@@ -318,7 +318,7 @@ class ProductionOptimizer {
       );
 
       if (riskyKeys.length > 0) {
-        console.warn('Potentially sensitive data in localStorage:', riskyKeys);
+        !import.meta.env.PROD && console.warn('Potentially sensitive data in localStorage:', riskyKeys);
       }
     } catch (error) {
       console.error('localStorage security check failed:', error);
@@ -520,7 +520,7 @@ class ProductionOptimizer {
       const sizeInMB = totalSize / (1024 * 1024);
       
       if (sizeInMB > 2) { // 2MB threshold
-        console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
+        !import.meta.env.PROD && console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
       }
     } catch (error) {
       console.error('Bundle analysis failed:', error);
@@ -567,7 +567,7 @@ class ProductionOptimizer {
       try {
         localStorage.removeItem(key);
       } catch (error) {
-        console.warn(`Failed to remove temporary key ${key}:`, error);
+        !import.meta.env.PROD && console.warn(`Failed to remove temporary key ${key}:`, error);
       }
     });
   }
@@ -580,7 +580,7 @@ class ProductionOptimizer {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (!Array.isArray(data)) {
-          console.warn(`Data integrity issue with ${key}: not an array`);
+          !import.meta.env.PROD && console.warn(`Data integrity issue with ${key}: not an array`);
           localStorage.setItem(key, '[]');
         } else {
           // Validate structure of items
@@ -589,7 +589,7 @@ class ProductionOptimizer {
           );
           
           if (validItems.length !== data.length) {
-            console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
+            !import.meta.env.PROD && console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
             localStorage.setItem(key, JSON.stringify(validItems));
           }
         }
@@ -621,13 +621,13 @@ class ProductionOptimizer {
     try {
       localStorage.setItem('optimization-history', JSON.stringify(this.optimizations));
     } catch (error) {
-      console.warn('Failed to store optimization history:', error);
+      !import.meta.env.PROD && console.warn('Failed to store optimization history:', error);
     }
   }
 
   // Public methods
   public async runFullOptimization(): Promise<OptimizationResult[]> {
-    console.log('Running full production optimization...');
+    !import.meta.env.PROD && console.log('Running full production optimization...');
     this.optimizations = [];
     
     await this.runProductionOptimizations();

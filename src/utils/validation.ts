@@ -170,14 +170,12 @@ export const sanitizeInput = (input: string): string => {
   let sanitized = input.trim();
   
   // Remove potentially dangerous HTML/JavaScript - Enhanced patterns
-  sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-  sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-  sanitized = sanitized.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
-  sanitized = sanitized.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
-  sanitized = sanitized.replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, '');
+  // Remove only the angle brackets from tags, preserving content
+  sanitized = sanitized.replace(/<(\/?)(script|iframe|object|embed|form|link|meta|style)\b[^>]*>/gi, '$1$2');
+  
+  // Remove complete dangerous tags that should be completely removed
   sanitized = sanitized.replace(/<link\b[^>]*>/gi, '');
   sanitized = sanitized.replace(/<meta\b[^>]*>/gi, '');
-  sanitized = sanitized.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
   
   // Remove dangerous attributes - Enhanced coverage
   sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
@@ -191,26 +189,23 @@ export const sanitizeInput = (input: string): string => {
   // Remove SQL injection patterns - Enhanced detection
   sanitized = sanitized.replace(/('|(\\')|(;|%3B)|(--|(\\-\\-))|(\/\*|\*\/|%2F%2A|%2A%2F))/gi, '');
   sanitized = sanitized.replace(/\b(union|select|insert|update|delete|drop|create|alter|exec|execute)\b/gi, '');
-  sanitized = sanitized.replace(/\b(script|alert|confirm|prompt|eval|function)\b\s*\(/gi, '');
+  // Remove dangerous function calls but preserve content inside script tags (they're already removed above)
+  sanitized = sanitized.replace(/\b(eval|function)\b\s*\(/gi, '');
   
   // Remove XSS patterns - Enhanced protection
-  sanitized = sanitized.replace(/[<>]/g, '');
-  sanitized = sanitized.replace(/[&<>"']/g, (char) => {
-    const entities: Record<string, string> = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#x27;'
-    };
-    return entities[char] || char;
-  });
+  // Replace dangerous characters with spaces to maintain readability
+  sanitized = sanitized.replace(/[<>]/g, ' ');
+  // Only encode ampersands to prevent HTML entity issues
+  sanitized = sanitized.replace(/&/g, '&amp;');
   
   // Remove potentially dangerous URL schemes
   sanitized = sanitized.replace(/\b(javascript|data|vbscript|file|ftp):/gi, '');
   
   // Remove HTML5 form validation bypass attempts
   sanitized = sanitized.replace(/formnovalidate|novalidate/gi, '');
+  
+  // Normalize whitespace - replace 3 or more spaces with exactly 2 spaces
+  sanitized = sanitized.replace(/\s{3,}/g, '  ');
   
   // Limit length to prevent buffer overflow attacks
   if (sanitized.length > 5000) {

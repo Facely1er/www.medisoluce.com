@@ -103,7 +103,7 @@ const ContactPage: React.FC = () => {
       // Track form submission
       analytics.trackFormSubmit('Contact Form');
       
-      console.log('Form submitted:', data);
+      !import.meta.env.PROD && console.log('Form submitted:', data);
       window.location.href = '/thanks';
     } catch (error) {
       securityUtils.logSecurityEvent('contact_form_submission_failed', {

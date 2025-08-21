@@ -6,6 +6,7 @@ import './i18n';
 import { projectHealthEnhancer } from './utils/healthEnhancer';
 import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';
+import { logger } from './utils/logger';
 
 // Global error handler
 window.addEventListener('error', (event) => {
@@ -35,7 +36,7 @@ window.addEventListener('error', (event) => {
   });
   localStorage.setItem('user-interactions', JSON.stringify(interactions.slice(-20)));
   
-  console.error('Global error:', event.error);
+  logger.error('Global error:', event.error);
 });
 
 window.addEventListener('unhandledrejection', (event) => {
@@ -62,7 +63,7 @@ window.addEventListener('unhandledrejection', (event) => {
   });
   localStorage.setItem('user-interactions', JSON.stringify(interactions.slice(-20)));
   
-  console.error('Unhandled promise rejection:', event.reason);
+  logger.error('Unhandled promise rejection:', event.reason);
 });
 
 // Initialize monitoring in production
@@ -76,7 +77,7 @@ const initializeMonitoring = async () => {
       // Start health monitoring
       healthChecker.startPeriodicChecks((result) => {
         if (result.status === 'unhealthy') {
-          console.error('System health check failed:', result);
+          logger.error('System health check failed:', result);
           
           // Log as security event if multiple systems failing
           if (Object.values(result.checks).filter(Boolean).length < 3) {
@@ -98,12 +99,12 @@ const initializeMonitoring = async () => {
             await comprehensiveHealthManager.performEmergencyOptimization();
           }
         } catch (error) {
-          console.error('Comprehensive health check failed:', error);
+          logger.error('Comprehensive health check failed:', error);
         }
       }, 5 * 60 * 1000); // Every 5 minutes
       
     } catch (error) {
-      console.warn('Failed to initialize monitoring:', error);
+      logger.warn('Failed to initialize monitoring:', error);
     }
   }
 };
@@ -112,7 +113,7 @@ const initializeMonitoring = async () => {
 const initializeHealthSystem = async () => {
   try {
     // Start comprehensive health monitoring
-    console.log('🏥 Initializing MediSoluce health enhancement system...');
+    logger.log('🏥 Initializing MediSoluce health enhancement system...');
     
     // Auto-enhance on startup in production
     if (!import.meta.env.PROD) {
@@ -125,9 +126,9 @@ const initializeHealthSystem = async () => {
     // Initialize robust error handling
     robustErrorHandler;
     
-    console.log('✅ Health enhancement system initialized');
+    logger.log('✅ Health enhancement system initialized');
   } catch (error) {
-    console.error('Failed to initialize health system:', error);
+    logger.error('Failed to initialize health system:', error);
   }
 };
 
