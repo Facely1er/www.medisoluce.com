@@ -105,10 +105,16 @@ class PerformanceOptimizer {
   }
 
   private checkWebPSupport(): boolean {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1;
-    canvas.height = 1;
-    return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      const dataUrl = canvas.toDataURL('image/webp');
+      return dataUrl?.indexOf('data:image/webp') === 0;
+    } catch {
+      // Canvas or WebP support not available (e.g., in test environment)
+      return false;
+    }
   }
 
   private setupResourcePreloading() {

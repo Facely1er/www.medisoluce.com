@@ -8,6 +8,16 @@ import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';
 import { logger } from './utils/logger';
 
+interface UserInteraction {
+  type: string;
+  timestamp: string;
+  page: string;
+  message?: string;
+  stack?: string;
+  source?: string;
+  reason?: string;
+}
+
 // Global error handler
 window.addEventListener('error', (event) => {
   // Import error handler for security event tracking
@@ -25,7 +35,7 @@ window.addEventListener('error', (event) => {
   });
   
   // Track user interaction before error
-  const interactions = JSON.parse(localStorage.getItem('user-interactions') || '[]');
+  const interactions: UserInteraction[] = JSON.parse(localStorage.getItem('user-interactions') || '[]');
   interactions.push({
     type: 'error',
     timestamp: new Date().toISOString(),
@@ -53,7 +63,7 @@ window.addEventListener('unhandledrejection', (event) => {
   });
   
   // Track promise rejection context
-  const interactions = JSON.parse(localStorage.getItem('user-interactions') || '[]');
+  const interactions: UserInteraction[] = JSON.parse(localStorage.getItem('user-interactions') || '[]');
   interactions.push({
     type: 'rejection',
     timestamp: new Date().toISOString(),
