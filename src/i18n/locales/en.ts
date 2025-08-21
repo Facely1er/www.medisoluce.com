@@ -614,8 +614,175 @@ const enTranslation = {
   "disclaimer": "Disclaimer",
   "limitations": "Limitations",
   "contact_info": "Contact Information"
-}
-  
+  },
+
+  // Homepage content
+  "homepage": {
+    "stats": {
+      "data_breach_cost": "Average cost of a healthcare data breach",
+      "ransomware_hit": "Healthcare organizations hit by ransomware",
+      "recovery_time": "Average ransomware recovery time",
+      "source_ibm": "IBM Cost of a Data Breach Report 2023",
+      "source_sophos": "Sophos State of Ransomware in Healthcare 2023"
+    },
+    "cta": {
+      "start_hipaa_assessment": "Start with HIPAA compliance assessment to evaluate your current state",
+      "map_dependencies": "Map your critical technology dependencies and vulnerabilities",
+      "analyze_business_impact": "Analyze the business impact of potential system failures",
+      "develop_continuity_plans": "Develop business continuity plans for critical operations",
+      "access_training": "Access comprehensive healthcare compliance training programs",
+      "access_toolkit": "Access comprehensive compliance resource toolkit"
+    }
+  },
+
+  // Contact page
+  "contact_page": {
+    "validation": {
+      "message_failed": "Message validation failed",
+      "submission_limit": "Submission limit exceeded",
+      "name_required": "Name is required",
+      "email_required": "Email is required",
+      "invalid_email": "Invalid email address",
+      "message_required": "Message is required"
+    },
+    "form": {
+      "unknown_error": "Unknown error"
+    }
+  },
+
+  // HIPAA Assessment
+  "hipaa_assessment": {
+    "options": {
+      "policies_no": "No documented policies or procedures",
+      "training_annual_plus": "Annually plus when significant changes occur",
+      "training_annual": "Annually only",
+      "training_onboarding": "Only during employee onboarding",
+      "training_never": "We do not conduct formal HIPAA training",
+      "encryption_transit": "Only in transit",
+      "encryption_rest": "Only at rest",
+      "encryption_none": "No encryption in place",
+      "access_minimal": "Minimal or no access controls",
+      "baa_some": "With some but not all vendors",
+      "baa_none": "No BAAs in place",
+      "incident_informal": "Informal or partial plans exist",
+      "incident_none": "No incident response plan",
+      "logs_partial": "Partial or inconsistent logging",
+      "logs_none": "No audit logging in place",
+      "devices_encryption_policies": "Encryption and security policies without MDM",
+      "devices_none": "No specific mobile device security",
+      "emergency_informal": "Informal procedures exist",
+      "emergency_none": "No emergency access procedures"
+    },
+    "rules": {
+      "privacy_description": "Protects the privacy of individually identifiable health information",
+      "privacy_requirements": [
+        "Notice of Privacy Practices",
+        "Individual Rights",
+        "Uses and Disclosures",
+        "Minimum Necessary Standard",
+        "Administrative Requirements"
+      ],
+      "security_requirements": [
+        "Administrative Safeguards",
+        "Physical Safeguards",
+        "Technical Safeguards",
+        "Risk Assessment and Management",
+        "Contingency Planning"
+      ],
+      "breach_description": "Requirements for breach notification and response",
+      "breach_requirements": [
+        "Breach Discovery and Assessment",
+        "Individual Notification",
+        "HHS Notification",
+        "Media Notification",
+        "Documentation Requirements"
+      ],
+      "enforcement_description": "Investigation procedures and penalty structures",
+      "enforcement_requirements": [
+        "Compliance and Investigation Procedures",
+        "Civil Monetary Penalties",
+        "Corrective Action Plans",
+        "Settlement Procedures",
+        "Hearing Procedures"
+      ]
+    },
+    "implementation": {
+      "risk_assessment": "Required implementation specification for conducting security risk assessments",
+      "policies_procedures": "Administrative requirements for documented policies and procedures",
+      "workforce_training": "Required workforce training on HIPAA requirements",
+      "encryption": "Addressable implementation specification for encryption",
+      "access_management": "Required specification for information access management",
+      "business_associates": "Required contracts with business associates handling PHI",
+      "contingency_planning": "Required contingency plan and breach response procedures",
+      "audit_controls": "Required implementation specification for audit controls",
+      "workstation_security": "Required safeguards for workstations and mobile devices",
+      "emergency_access": "Addressable specification for emergency access procedures"
+    },
+    "actions": {
+      "download_resources": "Download Implementation Resources",
+      "get_guidance": "Get Expert Implementation Guidance"
+    },
+    "continue_journey": "Continue Your Compliance Journey",
+    "aria_labels": {
+      "training_modules": "Access HIPAA training modules to strengthen your knowledge before assessment",
+      "download_templates": "Download HIPAA compliance templates and implementation resources",
+      "map_systems": "Map and secure your critical healthcare technology systems"
+    }
+  },
+
+  // Common UI elements
+  "ui": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "search": "Search",
+    "download": "Download",
+    "upload": "Upload",
+    "view": "View",
+    "select": "Select",
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "pending": "Pending",
+    "draft": "Draft",
+    "required": "Required",
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "unknown": "Unknown",
+    "not_specified": "Not specified",
+    "no_data_available": "No data available"
+  },
+
+  // Error messages
+  "errors": {
+    "critical_application_error": "Critical Application Error",
+    "something_went_wrong": "Something went wrong",
+    "reload_page": "Reload Page",
+    "go_home": "Go Home",
+    "download_report": "Download Error Report",
+    "retry": "Try Again",
+    "error_details": "Error Details",
+    "contact_support": "Contact Support",
+    "maximum_retry_attempts": "Maximum retry attempts reached",
+    "loading_chunk_error": "Failed to load application resources",
+    "network_error": "Network connection error",
+    "unknown_error": "Unknown error occurred"
+  }
 };
 
 export default enTranslation;
