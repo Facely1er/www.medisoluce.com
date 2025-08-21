@@ -1,3 +1,4 @@
+import React from 'react';
 // Memory management utilities to prevent memory leaks and optimize performance
 
 interface MemoryConfig {
@@ -159,7 +160,7 @@ class MemoryManager {
       // Check localStorage size
       let localStorageSize = 0;
       for (const key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
           localStorageSize += localStorage[key].length;
         }
       }
@@ -172,7 +173,7 @@ class MemoryManager {
       // Check sessionStorage size
       let sessionStorageSize = 0;
       for (const key in sessionStorage) {
-        if (sessionStorage.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(sessionStorage, key)) {
           sessionStorageSize += sessionStorage[key].length;
         }
       }
@@ -344,7 +345,7 @@ class MemoryManager {
     try {
       let totalSize = 0;
       for (const key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
           totalSize += localStorage[key].length;
         }
       }
@@ -541,8 +542,6 @@ export const memoryManager = new MemoryManager();
 
 // React hook for memory-aware components
 export const useMemoryManager = () => {
-  const React = require('react');
-  
   React.useEffect(() => {
     const intervals: NodeJS.Timeout[] = [];
     const timeouts: NodeJS.Timeout[] = [];

@@ -70,7 +70,7 @@ export const validateProfileData = (profile: Partial<UserProfile>): { isValid: b
     errors.push('Invalid email format');
   }
 
-  if (profile.phone_number && !/^\+?[\d\s\-\(\)]{10,}$/.test(profile.phone_number)) {
+  if (profile.phone_number && !/^\+?[\d\s\-()]{10,}$/.test(profile.phone_number)) {
     errors.push('Invalid phone number format');
   }
 

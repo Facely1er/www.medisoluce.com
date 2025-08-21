@@ -126,7 +126,7 @@ export const healthcareTranslations = {
   },
 
   // Format regulatory deadlines with urgency
-  formatRegulatory Deadline: (t: TFunction, dueDate: Date, complianceType: string) => {
+  formatRegulatoryDeadline: (t: TFunction, dueDate: Date, complianceType: string) => {
     const now = new Date();
     const diffInDays = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     

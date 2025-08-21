@@ -693,9 +693,10 @@ class SecurityManager {
       null
     );
 
-    let node;
-    while (node = walker.nextNode()) {
+    let node: Node | null = walker.nextNode();
+    while (node) {
       textNodes.push(node as Text);
+      node = walker.nextNode();
     }
 
     return textNodes;
