@@ -1269,10 +1269,6 @@ class SecurityManager {
     return this.threatHistory;
   }
 
-  public async scanForVulnerabilities(): Promise<SecurityVulnerability[]> {
-    return this.vulnerabilities;
-  }
-
   public cleanup(): void {
     if (this.monitoringInterval) {
       clearInterval(this.monitoringInterval);
