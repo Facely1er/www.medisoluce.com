@@ -646,9 +646,11 @@ const enTranslation = {
   // Homepage content
   "homepage": {
     "stats": {
+      "hhs_breaches": "Healthcare data breaches reported to HHS (2023)",
       "data_breach_cost": "Average cost of a healthcare data breach",
       "ransomware_hit": "Healthcare organizations hit by ransomware",
       "recovery_time": "Average ransomware recovery time",
+      "source_hhs": "U.S. Department of Health and Human Services (HHS)",
       "source_ibm": "IBM Cost of a Data Breach Report 2023",
       "source_sophos": "Sophos State of Ransomware in Healthcare 2023"
     },

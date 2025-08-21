@@ -44,10 +44,10 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, lin
 
 const statsItems = [
   { 
-    label: 'Healthcare data breaches reported to HHS (2023)', 
+    labelKey: 'homepage.stats.hhs_breaches',
     value: '133', 
     suffix: '', 
-    source: 'U.S. Department of Health and Human Services (HHS)',
+    sourceKey: 'homepage.stats.source_hhs',
     sourceUrl: 'https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf'
   },
   { 
@@ -150,7 +150,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statsItems.map((stat, index) => (
               <motion.div
-                key={stat.label}
+                key={stat.labelKey || stat.label || index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -161,7 +161,7 @@ const HomePage: React.FC = () => {
                   {stat.value}{stat.suffix}
                 </p>
                 <p className="mt-2 text-sm font-medium text-gray-600 dark:text-gray-300">
-                  {stat.label}
+                  {stat.labelKey ? t(stat.labelKey) : stat.label}
                 </p>
                 {/* Source citation */}
                 <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -173,7 +173,7 @@ const HomePage: React.FC = () => {
                       rel="noopener noreferrer"
                       className="underline hover:text-primary-500"
                     >
-                      {stat.source}
+                      {stat.sourceKey ? t(stat.sourceKey) : stat.source}
                     </a>
                   </p>
                 </div>
