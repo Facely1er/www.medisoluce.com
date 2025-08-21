@@ -38,7 +38,7 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'policies-yes-comprehensive', text: 'Yes, comprehensive and regularly updated', value: 5 },
         { id: 'policies-yes-outdated', text: 'Yes, but they need updating', value: 3 },
         { id: 'policies-partial', text: 'We have some, but not all required policies', value: 2 },
-        { id: 'policies-no', text: 'No documented policies or procedures', value: 0 },
+        { id: 'policies-no', text: t('hipaa_assessment.options.policies_no'), value: 0 },
       ],
     },
     {
@@ -46,10 +46,10 @@ const HIPAACheckPage: React.FC = () => {
       text: 'How frequently does your organization conduct HIPAA training for employees?',
       description: 'Regular training ensures staff understand their obligations for protecting patient information.',
       options: [
-        { id: 'training-annual-plus', text: 'Annually plus when significant changes occur', value: 5 },
-        { id: 'training-annual', text: 'Annually only', value: 4 },
-        { id: 'training-onboarding', text: 'Only during employee onboarding', value: 2 },
-        { id: 'training-never', text: 'We do not conduct formal HIPAA training', value: 0 },
+        { id: 'training-annual-plus', text: t('hipaa_assessment.options.training_annual_plus'), value: 5 },
+        { id: 'training-annual', text: t('hipaa_assessment.options.training_annual'), value: 4 },
+        { id: 'training-onboarding', text: t('hipaa_assessment.options.training_onboarding'), value: 2 },
+        { id: 'training-never', text: t('hipaa_assessment.options.training_never'), value: 0 },
       ],
     },
     {

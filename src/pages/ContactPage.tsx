@@ -42,7 +42,7 @@ const ContactPage: React.FC = () => {
       if (typeof window !== 'undefined' && (window as any).showToast) {
         (window as any).showToast({
           type: 'error',
-          title: 'Message validation failed',
+          title: t('contact_page.validation.message_failed'),
           message: allErrors[0] || 'Please check your message and try again.'
         });
       }
@@ -64,7 +64,7 @@ const ContactPage: React.FC = () => {
       if (typeof window !== 'undefined' && (window as any).showToast) {
         (window as any).showToast({
           type: 'error',
-          title: 'Submission limit exceeded',
+          title: t('contact_page.validation.submission_limit'),
           message: 'Too many contact form submissions. Please wait an hour before trying again.'
         });
       }
@@ -108,7 +108,7 @@ const ContactPage: React.FC = () => {
     } catch (error) {
       securityUtils.logSecurityEvent('contact_form_submission_failed', {
         email: data.email,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : t('contact_page.form.unknown_error')
       }, 'low');
       console.error('Error submitting form:', error);
     }
@@ -197,7 +197,7 @@ const ContactPage: React.FC = () => {
                     <input
                       type="text"
                       id="name"
-                      {...register('name', { required: 'Name is required' })}
+                      {...register('name', { required: t('contact_page.validation.name_required') })}
                       className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm dark:bg-gray-700"
                     />
                     {errors.name && (
@@ -213,10 +213,10 @@ const ContactPage: React.FC = () => {
                       type="email"
                       id="email"
                       {...register('email', {
-                        required: 'Email is required',
+                        required: t('contact_page.validation.email_required'),
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Invalid email address',
+                          message: t('contact_page.validation.invalid_email'),
                         },
                       })}
                       className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm dark:bg-gray-700"
@@ -260,7 +260,7 @@ const ContactPage: React.FC = () => {
                   <textarea
                     id="message"
                     rows={4}
-                    {...register('message', { required: 'Message is required' })}
+                    {...register('message', { required: t('contact_page.validation.message_required') })}
                     className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm dark:bg-gray-700"
                   />
                   {errors.message && (

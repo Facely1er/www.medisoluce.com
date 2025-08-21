@@ -648,7 +648,176 @@ export default frTranslation;
     "error_details": "Détails de l'Erreur",
     "contact_support": "Contacter le Support",
     "maximum_retry_attempts": "Nombre maximum de tentatives atteint",
-    "loading_chunk_error": "Échec du chargement des ressources de l'application",
+    "loading_chunk_error": "Échec du chargement des ressources de l.application",
     "network_error": "Erreur de connexion réseau",
     "unknown_error": "Erreur inconnue survenue"
   }
+
+  // Homepage content
+  "homepage": {
+    "stats": {
+      "data_breach_cost": "Coût moyen d'une violation de données de santé",
+      "ransomware_hit": "Organisations de santé touchées par des ransomwares",
+      "recovery_time": "Temps de récupération moyen après ransomware",
+      "source_ibm": "Rapport IBM sur le Coût des Violations de Données 2023",
+      "source_sophos": "État des Ransomwares dans la Santé Sophos 2023"
+    },
+    "cta": {
+      "start_hipaa_assessment": "Commencez par une évaluation de conformité HIPAA pour évaluer votre état actuel",
+      "map_dependencies": "Cartographiez vos dépendances technologiques critiques et vulnérabilités",
+      "analyze_business_impact": "Analysez l'impact commercial des pannes système potentielles",
+      "develop_continuity_plans": "Développez des plans de continuité d'activité pour les opérations critiques",
+      "access_training": "Accédez à des programmes de formation complets en conformité de santé",
+      "access_toolkit": "Accédez à une boîte à outils complète de conformité"
+    }
+  },
+
+  // Contact page
+  "contact_page": {
+    "validation": {
+      "message_failed": "Échec de la validation du message",
+      "submission_limit": "Limite de soumission dépassée",
+      "name_required": "Le nom est requis",
+      "email_required": "L'email est requis",
+      "invalid_email": "Adresse email invalide",
+      "message_required": "Le message est requis"
+    },
+    "form": {
+      "unknown_error": "Erreur inconnue"
+    }
+  },
+
+  // HIPAA Assessment
+  "hipaa_assessment": {
+    "options": {
+      "policies_no": "Aucune politique ou procédure documentée",
+      "training_annual_plus": "Annuellement plus lors de changements significatifs",
+      "training_annual": "Annuellement seulement",
+      "training_onboarding": "Seulement lors de l'intégration des employés",
+      "training_never": "Nous ne menons pas de formation HIPAA formelle",
+      "encryption_transit": "Seulement en transit",
+      "encryption_rest": "Seulement au repos",
+      "encryption_none": "Aucun chiffrement en place",
+      "access_minimal": "Contrôles d'accès minimaux ou inexistants",
+      "baa_some": "Avec certains mais pas tous les fournisseurs",
+      "baa_none": "Aucun BAA en place",
+      "incident_informal": "Des plans informels ou partiels existent",
+      "incident_none": "Aucun plan de réponse aux incidents",
+      "logs_partial": "Journalisation partielle ou incohérente",
+      "logs_none": "Aucune journalisation d'audit en place",
+      "devices_encryption_policies": "Chiffrement et politiques de sécurité sans MDM",
+      "devices_none": "Aucune sécurité spécifique pour appareils mobiles",
+      "emergency_informal": "Des procédures informelles existent",
+      "emergency_none": "Aucune procédure d'accès d'urgence"
+    },
+    "rules": {
+      "privacy_description": "Protège la confidentialité des informations de santé individuellement identifiables",
+      "privacy_requirements": [
+        "Avis des Pratiques de Confidentialité",
+        "Droits Individuels",
+        "Utilisations et Divulgations",
+        "Standard du Minimum Nécessaire",
+        "Exigences Administratives"
+      ],
+      "security_requirements": [
+        "Mesures de Sécurité Administratives",
+        "Mesures de Sécurité Physiques",
+        "Mesures de Sécurité Techniques",
+        "Évaluation et Gestion des Risques",
+        "Planification de Contingence"
+      ],
+      "breach_description": "Exigences pour la notification et la réponse aux violations",
+      "breach_requirements": [
+        "Découverte et Évaluation des Violations",
+        "Notification Individuelle",
+        "Notification HHS",
+        "Notification Médiatique",
+        "Exigences de Documentation"
+      ],
+      "enforcement_description": "Procédures d'enquête et structures de pénalités",
+      "enforcement_requirements": [
+        "Procédures de Conformité et d'Enquête",
+        "Pénalités Monétaires Civiles",
+        "Plans d'Action Corrective",
+        "Procédures de Règlement",
+        "Procédures d'Audience"
+      ]
+    },
+    "implementation": {
+      "risk_assessment": "Spécification d'implémentation requise pour mener des évaluations de risque de sécurité",
+      "policies_procedures": "Exigences administratives pour les politiques et procédures documentées",
+      "workforce_training": "Formation obligatoire du personnel sur les exigences HIPAA",
+      "encryption": "Spécification d'implémentation adressable pour le chiffrement",
+      "access_management": "Spécification requise pour la gestion de l'accès aux informations",
+      "business_associates": "Contrats requis avec les associés commerciaux manipulant des PHI",
+      "contingency_planning": "Plan de contingence requis et procédures de réponse aux violations",
+      "audit_controls": "Spécification d'implémentation requise pour les contrôles d'audit",
+      "workstation_security": "Mesures de sécurité requises pour les postes de travail et appareils mobiles",
+      "emergency_access": "Spécification adressable pour les procédures d'accès d'urgence"
+    },
+    "actions": {
+      "download_resources": "Télécharger les Ressources d'Implémentation",
+      "get_guidance": "Obtenir des Conseils d'Expert en Implémentation"
+    },
+    "continue_journey": "Continuez Votre Parcours de Conformité",
+    "aria_labels": {
+      "training_modules": "Accédez aux modules de formation HIPAA pour renforcer vos connaissances avant l'évaluation",
+      "download_templates": "Téléchargez les modèles de conformité HIPAA et les ressources d'implémentation",
+      "map_systems": "Cartographiez et sécurisez vos systèmes technologiques de santé critiques"
+    }
+  },
+
+  // Common UI elements
+  "ui": {
+    "loading": "Chargement...",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "submit": "Soumettre",
+    "reset": "Réinitialiser",
+    "clear": "Effacer",
+    "search": "Rechercher",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "view": "Voir",
+    "select": "Sélectionner",
+    "confirm": "Confirmer",
+    "continue": "Continuer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "complete": "Terminé",
+    "incomplete": "Incomplet",
+    "pending": "En attente",
+    "draft": "Brouillon",
+    "required": "Requis",
+    "optional": "Optionnel",
+    "yes": "Oui",
+    "no": "Non",
+    "none": "Aucun",
+    "unknown": "Inconnu",
+    "not_specified": "Non spécifié",
+    "no_data_available": "Aucune donnée disponible"
+  },
+
+  // Error messages
+  "errors": {
+    "critical_application_error": "Erreur Critique de l'Application",
+    "something_went_wrong": "Quelque chose s'est mal passé",
+    "reload_page": "Recharger la Page",
+    "go_home": "Aller à l'Accueil",
+    "download_report": "Télécharger le Rapport d'Erreur",
+    "retry": "Réessayer",
+    "error_details": "Détails de l'Erreur",
+    "contact_support": "Contacter le Support",
+    "maximum_retry_attempts": "Nombre maximum de tentatives atteint",
+    "loading_chunk_error": "Échec du chargement des ressources de l.application",
+    "network_error": "Erreur de connexion réseau",
+    "unknown_error": "Erreur inconnue survenue"
+  }
+};

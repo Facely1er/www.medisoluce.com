@@ -51,24 +51,24 @@ const statsItems = [
     sourceUrl: 'https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf'
   },
   { 
-    label: 'Average cost of a healthcare data breach', 
+    labelKey: 'homepage.stats.data_breach_cost',
     value: '$10.9M', 
     suffix: '', 
-    source: 'IBM Cost of a Data Breach Report 2023',
+    sourceKey: 'homepage.stats.source_ibm',
     sourceUrl: 'https://www.ibm.com/reports/data-breach'
   },
   { 
-    label: 'Healthcare organizations hit by ransomware', 
+    labelKey: 'homepage.stats.ransomware_hit',
     value: '70', 
     suffix: '%', 
-    source: 'Sophos State of Ransomware in Healthcare 2023',
+    sourceKey: 'homepage.stats.source_sophos',
     sourceUrl: 'https://www.sophos.com/en-us/medialibrary/pdfs/whitepaper/sophos-state-of-ransomware-in-healthcare-2023-wp'
   },
   { 
-    label: 'Average ransomware recovery time', 
+    labelKey: 'homepage.stats.recovery_time',
     value: '22', 
     suffix: ' days', 
-    source: 'Sophos State of Ransomware in Healthcare 2023',
+    sourceKey: 'homepage.stats.source_sophos',
     sourceUrl: 'https://www.sophos.com/en-us/medialibrary/pdfs/whitepaper/sophos-state-of-ransomware-in-healthcare-2023-wp'
   },
 ];

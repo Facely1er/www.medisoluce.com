@@ -542,7 +542,7 @@ const enTranslation = {
 },
 
 // Error messages
-"errors": {
+"form_errors": {
   "required_field": "This field is required",
   "invalid_email": "Invalid email address",
   "password_too_short": "Password must be at least 6 characters",
