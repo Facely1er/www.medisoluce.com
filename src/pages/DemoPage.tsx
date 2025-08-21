@@ -3,6 +3,18 @@ import { motion } from 'framer-motion';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { 
+  ShieldCheck, 
+  Server, 
+  BarChart, 
+  CheckCircle, 
+  Download, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  Users, 
+  ArrowRight 
+} from 'lucide-react';
 
 const DemoPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);

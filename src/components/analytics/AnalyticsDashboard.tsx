@@ -1,36 +1,49 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { TrendingUp, TrendingDown, Users, FileText, AlertTriangle, CheckCircle } from 'lucide-react';
 import Card from '../ui/Card';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
+interface Assessment {
+  result?: {
+    percentage: number;
+  };
+}
+
+interface Dependency {
+  criticality: string;
+  riskLevel: string;
+}
+
+interface Training {
+  completed: boolean;
+}
+
 const AnalyticsDashboard: React.FC = () => {
-  const [assessments] = useLocalStorage('hipaa-assessments', []);
-  const [dependencies] = useLocalStorage('system-dependencies', []);
-  const [impactAssessments] = useLocalStorage('business-impact-assessments', []);
-  const [trainingProgress] = useLocalStorage('training-progress', []);
-  const [contactSubmissions] = useLocalStorage('contact-submissions', []);
+  const [assessments] = useLocalStorage<Assessment[]>('hipaa-assessments', []);
+  const [dependencies] = useLocalStorage<Dependency[]>('system-dependencies', []);
+  const [trainingProgress] = useLocalStorage<Training[]>('training-progress', []);
 
   // Calculate metrics
   const totalAssessments = assessments.length;
   const avgComplianceScore = assessments.length > 0 
-    ? Math.round(assessments.reduce((sum: number, a: any) => sum + (a.result?.percentage || 0), 0) / assessments.length)
+    ? Math.round(assessments.reduce((sum: number, a: Assessment) => sum + (a.result?.percentage || 0), 0) / assessments.length)
     : 0;
-  const criticalSystems = dependencies.filter((d: any) => d.criticality === 'Critical').length;
-  const completedTraining = trainingProgress.filter((t: any) => t.completed).length;
+  const criticalSystems = dependencies.filter((d: Dependency) => d.criticality === 'Critical').length;
+  const completedTraining = trainingProgress.filter((t: Training) => t.completed).length;
 
   // Compliance trend data
-  const complianceTrend = assessments.slice(-6).map((assessment: any, index: number) => ({
+  const complianceTrend = assessments.slice(-6).map((assessment: Assessment, index: number) => ({
     month: `Month ${index + 1}`,
     score: assessment.result?.percentage || 0
   }));
 
   // Risk distribution data
   const riskData = [
-    { name: 'High Risk', value: dependencies.filter((d: any) => d.riskLevel === 'High').length },
-    { name: 'Medium Risk', value: dependencies.filter((d: any) => d.riskLevel === 'Medium').length },
-    { name: 'Low Risk', value: dependencies.filter((d: any) => d.riskLevel === 'Low').length },
+    { name: 'High Risk', value: dependencies.filter((d: Dependency) => d.riskLevel === 'High').length },
+    { name: 'Medium Risk', value: dependencies.filter((d: Dependency) => d.riskLevel === 'Medium').length },
+    { name: 'Low Risk', value: dependencies.filter((d: Dependency) => d.riskLevel === 'Low').length },
   ];
 
   const COLORS = ['#dc3545', '#ffc107', '#198754'];

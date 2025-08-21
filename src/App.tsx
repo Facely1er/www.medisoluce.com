@@ -31,7 +31,6 @@ import { ToastProvider, useToast } from './components/ui/Toast';
 import { analytics } from './utils/analytics';
 import './i18n';
 import HealthDashboard from './components/ui/HealthDashboard';
-import SystemStatusIndicator from './components/ui/SystemStatusIndicator';
 
 // Lazy load development tools
 const PerformanceMonitor = React.lazy(() => import('./components/ui/PerformanceMonitor'));
@@ -44,14 +43,25 @@ const HealthEnhancementDashboard = React.lazy(() => import('./components/ui/Heal
 analytics.init(import.meta.env.VITE_GA_TRACKING_ID);
 
 // Global toast function for components that can't use React hooks
+interface ToastMessage {
+  title: string;
+  description?: string;
+  type?: 'success' | 'error' | 'warning' | 'info';
+}
+
+interface GlobalWindow extends Window {
+  setGlobalToast: (fn: (toast: ToastMessage) => void) => void;
+  showToast: (toast: ToastMessage) => void;
+}
+
 function setupGlobalToast() {
-  let toastFunction: any = null;
+  let toastFunction: ((toast: ToastMessage) => void) | null = null;
   
-  (window as any).setGlobalToast = (fn: any) => {
+  (window as GlobalWindow).setGlobalToast = (fn: (toast: ToastMessage) => void) => {
     toastFunction = fn;
   };
   
-  (window as any).showToast = (toast: any) => {
+  (window as GlobalWindow).showToast = (toast: ToastMessage) => {
     if (toastFunction) {
       toastFunction(toast);
     }
@@ -94,7 +104,7 @@ function ToastInitializer() {
   const { showToast } = useToast();
   
   useEffect(() => {
-    (window as any).setGlobalToast(showToast);
+    (window as GlobalWindow).setGlobalToast(showToast);
   }, [showToast]);
   
   return null;

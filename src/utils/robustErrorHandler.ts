@@ -359,7 +359,7 @@ class RobustErrorHandler {
     document.querySelectorAll('script[src]').forEach(script => {
       const src = script.getAttribute('src') || '';
       if (src.includes('analytics') || src.includes('tracking')) {
-        script.remove();
+        // script.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }

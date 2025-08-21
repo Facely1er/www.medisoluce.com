@@ -1269,7 +1269,6 @@ class SecurityManager {
     return this.threatHistory;
   }
 
-
   public cleanup(): void {
     if (this.monitoringInterval) {
       clearInterval(this.monitoringInterval);
