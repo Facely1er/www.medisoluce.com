@@ -56,7 +56,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: process.env.NODE_ENV !== 'production',
     minify: 'terser',
-    target: 'es2015',
+    target: 'esnext',
     cssTarget: 'chrome80',
     terserOptions: {
       compress: {
