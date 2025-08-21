@@ -63,6 +63,7 @@ const enTranslation = {
       "subtitle": "Search across all your assessments, systems, and training progress"
     },
     "explore_toolkit": "Explore Toolkit",
+    "source": "Source",
     "stats_title": "Healthcare Cybersecurity by the Numbers",
     "stats_subtitle": "The healthcare sector faces unprecedented cybersecurity challenges that directly impact patient care.",
     "features_title": "Comprehensive Healthcare Compliance Solutions",

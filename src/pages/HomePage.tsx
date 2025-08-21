@@ -163,13 +163,13 @@ const HomePage: React.FC = () => {
                 <p className="mt-2 text-sm font-medium text-gray-600 dark:text-gray-300">
                   {stat.label}
                 </p>
-                {/* Source citation */}
-                <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {/* Source citation: visible and accessible */}
+                <div className="mt-3">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Source:{' '}
-                    <a 
-                      href={stat.sourceUrl} 
-                      target="_blank" 
+                    {t('source', { defaultValue: 'Source' })}:{' '}
+                    <a
+                      href={stat.sourceUrl}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-primary-500"
                     >

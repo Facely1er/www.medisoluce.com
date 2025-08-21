@@ -64,11 +64,16 @@ const frTranslation = {
       continuity_title: 'Continuité Opérationnelle',
       continuity_desc: 'Assurer des soins aux patients ininterrompus'
     },
+    stats_title: 'Cybersécurité des soins de santé en chiffres',
+    stats_subtitle: 'Le secteur de la santé fait face à des défis de cybersécurité sans précédent qui ont un impact direct sur les soins aux patients.',
+    features_title: 'Solutions Complètes de Conformité pour la Santé',
+    features_subtitle: 'MediSoluce réunit tous les éléments nécessaires pour aider les organisations de santé à atteindre la conformité et la résilience technologique.',
     quick_access: {
       title: 'Accès Rapide',
       subtitle: 'Rechercher dans toutes vos évaluations, systèmes et progrès de formation'
     },
-    explore_toolkit: 'Explorer la boîte à outils'
+    explore_toolkit: 'Explorer la boîte à outils',
+    source: 'Source'
   },
 
   // Feature descriptions for homepage
