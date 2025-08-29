@@ -3506,8 +3506,8 @@ Type: ${fileType}
     window.URL.revokeObjectURL(url);
 
     // Show success message
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast({
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
         type: 'success',
         title: 'Download Complete',
         message: `${title} has been downloaded successfully.`

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { User, Edit, Save, X, Shield, Building, Clock, Phone, Mail, MapPin, Bell } from 'lucide-react';
+import { User, Edit, Save, X, Shield, Building, Clock, Phone, Mail, Bell } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
@@ -39,7 +38,6 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [profile, setProfile] = useLocalStorage<UserProfile | null>('user-profile', null);
   const [isEditing, setIsEditing] = useState(false);

@@ -6,7 +6,7 @@ interface SecurityEvent {
   eventType: 'authentication' | 'data_access' | 'suspicious_input' | 'failed_auth' | 'csp_violation' | 'privacy_violation' | 'malware_detected' | 'injection_attempt';
   severity: 'low' | 'medium' | 'high' | 'critical';
   source: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   mitigated: boolean;
   investigated: boolean;
   riskScore: number; // 1-10 scale
@@ -500,7 +500,35 @@ class SecurityManager {
     localStorage.setItem('security-threats', JSON.stringify(this.threatHistory));
   }
 
-  public generateSecurityReport(): any {
+  public generateSecurityReport(): {
+    https: boolean;
+    csp: {
+      enabled: boolean;
+      violations: Array<{
+        timestamp: string;
+        violatedDirective: string;
+        blockedURI: string;
+        sourceFile?: string;
+        lineNumber?: number;
+      }>;
+    };
+    headers: Record<string, boolean>;
+    cookies: {
+      secureCount: number;
+      insecureCount: number;
+      httpOnlyCount: number;
+    };
+    localStorage: {
+      encrypted: boolean;
+      sensitiveDataCount: number;
+    };
+    metrics: {
+      overallScore: number;
+      threatLevel: string;
+      encryptionCoverage: number;
+      complianceScore: number;
+    };
+  } {
     return {
       https: window.location.protocol === 'https:',
       csp: {

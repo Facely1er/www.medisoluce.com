@@ -123,7 +123,7 @@ class AdvancedSecurityScanner {
     const startTime = Date.now();
     
     try {
-      !import.meta.env.PROD && console.log('🔍 Starting advanced security scan...');
+      console.log('🔍 Starting advanced security scan...');
 
       const [vulnerabilities, complianceIssues] = await Promise.all([
         this.scanForVulnerabilities(),
@@ -150,8 +150,8 @@ class AdvancedSecurityScanner {
       this.scanHistory.push(result);
       this.maintainScanHistory();
       
-      !import.meta.env.PROD && console.log(`✅ Security scan completed in ${result.scanDuration}ms`);
-      !import.meta.env.PROD && console.log(`📊 Results: ${threatsDetected} threats, ${threatsBlocked} auto-blocked`);
+      console.log(`✅ Security scan completed in ${result.scanDuration}ms`);
+      console.log(`📊 Results: ${threatsDetected} threats, ${threatsBlocked} auto-blocked`);
 
       return result;
     } finally {
@@ -531,8 +531,8 @@ class AdvancedSecurityScanner {
         element.style.borderColor = '#dc3545';
         
         // Show warning
-        if (typeof window !== 'undefined' && (window as any).showToast) {
-          (window as any).showToast({
+        if (typeof window !== 'undefined' && 'showToast' in window) {
+          (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
             type: 'error',
             title: 'Security Threat Blocked',
             message: threat.description,
@@ -605,7 +605,7 @@ class AdvancedSecurityScanner {
     const dangerousAttributes = ['onclick', 'onload', 'onerror', 'onmouseover'];
     dangerousAttributes.forEach(attr => {
       if (element.hasAttribute(attr)) {
-        !import.meta.env.PROD && console.warn(`🚨 Dangerous attribute detected: ${attr} on ${element.tagName}`);
+        console.warn(`🚨 Dangerous attribute detected: ${attr} on ${element.tagName}`);
         
         // Auto-remove dangerous attributes
         element.removeAttribute(attr);
@@ -618,7 +618,7 @@ class AdvancedSecurityScanner {
     if (srcElements.includes(element.tagName.toLowerCase())) {
       const src = element.getAttribute('src');
       if (src && this.isSuspiciousSource(src)) {
-        !import.meta.env.PROD && console.warn(`🚨 Suspicious source detected: ${src}`);
+        console.warn(`🚨 Suspicious source detected: ${src}`);
         element.remove();
       }
     }

@@ -188,7 +188,13 @@ const ProductionReadinessPage: React.FC = () => {
     };
   };
 
-  const calculateSecurityScore = (securityReport: any) => {
+  const calculateSecurityScore = (securityReport: {
+    https: boolean;
+    csp?: { enabled: boolean };
+    headers?: Record<string, boolean>;
+    cookies?: { secureCount: number; insecureCount: number };
+    localStorage: boolean;
+  }) => {
     const checks: Check[] = [
       {
         name: 'HTTPS Enabled',
@@ -239,7 +245,12 @@ const ProductionReadinessPage: React.FC = () => {
     return { score, status, checks };
   };
 
-  const calculatePerformanceScore = (performanceReport: any) => {
+  const calculatePerformanceScore = (performanceReport: {
+    averageLCP?: number;
+    bundleSize?: number;
+    memoryUsage?: number;
+    errorRate?: number;
+  }) => {
     const checks: Check[] = [
       {
         name: 'Page Load Time',
@@ -474,10 +485,10 @@ const ProductionReadinessPage: React.FC = () => {
     return { score, status, checks };
   };
 
-  const extractCriticalIssues = (categories: any): Issue[] => {
+  const extractCriticalIssues = (categories: Record<string, { checks: Check[]; impact: string }>): Issue[] => {
     const issues: Issue[] = [];
 
-    Object.entries(categories).forEach(([categoryName, category]: [string, any]) => {
+    Object.entries(categories).forEach(([categoryName, category]) => {
       category.checks.forEach((check: Check) => {
         if (check.status === 'fail' && category.impact === 'critical') {
           issues.push({
@@ -495,7 +506,7 @@ const ProductionReadinessPage: React.FC = () => {
     return issues;
   };
 
-  const generateRecommendations = (categories: any): Recommendation[] => {
+  const generateRecommendations = (categories: Record<string, { score: number }>): Recommendation[] => {
     const recommendations: Recommendation[] = [];
 
     // Security recommendations
@@ -564,8 +575,8 @@ const ProductionReadinessPage: React.FC = () => {
         await performReadinessAssessment();
       }, 2000);
       
-      if ((window as any).showToast) {
-        (window as any).showToast({
+      if ('showToast' in window) {
+        (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
           type: 'success',
           title: 'Optimization Complete',
           message: 'Production readiness has been optimized',
@@ -610,17 +621,17 @@ ${report.recommendations.filter(r => r.priority === 'immediate').map((rec, i) =>
 ).join('\n') || 'None'}
 
 DETAILED SECURITY ANALYSIS:
-${Object.entries(report.categories.security.checks).map(([_, check]: [string, any]) => 
+${Object.entries(report.categories.security.checks).map(([_, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 
 DETAILED PERFORMANCE ANALYSIS:
-${Object.entries(report.categories.performance.checks).map(([_, check]: [string, any]) => 
+${Object.entries(report.categories.performance.checks).map(([_, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 
 COMPLIANCE STATUS:
-${Object.entries(report.categories.compliance.checks).map(([_, check]: [string, any]) => 
+${Object.entries(report.categories.compliance.checks).map(([_, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 

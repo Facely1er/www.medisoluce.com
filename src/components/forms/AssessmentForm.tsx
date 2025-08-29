@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Save, Download, Eye, Calendar } from 'lucide-react';
+import { Save, Eye, Calendar } from 'lucide-react';
 import { validateSecureHealthcareInput } from '../../utils/validation';
 import { securityUtils } from '../../utils/securityUtils';
-import { analytics } from '../../utils/analytics';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import Tooltip from '../ui/Tooltip';
@@ -29,7 +28,7 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
   initialData = {},
   isLoading = false
 }) => {
-  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<AssessmentFormData>({
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<AssessmentFormData>({
     defaultValues: {
       organizationName: '',
       assessmentType: 'hipaa-compliance',
@@ -53,8 +52,8 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
     
     setSavedDrafts([...savedDrafts, draft]);
     
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast({
+            if (typeof window !== 'undefined' && 'showToast' in window) {
+          (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
         type: 'success',
         title: 'Draft Saved',
         message: 'Your assessment has been saved as a draft.'
@@ -77,8 +76,8 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
       const securityAlerts = Object.values(validationResults).flatMap(result => result.securityAlerts);
       
       // Show user-friendly error
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && 'showToast' in window) {
+        (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: 'Input validation failed',
           message: allErrors[0] || 'Please check your input and try again.'

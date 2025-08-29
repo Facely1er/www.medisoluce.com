@@ -231,12 +231,12 @@ class ComprehensiveHealthManager {
       
       // If we get a response (even if no session), Supabase is accessible
       return !error || error.message !== 'fetch failed';
-    } catch (error: any) {
+    } catch (error: unknown) {
       // If Supabase is not configured or import fails, don't treat as failure
-      if (error.message?.includes('Missing Supabase environment variables')) {
+      if (error instanceof Error && error.message?.includes('Missing Supabase environment variables')) {
         return true; // Not configured, but not a failure
       }
-      !import.meta.env.PROD && console.warn('Supabase connectivity test failed:', error);
+      console.warn('Supabase connectivity test failed:', error);
       return false;
     }
   }
@@ -580,8 +580,8 @@ class ComprehensiveHealthManager {
       return criticalKeys.every(key => {
         try {
           const data = JSON.parse(localStorage.getItem(key) || '[]');
-          return Array.isArray(data) && data.every((item: any) => 
-            item && typeof item === 'object' && item.id
+          return Array.isArray(data) && data.every((item: unknown) => 
+            item && typeof item === 'object' && item !== null && 'id' in item
           );
         } catch {
           return false;
@@ -665,18 +665,24 @@ class ComprehensiveHealthManager {
     return hasLocalStorage && hasDataMinimization;
   }
 
-  private getCSPViolations(): any[] {
+  private getCSPViolations(): Array<{
+    timestamp: string;
+    violatedDirective: string;
+    blockedURI: string;
+    sourceFile?: string;
+    lineNumber?: number;
+  }> {
     return JSON.parse(localStorage.getItem('csp-violations') || '[]');
   }
 
   private getRecentSecurityEvents(): { critical: number; high: number; medium: number; low: number } {
     const events = JSON.parse(localStorage.getItem('security-events') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentEvents = events.filter((event: any) => 
+    const recentEvents = events.filter((event: { timestamp: string }) => 
       new Date(event.timestamp).getTime() > oneHourAgo
     );
     
-    return recentEvents.reduce((acc: any, event: any) => {
+    return recentEvents.reduce((acc: { critical: number; high: number; medium: number; low: number }, event: { severity: string }) => {
       acc[event.severity] = (acc[event.severity] || 0) + 1;
       return acc;
     }, { critical: 0, high: 0, medium: 0, low: 0 });
