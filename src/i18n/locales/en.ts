@@ -29,7 +29,7 @@ const enTranslation = {
     "hipaa_assessment": "HIPAA Assessment", 
     "system_dependencies": "System Dependencies",
     "business_continuity": "Business Continuity",
-    "training": "Training",
+    "training_nav": "Training",
     "resource_toolkit": "Resource Toolkit",
     "dashboard": "Dashboard",
     "compliance": "Compliance",
@@ -261,7 +261,18 @@ const enTranslation = {
     "phone_field": "Phone",
     "organization": "Organization",
     "message": "Message",
-    "send": "Send Message"
+    "send": "Send Message",
+    "validation": {
+      "message_failed": "Message validation failed",
+      "submission_limit": "Submission limit exceeded",
+      "name_required": "Name is required",
+      "email_required": "Email is required",
+      "invalid_email": "Invalid email address",
+      "message_required": "Message is required"
+    },
+    "form": {
+      "unknown_error": "Unknown error"
+    }
   },
   
   // Thanks page
@@ -661,21 +672,6 @@ const enTranslation = {
       "develop_continuity_plans": "Develop business continuity plans for critical operations",
       "access_training": "Access comprehensive healthcare compliance training programs",
       "access_toolkit": "Access comprehensive compliance resource toolkit"
-    }
-  },
-
-  // Contact page
-  "contact_page": {
-    "validation": {
-      "message_failed": "Message validation failed",
-      "submission_limit": "Submission limit exceeded",
-      "name_required": "Name is required",
-      "email_required": "Email is required",
-      "invalid_email": "Invalid email address",
-      "message_required": "Message is required"
-    },
-    "form": {
-      "unknown_error": "Unknown error"
     }
   },
 

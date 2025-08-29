@@ -9,22 +9,16 @@ import {
   Eye, 
   FileCheck, 
   Server, 
-  Globe, 
-  Lock,
   Download,
   RefreshCw,
-  TrendingUp,
-  TrendingDown,
   Target,
-  Activity,
-  BarChart3
+  Activity
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import ProgressBar from '../components/ui/ProgressBar';
 import { systemHealthManager } from '../utils/systemHealthManager';
 import { securityManager } from '../utils/securityUtils';
-import { healthChecker } from '../utils/healthCheck';
 import { performanceOptimizer } from '../utils/performanceOptimizer';
 
 interface ProductionReadinessReport {
@@ -352,7 +346,7 @@ const ProductionReadinessPage: React.FC = () => {
     const checks: Check[] = [
       {
         name: 'HIPAA Compliance',
-        status: window.location.protocol === 'https:' && !!document.querySelector('[href*="privacy"]') ? 'pass' : 'fail',
+        status: window.location.protocol === 'https:' && document.querySelector('[href*="privacy"]') ? 'pass' : 'fail',
         description: 'Healthcare privacy and security compliance',
         value: window.location.protocol === 'https:' ? 'Compliant' : 'Non-compliant',
         expected: 'Compliant',
@@ -360,23 +354,23 @@ const ProductionReadinessPage: React.FC = () => {
       },
       {
         name: 'Privacy Policy',
-        status: !!document.querySelector('[href*="privacy"]') ? 'pass' : 'fail',
+        status: document.querySelector('[href*="privacy"]') ? 'pass' : 'fail',
         description: 'Required privacy policy documentation',
-        value: !!document.querySelector('[href*="privacy"]') ? 'Present' : 'Missing',
+        value: document.querySelector('[href*="privacy"]') ? 'Present' : 'Missing',
         expected: 'Present',
         fix: 'Add privacy policy page and links'
       },
       {
         name: 'Terms of Service',
-        status: !!document.querySelector('[href*="terms"]') ? 'pass' : 'warning',
+        status: document.querySelector('[href*="terms"]') ? 'pass' : 'warning',
         description: 'Legal terms and conditions',
-        value: !!document.querySelector('[href*="terms"]') ? 'Present' : 'Missing',
+        value: document.querySelector('[href*="terms"]') ? 'Present' : 'Missing',
         expected: 'Present',
         fix: 'Add terms of service page'
       },
       {
         name: 'Data Retention',
-        status: !!localStorage.getItem('hipaa-assessments') ? 'pass' : 'warning',
+        status: localStorage.getItem('hipaa-assessments') ? 'pass' : 'warning',
         description: 'Proper data retention policies',
         value: 'Local storage policy implemented',
         expected: 'Retention policies in place',
@@ -384,9 +378,9 @@ const ProductionReadinessPage: React.FC = () => {
       },
       {
         name: 'Audit Trail',
-        status: !!localStorage.getItem('page-views') ? 'pass' : 'warning',
+        status: localStorage.getItem('page-views') ? 'pass' : 'warning',
         description: 'User activity logging for compliance',
-        value: !!localStorage.getItem('page-views') ? 'Active' : 'Inactive',
+        value: localStorage.getItem('page-views') ? 'Active' : 'Inactive',
         expected: 'Active',
         fix: 'Implement comprehensive audit logging'
       }
@@ -403,33 +397,33 @@ const ProductionReadinessPage: React.FC = () => {
     const checks: Check[] = [
       {
         name: 'Error Monitoring',
-        status: !!localStorage.getItem('error-logs') ? 'pass' : 'warning',
+        status: localStorage.getItem('error-logs') ? 'pass' : 'warning',
         description: 'Application error tracking',
-        value: !!localStorage.getItem('error-logs') ? 'Active' : 'Inactive',
+        value: localStorage.getItem('error-logs') ? 'Active' : 'Inactive',
         expected: 'Active',
         fix: 'Implement comprehensive error monitoring'
       },
       {
         name: 'Performance Monitoring',
-        status: !!localStorage.getItem('performance-metrics') ? 'pass' : 'warning',
+        status: localStorage.getItem('performance-metrics') ? 'pass' : 'warning',
         description: 'Performance metrics collection',
-        value: !!localStorage.getItem('performance-metrics') ? 'Active' : 'Inactive',
+        value: localStorage.getItem('performance-metrics') ? 'Active' : 'Inactive',
         expected: 'Active',
         fix: 'Enable performance monitoring and alerting'
       },
       {
         name: 'Health Checks',
-        status: !!localStorage.getItem('health-history') ? 'pass' : 'warning',
+        status: localStorage.getItem('health-history') ? 'pass' : 'warning',
         description: 'System health monitoring',
-        value: !!localStorage.getItem('health-history') ? 'Active' : 'Inactive',
+        value: localStorage.getItem('health-history') ? 'Active' : 'Inactive',
         expected: 'Active',
         fix: 'Implement automated health checks'
       },
       {
         name: 'Security Events',
-        status: !!localStorage.getItem('security-events') ? 'pass' : 'warning',
+        status: localStorage.getItem('security-events') ? 'pass' : 'warning',
         description: 'Security event logging and monitoring',
-        value: !!localStorage.getItem('security-events') ? 'Active' : 'Inactive',
+        value: localStorage.getItem('security-events') ? 'Active' : 'Inactive',
         expected: 'Active',
         fix: 'Enable security event monitoring'
       }
