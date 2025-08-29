@@ -9,7 +9,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import GlobalSearch from '../components/search/GlobalSearch';
 import { analytics } from '../utils/analytics';
-import { ShieldCheck, Server, FileText, AlertTriangle, DivideIcon as LucideIcon, CheckCircle, BarChart, ArrowRight, Download, BookOpen } from 'lucide-react';
+import { ShieldCheck, Server, FileText, CheckCircle, BarChart, ArrowRight, Download, BookOpen } from 'lucide-react';
 
 interface FeatureCardProps {
   title: string;

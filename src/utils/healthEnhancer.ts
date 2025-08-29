@@ -388,8 +388,8 @@ class ProjectHealthEnhancer {
       this.cleanupOldData();
       
       // Force garbage collection if available
-      if ((window as any).gc) {
-        (window as any).gc();
+      if ('gc' in window) {
+        (window as Window & { gc: () => void }).gc();
       }
       
       return true;
@@ -543,11 +543,11 @@ class ProjectHealthEnhancer {
   private async getBundleSize(): Promise<number> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
-        resource.name.includes('.js') && !resource.name.includes('node_modules')
+      const jsResources = resources.filter((resource: PerformanceEntry) => 
+        'name' in resource && resource.name.includes('.js') && !resource.name.includes('node_modules')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: PerformanceEntry & { transferSize?: number }) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -602,7 +602,7 @@ class ProjectHealthEnhancer {
     ['error-logs', 'performance-metrics', 'page-views'].forEach(key => {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        oldCount += data.filter((item: any) => {
+        oldCount += data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return timestamp && new Date(timestamp).getTime() < oneWeekAgo;
         }).length;
@@ -617,7 +617,7 @@ class ProjectHealthEnhancer {
   private getErrorRate(): number {
     const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentErrors = errors.filter((error: any) => 
+    const recentErrors = errors.filter((error: { timestamp: string }) => 
       new Date(error.timestamp).getTime() > oneHourAgo
     );
     
@@ -625,9 +625,14 @@ class ProjectHealthEnhancer {
     return pageViews > 0 ? Math.round((recentErrors.length / pageViews) * 100) : 0;
   }
 
-  private getUnhandledErrors(): any[] {
+  private getUnhandledErrors(): Array<{
+    type: string;
+    handled: boolean;
+    message?: string;
+    timestamp?: string;
+  }> {
     const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
-    return errors.filter((error: any) => 
+    return errors.filter((error: { type: string; handled: boolean }) => 
       error.type === 'javascript' && !error.handled
     );
   }
@@ -635,7 +640,7 @@ class ProjectHealthEnhancer {
   private getRecentPageViews(): number {
     const pageViews = JSON.parse(localStorage.getItem('page-views') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return pageViews.filter((view: any) => 
+    return pageViews.filter((view: { timestamp: string }) => 
       new Date(view.timestamp).getTime() > oneHourAgo
     ).length || 1;
   }
@@ -654,7 +659,7 @@ class ProjectHealthEnhancer {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (Array.isArray(data)) {
           const cutoff = Date.now() - maxAge;
-          const filtered = data.filter((item: any) => {
+          const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
             const timestamp = item.timestamp || item.date;
             return timestamp && new Date(timestamp).getTime() > cutoff;
           });
@@ -678,7 +683,7 @@ class ProjectHealthEnhancer {
       
       ['error-logs', 'performance-metrics', 'page-views'].forEach(key => {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        const filtered = data.filter((item: any) => {
+        const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return !timestamp || new Date(timestamp).getTime() > oneWeekAgo;
         });

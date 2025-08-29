@@ -14,7 +14,12 @@ class PerformanceOptimizer {
   private config: PerformanceConfig;
   private observerInstances: IntersectionObserver[] = [];
   private preloadedResources = new Set<string>();
-  private optimizationHistory: any[] = [];
+  private optimizationHistory: Array<{
+    type: string;
+    timestamp: string;
+    impact: number;
+    description: string;
+  }> = [];
   private memoryMonitor: NodeJS.Timeout | null = null;
 
   constructor(config: Partial<PerformanceConfig> = {}) {
@@ -355,7 +360,7 @@ class PerformanceOptimizer {
     ['performance-metrics', 'error-logs', 'page-views'].forEach(key => {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        const filtered = data.filter((item: any) => {
+        const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return timestamp && new Date(timestamp).getTime() > oneDayAgo;
         });
@@ -419,7 +424,7 @@ class PerformanceOptimizer {
 
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -448,9 +453,9 @@ class PerformanceOptimizer {
 
     // First Input Delay
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'first-input') {
-          const fid = entry.processingStart - entry.startTime;
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'first-input' && 'processingStart' in entry && 'startTime' in entry) {
+          const fid = (entry as PerformanceEntry & { processingStart: number }).processingStart - entry.startTime;
           this.reportMetric('FID', fid);
         }
       });
@@ -459,9 +464,9 @@ class PerformanceOptimizer {
     // Cumulative Layout Shift
     let clsScore = 0;
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
-          clsScore += entry.value;
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'layout-shift' && 'hadRecentInput' in entry && 'value' in entry && !entry.hadRecentInput) {
+          clsScore += (entry as PerformanceEntry & { hadRecentInput: boolean; value: number }).value;
           this.reportMetric('CLS', clsScore);
         }
       });
@@ -471,7 +476,7 @@ class PerformanceOptimizer {
   private monitorMemoryUsage() {
     if ('memory' in performance) {
       setInterval(() => {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         const usage = {
           used: memory.usedJSHeapSize,
           total: memory.totalJSHeapSize,
@@ -481,7 +486,7 @@ class PerformanceOptimizer {
         // Alert if memory usage is high
         const usagePercentage = (usage.used / usage.limit) * 100;
         if (usagePercentage > 80) {
-          !import.meta.env.PROD && console.warn('High memory usage detected:', usage);
+          console.warn('High memory usage detected:', usage);
           this.reportMetric('MemoryUsage', usagePercentage);
         }
       }, 30000); // Check every 30 seconds
@@ -491,12 +496,10 @@ class PerformanceOptimizer {
   private analyzeBundlePerformance() {
     // Monitor resource loading performance
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'resource') {
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'resource' && 'duration' in entry && entry.duration > 1000) {
           // Report slow resources
-          if (entry.duration > 1000) {
-            this.reportMetric('SlowResource', entry.duration);
-          }
+          this.reportMetric('SlowResource', entry.duration);
         }
       });
     }).observe({ entryTypes: ['resource'] });
@@ -520,8 +523,8 @@ class PerformanceOptimizer {
     localStorage.setItem('performance-metrics', JSON.stringify(metrics));
 
     // Report to analytics if available
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'web_vitals', {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as Window & { gtag: (command: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag('event', 'web_vitals', {
         metric_name: name,
         metric_value: Math.round(value),
         page_path: window.location.pathname
@@ -530,7 +533,21 @@ class PerformanceOptimizer {
   }
 
   // Public methods
-  public getOptimizationReport(): any {
+  public getOptimizationReport(): {
+    optimizations: Array<{
+      action: string;
+      timestamp: string;
+      memoryBefore: number;
+      memoryAfter: number;
+    }>;
+    currentMemoryUsage: number;
+    preloadedResources: number;
+    activeObservers: number;
+    cacheStatus: {
+      quota: number;
+      usage: number;
+    };
+  } {
     return {
       optimizations: this.optimizationHistory,
       currentMemoryUsage: this.getMemoryUsage(),
@@ -540,7 +557,7 @@ class PerformanceOptimizer {
     };
   }
 
-  private getCacheStatus(): any {
+  private getCacheStatus(): { quota: number; usage: number } {
     try {
       const storageEstimate = navigator.storage?.estimate?.();
       return storageEstimate || { quota: 0, usage: 0 };

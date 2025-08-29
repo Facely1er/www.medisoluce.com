@@ -1,10 +1,13 @@
 // Analytics utilities for tracking user interactions
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
     // Sentry for error tracking
-    Sentry?: any;
+    Sentry?: {
+      captureException: (error: Error, context?: Record<string, unknown>) => void;
+      setUser: (user: { id?: string; email?: string; username?: string }) => void;
+    };
   }
 }
 
@@ -57,9 +60,9 @@ class Analytics {
       // First Input Delay
       new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry: any) => {
-          if (entry.entryType === 'first-input') {
-            this.trackPerformance('first_input_delay', entry.processingStart - entry.startTime);
+        entries.forEach((entry) => {
+          if (entry.entryType === 'first-input' && 'processingStart' in entry && 'startTime' in entry) {
+            this.trackPerformance('first_input_delay', (entry as PerformanceEntry & { processingStart: number }).processingStart - entry.startTime);
           }
         });
       }).observe({ entryTypes: ['first-input'] });
@@ -67,9 +70,9 @@ class Analytics {
       // Cumulative Layout Shift
       new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry: any) => {
-          if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
-            this.trackPerformance('cumulative_layout_shift', entry.value);
+        entries.forEach((entry) => {
+          if (entry.entryType === 'layout-shift' && 'hadRecentInput' in entry && 'value' in entry) {
+            this.trackPerformance('cumulative_layout_shift', (entry as PerformanceEntry & { hadRecentInput: boolean; value: number }).value);
           }
         });
       }).observe({ entryTypes: ['layout-shift'] });
@@ -82,9 +85,9 @@ class Analytics {
     try {
       new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        entries.forEach((entry: any) => {
+        entries.forEach((entry) => {
           // Track slow resources
-          if (entry.duration > 1000) { // Resources taking >1s
+          if (entry.entryType === 'resource' && 'duration' in entry && entry.duration > 1000) { // Resources taking >1s
             this.trackPerformance('slow_resource', entry.duration);
           }
         });

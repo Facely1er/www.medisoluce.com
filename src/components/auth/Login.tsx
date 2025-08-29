@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { LogIn, Shield, KeyRound } from 'lucide-react';
+import { LogIn, Shield } from 'lucide-react';
 import { useToast } from '../ui/Toast';
 import { validateEmail, rateLimiter, validateSecureHealthcareInput } from '../../utils/validation';
 import { securityUtils } from '../../utils/securityUtils';
@@ -20,7 +20,6 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>();
   const [requiresMFA, setRequiresMFA] = React.useState(false);
-  const [tempSession, setTempSession] = React.useState<string | null>(null);
 
   const onSubmit = async (data: LoginFormData) => {
     // Enhanced input validation with security scanning

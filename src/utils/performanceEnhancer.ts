@@ -130,7 +130,7 @@ class PerformanceEnhancer {
 
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -139,11 +139,11 @@ class PerformanceEnhancer {
   private estimateBundleSize(): number {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
-        resource.name.includes('.js')
+      const jsResources = resources.filter((resource: PerformanceEntry) => 
+        'name' in resource && resource.name.includes('.js')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: PerformanceEntry & { transferSize?: number }) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -306,7 +306,7 @@ class PerformanceEnhancer {
     ['error-logs', 'performance-metrics', 'page-views'].forEach(key => {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        const filtered = data.filter((item: any) => {
+        const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return !timestamp || new Date(timestamp).getTime() > oneWeekAgo;
         });
@@ -330,10 +330,10 @@ class PerformanceEnhancer {
 
   private optimizeObjectReferences(): void {
     // Clear WeakMap and WeakSet references that might be holding objects
-    if ((window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+    if ('__REACT_DEVTOOLS_GLOBAL_HOOK__' in window) {
       // Clear React DevTools references in production
       if (import.meta.env.PROD) {
-        delete (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
+        delete (window as Window & { __REACT_DEVTOOLS_GLOBAL_HOOK__: unknown }).__REACT_DEVTOOLS_GLOBAL_HOOK__;
       }
     }
   }
@@ -441,11 +441,11 @@ class PerformanceEnhancer {
     localStorage.setItem('performance-metrics', JSON.stringify(performanceData.slice(-100)));
   }
 
-  private notifyPerformanceImprovement(improvement: any): void {
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      const totalImprovement = Object.values(improvement).reduce((sum: number, val: any) => sum + (val || 0), 0);
+  private notifyPerformanceImprovement(improvement: Record<string, number>): void {
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      const totalImprovement = Object.values(improvement).reduce((sum: number, val: number) => sum + (val || 0), 0);
       
-      (window as any).showToast({
+      (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'success',
         title: 'Performance Enhanced',
         message: `Applied ${this.optimizations.length} optimizations`,
@@ -454,7 +454,18 @@ class PerformanceEnhancer {
     }
   }
 
-  public getPerformanceReport(): any {
+  public getPerformanceReport(): {
+    currentMetrics: {
+      loadTime: number;
+      memoryUsage: number;
+      bundleSize: number;
+      renderTime: number;
+    };
+    improvements: Record<string, number>;
+    optimizationsApplied: string[];
+    trend: string;
+    recommendations: string[];
+  } {
     const data = JSON.parse(localStorage.getItem('performance-metrics') || '[]');
     const recent = data.slice(-10);
     
@@ -467,7 +478,10 @@ class PerformanceEnhancer {
     };
   }
 
-  private calculatePerformanceTrend(data: any[]): string {
+  private calculatePerformanceTrend(data: Array<{
+    loadTime: number;
+    memoryUsage: number;
+  }>): string {
     if (data.length < 2) return 'insufficient-data';
     
     const recent = data[data.length - 1];

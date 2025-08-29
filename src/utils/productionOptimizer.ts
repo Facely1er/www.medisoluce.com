@@ -65,7 +65,7 @@ class ProductionOptimizer {
       error: result.status === 'rejected' ? result.reason : null
     }));
 
-    !import.meta.env.PROD && console.log('Production optimizations completed:', results);
+    console.log('Production optimizations completed:', results);
   }
 
   private async optimizePerformance(): Promise<void> {
@@ -480,7 +480,7 @@ class ProductionOptimizer {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (Array.isArray(data)) {
           const cutoff = Date.now() - maxAge;
-          const filtered = data.filter((item: any) => {
+          const filtered = data.filter((item: { timestamp?: string; date?: string; createdAt?: string }) => {
             const timestamp = item.timestamp || item.date || item.createdAt;
             return timestamp && new Date(timestamp).getTime() > cutoff;
           });
@@ -509,11 +509,11 @@ class ProductionOptimizer {
   private async analyzeBundleSize(): Promise<void> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
-        resource.name.endsWith('.js')
+      const jsResources = resources.filter((resource: PerformanceEntry) => 
+        'name' in resource && resource.name.endsWith('.js')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: PerformanceEntry & { transferSize?: number }) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -584,8 +584,8 @@ class ProductionOptimizer {
           localStorage.setItem(key, '[]');
         } else {
           // Validate structure of items
-          const validItems = data.filter((item: any) => 
-            item && typeof item === 'object' && item.id
+          const validItems = data.filter((item: unknown) => 
+            item && typeof item === 'object' && item !== null && 'id' in item
           );
           
           if (validItems.length !== data.length) {
@@ -635,7 +635,15 @@ class ProductionOptimizer {
     return this.optimizations;
   }
 
-  public getOptimizationReport(): any {
+  public getOptimizationReport(): {
+    total: number;
+    successful: number;
+    failed: number;
+    successRate: number;
+    byCategory: Record<string, number>;
+    recent: OptimizationResult[];
+    lastRun: string | null;
+  } {
     const successful = this.optimizations.filter(opt => opt.success);
     const failed = this.optimizations.filter(opt => !opt.success);
     

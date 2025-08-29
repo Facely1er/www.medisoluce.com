@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Scale, AlertCircle, Shield, Lock, CheckCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
 

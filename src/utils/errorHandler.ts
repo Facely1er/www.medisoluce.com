@@ -36,7 +36,7 @@ interface SystemContext {
 interface SecurityEvent {
   eventType: 'csp_violation' | 'failed_auth' | 'suspicious_input' | 'data_access' | 'permission_escalation';
   severity: 'low' | 'medium' | 'high' | 'critical';
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   riskScore: number; // 1-10 scale
   mitigated: boolean;
   investigated: boolean;
@@ -334,12 +334,12 @@ class ErrorHandler {
     }
   }
 
-  private notifySecurityTeam(incident: any): void {
+  private notifySecurityTeam(incident: SecurityEvent): void {
     // In production, this would send alerts via email, SMS, or SIEM integration
     console.error('Critical security incident detected:', incident);
     
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast({
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'error',
         title: 'Critical Security Alert',
         message: 'Security incident detected and logged for investigation',
@@ -376,12 +376,12 @@ class ErrorHandler {
   private checkForSecurityPatterns(newEvent: SecurityEvent): void {
     const events = JSON.parse(localStorage.getItem('security-event-details') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentEvents = events.filter((event: any) => 
+    const recentEvents = events.filter((event: { timestamp?: string }) => 
       new Date(event.timestamp || Date.now()).getTime() > oneHourAgo
     );
     
     // Check for attack patterns
-    const sameTypeEvents = recentEvents.filter((event: any) => 
+    const sameTypeEvents = recentEvents.filter((event: { eventType: string }) => 
       event.eventType === newEvent.eventType
     );
     

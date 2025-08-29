@@ -21,7 +21,7 @@ interface CircuitBreakerState {
 class RobustErrorHandler {
   private config: ErrorRecoveryConfig;
   private circuitBreakers = new Map<string, CircuitBreakerState>();
-  private retryQueues = new Map<string, Array<() => Promise<any>>>();
+  private retryQueues = new Map<string, Array<() => Promise<unknown>>>();
   private gracefulModes = new Set<string>();
 
   constructor(config: Partial<ErrorRecoveryConfig> = {}) {
@@ -97,11 +97,11 @@ class RobustErrorHandler {
     // Monitor and recover from memory errors
     const checkMemory = () => {
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         const usagePercentage = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
         
         if (usagePercentage > 90) {
-          !import.meta.env.PROD && console.warn('🚨 Critical memory usage detected, initiating recovery...');
+          console.warn('🚨 Critical memory usage detected, initiating recovery...');
           this.recoverFromMemoryError();
         }
       }
@@ -115,7 +115,7 @@ class RobustErrorHandler {
     const originalCreateElement = React.createElement;
     
     // Wrap React.createElement to catch component errors
-    (React as any).createElement = (type: any, props: any, ...children: any[]) => {
+    (React as typeof React & { createElement: typeof React.createElement }).createElement = (type: React.ElementType, props: React.PropsWithChildren<Record<string, unknown>>, ...children: React.ReactNode[]) => {
       try {
         return originalCreateElement(type, props, ...children);
       } catch (error) {
@@ -131,7 +131,7 @@ class RobustErrorHandler {
     };
   }
 
-  private async handleError(type: string, error: any, context: any = {}) {
+  private async handleError(type: string, error: Error | unknown, context: Record<string, unknown> = {}) {
     console.error(`[${type.toUpperCase()}] Error:`, error);
 
     // Store error for analysis
@@ -148,7 +148,7 @@ class RobustErrorHandler {
     }
   }
 
-  private async attemptRecovery(type: string, error: any, context: any): Promise<boolean> {
+  private async attemptRecovery(type: string, error: Error | unknown, context: Record<string, unknown>): Promise<boolean> {
     !import.meta.env.PROD && console.log(`🔄 Attempting recovery for ${type} error...`);
 
     switch (type) {
@@ -165,7 +165,7 @@ class RobustErrorHandler {
     }
   }
 
-  private async recoverFromJavaScriptError(error: any, context: any): Promise<boolean> {
+  private async recoverFromJavaScriptError(error: Error | unknown, context: Record<string, unknown>): Promise<boolean> {
     try {
       // Specific recovery strategies
       if (error.message?.includes('Cannot read property')) {
@@ -193,7 +193,7 @@ class RobustErrorHandler {
     }
   }
 
-  private async recoverFromPromiseError(error: any, context: any): Promise<boolean> {
+  private async recoverFromPromiseError(error: Error | unknown, context: Record<string, unknown>): Promise<boolean> {
     try {
       if (error.message?.includes('fetch')) {
         // Network-related promise rejection

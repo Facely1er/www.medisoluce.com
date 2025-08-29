@@ -376,7 +376,7 @@ class AccessibilityEnhancer {
 
       // Warn about missing alt text in development
       if (!import.meta.env.PROD && !img.getAttribute('alt')) {
-        !import.meta.env.PROD && console.warn('Image missing alt text:', img);
+        console.warn('Image missing alt text:', img);
       }
     });
   }
@@ -389,7 +389,7 @@ class AccessibilityEnhancer {
       if (heading.tagName === 'H1') {
         h1Count++;
         if (h1Count > 1) {
-          !import.meta.env.PROD && console.warn('Multiple H1 elements detected - consider using only one per page');
+          console.warn('Multiple H1 elements detected - consider using only one per page');
         }
       }
 
@@ -444,7 +444,7 @@ class AccessibilityEnhancer {
         element.setAttribute('alt', altText);
       });
       
-      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added alt text to ${imagesWithoutAlt.length} images`);
+      console.log(`✅ Auto-fixed: Added alt text to ${imagesWithoutAlt.length} images`);
     }
 
     // Enhanced heading hierarchy check with recommendations
@@ -739,7 +739,28 @@ class AccessibilityEnhancer {
     }
   }
 
-  public generateAccessibilityReport(): any {
+  public generateAccessibilityReport(): {
+    timestamp: string;
+    overall: {
+      score: number;
+      issues: number;
+      focusableElements: number;
+    };
+    headings: {
+      total: number;
+      h1Count: number;
+      hierarchyIssues: string[];
+      withIds: number;
+    };
+    forms: {
+      totalForms: number;
+      totalInputs: number;
+      inputsWithLabels: number;
+      inputsWithErrors: number;
+    };
+    issues: string[];
+    recommendations: string[];
+  } {
     const issues = this.runAccessibilityAudit();
     const focusableCount = this.getFocusableElements().length;
     const headingStructure = this.analyzeHeadingStructure();
