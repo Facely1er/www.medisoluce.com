@@ -562,6 +562,86 @@ const frTranslation = {
     "search_results": "Résultats de recherche"
   },
 
+  // HIPAA Assessment
+  "hipaa_assessment": {
+    "options": {
+      "policies_no": "Aucune politique ou procédure documentée",
+      "training_annual_plus": "Annuellement plus lors de changements significatifs",
+      "training_annual": "Annuellement seulement",
+      "training_onboarding": "Seulement lors de l'intégration des employés",
+      "training_never": "Nous ne menons pas de formation HIPAA formelle",
+      "encryption_transit": "Seulement en transit",
+      "encryption_rest": "Seulement au repos",
+      "encryption_none": "Aucun chiffrement en place",
+      "access_minimal": "Contrôles d'accès minimaux ou inexistants",
+      "baa_some": "Avec certains mais pas tous les fournisseurs",
+      "baa_none": "Aucun contrat de sous-traitant en place",
+      "incident_informal": "Des plans informels ou partiels existent",
+      "incident_none": "Aucun plan de réponse aux incidents",
+      "logs_partial": "Journalisation partielle ou incohérente",
+      "logs_none": "Aucune journalisation d'audit en place",
+      "devices_encryption_policies": "Politiques de chiffrement et de sécurité sans MDM",
+      "devices_none": "Aucune sécurité spécifique pour les appareils mobiles",
+      "emergency_informal": "Des procédures d'urgence informelles existent",
+      "emergency_none": "Aucune procédure d'accès d'urgence"
+    },
+    "rules": {
+      "privacy_description": "Protège la confidentialité des informations de santé individuellement identifiables",
+      "privacy_requirements": [
+        "Avis de pratiques de confidentialité",
+        "Droits individuels",
+        "Utilisations et divulgations",
+        "Norme du minimum nécessaire",
+        "Exigences administratives"
+      ],
+      "security_requirements": [
+        "Safeguards administratifs",
+        "Safeguards physiques",
+        "Safeguards techniques",
+        "Évaluation et gestion des risques",
+        "Planification de continuité"
+      ],
+      "breach_description": "Exigences pour la notification et la réponse aux violations",
+      "breach_requirements": [
+        "Découverte et évaluation des violations",
+        "Notification individuelle",
+        "Notification HHS",
+        "Notification médiatique",
+        "Exigences de documentation"
+      ],
+      "enforcement_description": "Procédures d'enquête et structures de pénalités",
+      "enforcement_requirements": [
+        "Procédures de conformité et d'enquête",
+        "Pénalités monétaires civiles",
+        "Plans d'action corrective",
+        "Procédures de règlement",
+        "Procédures d'audience"
+      ]
+    },
+    "implementation": {
+      "risk_assessment": "Spécification d'implémentation requise pour mener des évaluations des risques de sécurité",
+      "policies_procedures": "Exigences administratives pour les politiques et procédures documentées",
+      "workforce_training": "Formation requise du personnel sur les exigences HIPAA",
+      "encryption": "Spécification d'implémentation adressable pour le chiffrement",
+      "access_management": "Spécification requise pour la gestion de l'accès aux informations",
+      "business_associates": "Contrats requis avec les sous-traitants gérant les PHI",
+      "contingency_planning": "Plan de continuité requis et procédures de réponse aux violations",
+      "audit_controls": "Spécification d'implémentation requise pour les contrôles d'audit",
+      "workstation_security": "Safeguards requis pour les postes de travail et appareils mobiles",
+      "emergency_access": "Spécification adressable pour les procédures d'accès d'urgence"
+    },
+    "actions": {
+      "download_resources": "Télécharger les Ressources d'Implémentation",
+      "get_guidance": "Obtenir des Conseils d'Experts en Implémentation"
+    },
+    "continue_journey": "Continuez Votre Parcours de Conformité",
+    "aria_labels": {
+      "training_modules": "Accédez aux modules de formation HIPAA pour renforcer vos connaissances avant l'évaluation",
+      "download_templates": "Téléchargez les modèles de conformité HIPAA et les ressources d'implémentation",
+      "map_systems": "Cartographiez et sécurisez vos systèmes technologiques de santé critiques"
+    }
+  },
+
   // Homepage content
   "homepage": {
     "stats": {
