@@ -167,7 +167,10 @@ export const validatePhone = (phone: string): boolean => {
 
 export const sanitizeInput = (input: string): string => {
   // Keep behavior minimal to match tests: trim and remove angle brackets
-  // This preserves inner content like alert("xss") and tag names without < or >
+  // Minimal sanitization: trims and removes angle brackets only.
+  // WARNING: This preserves dangerous content such as alert("xss") and tag names without < or >.
+  // This function does NOT protect against XSS or injection attacks.
+  // If rendering user input in HTML or other sensitive contexts, use proper escaping or a robust sanitizer (e.g., DOMPurify).
   const trimmed = input.trim();
   return trimmed.replace(/[<>]/g, '');
 };
