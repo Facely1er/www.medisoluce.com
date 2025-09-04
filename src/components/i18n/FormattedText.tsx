@@ -78,8 +78,8 @@ export const FormattedDate: React.FC<FormattedDateProps> = ({
 
 interface FormattedMessageProps {
   id: string;
-  values?: Record<string, any>;
-  components?: Record<string, React.ComponentType<any>>;
+  values?: Record<string, string | number | boolean>;
+  components?: Record<string, React.ComponentType<{ children?: React.ReactNode }>>;
   className?: string;
   defaultMessage?: string;
 }
@@ -147,9 +147,9 @@ export const FormattedList: React.FC<FormattedListProps> = ({
     try {
       return new Intl.ListFormat(locale, { 
         style: 'long', 
-        type: type as any 
+        type: type as 'conjunction' | 'disjunction' | 'unit'
       }).format(items);
-    } catch (error) {
+    } catch {
       // Fallback for unsupported browsers
       if (items.length === 0) return '';
       if (items.length === 1) return items[0];

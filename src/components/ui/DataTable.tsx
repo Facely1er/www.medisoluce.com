@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { ChevronUp, ChevronDown, Search, Filter, Download, Eye } from 'lucide-react';
+import { ChevronUp, ChevronDown, Search, Download } from 'lucide-react';
 import Button from './Button';
 
-interface Column {
+interface Column<T = Record<string, unknown>> {
   key: string;
   label: string;
   sortable?: boolean;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
-interface DataTableProps {
-  data: any[];
-  columns: Column[];
+interface DataTableProps<T = Record<string, unknown>> {
+  data: T[];
+  columns: Column<T>[];
   searchable?: boolean;
   exportable?: boolean;
   pageSize?: number;
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: T) => void;
   className?: string;
 }
 
-const DataTable: React.FC<DataTableProps> = ({
+const DataTable = <T extends Record<string, unknown>>({
   data,
   columns,
   searchable = true,

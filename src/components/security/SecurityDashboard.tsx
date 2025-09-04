@@ -1,35 +1,51 @@
  import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { 
   Shield, 
   AlertTriangle, 
-  CheckCircle, 
-  XCircle, 
-  Activity,
-  Zap,
   Eye,
   Lock,
-  Bug,
   Target,
-  TrendingUp,
-  TrendingDown,
   RefreshCw,
   Download,
   Play,
-  Pause,
-  BarChart3
+  Pause
 } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
-import ProgressBar from '../ui/ProgressBar';
 import { securityManager } from '../../utils/securityUtils';
 import { advancedSecurityScanner } from '../../utils/advancedSecurityScanner';
 
+interface SecurityData {
+  overallScore: number;
+  vulnerabilities: Array<{
+    id: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    title: string;
+    description: string;
+    status: 'open' | 'in-progress' | 'resolved';
+  }>;
+  lastScan: string;
+  recommendations: Array<{
+    id: string;
+    priority: 'low' | 'medium' | 'high' | 'critical';
+    title: string;
+    action: string;
+  }>;
+}
+
+interface ThreatHistoryItem {
+  id: string;
+  type: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: string;
+  description: string;
+}
+
 const SecurityDashboard: React.FC = () => {
-  const [securityData, setSecurityData] = useState<any>(null);
+  const [securityData, setSecurityData] = useState<SecurityData | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [isMonitoring, setIsMonitoring] = useState(true);
-  const [threatHistory, setThreatHistory] = useState<any[]>([]);
+  const [threatHistory, setThreatHistory] = useState<ThreatHistoryItem[]>([]);
   const [lastScan, setLastScan] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -270,7 +286,7 @@ const SecurityDashboard: React.FC = () => {
                 Security Recommendations
               </h3>
               <div className="space-y-3">
-                {securityData.securityReport?.recommendations?.slice(0, 5).map((rec: any, index: number) => (
+                {securityData.securityReport?.recommendations?.slice(0, 5).map((rec, index: number) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className={`p-1 rounded-full mt-1 ${
                       rec.priority === 'high' ? 'bg-red-100 dark:bg-red-900/20' :

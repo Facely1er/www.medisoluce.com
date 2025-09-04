@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Zap, Clock, TrendingUp } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import Card from './Card';
 
 interface PerformanceMetrics {
@@ -9,6 +9,20 @@ interface PerformanceMetrics {
   largestContentfulPaint: number;
   firstInputDelay: number;
   cumulativeLayoutShift: number;
+}
+
+interface PerformanceEntry {
+  entryType: string;
+  startTime: number;
+  processingStart?: number;
+  value?: number;
+  hadRecentInput?: boolean;
+}
+
+interface AutoHealingAction {
+  success: boolean;
+  action: string;
+  timestamp: string;
 }
 import { useHealthMonitoring, usePerformanceMonitoring } from '../../hooks/useHealthMonitoring';
 
@@ -25,7 +39,7 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 }) => {
   const [metrics, setMetrics] = useState<Partial<PerformanceMetrics>>({});
   const [isVisible, setIsVisible] = useState(false);
-  const performanceMetrics = usePerformanceMonitoring();
+  usePerformanceMonitoring();
   const { healthData } = useHealthMonitoring({ autoRefresh: enhanced });
 
   useEffect(() => {
@@ -67,7 +81,7 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             // FID
             new PerformanceObserver((list) => {
               const entries = list.getEntries();
-              entries.forEach((entry: any) => {
+              entries.forEach((entry: PerformanceEntry) => {
                 if (entry.entryType === 'first-input') {
                   const fid = entry.processingStart - entry.startTime;
                   newMetrics.firstInputDelay = fid;
@@ -80,7 +94,7 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             let clsScore = 0;
             new PerformanceObserver((list) => {
               const entries = list.getEntries();
-              entries.forEach((entry: any) => {
+              entries.forEach((entry: PerformanceEntry) => {
                 if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
                   clsScore += entry.value;
                   newMetrics.cumulativeLayoutShift = clsScore;
@@ -90,7 +104,9 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             }).observe({ entryTypes: ['layout-shift'] });
 
           } catch (error) {
-            !import.meta.env.PROD && console.warn('Error collecting Web Vitals:', error);
+            if (!import.meta.env.PROD) {
+              console.warn('Error collecting Web Vitals:', error);
+            }
           }
 
           setMetrics(newMetrics);
@@ -199,7 +215,7 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
               <div className="flex justify-between">
                 <span>Auto-Optimizations:</span>
                 <span className="text-primary-500">
-                  {healthData.autoHealingActions.filter((a: any) => a.success).length}
+                  {healthData.autoHealingActions.filter((a: AutoHealingAction) => a.success).length}
                 </span>
               </div>
             </div>

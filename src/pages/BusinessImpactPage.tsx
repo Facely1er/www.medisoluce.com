@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { BarChart2, AlertTriangle, Clock, Activity, FileText, ArrowRight, Plus, DollarSign } from 'lucide-react';
+import { BarChart2, Clock, Activity, FileText, ArrowRight, Plus } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import useLocalStorage from '../hooks/useLocalStorage';

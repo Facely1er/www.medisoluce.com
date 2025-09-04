@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Activity,
   Zap,
-  Shield,
-  Eye,
   CheckCircle,
   AlertTriangle,
   TrendingUp,

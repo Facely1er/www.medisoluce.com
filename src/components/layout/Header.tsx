@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, AlertTriangle, LifeBuoy, BookOpen, Activity, CheckCircle, User } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import { useTranslation } from 'react-i18next';
