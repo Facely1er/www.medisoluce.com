@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AssessmentEngine, { Question, AssessmentResult } from '../components/assessment/AssessmentEngine';
 import AssessmentForm from '../components/forms/AssessmentForm';
-import { analytics } from '../utils/analytics';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import ContextualCTA from '../components/ui/ContextualCTA';
-import { relatedPages, getContextualLinks } from '../utils/linkingStrategy';
 import { ShieldCheck, CheckCircle, FileText, AlertTriangle, Users, Lock, Eye, ArrowRight, BookOpen, Download, Server } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -627,7 +625,7 @@ const HIPAACheckPage: React.FC = () => {
             Regulatory Requirements Coverage
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {regulatoryFrameworks.map((framework, index) => (
+            {regulatoryFrameworks.map((framework) => (
               <Card key={framework.title} className="p-6">
                 <div className="flex items-start mb-4">
                   <div className={`${framework.color} mt-1 mr-3`}>
@@ -664,7 +662,7 @@ const HIPAACheckPage: React.FC = () => {
           </h2>
           <Card className="p-6">
             <div className="space-y-4">
-              {questionMapping.map((mapping, index) => (
+              {questionMapping.map((mapping) => (
                 <div key={mapping.question} className="border-l-4 border-primary-500 pl-4 py-2">
                   <div className="flex items-start justify-between">
                     <div className="flex-grow">

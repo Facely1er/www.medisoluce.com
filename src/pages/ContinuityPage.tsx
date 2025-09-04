@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Shield, Clock, FileCheck, AlertTriangle, Server, Users, Plus, Edit, Trash2, Download, Eye } from 'lucide-react';
+import { Shield, FileCheck, AlertTriangle, Server, Users, Plus, Edit, Trash2, Download } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import useLocalStorage from '../hooks/useLocalStorage';

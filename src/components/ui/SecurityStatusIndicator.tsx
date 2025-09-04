@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Shield, 
   AlertTriangle, 
@@ -9,14 +9,8 @@ import {
   EyeOff,
   Download,
   RefreshCw,
-  Lock,
-  Unlock,
-  Bug,
   Activity,
-  Zap,
-  Target,
-  TrendingUp,
-  TrendingDown
+  Zap
 } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';
@@ -39,7 +33,7 @@ const SecurityStatusIndicator: React.FC<SecurityStatusIndicatorProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [threatHistory, setThreatHistory] = useState<any[]>([]);
+  const [, setThreatHistory] = useState<any[]>([]);
   
   const shouldShow = !import.meta.env.PROD || showInProduction;
 

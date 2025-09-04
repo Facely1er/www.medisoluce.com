@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, Zap, Shield, Eye, CheckCircle, AlertTriangle, XCircle, TrendingUp, TrendingDown, Target, Play, Pause, Download, RefreshCw, Wrench, BarChart3, Clock, MemoryStick as Memory, Globe, Bug } from 'lucide-react';
+import { Activity, Zap, Shield, CheckCircle, AlertTriangle, XCircle, Play, Pause, Download, RefreshCw, Wrench, Clock } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';
-import ProgressBar from './ProgressBar';
 import { projectHealthEnhancer } from '../../utils/healthEnhancer';
 import { performanceEnhancer } from '../../utils/performanceEnhancer';
 import { robustErrorHandler } from '../../utils/robustErrorHandler';

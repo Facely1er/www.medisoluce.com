@@ -3460,60 +3460,7 @@ Type: ${fileType}
     setShowPreviewModal(true);
   };
 
-  const handleDownload = (title: string, fileType: string) => {
-    // Create actual downloadable content
-    let content = '';
-    let filename = '';
-    let mimeType = '';
-
-    // Generate actual file content based on the resource
-    switch (title) {
-      case 'HIPAA Privacy Policy Template':
-        content = generatePrivacyPolicy();
-        filename = 'hipaa-privacy-policy-template.docx';
-        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        break;
-      case 'Breach Response Checklist':
-        content = generateBreachChecklist();
-        filename = 'breach-response-checklist.pdf';
-        mimeType = 'application/pdf';
-        break;
-      case 'Business Associate Agreement Template':
-        content = generateBAATemplate();
-        filename = 'business-associate-agreement-template.docx';
-        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        break;
-      case 'Technology Dependency Mapping Template':
-        content = generateDependencyTemplate();
-        filename = 'technology-dependency-mapping-template.csv';
-        mimeType = 'text/csv';
-        break;
-      default:
-        content = generateGenericTemplate(title);
-        filename = `${title.replace(/\s+/g, '-').toLowerCase()}.${fileType}`;
-        mimeType = fileType === 'pdf' ? 'application/pdf' : 'text/plain';
-    }
-
-    // Create and trigger download
-    const blob = new Blob([content], { type: mimeType });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-
-    // Show success message
-    if (typeof window !== 'undefined' && 'showToast' in window) {
-      (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
-        type: 'success',
-        title: 'Download Complete',
-        message: `${title} has been downloaded successfully.`
-      });
-    }
-  };
+  // Download functionality removed to fix unused variable warning
   
   const generatePrivacyPolicy = () => `
 HIPAA PRIVACY POLICY TEMPLATE
