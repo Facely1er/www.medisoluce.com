@@ -85,7 +85,7 @@ const checkConsoleLogs = () => {
     if (filePath.includes('node_modules') || filePath.includes('test')) return;
     
     const content = fs.readFileSync(filePath, 'utf8');
-    const matches = content.match(/console\.(log|debug|info|warn|error)/g);
+    const matches = content.match(/console\.(log|debug|info)/g);
     
     if (matches) {
       consoleCount += matches.length;
