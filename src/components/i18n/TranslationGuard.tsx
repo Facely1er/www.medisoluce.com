@@ -12,10 +12,9 @@ interface TranslationGuardProps {
 
 const TranslationGuard: React.FC<TranslationGuardProps> = ({ 
   children, 
-  fallback,
   showMissingKeys = false 
 }) => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [missingKeys, setMissingKeys] = useState<string[]>([]);
   const [hasTranslationError, setHasTranslationError] = useState(false);
 
