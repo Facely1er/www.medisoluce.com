@@ -71,7 +71,7 @@ describe('SecurityManager', () => {
       const encrypted = securityManager.encryptSensitiveData(sensitiveData);
       
       expect(encrypted).not.toBe(sensitiveData);
-      expect(encrypted).toContain('encrypted');
+      expect(encrypted).toMatch(/^[A-Za-z0-9+/=]+$/); // Base64 encoded string
     });
 
     it('should decrypt sensitive data correctly', () => {
