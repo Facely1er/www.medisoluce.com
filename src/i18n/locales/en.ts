@@ -207,7 +207,16 @@ const enTranslation = {
     "progress_tracking": "Progress Tracking",
     "certification": "Certification",
     "ready_start": "Ready to start training your team?",
-    "start_trial": "Start Free Trial"
+    "start_trial": "Start Free Trial",
+    "progress_message": "{{completed}} of {{total}} modules completed ({{percentage}}%)",
+    "progress_with_milestone": "{{completed}}/{{total}} modules completed ({{percentage}}%) - {{milestone}}",
+    "milestones": {
+      "getting_started": "Just getting started",
+      "beginner": "Building foundation",
+      "intermediate": "Making good progress", 
+      "advanced": "Nearly there",
+      "expert": "Compliance expert!"
+    }
   },
   
   // Toolkit page
@@ -246,7 +255,7 @@ const enTranslation = {
   },
   
   // Contact page
-  "contact_page": {
+  "contact": {
     "title": "Contact Us",
     "subtitle": "Get in touch with our healthcare compliance experts. We're here to help.",
     "phone": "Phone",
@@ -440,33 +449,6 @@ const enTranslation = {
   }
 },
 
-// Enhanced training translations
-"training_enhanced": {
-  "title": "Compliance Training",
-  "subtitle": "Comprehensive training programs to ensure your staff understands and follows healthcare compliance requirements.",
-  "start_training": "Start Training",
-  "view_catalog": "View Catalog", 
-  "training_modules": "Training Modules",
-  "hipaa_essentials": "HIPAA Essentials",
-  "security_awareness": "Security Awareness",
-  "incident_response": "Incident Response",
-  "compliance_updates": "Compliance Updates",
-  "training_features": "Training Features", 
-  "interactive_learning": "Interactive Learning",
-  "progress_tracking": "Progress Tracking",
-  "certification": "Certification",
-  "ready_start": "Ready to start training your team?",
-  "start_trial": "Start Free Trial",
-  "progress_message": "{{completed}} of {{total}} modules completed ({{percentage}}%)",
-  "progress_with_milestone": "{{completed}}/{{total}} modules completed ({{percentage}}%) - {{milestone}}",
-  "milestones": {
-    "getting_started": "Just getting started",
-    "beginner": "Building foundation",
-    "intermediate": "Making good progress", 
-    "advanced": "Nearly there",
-    "expert": "Compliance expert!"
-  }
-},
 // Compliance and regulatory translations
 "compliance": {
   "deadline_with_urgency": "{{complianceType}} due {{dueDate}} - {{urgency}} ({{daysRemaining}} days remaining)",
