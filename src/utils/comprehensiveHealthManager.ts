@@ -759,7 +759,7 @@ class ComprehensiveHealthManager {
       const keyCount = Object.keys(localStorage).length;
       
       for (const key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
           totalSize += localStorage[key].length;
         }
       }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { 
@@ -9,13 +8,9 @@ import {
   HardDrive, 
   Laptop, 
   Smartphone, 
-  FileText, 
   ArrowRight, 
-  Plus,
   Edit,
   Trash2,
-  AlertTriangle,
-  CheckCircle,
   BarChart2,
   FileCheck
 } from 'lucide-react';

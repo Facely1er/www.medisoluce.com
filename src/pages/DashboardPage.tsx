@@ -2,15 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Shield, AlertTriangle, Activity, FileText, Server, Users, ArrowRight, User, Download } from 'lucide-react';
+import { Shield, AlertTriangle, Activity, FileText, Server, Users, ArrowRight, User } from 'lucide-react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import RelatedLinks from '../components/ui/RelatedLinks';
 import AnalyticsDashboard from '../components/analytics/AnalyticsDashboard';
 import DataTable from '../components/ui/DataTable';
 import ExportManager from '../components/export/ExportManager';
-import { relatedPages } from '../utils/linkingStrategy';
 import {
   LineChart,
   Line,
@@ -30,8 +28,8 @@ const DashboardPage: React.FC = () => {
   
   // Privacy-by-design: Load data from localStorage
   const [savedAssessments] = useLocalStorage('hipaa-assessments', []);
-  const [contactSubmissions] = useLocalStorage('contact-submissions', []);
-  const [downloadHistory] = useLocalStorage('download-history', []);
+  const [] = useLocalStorage('contact-submissions', []);
+  const [] = useLocalStorage('download-history', []);
   const [dependencies] = useLocalStorage('system-dependencies', []);
   const [impactAssessments] = useLocalStorage('business-impact-assessments', []);
   const [trainingProgress] = useLocalStorage('training-progress', []);

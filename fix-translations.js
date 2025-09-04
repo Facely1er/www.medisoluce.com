@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 // Fix French translation file
 let frContent = fs.readFileSync('/workspace/src/i18n/locales/fr.ts', 'utf8');

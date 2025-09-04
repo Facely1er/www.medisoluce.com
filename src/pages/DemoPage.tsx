@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
@@ -151,7 +150,7 @@ const DemoPage: React.FC = () => {
                 { name: 'Electronic Health Record', risk: 'Critical', connections: 8 },
                 { name: 'Patient Monitoring', risk: 'High', connections: 5 },
                 { name: 'Laboratory System', risk: 'Medium', connections: 3 }
-              ].map((system, index) => (
+              ].map((system) => (
                 <div key={system.name} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">

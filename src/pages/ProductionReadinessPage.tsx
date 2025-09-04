@@ -615,17 +615,17 @@ ${report.recommendations.filter(r => r.priority === 'immediate').map((rec, i) =>
 ).join('\n') || 'None'}
 
 DETAILED SECURITY ANALYSIS:
-${Object.entries(report.categories.security.checks).map(([_, check]) => 
+${Object.entries(report.categories.security.checks).map(([, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 
 DETAILED PERFORMANCE ANALYSIS:
-${Object.entries(report.categories.performance.checks).map(([_, check]) => 
+${Object.entries(report.categories.performance.checks).map(([, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 
 COMPLIANCE STATUS:
-${Object.entries(report.categories.compliance.checks).map(([_, check]) => 
+${Object.entries(report.categories.compliance.checks).map(([, check]) => 
   `- ${check.name}: ${check.status.toUpperCase()} (${check.value})`
 ).join('\n')}
 

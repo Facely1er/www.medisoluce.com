@@ -92,7 +92,7 @@ const initializeMonitoring = async () => {
           // Log as security event if multiple systems failing
           if (Object.values(result.checks).filter(Boolean).length < 3) {
             errorHandler.handleSecurityEvent('data_access', {
-              failedChecks: Object.entries(result.checks).filter(([_, status]) => !status).map(([check]) => check),
+              failedChecks: Object.entries(result.checks).filter(([, status]) => !status).map(([check]) => check),
               healthStatus: result.status
             }, 'high');
           }
