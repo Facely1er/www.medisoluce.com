@@ -91,7 +91,6 @@ export default defineConfig({
     reportCompressedSize: true,
     terserOptions: {
       compress: {
-        drop_console: true,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
         passes: 2
