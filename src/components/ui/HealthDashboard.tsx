@@ -5,14 +5,10 @@ import {
   CheckCircle, 
   AlertTriangle, 
   XCircle,
-  TrendingUp,
-  TrendingDown,
   Download,
   RefreshCw,
   Eye,
-  EyeOff,
-  Settings,
-  BarChart3
+  EyeOff
 } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';

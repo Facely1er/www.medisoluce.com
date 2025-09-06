@@ -13,8 +13,16 @@ interface ProductionReadinessIndicatorProps {
 const ProductionReadinessIndicator: React.FC<ProductionReadinessIndicatorProps> = ({
   showInProduction = false
 }) => {
-  const [healthStatus, setHealthStatus] = useState<any>(null);
-  const [securityReport, setSecurityReport] = useState<any>(null);
+  const [healthStatus, setHealthStatus] = useState<{
+    status: string;
+    score: number;
+    issues: unknown[];
+  } | null>(null);
+  const [securityReport, setSecurityReport] = useState<{
+    vulnerabilities: number;
+    score: number;
+    recommendations: unknown[];
+  } | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

@@ -9,16 +9,6 @@ interface Column<T = Record<string, unknown>> {
   render?: (value: unknown, row: T) => React.ReactNode;
 }
 
-interface DataTableProps<T = Record<string, unknown>> {
-  data: T[];
-  columns: Column<T>[];
-  searchable?: boolean;
-  exportable?: boolean;
-  pageSize?: number;
-  onRowClick?: (row: T) => void;
-  className?: string;
-}
-
 const DataTable = <T extends Record<string, unknown>>({
   data,
   columns,

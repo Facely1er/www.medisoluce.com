@@ -131,10 +131,10 @@ const initializeHealthSystem = async () => {
     }
     
     // Start performance monitoring
-    performanceEnhancer;
+    performanceEnhancer.startMonitoring();
     
     // Initialize robust error handling
-    robustErrorHandler;
+    robustErrorHandler.initialize();
     
     logger.log('✅ Health enhancement system initialized');
   } catch (error) {
