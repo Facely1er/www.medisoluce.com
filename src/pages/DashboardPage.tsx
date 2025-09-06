@@ -28,8 +28,6 @@ const DashboardPage: React.FC = () => {
   
   // Privacy-by-design: Load data from localStorage
   const [savedAssessments] = useLocalStorage('hipaa-assessments', []);
-  const [] = useLocalStorage('contact-submissions', []);
-  const [] = useLocalStorage('download-history', []);
   const [dependencies] = useLocalStorage('system-dependencies', []);
   const [impactAssessments] = useLocalStorage('business-impact-assessments', []);
   const [trainingProgress] = useLocalStorage('training-progress', []);
@@ -43,21 +41,21 @@ const DashboardPage: React.FC = () => {
   
   // Recent activities for quick access
   const recentActivities = [
-    ...savedAssessments.slice(-3).map((a: any) => ({
+    ...savedAssessments.slice(-3).map((a: { date: string; result: { percentage: number } }) => ({
       type: 'Assessment',
       title: 'HIPAA Compliance Assessment',
       date: new Date(a.date).toLocaleDateString(),
       score: a.result?.percentage || 0,
       status: 'Completed'
     })),
-    ...dependencies.slice(-3).map((d: any) => ({
+    ...dependencies.slice(-3).map((d: { name: string; status: string; lastUpdated: string }) => ({
       type: 'System Mapping',
       title: d.name,
       date: 'Recently added',
       criticality: d.criticality,
       status: 'Active'
     })),
-    ...trainingProgress.slice(-3).map((t: any) => ({
+    ...trainingProgress.slice(-3).map((t: { module: string; completed: boolean; completedAt: string }) => ({
       type: 'Training',
       title: t.moduleId.replace('-', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
       date: new Date(t.completedAt).toLocaleDateString(),
@@ -74,7 +72,7 @@ const DashboardPage: React.FC = () => {
     { 
       key: 'score', 
       label: 'Score/Level', 
-      render: (value: any, row: any) => {
+      render: (value: unknown, row: { type: string; title: string; date: string; score?: number; status: string }) => {
         if (row.type === 'Assessment' || row.type === 'Training') {
           return `${value}%`;
         } else if (row.type === 'System Mapping') {

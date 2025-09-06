@@ -23,17 +23,29 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  RadialBarChart,
-  RadialBar,
   PieChart,
   Pie,
   Cell
 } from 'recharts';
 
 const HealthDashboardPage: React.FC = () => {
-  const [healthData, setHealthData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<{
+    overall: number;
+    performance: number;
+    security: number;
+    accessibility: number;
+    seo: number;
+    lastChecked: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [historicalData, setHistoricalData] = useState<any[]>([]);
+  const [historicalData, setHistoricalData] = useState<{
+    date: string;
+    overall: number;
+    performance: number;
+    security: number;
+    accessibility: number;
+    seo: number;
+  }[]>([]);
   const [optimizing, setOptimizing] = useState(false);
 
   useEffect(() => {
