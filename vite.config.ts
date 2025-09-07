@@ -99,13 +99,39 @@ export default defineConfig({
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['framer-motion', 'lucide-react'],
-          charts: ['recharts'],
-          i18n: ['i18next', 'react-i18next'],
-          supabase: ['@supabase/supabase-js'],
-          forms: ['react-hook-form']
+        manualChunks: (id) => {
+          // Vendor chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor';
+            }
+            if (id.includes('framer-motion') || id.includes('lucide-react')) {
+              return 'ui';
+            }
+            if (id.includes('recharts')) {
+              return 'charts';
+            }
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'i18n';
+            }
+            if (id.includes('@supabase/supabase-js')) {
+              return 'supabase';
+            }
+            if (id.includes('react-hook-form')) {
+              return 'forms';
+            }
+            return 'vendor';
+          }
+          
+          // Security utilities should be in their own chunk to avoid dynamic import conflicts
+          if (id.includes('securityUtils.ts')) {
+            return 'security';
+          }
+          
+          // Performance utilities
+          if (id.includes('performanceOptimizer.ts')) {
+            return 'performance';
+          }
         }
       }
     },

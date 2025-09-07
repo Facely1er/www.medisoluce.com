@@ -111,9 +111,20 @@ class PerformanceOptimizer {
 
   private checkWebPSupport(): boolean {
     try {
+      // Skip WebP check in test environment
+      if (typeof window === 'undefined' || !window.document) {
+        return false;
+      }
+      
       const canvas = document.createElement('canvas');
       canvas.width = 1;
       canvas.height = 1;
+      
+      // Check if toDataURL is available (not mocked in tests)
+      if (typeof canvas.toDataURL !== 'function') {
+        return false;
+      }
+      
       const dataUrl = canvas.toDataURL('image/webp');
       return dataUrl?.indexOf('data:image/webp') === 0;
     } catch {
