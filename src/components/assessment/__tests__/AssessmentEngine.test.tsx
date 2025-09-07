@@ -53,7 +53,7 @@ const mockCalculateResults = (answers: Record<string, string>) => {
 };
 
 const AssessmentEngineWrapper = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter>
+  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     {children}
   </BrowserRouter>
 );
