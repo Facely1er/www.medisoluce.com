@@ -4,10 +4,15 @@ import { Download, X, RefreshCw } from 'lucide-react';
 import Button from './Button';
 import { useToast } from './Toast';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 const ServiceWorkerManager: React.FC = () => {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [isInstallable, setIsInstallable] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const { showToast } = useToast();
 
   useEffect(() => {

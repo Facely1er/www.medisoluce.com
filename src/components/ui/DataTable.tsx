@@ -9,6 +9,16 @@ interface Column<T = Record<string, unknown>> {
   render?: (value: unknown, row: T) => React.ReactNode;
 }
 
+interface DataTableProps<T extends Record<string, unknown>> {
+  data: T[];
+  columns: Column<T>[];
+  searchable?: boolean;
+  exportable?: boolean;
+  pageSize?: number;
+  onRowClick?: (row: T) => void;
+  className?: string;
+}
+
 const DataTable = <T extends Record<string, unknown>>({
   data,
   columns,
@@ -17,7 +27,7 @@ const DataTable = <T extends Record<string, unknown>>({
   pageSize = 10,
   onRowClick,
   className = ''
-}) => {
+}: DataTableProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
