@@ -39,8 +39,8 @@ const ContactPage: React.FC = () => {
       const allErrors = Object.values(validationResults).flatMap(result => result.errors);
       const securityAlerts = Object.values(validationResults).flatMap(result => result.securityAlerts);
       
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: t('contact_page.validation.message_failed'),
           message: allErrors[0] || 'Please check your message and try again.'
@@ -61,8 +61,8 @@ const ContactPage: React.FC = () => {
     // Rate limiting for contact form submissions
     const contactAttemptKey = `contact-${data.email}`;
     if (!rateLimiter.canAttempt(contactAttemptKey, 3, 60 * 60 * 1000)) { // 3 submissions per hour per email
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: t('contact_page.validation.submission_limit'),
           message: 'Too many contact form submissions. Please wait an hour before trying again.'
@@ -103,7 +103,9 @@ const ContactPage: React.FC = () => {
       // Track form submission
       analytics.trackFormSubmit('Contact Form');
       
-      !import.meta.env.PROD && console.log('Form submitted:', data);
+      if (!import.meta.env.PROD) {
+        console.log('Form submitted:', data);
+      }
       window.location.href = '/thanks';
     } catch (error) {
       securityUtils.logSecurityEvent('contact_form_submission_failed', {

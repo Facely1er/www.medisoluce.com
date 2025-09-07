@@ -30,11 +30,11 @@ export const useI18nFormatters = () => {
     formatMedicalId: formatter.formatMedicalId.bind(formatter),
     
     // Advanced translation functions
-    tPlural: (key: string, count: number, options?: any) => {
+    tPlural: (key: string, count: number, options?: Record<string, unknown>) => {
       return t(key, { count, ...options });
     },
     
-    tWithComponents: (key: string, components: Record<string, React.ComponentType<any>>) => {
+    tWithComponents: (key: string, components: Record<string, React.ComponentType<Record<string, unknown>>>) => {
       return t(key, { 
         components,
         interpolation: { escapeValue: false }

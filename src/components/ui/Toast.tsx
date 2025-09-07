@@ -82,6 +82,10 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onClose }) => {
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
+  const hideToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  }, []);
+
   const showToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Date.now().toString();
     const newToast = { ...toast, id };
@@ -93,11 +97,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setTimeout(() => {
       hideToast(id);
     }, duration);
-  }, []);
-
-  const hideToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
-  }, []);
+  }, [hideToast]);
 
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>

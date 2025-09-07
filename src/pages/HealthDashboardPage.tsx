@@ -116,10 +116,6 @@ const HealthDashboardPage: React.FC = () => {
     window.URL.revokeObjectURL(url);
   };
 
-  // Chart data for radial progress
-  const radialData = healthData ? [
-    { name: 'Health', value: healthData.overall.score, fill: '#0073e6' }
-  ] : [];
 
   // Pie chart data for category distribution
   const categoryData = healthData ? [

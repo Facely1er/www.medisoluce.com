@@ -227,7 +227,7 @@ class ComprehensiveHealthManager {
       const { supabase } = await import('../lib/supabase');
       
       // Test basic connectivity with a simple session check
-      const { data, error } = await supabase.auth.getSession();
+      const { error } = await supabase.auth.getSession();
       
       // If we get a response (even if no session), Supabase is accessible
       return !error || error.message !== 'fetch failed';
@@ -756,7 +756,6 @@ class ComprehensiveHealthManager {
   private checkStorageHealth(): number {
     try {
       let totalSize = 0;
-      const keyCount = Object.keys(localStorage).length;
       
       for (const key in localStorage) {
         if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
@@ -1115,7 +1114,7 @@ class ComprehensiveHealthManager {
     });
   }
 
-  private generatePredictiveInsights(categories: any): PredictiveInsight[] {
+  private generatePredictiveInsights(): PredictiveInsight[] {
     const insights: PredictiveInsight[] = [];
     
     // Predict memory issues
