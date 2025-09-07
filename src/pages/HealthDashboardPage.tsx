@@ -68,7 +68,7 @@ const HealthDashboardPage: React.FC = () => {
   const loadHistoricalData = () => {
     try {
       const history = JSON.parse(localStorage.getItem('comprehensive-health-reports') || '[]');
-      const chartData = history.slice(-10).map((report: any, index: number) => ({
+      const chartData = history.slice(-10).map((report: Record<string, unknown>) => ({
         time: new Date(report.overall.timestamp || Date.now()).toLocaleTimeString(),
         overall: report.overall.score,
         performance: report.categories.performance.score,
@@ -88,8 +88,8 @@ const HealthDashboardPage: React.FC = () => {
       await comprehensiveHealthManager.performEmergencyOptimization();
       await loadHealthData(); // Refresh data after optimization
       
-      if ((window as any).showToast) {
-        (window as any).showToast({
+      if ((window as Window & { showToast?: (toast: { type: string; title: string; description: string }) => void }).showToast) {
+        (window as Window & { showToast: (toast: { type: string; title: string; description: string }) => void }).showToast({
           type: 'success',
           title: 'Optimization Complete',
           message: 'System health has been optimized successfully',
@@ -352,11 +352,11 @@ const HealthDashboardPage: React.FC = () => {
                     <AlertTriangle className="h-5 w-5 mr-2 text-accent-500" />
                     Critical Issues
                   </h3>
-                  {healthData.recommendations.filter((r: any) => r.priority === 'critical').length > 0 ? (
+                  {healthData.recommendations.filter((r: Record<string, unknown>) => r.priority === 'critical').length > 0 ? (
                     <div className="space-y-3">
                       {healthData.recommendations
-                        .filter((r: any) => r.priority === 'critical')
-                        .map((rec: any, index: number) => (
+                        .filter((r: Record<string, unknown>) => r.priority === 'critical')
+                        .map((rec: Record<string, unknown>, index: number) => (
                           <div key={index} className="p-3 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded-lg">
                             <h4 className="font-medium text-accent-800 dark:text-accent-200 mb-1">
                               {rec.title}
@@ -394,7 +394,7 @@ const HealthDashboardPage: React.FC = () => {
                   </h3>
                   {healthData.autoHealingActions.length > 0 ? (
                     <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {healthData.autoHealingActions.slice(-10).map((action: any, index: number) => (
+                      {healthData.autoHealingActions.slice(-10).map((action: Record<string, unknown>, index: number) => (
                         <div key={index} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-sm font-medium text-gray-900 dark:text-white">
@@ -435,7 +435,7 @@ const HealthDashboardPage: React.FC = () => {
                     Predictive Health Insights
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {healthData.predictiveInsights.map((insight: any, index: number) => (
+                    {healthData.predictiveInsights.map((insight: Record<string, unknown>, index: number) => (
                       <div key={index} className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                         <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
                           {insight.metric}
@@ -503,7 +503,7 @@ const HealthDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {data.checks.map((check: any, index: number) => (
+                      {data.checks.map((check: Record<string, unknown>, index: number) => (
                         <div key={index} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-medium text-gray-900 dark:text-white">

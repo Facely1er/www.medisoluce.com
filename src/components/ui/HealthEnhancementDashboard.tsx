@@ -70,9 +70,9 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     } catch (error) {
       console.error('Failed to load health status:', error);
     }
-  }, [autoEnhance, isEnhancing]);
+  }, [autoEnhance, isEnhancing, performEnhancement]);
 
-  const performEnhancement = async () => {
+  const performEnhancement = useCallback(async () => {
     setIsEnhancing(true);
     try {
       if (!import.meta.env.PROD) {
@@ -119,7 +119,7 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     } finally {
       setIsEnhancing(false);
     }
-  };
+  }, []);
 
   const exportHealthReport = () => {
     const report = `

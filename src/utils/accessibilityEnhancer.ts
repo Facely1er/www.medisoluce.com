@@ -80,7 +80,7 @@ class AccessibilityEnhancer {
     }
   }
 
-  private handleEscapeKey(e: KeyboardEvent) {
+  private handleEscapeKey(_e: KeyboardEvent) {
     // Close modals, dropdowns, etc.
     const activeModal = document.querySelector('[role="dialog"]:not([aria-hidden="true"])');
     const activeDropdown = document.querySelector('[aria-expanded="true"]');
@@ -491,7 +491,9 @@ class AccessibilityEnhancer {
     });
     
     if (fixedElements > 0) {
-      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added roles and keyboard support to ${fixedElements} elements`);
+      if (!import.meta.env.PROD) {
+        console.log(`✅ Auto-fixed: Added roles and keyboard support to ${fixedElements} elements`);
+      }
     }
 
     // Enhanced form inputs check with auto-fix
@@ -513,7 +515,9 @@ class AccessibilityEnhancer {
     });
     
     if (fixedInputs > 0) {
-      !import.meta.env.PROD && console.log(`✅ Auto-fixed: Added labels to ${fixedInputs} form inputs`);
+      if (!import.meta.env.PROD) {
+        console.log(`✅ Auto-fixed: Added labels to ${fixedInputs} form inputs`);
+      }
     }
     
     // Enhanced contrast checking
@@ -531,7 +535,11 @@ class AccessibilityEnhancer {
 
     if (issues.length > 0) {
       console.group('Accessibility Issues Detected:');
-      issues.forEach(issue => !import.meta.env.PROD && console.warn(issue));
+      issues.forEach(issue => {
+        if (!import.meta.env.PROD) {
+          console.warn(issue);
+        }
+      });
       console.groupEnd();
     }
 
@@ -648,7 +656,9 @@ class AccessibilityEnhancer {
         }
       `;
       document.head.appendChild(style);
-      !import.meta.env.PROD && console.log('✅ Auto-fixed: Added enhanced focus indicators');
+      if (!import.meta.env.PROD) {
+        console.log('✅ Auto-fixed: Added enhanced focus indicators');
+      }
     }
   }
 

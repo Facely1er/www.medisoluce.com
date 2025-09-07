@@ -132,8 +132,8 @@ const ProfilePage: React.FC = () => {
       if (hasSecurityIssues) {
         const allErrors = Object.values(validationResults).flatMap(result => result.errors);
         
-        if (typeof window !== 'undefined' && (window as any).showToast) {
-          (window as any).showToast({
+        if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+          (window as Window & { showToast: (toast: { type: string; title: string; message: string }) => void }).showToast({
             type: 'error',
             title: 'Profile validation failed',
             message: allErrors[0] || 'Please check your input and try again.'

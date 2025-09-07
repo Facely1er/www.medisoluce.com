@@ -14,7 +14,7 @@ const HIPAACheckPage: React.FC = () => {
   const { t } = useTranslation();
   const [showAssessment, setShowAssessment] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [assessmentInfo, setAssessmentInfo] = useState<any>(null);
+  const [assessmentInfo, setAssessmentInfo] = useState<Record<string, unknown> | null>(null);
   
   const hipaaQuestions: Question[] = [
     {
@@ -288,11 +288,13 @@ const HIPAACheckPage: React.FC = () => {
   };
 
   const handleComplete = (result: AssessmentResult) => {
-    !import.meta.env.PROD && console.log('Assessment completed:', result);
+    if (!import.meta.env.PROD) {
+      console.log('Assessment completed:', result);
+    }
     // Here you could save the result, show additional UI, etc.
   };
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: Record<string, unknown>) => {
     setAssessmentInfo(data);
     setShowForm(false);
     setShowAssessment(true);

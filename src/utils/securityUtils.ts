@@ -197,7 +197,7 @@ class SecurityManager {
 
   public logSecurityEvent(
     eventType: SecurityEvent['eventType'], 
-    details: Record<string, any>, 
+    details: Record<string, unknown>, 
     severity: SecurityEvent['severity']
   ): void {
     const event: SecurityEvent = {
