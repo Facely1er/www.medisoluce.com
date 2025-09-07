@@ -212,7 +212,7 @@ const DependencyManagerPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.criticality}
-                      onChange={(e) => setFormData({...formData, criticality: e.target.value as any})}
+                      onChange={(e) => setFormData({...formData, criticality: e.target.value as 'Critical' | 'High' | 'Medium' | 'Low'})}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="Critical">Critical</option>
@@ -228,7 +228,7 @@ const DependencyManagerPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.riskLevel}
-                      onChange={(e) => setFormData({...formData, riskLevel: e.target.value as any})}
+                      onChange={(e) => setFormData({...formData, riskLevel: e.target.value as 'High' | 'Medium' | 'Low'})}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="High">High</option>

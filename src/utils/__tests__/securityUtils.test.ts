@@ -125,7 +125,7 @@ describe('SecurityManager', () => {
 
     it('should calculate risk scores correctly', () => {
       // This tests the internal risk calculation logic
-      const highRiskEvent = {
+      const _highRiskEvent = {
         eventType: 'malware_detected',
         severity: 'critical' as const,
         details: { hipaaRelevant: true }
