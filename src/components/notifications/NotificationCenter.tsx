@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, X, AlertTriangle, CheckCircle, Info, Calendar } from 'lucide-react';
-import Card from '../ui/Card';
 import Button from '../ui/Button';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
@@ -14,6 +13,12 @@ interface Notification {
   read: boolean;
   actionUrl?: string;
   actionText?: string;
+}
+
+interface SystemDependency {
+  riskLevel: 'Low' | 'Medium' | 'High' | 'Critical';
+  name: string;
+  status: string;
 }
 
 const NotificationCenter: React.FC = () => {
@@ -61,7 +66,7 @@ const NotificationCenter: React.FC = () => {
     }
     
     // High-risk system alerts
-    const highRiskSystems = dependencies.filter((d: any) => d.riskLevel === 'High').length;
+    const highRiskSystems = dependencies.filter((d: SystemDependency) => d.riskLevel === 'High').length;
     if (highRiskSystems > 0) {
       newNotifications.push({
         id: 'high-risk-systems',
@@ -96,7 +101,7 @@ const NotificationCenter: React.FC = () => {
     if (filteredNew.length > 0) {
       setNotifications([...notifications, ...filteredNew]);
     }
-  }, []);
+  }, [notifications, setNotifications]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 

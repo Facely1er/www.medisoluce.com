@@ -13,7 +13,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Enhanced security wrapper for Supabase operations
 const secureSupabaseWrapper = {
   // Encrypt sensitive data before storing
-  async insertSecureData(table: string, data: any, sensitiveFields: string[] = []) {
+  async insertSecureData(table: string, data: Record<string, unknown>, sensitiveFields: string[] = []) {
     const secureData = { ...data };
     
     // Encrypt sensitive fields
@@ -34,7 +34,7 @@ const secureSupabaseWrapper = {
   },
 
   // Decrypt sensitive data after retrieval
-  async selectSecureData(table: string, query: any, sensitiveFields: string[] = []) {
+  async selectSecureData(table: string, query: { select: string; column: string; value: unknown }, sensitiveFields: string[] = []) {
     const { data, error } = await supabase.from(table).select(query.select).eq(query.column, query.value);
     
     if (error) return { data: null, error };
@@ -47,7 +47,9 @@ const secureSupabaseWrapper = {
           try {
             decrypted[field] = securityUtils.decryptSensitiveData(decrypted[field]);
           } catch (decryptError) {
-            console.warn(`Failed to decrypt field ${field}:`, decryptError);
+            if (!import.meta.env.PROD) {
+              console.warn(`Failed to decrypt field ${field}:`, decryptError);
+            }
           }
         }
       });
@@ -163,7 +165,7 @@ export const auth = {
     return session;
   },
 
-  onAuthStateChange: (callback: (event: any, session: any) => void) => {
+  onAuthStateChange: (callback: (event: { event: string; session: unknown }, session: unknown) => void) => {
     return supabase.auth.onAuthStateChange(callback);
   }
 };

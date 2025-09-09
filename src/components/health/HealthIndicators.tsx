@@ -21,7 +21,12 @@ interface HealthIndicatorProps {
   score: number;
   status: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
   trend: number;
-  checks: any[];
+  checks: Array<{
+    name: string;
+    status: 'pass' | 'warning' | 'fail' | 'pending';
+    message?: string;
+    timestamp?: string;
+  }>;
   compact?: boolean;
   showTrend?: boolean;
   showDetails?: boolean;
@@ -183,7 +188,25 @@ const HealthIndicator: React.FC<HealthIndicatorProps> = ({
 };
 
 interface HealthOverviewProps {
-  healthData: any;
+  healthData: {
+    overall: {
+      score: number;
+      status: string;
+      trend: string;
+      confidence: number;
+    };
+    categories: Record<string, {
+      score: number;
+      status: string;
+      trend: number;
+      checks: Array<{
+        name: string;
+        status: 'pass' | 'warning' | 'fail' | 'pending';
+        message?: string;
+        timestamp?: string;
+      }>;
+    }>;
+  };
   showActions?: boolean;
   onOptimize?: () => void;
   onExport?: () => void;
@@ -232,7 +255,7 @@ export const HealthOverview: React.FC<HealthOverviewProps> = ({
 
       {/* Category Indicators */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(healthData.categories).map(([category, data]: [string, any]) => (
+        {Object.entries(healthData.categories).map(([category, data]) => (
           <HealthIndicator
             key={category}
             category={category}

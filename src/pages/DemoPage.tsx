@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useMemo, useCallback } from 'react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { 
+  ShieldCheck, 
+  Server, 
+  BarChart, 
+  CheckCircle, 
+  Download, 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  Users, 
+  ArrowRight 
+} from 'lucide-react';
 
 const DemoPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const demoSteps = [
+  const demoSteps = useMemo(() => [
     {
       title: "Welcome to MediSoluce",
       description: "Your comprehensive healthcare compliance platform combining HIPAA compliance, technology dependency management, and business continuity planning.",
@@ -45,11 +56,11 @@ const DemoPage: React.FC = () => {
       component: "toolkit",
       duration: 3000
     }
-  ];
+  ], []);
 
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     setCurrentStep((prev) => (prev + 1) % demoSteps.length);
-  };
+  }, [demoSteps.length]);
 
   const prevStep = () => {
     setCurrentStep((prev) => (prev - 1 + demoSteps.length) % demoSteps.length);
@@ -72,7 +83,7 @@ const DemoPage: React.FC = () => {
       }, demoSteps[currentStep].duration);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, currentStep]);
+  }, [isPlaying, currentStep, demoSteps, nextStep]);
 
   const renderDemoContent = () => {
     const step = demoSteps[currentStep];
@@ -139,7 +150,7 @@ const DemoPage: React.FC = () => {
                 { name: 'Electronic Health Record', risk: 'Critical', connections: 8 },
                 { name: 'Patient Monitoring', risk: 'High', connections: 5 },
                 { name: 'Laboratory System', risk: 'Medium', connections: 3 }
-              ].map((system, index) => (
+              ].map((system) => (
                 <div key={system.name} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">

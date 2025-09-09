@@ -9,8 +9,7 @@ import {
   ChevronLeft, 
   CheckCircle,
   AlertCircle,
-  FileText,
-  ExternalLink
+  FileText
 } from 'lucide-react';
 
 export interface Question {

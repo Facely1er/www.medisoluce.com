@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   ShieldCheck, 
-  FileCheck,
   Server,
   BarChart,
   LifeBuoy,
@@ -11,7 +10,6 @@ import {
   BookOpen,
   Download,
   FileText,
-  Info,
   MessageSquare,
   Lock,
   Cookie

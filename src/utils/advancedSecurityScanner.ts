@@ -531,8 +531,8 @@ class AdvancedSecurityScanner {
         element.style.borderColor = '#dc3545';
         
         // Show warning
-        if (typeof window !== 'undefined' && (window as any).showToast) {
-          (window as any).showToast({
+        if (typeof window !== 'undefined' && 'showToast' in window) {
+          (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
             type: 'error',
             title: 'Security Threat Blocked',
             message: threat.description,
@@ -655,9 +655,10 @@ class AdvancedSecurityScanner {
       null
     );
 
-    let node;
-    while (node = walker.nextNode()) {
+    let node = walker.nextNode();
+    while (node) {
       textNodes.push(node as Text);
+      node = walker.nextNode();
     }
 
     return textNodes;
@@ -833,7 +834,7 @@ THREAT SUMMARY:
 - Auto-Fix Rate: ${latestScan.threatsDetected > 0 ? Math.round((latestScan.threatsBlocked / latestScan.threatsDetected) * 100) : 0}%
 
 VULNERABILITIES BY TYPE:
-${latestScan.vulnerabilities.reduce((acc: any, vuln) => {
+${latestScan.vulnerabilities.reduce((acc: unknown, vuln) => {
   acc[vuln.type] = (acc[vuln.type] || 0) + 1;
   return acc;
 }, {})}

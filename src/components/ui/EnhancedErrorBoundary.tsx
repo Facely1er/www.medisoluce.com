@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home, Bug, Download } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home, Download } from 'lucide-react';
 import { analytics } from '../../utils/analytics';
 import { errorHandler } from '../../utils/errorHandler';
 import Button from './Button';
@@ -108,7 +108,9 @@ class EnhancedErrorBoundary extends Component<Props, State> {
     this.retryCount++;
     
     if (this.retryCount <= this.maxRetries) {
-      console.log(`Retrying... (${this.retryCount}/${this.maxRetries})`);
+      if (!import.meta.env.PROD) {
+        console.log(`Retrying... (${this.retryCount}/${this.maxRetries})`);
+      }
       
       // Reset error state
       this.setState({

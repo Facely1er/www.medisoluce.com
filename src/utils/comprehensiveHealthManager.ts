@@ -181,7 +181,7 @@ class ComprehensiveHealthManager {
     });
     
     // Test error handling
-    const errorHandling = this.testErrorHandling();
+    const _errorHandling = this.testErrorHandling();
     checks.push({
       name: 'Error Handling',
       description: 'Error boundary and recovery mechanisms',
@@ -227,13 +227,13 @@ class ComprehensiveHealthManager {
       const { supabase } = await import('../lib/supabase');
       
       // Test basic connectivity with a simple session check
-      const { data, error } = await supabase.auth.getSession();
+      const { error } = await supabase.auth.getSession();
       
       // If we get a response (even if no session), Supabase is accessible
       return !error || error.message !== 'fetch failed';
-    } catch (error: any) {
+    } catch (error: unknown) {
       // If Supabase is not configured or import fails, don't treat as failure
-      if (error.message?.includes('Missing Supabase environment variables')) {
+      if (error instanceof Error && error.message?.includes('Missing Supabase environment variables')) {
         return true; // Not configured, but not a failure
       }
       console.warn('Supabase connectivity test failed:', error);
@@ -278,7 +278,7 @@ class ComprehensiveHealthManager {
     });
     
     // Error rate check
-    const errorRate = this.getErrorRate();
+    const _errorRate = this.getErrorRate();
     checks.push({
       name: 'Error Rate',
       description: 'Percentage of user sessions with errors',
@@ -497,7 +497,7 @@ class ComprehensiveHealthManager {
     const checks: HealthCheck[] = [];
     
     // User satisfaction score (based on error rates and performance)
-    const errorRate = this.getErrorRate();
+    const _errorRate = this.getErrorRate();
     const loadTime = this.getPageLoadTime();
     const satisfactionScore = Math.max(0, 100 - (errorRate * 10) - Math.max(0, (loadTime - 2000) / 100));
     
@@ -580,8 +580,8 @@ class ComprehensiveHealthManager {
       return criticalKeys.every(key => {
         try {
           const data = JSON.parse(localStorage.getItem(key) || '[]');
-          return Array.isArray(data) && data.every((item: any) => 
-            item && typeof item === 'object' && item.id
+          return Array.isArray(data) && data.every((item: unknown) => 
+            item && typeof item === 'object' && item !== null && 'id' in item
           );
         } catch {
           return false;
@@ -665,18 +665,24 @@ class ComprehensiveHealthManager {
     return hasLocalStorage && hasDataMinimization;
   }
 
-  private getCSPViolations(): any[] {
+  private getCSPViolations(): Array<{
+    timestamp: string;
+    violatedDirective: string;
+    blockedURI: string;
+    sourceFile?: string;
+    lineNumber?: number;
+  }> {
     return JSON.parse(localStorage.getItem('csp-violations') || '[]');
   }
 
   private getRecentSecurityEvents(): { critical: number; high: number; medium: number; low: number } {
-    const events = JSON.parse(localStorage.getItem('security-events') || '[]');
+    const _events = JSON.parse(localStorage.getItem('security-events') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentEvents = events.filter((event: any) => 
+    const recentEvents = events.filter((event: { timestamp: string }) => 
       new Date(event.timestamp).getTime() > oneHourAgo
     );
     
-    return recentEvents.reduce((acc: any, event: any) => {
+    return recentEvents.reduce((acc: { critical: number; high: number; medium: number; low: number }, event: { severity: string }) => {
       acc[event.severity] = (acc[event.severity] || 0) + 1;
       return acc;
     }, { critical: 0, high: 0, medium: 0, low: 0 });
@@ -688,15 +694,15 @@ class ComprehensiveHealthManager {
     const isEnhanced = enhanced.enableStrictMode && enhanced.expiresAt > Date.now();
     
     // Check for recent input validation events
-    const events = JSON.parse(localStorage.getItem('security-events') || '[]');
-    const inputEvents = events.filter((event: any) => 
+    const _events = JSON.parse(localStorage.getItem('security-events') || '[]');
+    const inputEvents = events.filter((event: unknown) => 
       event.eventType === 'suspicious_input' || event.eventType === 'invalid_login_input'
     );
     
     let score = isEnhanced ? 100 : 80;
     
     // Deduct points for recent input security events
-    const recentInputEvents = inputEvents.filter((event: any) => 
+    const recentInputEvents = inputEvents.filter((event: unknown) => 
       new Date(event.timestamp).getTime() > Date.now() - (60 * 60 * 1000)
     );
     
@@ -732,7 +738,7 @@ class ComprehensiveHealthManager {
           const data = JSON.parse(localStorage.getItem(key) || '[]');
           if (Array.isArray(data)) {
             totalCount += data.length;
-            validCount += data.filter((item: any) => 
+            validCount += data.filter((item: unknown) => 
               item && typeof item === 'object' && item.id && item.timestamp
             ).length;
           }
@@ -750,10 +756,9 @@ class ComprehensiveHealthManager {
   private checkStorageHealth(): number {
     try {
       let totalSize = 0;
-      const keyCount = Object.keys(localStorage).length;
       
       for (const key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
           totalSize += localStorage[key].length;
         }
       }
@@ -881,7 +886,7 @@ class ComprehensiveHealthManager {
         if (!Array.isArray(data)) {
           localStorage.setItem(key, '[]');
         } else {
-          const validData = data.filter((item: any) => 
+          const validData = data.filter((item: unknown) => 
             item && typeof item === 'object' && item.id
           );
           localStorage.setItem(key, JSON.stringify(validData));
@@ -928,11 +933,11 @@ class ComprehensiveHealthManager {
   private async getBundleSize(): Promise<number> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
+      const jsResources = resources.filter((resource: unknown) => 
         resource.name.includes('.js') && !resource.name.includes('node_modules')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: unknown) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -943,9 +948,9 @@ class ComprehensiveHealthManager {
   }
 
   private getErrorRate(): number {
-    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentErrors = errors.filter((error: any) => 
+    const recentErrors = errors.filter((error: unknown) => 
       new Date(error.timestamp).getTime() > oneHourAgo
     );
     
@@ -956,7 +961,7 @@ class ComprehensiveHealthManager {
   private getRecentPageViews(): number {
     const pageViews = JSON.parse(localStorage.getItem('page-views') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return pageViews.filter((view: any) => 
+    return pageViews.filter((view: unknown) => 
       new Date(view.timestamp).getTime() > oneHourAgo
     ).length || 1;
   }
@@ -1024,8 +1029,8 @@ class ComprehensiveHealthManager {
     return Math.round((imagesWithAlt.length / images.length) * 100);
   }
 
-  private calculateOverallHealth(categories: any) {
-    const scores = Object.values(categories).map((cat: any) => cat.score);
+  private calculateOverallHealth(categories: unknown) {
+    const scores = Object.values(categories).map((cat: unknown) => cat.score);
     const overallScore = Math.round(scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length);
     
     const status = this.getHealthStatus(overallScore);
@@ -1035,8 +1040,8 @@ class ComprehensiveHealthManager {
     return { score: overallScore, status, trend, confidence };
   }
 
-  private calculateOverallTrend(categories: any): 'improving' | 'stable' | 'declining' {
-    const trends = Object.values(categories).map((cat: any) => cat.trend);
+  private calculateOverallTrend(categories: unknown): 'improving' | 'stable' | 'declining' {
+    const trends = Object.values(categories).map((cat: unknown) => cat.trend);
     const avgTrend = trends.reduce((sum: number, trend: number) => sum + trend, 0) / trends.length;
     
     if (avgTrend > 2) return 'improving';
@@ -1078,7 +1083,7 @@ class ComprehensiveHealthManager {
     };
   }
 
-  private generateRecommendations(categories: any): HealthRecommendation[] {
+  private generateRecommendations(categories: unknown): HealthRecommendation[] {
     const recommendations: HealthRecommendation[] = [];
     
     Object.entries(categories).forEach(([category, data]: [string, any]) => {
@@ -1109,7 +1114,7 @@ class ComprehensiveHealthManager {
     });
   }
 
-  private generatePredictiveInsights(categories: any): PredictiveInsight[] {
+  private generatePredictiveInsights(): PredictiveInsight[] {
     const insights: PredictiveInsight[] = [];
     
     // Predict memory issues
@@ -1126,7 +1131,7 @@ class ComprehensiveHealthManager {
     }
     
     // Predict error rate increase
-    const errorRate = this.getErrorRate();
+    const _errorRate = this.getErrorRate();
     if (errorRate > 2) {
       insights.push({
         metric: 'Error Rate Increase',

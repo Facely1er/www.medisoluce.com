@@ -108,7 +108,7 @@ export const generateAnchorText = (targetPage: string, context: string, previous
     return `learn more about ${targetPage.replace('/', '').replace('-', ' ')}`;
   }
 
-  const contextTemplates = pageTemplates[context] || pageTemplates['descriptive'];
+  const _contextTemplates = pageTemplates[context] || pageTemplates['descriptive'];
   
   // Filter out previously used anchor texts to ensure variety
   const availableTexts = contextTemplates.filter(text => !previousTexts.includes(text));
@@ -169,7 +169,7 @@ export const generateLinkReport = () => {
   const linkClicks = JSON.parse(localStorage.getItem('link-analytics') || '[]');
   
   // Analyze click patterns
-  const linkPerformance = linkClicks.reduce((acc: any, click: LinkAnalytics) => {
+  const linkPerformance = linkClicks.reduce((acc: unknown, click: LinkAnalytics) => {
     const linkKey = `${click.fromPage} → ${click.toPage}`;
     
     if (!acc[linkKey]) {
@@ -205,7 +205,7 @@ export const generateLinkReport = () => {
     uniqueLinks: Object.keys(linkPerformance).length,
     topPerformingLinks: sortedLinks.slice(0, 10),
     underperformingLinks: sortedLinks.filter(link => link.clicks < 2),
-    clicksByContext: linkClicks.reduce((acc: any, click: LinkAnalytics) => {
+    clicksByContext: linkClicks.reduce((acc: unknown, click: LinkAnalytics) => {
       acc[click.context] = (acc[click.context] || 0) + 1;
       return acc;
     }, {})

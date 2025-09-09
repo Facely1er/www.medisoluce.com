@@ -14,7 +14,12 @@ class PerformanceOptimizer {
   private config: PerformanceConfig;
   private observerInstances: IntersectionObserver[] = [];
   private preloadedResources = new Set<string>();
-  private optimizationHistory: any[] = [];
+  private optimizationHistory: Array<{
+    type: string;
+    timestamp: string;
+    impact: number;
+    description: string;
+  }> = [];
   private memoryMonitor: NodeJS.Timeout | null = null;
 
   constructor(config: Partial<PerformanceConfig> = {}) {
@@ -105,10 +110,27 @@ class PerformanceOptimizer {
   }
 
   private checkWebPSupport(): boolean {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1;
-    canvas.height = 1;
-    return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    try {
+      // Skip WebP check in test environment
+      if (typeof window === 'undefined' || !window.document) {
+        return false;
+      }
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      
+      // Check if toDataURL is available (not mocked in tests)
+      if (typeof canvas.toDataURL !== 'function') {
+        return false;
+      }
+      
+      const dataUrl = canvas.toDataURL('image/webp');
+      return dataUrl?.indexOf('data:image/webp') === 0;
+    } catch {
+      // Canvas or WebP support not available (e.g., in test environment)
+      return false;
+    }
   }
 
   private setupResourcePreloading() {
@@ -159,6 +181,7 @@ class PerformanceOptimizer {
     // Register service worker for advanced caching
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
+        if (!import.meta.env.PROD) {
         console.log('SW registered:', registration);
         
         // Update service worker when new version is available
@@ -175,7 +198,8 @@ class PerformanceOptimizer {
         });
       })
       .catch((error) => {
-        console.log('SW registration failed:', error);
+        if (!import.meta.env.PROD) {
+        console.log($1);
       });
   }
 
@@ -273,7 +297,8 @@ class PerformanceOptimizer {
   }
 
   private performEmergencyCleanup() {
-    console.warn('Emergency memory cleanup triggered');
+    if (!import.meta.env.PROD) {
+        console.warn('Emergency memory cleanup triggered');
     
     // Aggressive cleanup
     this.clearAllCaches();
@@ -349,12 +374,13 @@ class PerformanceOptimizer {
     ['performance-metrics', 'error-logs', 'page-views'].forEach(key => {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        const filtered = data.filter((item: any) => {
+        const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return timestamp && new Date(timestamp).getTime() > oneDayAgo;
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
+        if (!import.meta.env.PROD) {
         console.warn(`Failed to cleanup ${key}:`, error);
       }
     });
@@ -413,7 +439,7 @@ class PerformanceOptimizer {
 
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -442,9 +468,9 @@ class PerformanceOptimizer {
 
     // First Input Delay
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'first-input') {
-          const fid = entry.processingStart - entry.startTime;
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'first-input' && 'processingStart' in entry && 'startTime' in entry) {
+          const fid = (entry as PerformanceEntry & { processingStart: number }).processingStart - entry.startTime;
           this.reportMetric('FID', fid);
         }
       });
@@ -453,9 +479,9 @@ class PerformanceOptimizer {
     // Cumulative Layout Shift
     let clsScore = 0;
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
-          clsScore += entry.value;
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'layout-shift' && 'hadRecentInput' in entry && 'value' in entry && !entry.hadRecentInput) {
+          clsScore += (entry as PerformanceEntry & { hadRecentInput: boolean; value: number }).value;
           this.reportMetric('CLS', clsScore);
         }
       });
@@ -465,7 +491,7 @@ class PerformanceOptimizer {
   private monitorMemoryUsage() {
     if ('memory' in performance) {
       setInterval(() => {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         const usage = {
           used: memory.usedJSHeapSize,
           total: memory.totalJSHeapSize,
@@ -485,12 +511,10 @@ class PerformanceOptimizer {
   private analyzeBundlePerformance() {
     // Monitor resource loading performance
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
-        if (entry.entryType === 'resource') {
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'resource' && 'duration' in entry && entry.duration > 1000) {
           // Report slow resources
-          if (entry.duration > 1000) {
-            this.reportMetric('SlowResource', entry.duration);
-          }
+          this.reportMetric('SlowResource', entry.duration);
         }
       });
     }).observe({ entryTypes: ['resource'] });
@@ -514,8 +538,8 @@ class PerformanceOptimizer {
     localStorage.setItem('performance-metrics', JSON.stringify(metrics));
 
     // Report to analytics if available
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'web_vitals', {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as Window & { gtag: (command: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag('event', 'web_vitals', {
         metric_name: name,
         metric_value: Math.round(value),
         page_path: window.location.pathname
@@ -524,7 +548,21 @@ class PerformanceOptimizer {
   }
 
   // Public methods
-  public getOptimizationReport(): any {
+  public getOptimizationReport(): {
+    optimizations: Array<{
+      action: string;
+      timestamp: string;
+      memoryBefore: number;
+      memoryAfter: number;
+    }>;
+    currentMemoryUsage: number;
+    preloadedResources: number;
+    activeObservers: number;
+    cacheStatus: {
+      quota: number;
+      usage: number;
+    };
+  } {
     return {
       optimizations: this.optimizationHistory,
       currentMemoryUsage: this.getMemoryUsage(),
@@ -534,7 +572,7 @@ class PerformanceOptimizer {
     };
   }
 
-  private getCacheStatus(): any {
+  private getCacheStatus(): { quota: number; usage: number } {
     try {
       const storageEstimate = navigator.storage?.estimate?.();
       return storageEstimate || { quota: 0, usage: 0 };
@@ -566,7 +604,7 @@ class PerformanceOptimizer {
     const now = Date.now();
     const oneHourAgo = now - (60 * 60 * 1000);
     
-    const recentMetrics = metrics.filter((m: any) => 
+    const recentMetrics = metrics.filter((m: unknown) => 
       new Date(m.timestamp).getTime() > oneHourAgo
     );
 
@@ -577,11 +615,11 @@ class PerformanceOptimizer {
       averageFID: this.calculateAverage(recentMetrics, 'FID'),
       averageCLS: this.calculateAverage(recentMetrics, 'CLS'),
       memoryUsage: this.getLatestMetric(recentMetrics, 'MemoryUsage'),
-      slowResources: recentMetrics.filter((m: any) => m.name === 'SlowResource').length
+      slowResources: recentMetrics.filter((m: unknown) => m.name === 'SlowResource').length
     };
   }
 
-  private calculateAverage(metrics: any[], metricName: string): number {
+  private calculateAverage(metrics: unknown[], metricName: string): number {
     const filtered = metrics.filter(m => m.name === metricName);
     if (filtered.length === 0) return 0;
     
@@ -589,7 +627,7 @@ class PerformanceOptimizer {
     return Math.round(sum / filtered.length);
   }
 
-  private getLatestMetric(metrics: any[], metricName: string): number {
+  private getLatestMetric(metrics: unknown[], metricName: string): number {
     const filtered = metrics.filter(m => m.name === metricName);
     return filtered.length > 0 ? filtered[filtered.length - 1].value : 0;
   }

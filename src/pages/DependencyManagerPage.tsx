@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { 
@@ -9,20 +8,15 @@ import {
   HardDrive, 
   Laptop, 
   Smartphone, 
-  FileText, 
   ArrowRight, 
-  Plus,
   Edit,
   Trash2,
-  AlertTriangle,
-  CheckCircle,
   BarChart2,
   FileCheck
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import RelatedLinks from '../components/ui/RelatedLinks';
-import ContextualCTA from '../components/ui/ContextualCTA';
 import { relatedPages } from '../utils/linkingStrategy';
 import useLocalStorage from '../hooks/useLocalStorage';
 
@@ -218,7 +212,7 @@ const DependencyManagerPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.criticality}
-                      onChange={(e) => setFormData({...formData, criticality: e.target.value as any})}
+                      onChange={(e) => setFormData({...formData, criticality: e.target.value as 'Critical' | 'High' | 'Medium' | 'Low'})}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="Critical">Critical</option>
@@ -234,7 +228,7 @@ const DependencyManagerPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.riskLevel}
-                      onChange={(e) => setFormData({...formData, riskLevel: e.target.value as any})}
+                      onChange={(e) => setFormData({...formData, riskLevel: e.target.value as 'High' | 'Medium' | 'Low'})}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="High">High</option>

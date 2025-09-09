@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 
 interface CardProps {
@@ -8,7 +8,7 @@ interface CardProps {
   animate?: boolean;
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: React.FC<CardProps> = memo(({
   children,
   className = '',
   hover = false,
@@ -35,6 +35,8 @@ const Card: React.FC<CardProps> = ({
       {children}
     </div>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 export default Card;

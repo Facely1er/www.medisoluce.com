@@ -220,7 +220,7 @@ class SystemHealthManager {
     const renderTime = this.getRenderTime();
     const bundleSize = await this.getBundleSize();
     const cacheHitRate = this.getCacheHitRate();
-    const errorRate = this.getErrorRate();
+    const _errorRate = this.getErrorRate();
 
     const metrics = [
       memoryUsage <= this.config.performanceThresholds.memoryUsage ? 20 : Math.max(0, 20 - (memoryUsage - this.config.performanceThresholds.memoryUsage)),
@@ -290,7 +290,7 @@ class SystemHealthManager {
     const coreFeatures = await this.testCoreFeatures();
     const dataIntegrity = this.testDataIntegrity();
     const userFlows = this.testUserFlows();
-    const errorHandling = this.testErrorHandling();
+    const _errorHandling = this.testErrorHandling();
     const dependencies = await this.testDependencies();
 
     const checks = [coreFeatures, dataIntegrity, userFlows, errorHandling, dependencies];
@@ -326,7 +326,7 @@ class SystemHealthManager {
     };
   }
 
-  private calculateOverallHealth(checks: any): { 
+  private calculateOverallHealth(checks: unknown): { 
     overall: 'excellent' | 'good' | 'degraded' | 'critical'; 
     score: number; 
     recommendations: HealthRecommendation[] 
@@ -351,7 +351,7 @@ class SystemHealthManager {
     return { overall, score: overallScore, recommendations };
   }
 
-  private generateRecommendations(checks: any): HealthRecommendation[] {
+  private generateRecommendations(checks: unknown): HealthRecommendation[] {
     const recommendations: HealthRecommendation[] = [];
 
     // Performance recommendations
@@ -466,7 +466,8 @@ class SystemHealthManager {
     this.autoFixesApplied.push(...autoFixes);
     
     if (autoFixes.length > 0) {
-      console.log('Auto-recovery completed:', autoFixes);
+      if (!import.meta.env.PROD) {
+        console.log('Auto-recovery completed:', autoFixes);
       this.notifyAutoRecovery(autoFixes);
     }
   }
@@ -503,11 +504,11 @@ class SystemHealthManager {
   private async getBundleSize(): Promise<number> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
+      const jsResources = resources.filter((resource: unknown) => 
         resource.name.includes('.js') && !resource.name.includes('node_modules')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: unknown) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -520,7 +521,7 @@ class SystemHealthManager {
   private getCacheHitRate(): number {
     try {
       const resources = performance.getEntriesByType('resource');
-      const cachedResources = resources.filter((resource: any) => 
+      const cachedResources = resources.filter((resource: unknown) => 
         resource.transferSize === 0 || resource.transferSize < resource.encodedBodySize
       );
       
@@ -531,9 +532,9 @@ class SystemHealthManager {
   }
 
   private getErrorRate(): number {
-    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentErrors = errors.filter((error: any) => 
+    const recentErrors = errors.filter((error: unknown) => 
       new Date(error.timestamp).getTime() > oneHourAgo
     );
     
@@ -544,7 +545,7 @@ class SystemHealthManager {
   private getRecentPageViews(): number {
     const pageViews = JSON.parse(localStorage.getItem('page-views') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return pageViews.filter((view: any) => 
+    return pageViews.filter((view: unknown) => 
       new Date(view.timestamp).getTime() > oneHourAgo
     ).length || 1;
   }
@@ -683,10 +684,10 @@ class SystemHealthManager {
       
       // Basic integrity checks
       const assessmentsValid = Array.isArray(assessments) && 
-        assessments.every((a: any) => a.id && a.date);
+        assessments.every((a: unknown) => a.id && a.date);
       
       const dependenciesValid = Array.isArray(dependencies) && 
-        dependencies.every((d: any) => d.id && d.name);
+        dependencies.every((d: unknown) => d.id && d.name);
       
       return assessmentsValid && dependenciesValid;
     } catch {
@@ -875,7 +876,7 @@ class SystemHealthManager {
             localStorage.setItem(key, '[]');
           } else {
             // Remove invalid entries
-            const validData = data.filter((item: any) => 
+            const validData = data.filter((item: unknown) => 
               item && typeof item === 'object' && item.id
             );
             localStorage.setItem(key, JSON.stringify(validData));
@@ -889,7 +890,7 @@ class SystemHealthManager {
     }
   }
 
-  private handleCriticalError(error: any) {
+  private handleCriticalError(error: unknown) {
     console.error('Critical error detected:', error);
     
     // Attempt auto-recovery for known issues
@@ -918,6 +919,7 @@ class SystemHealthManager {
       try {
         originalSetItem.call(this, key, value);
       } catch (error) {
+        if (!import.meta.env.PROD) {
         console.warn('localStorage quota exceeded, cleaning up...');
         // Auto-cleanup on quota exceeded
         const systemHealthManager = (window as any).systemHealthManager;
@@ -938,12 +940,14 @@ class SystemHealthManager {
   private setupNetworkRecovery() {
     // Monitor network issues
     window.addEventListener('online', () => {
-      console.log('Network connection restored');
+      if (!import.meta.env.PROD) {
+        console.log('Network connection restored');
       this.notifyNetworkRecovery();
     });
 
     window.addEventListener('offline', () => {
-      console.log('Network connection lost');
+      if (!import.meta.env.PROD) {
+        console.log('Network connection lost');
       this.notifyNetworkIssue();
     });
   }
@@ -970,6 +974,7 @@ class SystemHealthManager {
     requestAnimationFrame(() => {
       const delay = performance.now() - start;
       if (delay > 100) { // >100ms indicates UI thread blocking
+        if (!import.meta.env.PROD) {
         console.warn('UI responsiveness issue detected');
         this.performMemoryCleanup();
       }
@@ -979,9 +984,10 @@ class SystemHealthManager {
   private monitorPerformanceIssues() {
     // Monitor for performance degradation
     new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry: any) => {
+      list.getEntries().forEach((entry: unknown) => {
         if (entry.entryType === 'measure' && entry.duration > 100) {
-          console.warn('Slow operation detected:', entry);
+          if (!import.meta.env.PROD) {
+        console.warn('Slow operation detected:', entry);
         }
       });
     }).observe({ entryTypes: ['measure'] });
@@ -1061,7 +1067,7 @@ class SystemHealthManager {
       
       // Keep only last 24 hours
       const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-      const filtered = healthHistory.filter((h: any) => 
+      const filtered = healthHistory.filter((h: unknown) => 
         new Date(h.timestamp).getTime() > oneDayAgo
       );
       

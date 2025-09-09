@@ -79,12 +79,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       referrer: document.referrer,
       userAgent: navigator.userAgent.substring(0, 100),
       viewport: `${window.innerWidth}x${window.innerHeight}`,
-      connection: (navigator as any).connection?.effectiveType || 'unknown'
+      connection: (navigator as { connection?: { effectiveType?: string } }).connection?.effectiveType || 'unknown'
     });
     localStorage.setItem('page-views', JSON.stringify(pageViews.slice(-100)));
     
     return cleanup;
-  }, []);
+  }, [location.pathname]);
 
   // Add structured data for better SEO
   useEffect(() => {

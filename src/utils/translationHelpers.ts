@@ -42,17 +42,17 @@ export const pluralizeHealthcare = (
 export const formatTranslation = (
   t: TFunction,
   key: string,
-  values: Record<string, any> = {},
+  values: Record<string, unknown> = {},
   options: {
     html?: boolean;
-    components?: Record<string, React.ComponentType<any>>;
+    components?: Record<string, React.ComponentType<unknown>>;
   } = {}
 ): string => {
   const interpolationOptions = {
     ...values,
     interpolation: { 
       escapeValue: !options.html,
-      format: (value: any, format: string) => {
+      format: (value: unknown, format: string) => {
         switch (format) {
           case 'currency':
             return new Intl.NumberFormat('en-US', { 
@@ -103,7 +103,7 @@ export const healthcareTranslations = {
     return t('systems.criticality_explanation', {
       level: t(`systems.criticality.${level.toLowerCase()}`),
       systemType,
-      impact: t(`systems.impact.${level.toLowerCase()}`)
+      impact: t(`systems.systemImpact.${level.toLowerCase()}`)
     });
   },
 
@@ -126,7 +126,7 @@ export const healthcareTranslations = {
   },
 
   // Format regulatory deadlines with urgency
-  formatRegulatory Deadline: (t: TFunction, dueDate: Date, complianceType: string) => {
+  formatRegulatoryDeadline: (t: TFunction, dueDate: Date, complianceType: string) => {
     const now = new Date();
     const diffInDays = Math.ceil((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     
@@ -222,7 +222,7 @@ export const useTranslationHelpers = () => {
   const { t } = useTranslation();
   
   return {
-    safeT: (key: string, fallback: string, options?: any) => 
+    safeT: (key: string, fallback: string, options?: unknown) => 
       safeTranslate(t, key, fallback, options),
     
     buildKey: buildTranslationKey,

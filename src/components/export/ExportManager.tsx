@@ -1,10 +1,10 @@
 import React from 'react';
-import { Download, FileText, File, Database } from 'lucide-react';
+import { FileText, File, Database } from 'lucide-react';
 import Button from '../ui/Button';
 import { analytics } from '../../utils/analytics';
 
 interface ExportManagerProps {
-  data: any[];
+  data: Record<string, unknown>[];
   filename: string;
   title?: string;
 }
@@ -50,7 +50,7 @@ const ExportManager: React.FC<ExportManagerProps> = ({ data, filename, title }) 
     window.URL.revokeObjectURL(url);
   };
 
-  const generateReport = (data: any[], title: string) => {
+  const generateReport = (data: Record<string, unknown>[], title: string) => {
     const timestamp = new Date().toISOString();
     const date = new Date().toLocaleDateString();
     

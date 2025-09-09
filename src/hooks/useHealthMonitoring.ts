@@ -9,7 +9,13 @@ interface UseHealthMonitoringOptions {
 }
 
 interface HealthMonitoringResult {
-  healthData: any;
+  healthData: {
+    status: string;
+    score: number;
+    metrics: Record<string, number>;
+    issues: Array<{ id: string; severity: string; message: string }>;
+    recommendations: Array<{ id: string; title: string; priority: string }>;
+  } | null;
   isLoading: boolean;
   isOptimizing: boolean;
   lastUpdate: Date | null;
@@ -17,7 +23,11 @@ interface HealthMonitoringResult {
   refresh: () => Promise<void>;
   optimize: () => Promise<void>;
   exportReport: () => void;
-  getHealthTrend: () => any;
+  getHealthTrend: () => {
+    direction: 'up' | 'down' | 'stable';
+    change: number;
+    period: string;
+  };
 }
 
 export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): HealthMonitoringResult => {
@@ -28,7 +38,13 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     healthThreshold = 70
   } = options;
 
-  const [healthData, setHealthData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<{
+    status: string;
+    score: number;
+    metrics: Record<string, number>;
+    issues: Array<{ id: string; severity: string; message: string }>;
+    recommendations: Array<{ id: string; title: string; priority: string }>;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
@@ -54,7 +70,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     } finally {
       setIsLoading(false);
     }
-  }, [enableAutoOptimization, healthThreshold, isOptimizing]);
+  }, [enableAutoOptimization, healthThreshold, isOptimizing, optimize]);
 
   const optimize = useCallback(async () => {
     setIsOptimizing(true);
@@ -69,8 +85,8 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       }, 2000);
       
       // Show success notification
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'success',
           title: 'Optimization Complete',
           message: 'System health has been optimized',
@@ -81,8 +97,8 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       const errorMessage = err instanceof Error ? err.message : 'Optimization failed';
       setError(errorMessage);
       
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: 'Optimization Failed',
           message: errorMessage,
@@ -107,8 +123,8 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'success',
           title: 'Report Exported',
           message: 'Health report has been downloaded',
@@ -129,13 +145,13 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       }
 
       const recent = history.slice(-10);
-      const scores = recent.map((h: any) => h.overall.score);
+      const scores = recent.map((h: { overall: { score: number } }) => h.overall.score);
       const trend = scores[scores.length - 1] - scores[0];
       
       return {
         trend: trend > 5 ? 'improving' : trend < -5 ? 'declining' : 'stable',
         confidence: Math.min(100, recent.length * 10),
-        data: recent.map((h: any, index: number) => ({
+        data: recent.map((h: { overall: { timestamp?: number; score: number } }, index: number) => ({
           time: new Date(h.overall.timestamp || Date.now()).toLocaleTimeString(),
           score: h.overall.score,
           index
@@ -144,7 +160,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     } catch {
       return { trend: 'stable', confidence: 0, data: [] };
     }
-  }, [healthData]);
+  }, []);
 
   // Auto-refresh effect
   useEffect(() => {
@@ -159,8 +175,8 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
   // Health monitoring alerts
   useEffect(() => {
     if (healthData && healthData.overall.status === 'critical') {
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: 'Critical Health Issues',
           message: 'System requires immediate attention',
@@ -168,8 +184,8 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
         });
       }
     } else if (healthData && healthData.overall.status === 'poor') {
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+        (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'warning',
           title: 'Health Degradation',
           message: 'System optimization recommended',
@@ -194,15 +210,30 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
 
 // Specialized hook for performance monitoring
 export const usePerformanceMonitoring = () => {
-  const [performanceMetrics, setPerformanceMetrics] = useState<any>({});
+  const [performanceMetrics, setPerformanceMetrics] = useState<{
+    memoryUsage: number;
+    memoryUsed: number;
+    resourceCount: number;
+    averageResourceTime: number;
+  }>({});
 
   useEffect(() => {
     const collectMetrics = () => {
-      const metrics: any = {};
+      const metrics: {
+        memoryUsage: number;
+        memoryUsed: number;
+        resourceCount: number;
+        averageResourceTime: number;
+      } = {
+        memoryUsage: 0,
+        memoryUsed: 0,
+        resourceCount: 0,
+        averageResourceTime: 0
+      };
 
       // Memory usage
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         metrics.memoryUsage = Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
         metrics.memoryUsed = Math.round(memory.usedJSHeapSize / 1024 / 1024); // MB
         metrics.memoryLimit = Math.round(memory.jsHeapSizeLimit / 1024 / 1024); // MB
@@ -220,7 +251,7 @@ export const usePerformanceMonitoring = () => {
       const resources = performance.getEntriesByType('resource');
       metrics.resourceCount = resources.length;
       metrics.averageResourceTime = resources.length > 0 ? 
-        Math.round(resources.reduce((sum: number, resource: any) => sum + resource.duration, 0) / resources.length) : 0;
+        Math.round(resources.reduce((sum: number, resource: PerformanceResourceTiming) => sum + resource.duration, 0) / resources.length) : 0;
 
       setPerformanceMetrics(metrics);
     };
@@ -259,7 +290,6 @@ export const useAccessibilityMonitoring = () => {
       }
 
       // Check for heading structure
-      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
       const h1Count = document.querySelectorAll('h1').length;
       if (h1Count !== 1) score -= 10;
 

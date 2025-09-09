@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AssessmentEngine, { Question, AssessmentResult } from '../components/assessment/AssessmentEngine';
 import AssessmentForm from '../components/forms/AssessmentForm';
-import { analytics } from '../utils/analytics';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import ContextualCTA from '../components/ui/ContextualCTA';
-import { relatedPages, getContextualLinks } from '../utils/linkingStrategy';
 import { ShieldCheck, CheckCircle, FileText, AlertTriangle, Users, Lock, Eye, ArrowRight, BookOpen, Download, Server } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -16,7 +14,7 @@ const HIPAACheckPage: React.FC = () => {
   const { t } = useTranslation();
   const [showAssessment, setShowAssessment] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [assessmentInfo, setAssessmentInfo] = useState<any>(null);
+  const [assessmentInfo, setAssessmentInfo] = useState<Record<string, unknown> | null>(null);
   
   const hipaaQuestions: Question[] = [
     {
@@ -38,7 +36,7 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'policies-yes-comprehensive', text: 'Yes, comprehensive and regularly updated', value: 5 },
         { id: 'policies-yes-outdated', text: 'Yes, but they need updating', value: 3 },
         { id: 'policies-partial', text: 'We have some, but not all required policies', value: 2 },
-        { id: 'policies-no', text: 'No documented policies or procedures', value: 0 },
+        { id: 'policies-no', text: t('hipaa_assessment.options.policies_no'), value: 0 },
       ],
     },
     {
@@ -46,10 +44,10 @@ const HIPAACheckPage: React.FC = () => {
       text: 'How frequently does your organization conduct HIPAA training for employees?',
       description: 'Regular training ensures staff understand their obligations for protecting patient information.',
       options: [
-        { id: 'training-annual-plus', text: 'Annually plus when significant changes occur', value: 5 },
-        { id: 'training-annual', text: 'Annually only', value: 4 },
-        { id: 'training-onboarding', text: 'Only during employee onboarding', value: 2 },
-        { id: 'training-never', text: 'We do not conduct formal HIPAA training', value: 0 },
+        { id: 'training-annual-plus', text: t('hipaa_assessment.options.training_annual_plus'), value: 5 },
+        { id: 'training-annual', text: t('hipaa_assessment.options.training_annual'), value: 4 },
+        { id: 'training-onboarding', text: t('hipaa_assessment.options.training_onboarding'), value: 2 },
+        { id: 'training-never', text: t('hipaa_assessment.options.training_never'), value: 0 },
       ],
     },
     {
@@ -290,11 +288,13 @@ const HIPAACheckPage: React.FC = () => {
   };
 
   const handleComplete = (result: AssessmentResult) => {
-    console.log('Assessment completed:', result);
+    if (!import.meta.env.PROD) {
+      console.log('Assessment completed:', result);
+    }
     // Here you could save the result, show additional UI, etc.
   };
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: Record<string, unknown>) => {
     setAssessmentInfo(data);
     setShowForm(false);
     setShowAssessment(true);
@@ -627,7 +627,7 @@ const HIPAACheckPage: React.FC = () => {
             Regulatory Requirements Coverage
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {regulatoryFrameworks.map((framework, index) => (
+            {regulatoryFrameworks.map((framework) => (
               <Card key={framework.title} className="p-6">
                 <div className="flex items-start mb-4">
                   <div className={`${framework.color} mt-1 mr-3`}>
@@ -664,7 +664,7 @@ const HIPAACheckPage: React.FC = () => {
           </h2>
           <Card className="p-6">
             <div className="space-y-4">
-              {questionMapping.map((mapping, index) => (
+              {questionMapping.map((mapping) => (
                 <div key={mapping.question} className="border-l-4 border-primary-500 pl-4 py-2">
                   <div className="flex items-start justify-between">
                     <div className="flex-grow">

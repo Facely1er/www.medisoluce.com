@@ -1,6 +1,6 @@
+/* Import RTL-specific styles */
+@import './styles/rtl.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import RTL-specific styles */
-@import './styles/rtl.css';
