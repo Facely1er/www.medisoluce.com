@@ -4,8 +4,8 @@ const isDevelopment = !import.meta.env.PROD;
 export const logger = {
   log: (...args: unknown[]) => {
     if (isDevelopment) {
-      console.log(...args);
-    }
+      console.log($1);
+      }
   },
   
   warn: (...args: unknown[]) => {

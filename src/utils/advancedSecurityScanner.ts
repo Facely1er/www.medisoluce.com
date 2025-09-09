@@ -834,7 +834,7 @@ THREAT SUMMARY:
 - Auto-Fix Rate: ${latestScan.threatsDetected > 0 ? Math.round((latestScan.threatsBlocked / latestScan.threatsDetected) * 100) : 0}%
 
 VULNERABILITIES BY TYPE:
-${latestScan.vulnerabilities.reduce((acc: any, vuln) => {
+${latestScan.vulnerabilities.reduce((acc: unknown, vuln) => {
   acc[vuln.type] = (acc[vuln.type] || 0) + 1;
   return acc;
 }, {})}

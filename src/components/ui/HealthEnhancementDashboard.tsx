@@ -76,7 +76,7 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     setIsEnhancing(true);
     try {
       if (!import.meta.env.PROD) {
-        console.log('🔧 Starting comprehensive health enhancement...');
+        console.log($1);
       }
       
       // Run all enhancements
@@ -119,7 +119,7 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     } finally {
       setIsEnhancing(false);
     }
-  }, []);
+  }, [loadHealthStatus]);
 
   const exportHealthReport = () => {
     const report = `

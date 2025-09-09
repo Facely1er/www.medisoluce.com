@@ -80,7 +80,7 @@ class AccessibilityEnhancer {
     }
   }
 
-  private handleEscapeKey(_e: KeyboardEvent) {
+  private handleEscapeKey() {
     // Close modals, dropdowns, etc.
     const activeModal = document.querySelector('[role="dialog"]:not([aria-hidden="true"])');
     const activeDropdown = document.querySelector('[aria-expanded="true"]');
@@ -375,7 +375,8 @@ class AccessibilityEnhancer {
       }
 
       // Warn about missing alt text in development
-      if (!import.meta.env.PROD && !img.getAttribute('alt')) {
+      if (if (!import.meta.env.PROD) {
+        !img.getAttribute('alt')) {
         console.warn('Image missing alt text:', img);
       }
     });
@@ -444,8 +445,8 @@ class AccessibilityEnhancer {
         element.setAttribute('alt', altText);
       });
       
-      console.log(`✅ Auto-fixed: Added alt text to ${imagesWithoutAlt.length} images`);
-    }
+      console.log($1);
+      }
 
     // Enhanced heading hierarchy check with recommendations
     const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
@@ -492,7 +493,7 @@ class AccessibilityEnhancer {
     
     if (fixedElements > 0) {
       if (!import.meta.env.PROD) {
-        console.log(`✅ Auto-fixed: Added roles and keyboard support to ${fixedElements} elements`);
+        console.log($1);
       }
     }
 
@@ -516,7 +517,7 @@ class AccessibilityEnhancer {
     
     if (fixedInputs > 0) {
       if (!import.meta.env.PROD) {
-        console.log(`✅ Auto-fixed: Added labels to ${fixedInputs} form inputs`);
+        console.log($1);
       }
     }
     
@@ -657,7 +658,7 @@ class AccessibilityEnhancer {
       `;
       document.head.appendChild(style);
       if (!import.meta.env.PROD) {
-        console.log('✅ Auto-fixed: Added enhanced focus indicators');
+        console.log($1);
       }
     }
   }
@@ -707,7 +708,7 @@ class AccessibilityEnhancer {
       
       // Add aria-describedby for error messages
       element.addEventListener('invalid', () => {
-        const errorId = `${element.id || 'input'}-error`;
+        const _errorId = `${element.id || 'input'}-error`;
         let errorElement = document.getElementById(errorId);
         
         if (!errorElement) {
@@ -727,7 +728,7 @@ class AccessibilityEnhancer {
       element.addEventListener('input', () => {
         if (element.validity.valid) {
           element.removeAttribute('aria-invalid');
-          const errorElement = document.getElementById(`${element.id || 'input'}-error`);
+          const _errorElement = document.getElementById(`${element.id || 'input'}-error`);
           if (errorElement) {
             errorElement.remove();
           }

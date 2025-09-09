@@ -123,10 +123,16 @@ function App() {
                     <ToastInitializer />
                     <AppContent />
                     <React.Suspense fallback={null}>
-                      {!import.meta.env.PROD && <PerformanceMonitor showDebugInfo={true} />}
+                      {!import.meta.env.PROD && (
+                        <PerformanceMonitor showDebugInfo={true} />
+                      )}
                       <ServiceWorkerManager />
-                      {!import.meta.env.PROD && <HealthOptimizer showInProduction={false} autoOptimize={true} />}
-                      {!import.meta.env.PROD && <ProductionReadinessIndicator showInProduction={false} />}
+                      {!import.meta.env.PROD && (
+                        <HealthOptimizer showInProduction={false} autoOptimize={true} />
+                      )}
+                      {!import.meta.env.PROD && (
+                        <ProductionReadinessIndicator showInProduction={false} />
+                      )}
                       {!import.meta.env.PROD && (
                         <HealthEnhancementDashboard 
                           autoEnhance={true} 

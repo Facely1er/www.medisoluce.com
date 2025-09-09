@@ -181,7 +181,8 @@ class PerformanceOptimizer {
     // Register service worker for advanced caching
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        !import.meta.env.PROD && console.log('SW registered:', registration);
+        if (!import.meta.env.PROD) {
+        console.log('SW registered:', registration);
         
         // Update service worker when new version is available
         registration.addEventListener('updatefound', () => {
@@ -197,7 +198,8 @@ class PerformanceOptimizer {
         });
       })
       .catch((error) => {
-        !import.meta.env.PROD && console.log('SW registration failed:', error);
+        if (!import.meta.env.PROD) {
+        console.log($1);
       });
   }
 
@@ -295,7 +297,8 @@ class PerformanceOptimizer {
   }
 
   private performEmergencyCleanup() {
-    !import.meta.env.PROD && console.warn('Emergency memory cleanup triggered');
+    if (!import.meta.env.PROD) {
+        console.warn('Emergency memory cleanup triggered');
     
     // Aggressive cleanup
     this.clearAllCaches();
@@ -377,7 +380,8 @@ class PerformanceOptimizer {
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
-        !import.meta.env.PROD && console.warn(`Failed to cleanup ${key}:`, error);
+        if (!import.meta.env.PROD) {
+        console.warn(`Failed to cleanup ${key}:`, error);
       }
     });
   }
@@ -600,7 +604,7 @@ class PerformanceOptimizer {
     const now = Date.now();
     const oneHourAgo = now - (60 * 60 * 1000);
     
-    const recentMetrics = metrics.filter((m: any) => 
+    const recentMetrics = metrics.filter((m: unknown) => 
       new Date(m.timestamp).getTime() > oneHourAgo
     );
 
@@ -611,11 +615,11 @@ class PerformanceOptimizer {
       averageFID: this.calculateAverage(recentMetrics, 'FID'),
       averageCLS: this.calculateAverage(recentMetrics, 'CLS'),
       memoryUsage: this.getLatestMetric(recentMetrics, 'MemoryUsage'),
-      slowResources: recentMetrics.filter((m: any) => m.name === 'SlowResource').length
+      slowResources: recentMetrics.filter((m: unknown) => m.name === 'SlowResource').length
     };
   }
 
-  private calculateAverage(metrics: any[], metricName: string): number {
+  private calculateAverage(metrics: unknown[], metricName: string): number {
     const filtered = metrics.filter(m => m.name === metricName);
     if (filtered.length === 0) return 0;
     
@@ -623,7 +627,7 @@ class PerformanceOptimizer {
     return Math.round(sum / filtered.length);
   }
 
-  private getLatestMetric(metrics: any[], metricName: string): number {
+  private getLatestMetric(metrics: unknown[], metricName: string): number {
     const filtered = metrics.filter(m => m.name === metricName);
     return filtered.length > 0 ? filtered[filtered.length - 1].value : 0;
   }

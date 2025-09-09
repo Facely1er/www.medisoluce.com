@@ -142,7 +142,7 @@ class Analytics {
       document.head.appendChild(script);
 
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args: any[]) {
+      function gtag(...args: unknown[]) {
         window.dataLayer.push(args);
       }
       window.gtag = gtag;
@@ -191,7 +191,9 @@ class Analytics {
 
       // Also log to console in development
       if (!this.isProduction) {
-        !import.meta.env.PROD && console.log('Analytics Event:', { event, category, action, label, value });
+        if (!import.meta.env.PROD) {
+          console.log($1);
+      }
       }
     } catch (error) {
       this.log('Error tracking event:', error);
@@ -240,11 +242,11 @@ class Analytics {
   }
 
   // Track errors
-  trackError(errorType: string, errorData: string | { message: string; [key: string]: any }) {
+  trackError(errorType: string, errorData: string | { message: string; [key: string]: unknown }) {
     if (!this.isEnabled) return;
     
-    const errorMessage = typeof errorData === 'string' ? errorData : errorData.message;
-    const errorContext = typeof errorData === 'object' ? errorData : {};
+    const _errorMessage = typeof errorData === 'string' ? errorData : errorData.message;
+    const _errorContext = typeof errorData === 'object' ? errorData : {};
     
     try {
       if (window.gtag) {
@@ -271,9 +273,11 @@ class Analytics {
   }
 
   // Private logging method
-  private log(...args: any[]) {
+  private log(...args: unknown[]) {
     if (!this.isProduction) {
-      !import.meta.env.PROD && console.log('[Analytics]', ...args);
+      if (!import.meta.env.PROD) {
+        console.log($1);
+      }
     }
   }
 }

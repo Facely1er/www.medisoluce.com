@@ -183,7 +183,7 @@ class SecurityManager {
 
   private loadSecurityHistory(): void {
     try {
-      const events = JSON.parse(localStorage.getItem('security-events') || '[]');
+      const _events = JSON.parse(localStorage.getItem('security-events') || '[]');
       const threats = JSON.parse(localStorage.getItem('security-threats') || '[]');
       const vulns = JSON.parse(localStorage.getItem('security-vulnerabilities') || '[]');
 
@@ -229,7 +229,7 @@ class SecurityManager {
     }
   }
 
-  private calculateRiskScore(eventType: string, severity: string, details: Record<string, any>): number {
+  private calculateRiskScore(eventType: string, severity: string, details: Record<string, unknown>): number {
     let baseScore = 5;
 
     // Adjust based on severity
@@ -256,7 +256,7 @@ class SecurityManager {
     return Math.min(10, Math.max(1, baseScore));
   }
 
-  private isHIPAARelevant(eventType: string, details: Record<string, any>): boolean {
+  private isHIPAARelevant(eventType: string, details: Record<string, unknown>): boolean {
     const hipaaEventTypes = ['data_access', 'privacy_violation', 'malware_detected'];
     if (hipaaEventTypes.includes(eventType)) return true;
 
@@ -561,7 +561,7 @@ class SecurityManager {
     };
   }
 
-  public async performAdvancedSecurityScan(): Promise<any> {
+  public async performAdvancedSecurityScan(): Promise<unknown> {
     const startTime = Date.now();
     
     const threats = await this.scanForThreats();
@@ -573,7 +573,7 @@ class SecurityManager {
       vulnerabilities,
       compliance,
       threatLevel: this.calculateThreatLevel(threats),
-      mitigatedThreats: threats.filter((t: any) => t.mitigated).length,
+      mitigatedThreats: threats.filter((t: unknown) => t.mitigated).length,
       scanDuration: Date.now() - startTime,
       timestamp: new Date().toISOString()
     };
@@ -938,7 +938,7 @@ class SecurityManager {
     }
   }
 
-  private getCSPViolations(): any[] {
+  private getCSPViolations(): unknown[] {
     return JSON.parse(localStorage.getItem('csp-violations') || '[]');
   }
 
@@ -1250,7 +1250,7 @@ class SecurityManager {
     }
 
     const recent = history.slice(-5);
-    const scores = recent.map((h: any) => h.overallScore);
+    const scores = recent.map((h: unknown) => h.overallScore);
     const trend = scores[scores.length - 1] - scores[0];
 
     const factors: string[] = [];

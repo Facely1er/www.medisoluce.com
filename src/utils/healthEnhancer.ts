@@ -66,7 +66,9 @@ class ProjectHealthEnhancer {
     }
 
     this.healingInProgress = true;
-    !import.meta.env.PROD && console.log('🔧 Starting comprehensive project health enhancement...');
+    if (!import.meta.env.PROD) {
+      console.log('🔧 Starting comprehensive project health enhancement...');
+    }
 
     try {
       const issues = await this.detectHealthIssues();
@@ -85,7 +87,9 @@ class ProjectHealthEnhancer {
       this.enhancementHistory.push(result);
       this.lastEnhancement = new Date();
       
-      !import.meta.env.PROD && console.log('✅ Project health enhancement completed:', result);
+      if (!import.meta.env.PROD) {
+        console.log('✅ Project health enhancement completed:', result);
+      }
       this.notifyEnhancementComplete(result);
       
       return result;
@@ -319,7 +323,7 @@ class ProjectHealthEnhancer {
     const issues: HealthIssue[] = [];
 
     // Error rate check
-    const errorRate = this.getErrorRate();
+    const _errorRate = this.getErrorRate();
     if (errorRate > 5) {
       issues.push({
         id: 'high-error-rate',
@@ -357,14 +361,16 @@ class ProjectHealthEnhancer {
     for (const issue of issues) {
       if (issue.autoFixable) {
         try {
-          !import.meta.env.PROD && console.log(`🔧 Fixing: ${issue.title}`);
+          if (!import.meta.env.PROD) {
+            console.log(`🔧 Fixing: ${issue.title}`);
+          }
           const success = await issue.fix();
           fixResults.push(success);
           
           if (success) {
-            !import.meta.env.PROD && console.log(`✅ Fixed: ${issue.title}`);
-          } else {
-            !import.meta.env.PROD && console.log(`❌ Failed to fix: ${issue.title}`);
+            if (!import.meta.env.PROD) {
+              console.log(`✅ Fixed: ${issue.title}`);
+            }
           }
         } catch (error) {
           console.error(`❌ Error fixing ${issue.title}:`, error);
@@ -615,7 +621,7 @@ class ProjectHealthEnhancer {
   }
 
   private getErrorRate(): number {
-    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
     const recentErrors = errors.filter((error: { timestamp: string }) => 
       new Date(error.timestamp).getTime() > oneHourAgo
@@ -631,7 +637,7 @@ class ProjectHealthEnhancer {
     message?: string;
     timestamp?: string;
   }> {
-    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     return errors.filter((error: { type: string; handled: boolean }) => 
       error.type === 'javascript' && !error.handled
     );
@@ -854,7 +860,9 @@ class ProjectHealthEnhancer {
     window.addEventListener('error', (event) => {
       // Auto-recovery for common errors
       if (event.message.includes('ChunkLoadError')) {
-        !import.meta.env.PROD && console.log('🔄 Auto-recovering from chunk load error...');
+        if (!import.meta.env.PROD) {
+          console.log('🔄 Auto-recovering from chunk load error...');
+        }
         setTimeout(() => window.location.reload(), 1000);
       }
     });
@@ -862,9 +870,11 @@ class ProjectHealthEnhancer {
 
   private enhanceErrorBoundaries(): void {
     // Add error boundary detection
-    const errorBoundaries = document.querySelectorAll('[data-error-boundary]');
+    const _errorBoundaries = document.querySelectorAll('[data-error-boundary]');
     if (errorBoundaries.length === 0) {
-      !import.meta.env.PROD && console.warn('No error boundaries detected');
+      if (!import.meta.env.PROD) {
+        console.warn('No error boundaries detected');
+      }
     }
   }
 
@@ -873,14 +883,14 @@ class ProjectHealthEnhancer {
     const originalConsoleError = console.error;
     console.error = (...args) => {
       // Store enhanced error context
-      const errorContext = {
+      const _errorContext = {
         timestamp: new Date().toISOString(),
         url: window.location.href,
         userAgent: navigator.userAgent,
         args: args.map(arg => String(arg))
       };
       
-      const errors = JSON.parse(localStorage.getItem('enhanced-errors') || '[]');
+      const _errors = JSON.parse(localStorage.getItem('enhanced-errors') || '[]');
       errors.push(errorContext);
       localStorage.setItem('enhanced-errors', JSON.stringify(errors.slice(-50)));
       
@@ -895,7 +905,9 @@ class ProjectHealthEnhancer {
       try {
         return await originalFetch(...args);
       } catch (error) {
-        !import.meta.env.PROD && console.log('🔄 Retrying failed fetch...');
+        if (!import.meta.env.PROD) {
+          console.log('🔄 Retrying failed fetch...');
+        }
         await new Promise(resolve => setTimeout(resolve, 1000));
         return originalFetch(...args);
       }
@@ -1056,7 +1068,9 @@ class ProjectHealthEnhancer {
         );
         
         if (criticalIssues.length > 0) {
-          !import.meta.env.PROD && console.log('🚨 Auto-healing critical issues...');
+          if (!import.meta.env.PROD) {
+            console.log('🚨 Auto-healing critical issues...');
+          }
           await this.autoFixIssues(criticalIssues);
         }
       }
@@ -1066,13 +1080,17 @@ class ProjectHealthEnhancer {
   private enhanceErrorRecovery(): void {
     // Enhanced error recovery with retry logic
     window.addEventListener('unhandledrejection', (event) => {
-      !import.meta.env.PROD && console.log('🔄 Attempting error recovery...');
+      if (!import.meta.env.PROD) {
+        console.log('🔄 Attempting error recovery...');
+      }
       
       // Specific recovery for common issues
       if (event.reason?.message?.includes('fetch')) {
         // Network error recovery
         setTimeout(() => {
-          !import.meta.env.PROD && console.log('📡 Retrying network operation...');
+          if (!import.meta.env.PROD) {
+            console.log('🔄 Attempting network error recovery...');
+          }
         }, 2000);
       }
     });
@@ -1083,7 +1101,9 @@ class ProjectHealthEnhancer {
       const issues = await this.detectHealthIssues();
       
       if (issues.length > 0) {
-        !import.meta.env.PROD && console.log(`🔍 Health check found ${issues.length} issues`);
+        if (!import.meta.env.PROD) {
+          console.log('🔍 Health check found issues:', issues.length);
+        }
       }
     } catch (error) {
       console.error('Health check failed:', error);

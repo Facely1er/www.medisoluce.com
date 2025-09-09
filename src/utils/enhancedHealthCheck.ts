@@ -91,7 +91,7 @@ class EnhancedHealthChecker {
     const memoryUsage = this.getMemoryUsage();
     const loadTime = this.getPageLoadTime();
     const renderTime = this.getMeasuredRenderTime();
-    const errorRate = this.calculateErrorRate();
+    const _errorRate = this.calculateErrorRate();
     const bundleSize = await this.estimateBundleSize();
 
     return {
@@ -261,9 +261,9 @@ class EnhancedHealthChecker {
   }
 
   private calculateErrorRate(): number {
-    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentErrors = errors.filter((error: any) => 
+    const recentErrors = errors.filter((error: unknown) => 
       new Date(error.timestamp).getTime() > oneHourAgo
     );
     
@@ -274,11 +274,11 @@ class EnhancedHealthChecker {
   private async estimateBundleSize(): Promise<number> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
+      const jsResources = resources.filter((resource: unknown) => 
         resource.name.includes('.js') && !resource.name.includes('node_modules')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: unknown) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -357,7 +357,7 @@ class EnhancedHealthChecker {
     }
   }
 
-  private calculateContrastRatio(color1: string, color2: string): number {
+  private calculateContrastRatio(_color1: string, _color2: string): number {
     // Simplified contrast calculation - would use a proper library in production
     // This is a placeholder that returns a reasonable value
     return 7; // Assume good contrast
@@ -387,12 +387,12 @@ class EnhancedHealthChecker {
   private getRecentPageViews(): number {
     const pageViews = JSON.parse(localStorage.getItem('page-views') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return pageViews.filter((view: any) => 
+    return pageViews.filter((view: unknown) => 
       new Date(view.timestamp).getTime() > oneHourAgo
     ).length || 1;
   }
 
-  private analyzeOverallHealth(checks: any): { 
+  private analyzeOverallHealth(checks: unknown): { 
     status: 'healthy' | 'degraded' | 'unhealthy' | 'critical';
     recommendations: string[];
     criticalIssues: string[];
@@ -507,7 +507,9 @@ class EnhancedHealthChecker {
       
       // Log degraded performance
       if (result.status === 'degraded' || result.status === 'unhealthy') {
-        !import.meta.env.PROD && console.warn('Health Check Warning:', result);
+        if (!import.meta.env.PROD) {
+          console.warn('Health Check Warning:', result);
+        }
       }
     }, interval);
   }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const DemoPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const demoSteps = [
+  const demoSteps = useMemo(() => [
     {
       title: "Welcome to MediSoluce",
       description: "Your comprehensive healthcare compliance platform combining HIPAA compliance, technology dependency management, and business continuity planning.",
@@ -56,11 +56,11 @@ const DemoPage: React.FC = () => {
       component: "toolkit",
       duration: 3000
     }
-  ];
+  ], []);
 
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     setCurrentStep((prev) => (prev + 1) % demoSteps.length);
-  };
+  }, [demoSteps.length]);
 
   const prevStep = () => {
     setCurrentStep((prev) => (prev - 1 + demoSteps.length) % demoSteps.length);
@@ -83,7 +83,7 @@ const DemoPage: React.FC = () => {
       }, demoSteps[currentStep].duration);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, currentStep]);
+  }, [isPlaying, currentStep, demoSteps, nextStep]);
 
   const renderDemoContent = () => {
     const step = demoSteps[currentStep];

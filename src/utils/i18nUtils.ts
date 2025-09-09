@@ -94,7 +94,9 @@ export class LocaleFormatter {
         ...options
       }).format(amount);
     } catch (error) {
-      !import.meta.env.PROD && console.warn('Currency formatting failed:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Currency formatting failed:', error);
+      }
       return `${this.config.currency} ${amount.toLocaleString()}`;
     }
   }
@@ -107,7 +109,9 @@ export class LocaleFormatter {
     try {
       return new Intl.NumberFormat(this.locale, options).format(number);
     } catch (error) {
-      !import.meta.env.PROD && console.warn('Number formatting failed:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Number formatting failed:', error);
+      }
       return number.toString();
     }
   }
@@ -143,7 +147,8 @@ export class LocaleFormatter {
         ...options
       }).format(dateObj);
     } catch (error) {
-      !import.meta.env.PROD && console.warn('Date formatting failed:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Date formatting failed:', error);
       return date.toString();
     }
   }
@@ -248,7 +253,7 @@ export const rtlUtils = {
   },
 
   // Transform CSS for RTL
-  transformStyles: (styles: Record<string, any>, isRTL: boolean): Record<string, any> => {
+  transformStyles: (styles: Record<string, unknown>, isRTL: boolean): Record<string, unknown> => {
     if (!isRTL) return styles;
 
     const transformed = { ...styles };
@@ -280,12 +285,12 @@ export const rtlUtils = {
 // Translation validation utilities
 export const translationUtils = {
   // Validate translation completeness
-  validateTranslations: (translations: Record<string, any>, baseTranslations: Record<string, any>): {
+  validateTranslations: (translations: Record<string, unknown>, baseTranslations: Record<string, unknown>): {
     missing: string[];
     extra: string[];
     coverage: number;
   } => {
-    const flatten = (obj: any, prefix = ''): string[] => {
+    const flatten = (obj: unknown, prefix = ''): string[] => {
       const keys: string[] = [];
       for (const key in obj) {
         const newKey = prefix ? `${prefix}.${key}` : key;
@@ -322,7 +327,7 @@ export const translationUtils = {
   },
 
   // Generate translation report
-  generateReport: (locales: Record<string, any>): {
+  generateReport: (locales: Record<string, unknown>): {
     totalKeys: number;
     byLocale: Record<string, { keys: number; coverage: number; missing: string[] }>;
     recommendations: string[];

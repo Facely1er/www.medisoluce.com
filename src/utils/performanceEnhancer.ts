@@ -60,7 +60,9 @@ class PerformanceEnhancer {
   }
 
   async enhancePerformance(): Promise<PerformanceMetrics> {
-    !import.meta.env.PROD && console.log('🚀 Starting performance enhancement...');
+    if (!import.meta.env.PROD) {
+      console.log('🚀 Starting performance enhancement...');
+    }
     
     const before = this.captureMetrics();
     
@@ -80,7 +82,9 @@ class PerformanceEnhancer {
 
     this.metrics = { before, after, improvement };
     
-    !import.meta.env.PROD && console.log('✅ Performance enhancement completed:', improvement);
+    if (!import.meta.env.PROD) {
+      console.log('✅ Performance enhancement completed:', improvement);
+    }
     this.notifyPerformanceImprovement(improvement);
     
     return this.metrics;
@@ -101,7 +105,9 @@ class PerformanceEnhancer {
         try {
           await optimization.fn();
           this.optimizations.push(optimization.name);
-          !import.meta.env.PROD && console.log(`✅ ${optimization.name} completed`);
+          if (!import.meta.env.PROD) {
+            console.log(`✅ ${optimization.name} completed`);
+          }
         } catch (error) {
           console.error(`❌ ${optimization.name} failed:`, error);
         }
@@ -312,7 +318,9 @@ class PerformanceEnhancer {
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
-        !import.meta.env.PROD && console.warn(`Failed to cleanup ${key}:`, error);
+        if (!import.meta.env.PROD) {
+          console.warn(`Failed to cleanup ${key}:`, error);
+        }
       }
     });
   }
@@ -420,7 +428,9 @@ class PerformanceEnhancer {
     setInterval(() => {
       const memoryUsage = this.getMemoryUsage();
       if (memoryUsage > 85) {
-        !import.meta.env.PROD && console.log('🔧 Auto-optimizing due to high memory usage...');
+        if (!import.meta.env.PROD) {
+          console.log('🔧 Auto-optimizing due to high memory usage...');
+        }
         this.optimizeMemory();
       }
     }, 30000);

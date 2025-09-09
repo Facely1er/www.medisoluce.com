@@ -104,7 +104,7 @@ const ContactPage: React.FC = () => {
       analytics.trackFormSubmit('Contact Form');
       
       if (!import.meta.env.PROD) {
-        console.log('Form submitted:', data);
+        console.log($1);
       }
       window.location.href = '/thanks';
     } catch (error) {
