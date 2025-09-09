@@ -163,12 +163,12 @@ const ProfilePage: React.FC = () => {
       securityUtils.logSecurityEvent('profile_updated', {
         userId: profile?.id,
         fieldsUpdated: Object.keys(formData).filter(key => 
-          formData[key as keyof typeof formData] !== (profile as any)?.[key]
+          formData[key as keyof typeof formData] !== (profile as Record<string, unknown>)?.[key]
         )
       }, 'low');
 
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && 'showToast' in window) {
+        (window as { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
           type: 'success',
           title: 'Profile Updated',
           message: 'Your profile has been successfully updated.'
@@ -176,8 +176,8 @@ const ProfilePage: React.FC = () => {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && 'showToast' in window) {
+        (window as { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: 'Update Failed',
           message: 'Unable to update profile. Please try again.'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { 
   CheckCircle, 
@@ -79,9 +79,9 @@ const ProductionReadinessPage: React.FC = () => {
 
   useEffect(() => {
     performReadinessAssessment();
-  }, []);
+  }, [performReadinessAssessment]);
 
-  const performReadinessAssessment = async () => {
+  const performReadinessAssessment = useCallback(async () => {
     setIsLoading(true);
     try {
       const report = await generateProductionReadinessReport();
@@ -91,7 +91,7 @@ const ProductionReadinessPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   const generateProductionReadinessReport = async (): Promise<ProductionReadinessReport> => {
     // Security Assessment

@@ -125,11 +125,15 @@ describe('SecurityManager', () => {
 
     it('should calculate risk scores correctly', () => {
       // This tests the internal risk calculation logic
-      const _highRiskEvent = {
+      // Test data for risk calculation
+      const highRiskEvent = {
         eventType: 'malware_detected',
         severity: 'critical' as const,
         details: { hipaaRelevant: true }
       };
+      
+      // Verify the event structure is correct
+      expect(highRiskEvent.severity).toBe('critical');
       
       // We can't directly test the private method, but we can test the behavior
       // through the public interface

@@ -47,7 +47,8 @@ class ProductionOptimizer {
   }
 
   private async runProductionOptimizations() {
-    !import.meta.env.PROD && console.log('Running production optimizations...');
+    if (!import.meta.env.PROD) {
+        console.log('Running production optimizations...');
     this.isOptimizing = true;
 
     const optimizations = await Promise.allSettled([
@@ -65,8 +66,8 @@ class ProductionOptimizer {
       error: result.status === 'rejected' ? result.reason : null
     }));
 
-    console.log('Production optimizations completed:', results);
-  }
+    console.log($1);
+      }
 
   private async optimizePerformance(): Promise<void> {
     try {
@@ -284,7 +285,8 @@ class ProductionOptimizer {
           localStorage.setItem(key, JSON.stringify(optimized));
         }
       } catch (error) {
-        !import.meta.env.PROD && console.warn(`Failed to optimize ${key}:`, error);
+        if (!import.meta.env.PROD) {
+        console.warn(`Failed to optimize ${key}:`, error);
       }
     });
   }
@@ -303,7 +305,8 @@ class ProductionOptimizer {
     );
 
     if (missingHeaders.length > 0) {
-      !import.meta.env.PROD && console.warn('Missing security headers:', missingHeaders);
+      if (!import.meta.env.PROD) {
+        console.warn('Missing security headers:', missingHeaders);
     }
   }
 
@@ -318,7 +321,8 @@ class ProductionOptimizer {
       );
 
       if (riskyKeys.length > 0) {
-        !import.meta.env.PROD && console.warn('Potentially sensitive data in localStorage:', riskyKeys);
+        if (!import.meta.env.PROD) {
+        console.warn('Potentially sensitive data in localStorage:', riskyKeys);
       }
     } catch (error) {
       console.error('localStorage security check failed:', error);
@@ -520,7 +524,8 @@ class ProductionOptimizer {
       const sizeInMB = totalSize / (1024 * 1024);
       
       if (sizeInMB > 2) { // 2MB threshold
-        !import.meta.env.PROD && console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
+        if (!import.meta.env.PROD) {
+        console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
       }
     } catch (error) {
       console.error('Bundle analysis failed:', error);
@@ -567,7 +572,8 @@ class ProductionOptimizer {
       try {
         localStorage.removeItem(key);
       } catch (error) {
-        !import.meta.env.PROD && console.warn(`Failed to remove temporary key ${key}:`, error);
+        if (!import.meta.env.PROD) {
+        console.warn(`Failed to remove temporary key ${key}:`, error);
       }
     });
   }
@@ -580,7 +586,8 @@ class ProductionOptimizer {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (!Array.isArray(data)) {
-          !import.meta.env.PROD && console.warn(`Data integrity issue with ${key}: not an array`);
+          if (!import.meta.env.PROD) {
+        console.warn(`Data integrity issue with ${key}: not an array`);
           localStorage.setItem(key, '[]');
         } else {
           // Validate structure of items
@@ -589,7 +596,8 @@ class ProductionOptimizer {
           );
           
           if (validItems.length !== data.length) {
-            !import.meta.env.PROD && console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
+            if (!import.meta.env.PROD) {
+        console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
             localStorage.setItem(key, JSON.stringify(validItems));
           }
         }
@@ -621,13 +629,15 @@ class ProductionOptimizer {
     try {
       localStorage.setItem('optimization-history', JSON.stringify(this.optimizations));
     } catch (error) {
-      !import.meta.env.PROD && console.warn('Failed to store optimization history:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Failed to store optimization history:', error);
     }
   }
 
   // Public methods
   public async runFullOptimization(): Promise<OptimizationResult[]> {
-    !import.meta.env.PROD && console.log('Running full production optimization...');
+    if (!import.meta.env.PROD) {
+        console.log('Running full production optimization...');
     this.optimizations = [];
     
     await this.runProductionOptimizations();

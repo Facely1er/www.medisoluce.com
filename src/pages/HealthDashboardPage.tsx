@@ -482,7 +482,7 @@ const HealthDashboardPage: React.FC = () => {
 
               {/* Detailed Category Analysis */}
               <div className="space-y-6">
-                {Object.entries(healthData.categories).map(([category, data]: [string, any]) => (
+                {Object.entries(healthData.categories).map(([category, data]: [string, { score: number; status: string; details: string }]) => (
                   <Card key={category} className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-medium text-gray-900 dark:text-white capitalize">

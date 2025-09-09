@@ -70,7 +70,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     } finally {
       setIsLoading(false);
     }
-  }, [enableAutoOptimization, healthThreshold, isOptimizing]);
+  }, [enableAutoOptimization, healthThreshold, isOptimizing, optimize]);
 
   const optimize = useCallback(async () => {
     setIsOptimizing(true);
@@ -160,7 +160,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     } catch {
       return { trend: 'stable', confidence: 0, data: [] };
     }
-  }, [healthData]);
+  }, []);
 
   // Auto-refresh effect
   useEffect(() => {

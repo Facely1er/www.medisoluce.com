@@ -177,8 +177,8 @@ class HealthChecker {
   }
 
   private async getPerformanceMetrics() {
-    const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
-    const recentErrors = errorLogs.filter((log: any) => {
+    const _errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const recentErrors = errorLogs.filter((log: unknown) => {
       const logTime = new Date(log.timestamp).getTime();
       const oneHourAgo = Date.now() - (60 * 60 * 1000);
       return logTime > oneHourAgo;
@@ -215,10 +215,10 @@ class HealthChecker {
     // Estimate based on analytics data or use a reasonable default
     const analytics = JSON.parse(localStorage.getItem('page-views') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    return analytics.filter((view: any) => new Date(view.timestamp).getTime() > oneHourAgo).length || 1;
+    return analytics.filter((view: unknown) => new Date(view.timestamp).getTime() > oneHourAgo).length || 1;
   }
 
-  private calculateOverallStatus(checks: any, performance: any): 'healthy' | 'degraded' | 'unhealthy' {
+  private calculateOverallStatus(checks: unknown, performance: unknown): 'healthy' | 'degraded' | 'unhealthy' {
     const failedChecks = Object.values(checks).filter(check => !check).length;
     const criticalFailures = !checks.localStorage || !checks.networkConnectivity;
     
@@ -247,7 +247,7 @@ class HealthChecker {
 
       // Log to console in development
       if (!import.meta.env.PROD) {
-        !import.meta.env.PROD && console.log('Health Check:', result);
+        console.log('Health check result:', result);
       }
 
       // Store health check results
@@ -256,7 +256,7 @@ class HealthChecker {
       
       // Keep only last 24 hours of data
       const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-      const filtered = healthHistory.filter((h: any) => new Date(h.timestamp).getTime() > oneDayAgo);
+      const filtered = healthHistory.filter((h: unknown) => new Date(h.timestamp).getTime() > oneDayAgo);
       
       localStorage.setItem('health-history', JSON.stringify(filtered));
     }, this.checkInterval);
@@ -272,7 +272,7 @@ class HealthChecker {
   // Export health data for debugging
   exportHealthData() {
     const healthHistory = JSON.parse(localStorage.getItem('health-history') || '[]');
-    const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const _errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
     
     const exportData = {
       healthChecks: healthHistory,

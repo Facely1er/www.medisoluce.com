@@ -149,7 +149,9 @@ class RobustErrorHandler {
   }
 
   private async attemptRecovery(type: string, error: Error | unknown, context: Record<string, unknown>): Promise<boolean> {
-    !import.meta.env.PROD && console.log(`🔄 Attempting recovery for ${type} error...`);
+    if (!import.meta.env.PROD) {
+      console.log(`🔄 Attempting recovery for ${type} error...`);
+    }
 
     switch (type) {
       case 'javascript':
@@ -197,14 +199,18 @@ class RobustErrorHandler {
     try {
       if (error.message?.includes('fetch')) {
         // Network-related promise rejection
-        !import.meta.env.PROD && console.log('📡 Detected network error, switching to offline mode...');
+        if (!import.meta.env.PROD) {
+          console.log('📡 Detected network error, switching to offline mode...');
+        }
         this.enableOfflineMode();
         return true;
       }
       
       if (error.message?.includes('quota')) {
         // Storage quota exceeded
-        !import.meta.env.PROD && console.log('💾 Storage quota exceeded, cleaning up...');
+        if (!import.meta.env.PROD) {
+          console.log('💾 Storage quota exceeded, cleaning up...');
+        }
         this.cleanupStorage();
         return true;
       }
@@ -216,7 +222,7 @@ class RobustErrorHandler {
     }
   }
 
-  private async recoverFromNetworkError(error: any, context: any): Promise<boolean> {
+  private async recoverFromNetworkError(error: unknown, context: unknown): Promise<boolean> {
     try {
       // Enable offline capabilities
       this.enableOfflineMode();
@@ -243,7 +249,9 @@ class RobustErrorHandler {
 
   private recoverFromMemoryError(): boolean {
     try {
-      !import.meta.env.PROD && console.log('🧹 Initiating emergency memory cleanup...');
+      if (!import.meta.env.PROD) {
+        console.log('🧹 Initiating emergency memory cleanup...');
+      }
       
       // Aggressive cleanup
       this.cleanupStorage();
@@ -262,7 +270,7 @@ class RobustErrorHandler {
     }
   }
 
-  private async genericErrorRecovery(error: any, context: any): Promise<boolean> {
+  private async genericErrorRecovery(error: unknown, context: unknown): Promise<boolean> {
     try {
       // Generic recovery strategies
       this.cleanupStorage();
@@ -310,7 +318,9 @@ class RobustErrorHandler {
     
     if (breaker.failures >= breaker.threshold) {
       breaker.state = 'open';
-      !import.meta.env.PROD && console.warn(`🔴 Circuit breaker opened for ${key}`);
+      if (!import.meta.env.PROD) {
+        console.warn(`🔴 Circuit breaker opened for ${key}`);
+      }
     }
   }
 
@@ -327,7 +337,7 @@ class RobustErrorHandler {
     operation: () => Promise<T>,
     key: string
   ): Promise<T> {
-    let lastError: any;
+    let lastError: unknown;
     
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
       try {
@@ -340,7 +350,9 @@ class RobustErrorHandler {
         }
         
         const delay = this.config.retryDelay * Math.pow(2, attempt);
-        !import.meta.env.PROD && console.log(`🔄 Retry ${attempt + 1}/${this.config.maxRetries} after ${delay}ms for ${key}`);
+        if (!import.meta.env.PROD) {
+          console.log(`🔄 Retry ${attempt + 1}/${this.config.maxRetries} after ${delay}ms for ${key}`);
+        }
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -351,7 +363,7 @@ class RobustErrorHandler {
   // Recovery implementations
   private reloadCurrentComponent(): void {
     // Force re-render of current component
-    const event = new CustomEvent('forceRerender');
+    const _event = new CustomEvent('forceRerender');
     document.dispatchEvent(event);
   }
 
@@ -427,7 +439,7 @@ class RobustErrorHandler {
     });
   }
 
-  private handleComponentError(componentType: any, error: any): void {
+  private handleComponentError(componentType: unknown, error: unknown): void {
     console.error(`Component error in ${componentType}:`, error);
     
     // Store component error for analysis
@@ -442,8 +454,8 @@ class RobustErrorHandler {
     localStorage.setItem('component-errors', JSON.stringify(componentErrors.slice(-50)));
   }
 
-  private storeError(type: string, error: any, context: any): void {
-    const errorLog = {
+  private storeError(type: string, error: unknown, context: unknown): void {
+    const _errorLog = {
       id: Date.now().toString(),
       timestamp: new Date().toISOString(),
       type,
@@ -455,15 +467,15 @@ class RobustErrorHandler {
       recovered: false
     };
 
-    const errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
     errors.push(errorLog);
     localStorage.setItem('robust-error-logs', JSON.stringify(errors.slice(-100)));
   }
 
   // Public methods
   public async recoverFromError(errorId: string): Promise<boolean> {
-    const errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
-    const error = errors.find((e: any) => e.id === errorId);
+    const _errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
+    const _error = errors.find((e: unknown) => e.id === errorId);
     
     if (!error) return false;
     
@@ -483,8 +495,8 @@ class RobustErrorHandler {
   }
 
   public getErrorRecoveryStats(): any {
-    const errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
-    const recoveredErrors = errors.filter((e: any) => e.recovered);
+    const _errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
+    const recoveredErrors = errors.filter((e: unknown) => e.recovered);
     
     return {
       totalErrors: errors.length,
@@ -501,7 +513,9 @@ class RobustErrorHandler {
 
   public enableGracefulMode(mode: string): void {
     this.gracefulModes.add(mode);
-    !import.meta.env.PROD && console.log(`🛡️ Graceful mode enabled: ${mode}`);
+    if (!import.meta.env.PROD) {
+      console.log(`🛡️ Graceful mode enabled: ${mode}`);
+    }
     
     // Apply graceful degradation strategies
     switch (mode) {
@@ -544,7 +558,7 @@ class RobustErrorHandler {
 
   public exportRecoveryReport(): string {
     const stats = this.getErrorRecoveryStats();
-    const errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
+    const _errors = JSON.parse(localStorage.getItem('robust-error-logs') || '[]');
     
     return `
 MEDISOLUCE ERROR RECOVERY REPORT
@@ -562,7 +576,7 @@ ${stats.circuitBreakers.map(cb =>
 ).join('\n') || 'None active'}
 
 RECENT ERRORS:
-${errors.slice(-5).map((error: any) => 
+${errors.slice(-5).map((error: unknown) => 
   `- ${error.type}: ${error.message} (${error.recovered ? 'Recovered' : 'Unrecovered'})`
 ).join('\n') || 'None'}
 
@@ -576,7 +590,7 @@ Report generated by MediSoluce Robust Error Handler
 `;
   }
 
-  private analyzeErrorPatterns(errors: any[]): string {
+  private analyzeErrorPatterns(errors: unknown[]): string {
     const patterns: Record<string, number> = {};
     
     errors.forEach(error => {
@@ -591,18 +605,18 @@ Report generated by MediSoluce Robust Error Handler
       .join('\n') || 'No patterns detected';
   }
 
-  private generateRecoveryRecommendations(stats: any, errors: any[]): string[] {
+  private generateRecoveryRecommendations(stats: unknown, errors: unknown[]): string[] {
     const recommendations: string[] = [];
     
     if (stats.recoveryRate < 50) {
       recommendations.push('Improve error recovery mechanisms - low recovery rate');
     }
     
-    if (stats.circuitBreakers.some((cb: any) => cb.state === 'open')) {
+    if (stats.circuitBreakers.some((cb: unknown) => cb.state === 'open')) {
       recommendations.push('Investigate services with open circuit breakers');
     }
     
-    if (errors.filter((e: any) => e.type === 'memory').length > 5) {
+    if (errors.filter((e: unknown) => e.type === 'memory').length > 5) {
       recommendations.push('Implement better memory management strategies');
     }
     
