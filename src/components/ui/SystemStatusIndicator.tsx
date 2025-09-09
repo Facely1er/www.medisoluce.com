@@ -28,9 +28,18 @@ const SystemStatusIndicator: React.FC<SystemStatusIndicatorProps> = ({
   autoHide = false,
   hideAfter = 10000
 }) => {
-  const [healthData, setHealthData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<{
+    status: string;
+    score: number;
+    metrics: Record<string, number>;
+    issues: Array<{ id: string; severity: string; message: string }>;
+  } | null>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [trend, setTrend] = useState<any>(null);
+  const [trend, setTrend] = useState<{
+    direction: 'up' | 'down' | 'stable';
+    change: number;
+    period: string;
+  } | null>(null);
 
   const shouldShow = !import.meta.env.PROD || showInProduction;
 
@@ -201,16 +210,16 @@ const SystemStatusIndicator: React.FC<SystemStatusIndicatorProps> = ({
                 </div>
 
                 {/* Critical Issues */}
-                {healthData.recommendations.filter((r: any) => r.priority === 'critical').length > 0 && (
+                {healthData.recommendations.filter((r: { priority: string }) => r.priority === 'critical').length > 0 && (
                   <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <div className="text-xs font-medium text-accent-600 dark:text-accent-400 mb-1">
-                      Critical Issues ({healthData.recommendations.filter((r: any) => r.priority === 'critical').length})
+                      Critical Issues ({healthData.recommendations.filter((r: { priority: string }) => r.priority === 'critical').length})
                     </div>
                     <div className="space-y-1">
                       {healthData.recommendations
-                        .filter((r: any) => r.priority === 'critical')
+                        .filter((r: { priority: string }) => r.priority === 'critical')
                         .slice(0, 2)
-                        .map((rec: any, index: number) => (
+                        .map((rec: { title: string }, index: number) => (
                           <div key={index} className="text-xs text-gray-600 dark:text-gray-300">
                             • {rec.title}
                           </div>

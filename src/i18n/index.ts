@@ -83,7 +83,7 @@ const formatCurrency = (value: number, locale: string): string => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(value);
-  } catch (error) {
+  } catch {
     return `$${value.toLocaleString()}`;
   }
 };
@@ -91,7 +91,7 @@ const formatCurrency = (value: number, locale: string): string => {
 const formatNumber = (value: number, locale: string): string => {
   try {
     return new Intl.NumberFormat(locale).format(value);
-  } catch (error) {
+  } catch {
     return value.toLocaleString();
   }
 };
@@ -104,7 +104,7 @@ const formatDate = (value: Date | string, locale: string): string => {
       month: 'long',
       day: 'numeric'
     }).format(date);
-  } catch (error) {
+  } catch {
     return value.toString();
   }
 };
@@ -119,7 +119,7 @@ const formatDateTime = (value: Date | string, locale: string): string => {
       hour: '2-digit',
       minute: '2-digit'
     }).format(date);
-  } catch (error) {
+  } catch {
     return value.toString();
   }
 };

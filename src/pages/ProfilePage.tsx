@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { User, Edit, Save, X, Shield, Building, Clock, Phone, Mail, MapPin, Bell } from 'lucide-react';
+import { User, Edit, Save, X, Shield, Building, Clock, Phone, Mail, Bell } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
@@ -39,7 +37,6 @@ interface UserProfile {
 }
 
 const ProfilePage: React.FC = () => {
-  const { t } = useTranslation();
   const { user } = useAuth();
   const [profile, setProfile] = useLocalStorage<UserProfile | null>('user-profile', null);
   const [isEditing, setIsEditing] = useState(false);
@@ -135,8 +132,8 @@ const ProfilePage: React.FC = () => {
       if (hasSecurityIssues) {
         const allErrors = Object.values(validationResults).flatMap(result => result.errors);
         
-        if (typeof window !== 'undefined' && (window as any).showToast) {
-          (window as any).showToast({
+        if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
+          (window as Window & { showToast: (toast: { type: string; title: string; message: string }) => void }).showToast({
             type: 'error',
             title: 'Profile validation failed',
             message: allErrors[0] || 'Please check your input and try again.'
@@ -166,12 +163,12 @@ const ProfilePage: React.FC = () => {
       securityUtils.logSecurityEvent('profile_updated', {
         userId: profile?.id,
         fieldsUpdated: Object.keys(formData).filter(key => 
-          formData[key as keyof typeof formData] !== (profile as any)?.[key]
+          formData[key as keyof typeof formData] !== (profile as Record<string, unknown>)?.[key]
         )
       }, 'low');
 
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && 'showToast' in window) {
+        (window as { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
           type: 'success',
           title: 'Profile Updated',
           message: 'Your profile has been successfully updated.'
@@ -179,8 +176,8 @@ const ProfilePage: React.FC = () => {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && 'showToast' in window) {
+        (window as { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
           title: 'Update Failed',
           message: 'Unable to update profile. Please try again.'

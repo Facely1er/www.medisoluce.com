@@ -3,7 +3,7 @@ const frTranslation = {
   "app_name": "MediSoluce",
   "login": "Connexion",
   "register": "S'inscrire",
-  "contact": "Contact",
+  "contact_nav": "Contact",
   "logout": "Déconnexion",
   "email": "E-mail",
   "password": "Mot de passe",
@@ -486,6 +486,10 @@ const frTranslation = {
   // Language selector
   "language": {
     "select": "Choisir la langue",
+    "select_language": "Sélectionner la Langue",
+    "current": "Langue actuelle : {{language}}",
+    "switch_to": "Passer à {{language}}",
+    "auto_detected": "Détecté automatiquement",
     "en": "English",
     "fr": "Français"
   },
@@ -524,7 +528,7 @@ const frTranslation = {
   },
   
   // Error messages
-  "errors": {
+  "form_errors": {
     "required_field": "Ce champ est requis",
     "invalid_email": "Adresse e-mail invalide",
     "password_too_short": "Le mot de passe doit contenir au moins 6 caractères",
@@ -558,292 +562,175 @@ const frTranslation = {
     "search_results": "Résultats de recherche"
   },
 
-"time": {
-  "today": "Aujourd'hui",
-  "yesterday": "Hier",
-  "tomorrow": "Demain",
-  "this_week": "Cette Semaine",
-  "last_week": "La Semaine Dernière",
-  "this_month": "Ce Mois",
-  "last_month": "Le Mois Dernier",
-  "this_year": "Cette Année",
-  "never": "Jamais",
-  "always": "Toujours",
-  "minutes": "{{count}} minute",
-  "minutes_plural": "{{count}} minutes",
-  "hours": "{{count}} heure",
-  "hours_plural": "{{count}} heures", 
-  "days": "{{count}} jour",
-  "days_plural": "{{count}} jours",
-  "per_hour": "/heure",
-  "per_day": "/jour",
-  "per_month": "/mois"
-},
+  // HIPAA Assessment
+  "hipaa_assessment": {
+    "options": {
+      "policies_no": "Aucune politique ou procédure documentée",
+      "training_annual_plus": "Annuellement plus lors de changements significatifs",
+      "training_annual": "Annuellement seulement",
+      "training_onboarding": "Seulement lors de l'intégration des employés",
+      "training_never": "Nous ne menons pas de formation HIPAA formelle",
+      "encryption_transit": "Seulement en transit",
+      "encryption_rest": "Seulement au repos",
+      "encryption_none": "Aucun chiffrement en place",
+      "access_minimal": "Contrôles d'accès minimaux ou inexistants",
+      "baa_some": "Avec certains mais pas tous les fournisseurs",
+      "baa_none": "Aucun contrat de sous-traitant en place",
+      "incident_informal": "Des plans informels ou partiels existent",
+      "incident_none": "Aucun plan de réponse aux incidents",
+      "logs_partial": "Journalisation partielle ou incohérente",
+      "logs_none": "Aucune journalisation d'audit en place",
+      "devices_encryption_policies": "Politiques de chiffrement et de sécurité sans MDM",
+      "devices_none": "Aucune sécurité spécifique pour les appareils mobiles",
+      "emergency_informal": "Des procédures d'urgence informelles existent",
+      "emergency_none": "Aucune procédure d'accès d'urgence"
+    },
+    "rules": {
+      "privacy_description": "Protège la confidentialité des informations de santé individuellement identifiables",
+      "privacy_requirements": [
+        "Avis de pratiques de confidentialité",
+        "Droits individuels",
+        "Utilisations et divulgations",
+        "Norme du minimum nécessaire",
+        "Exigences administratives"
+      ],
+      "security_requirements": [
+        "Safeguards administratifs",
+        "Safeguards physiques",
+        "Safeguards techniques",
+        "Évaluation et gestion des risques",
+        "Planification de continuité"
+      ],
+      "breach_description": "Exigences pour la notification et la réponse aux violations",
+      "breach_requirements": [
+        "Découverte et évaluation des violations",
+        "Notification individuelle",
+        "Notification HHS",
+        "Notification médiatique",
+        "Exigences de documentation"
+      ],
+      "enforcement_description": "Procédures d'enquête et structures de pénalités",
+      "enforcement_requirements": [
+        "Procédures de conformité et d'enquête",
+        "Pénalités monétaires civiles",
+        "Plans d'action corrective",
+        "Procédures de règlement",
+        "Procédures d'audience"
+      ]
+    },
+    "implementation": {
+      "risk_assessment": "Spécification d'implémentation requise pour mener des évaluations des risques de sécurité",
+      "policies_procedures": "Exigences administratives pour les politiques et procédures documentées",
+      "workforce_training": "Formation requise du personnel sur les exigences HIPAA",
+      "encryption": "Spécification d'implémentation adressable pour le chiffrement",
+      "access_management": "Spécification requise pour la gestion de l'accès aux informations",
+      "business_associates": "Contrats requis avec les sous-traitants gérant les PHI",
+      "contingency_planning": "Plan de continuité requis et procédures de réponse aux violations",
+      "audit_controls": "Spécification d'implémentation requise pour les contrôles d'audit",
+      "workstation_security": "Safeguards requis pour les postes de travail et appareils mobiles",
+      "emergency_access": "Spécification adressable pour les procédures d'accès d'urgence"
+    },
+    "actions": {
+      "download_resources": "Télécharger les Ressources d'Implémentation",
+      "get_guidance": "Obtenir des Conseils d'Experts en Implémentation"
+    },
+    "continue_journey": "Continuez Votre Parcours de Conformité",
+    "aria_labels": {
+      "training_modules": "Accédez aux modules de formation HIPAA pour renforcer vos connaissances avant l'évaluation",
+      "download_templates": "Téléchargez les modèles de conformité HIPAA et les ressources d'implémentation",
+      "map_systems": "Cartographiez et sécurisez vos systèmes technologiques de santé critiques"
+    }
+  },
 
-// Risk assessment translations
-"risk": {
-  "critical": "Risque Critique",
-  "high": "Risque Élevé",
-  "medium": "Risque Moyen",
-  "low": "Risque Faible"
-},
+  // Homepage content
+  "homepage": {
+    "stats": {
+      "hhs_breaches": "Violations de données de santé rapportées au HHS (2023)",
+      "data_breach_cost": "Coût moyen d'une violation de données de santé",
+      "ransomware_hit": "Organisations de santé touchées par des ransomwares",
+      "recovery_time": "Temps de récupération moyen après ransomware",
+      "source_hhs": "Département américain de la Santé et des Services sociaux (HHS)",
+      "source_ibm": "Rapport IBM sur le Coût des Violations de Données 2023",
+      "source_sophos": "État des Ransomwares dans la Santé Sophos 2023"
+    },
+    "cta": {
+      "start_hipaa_assessment": "Commencez par une évaluation de conformité HIPAA pour évaluer votre état actuel",
+      "map_dependencies": "Cartographiez vos dépendances technologiques critiques et vulnérabilités",
+      "analyze_business_impact": "Analysez l'impact commercial des pannes système potentielles",
+      "develop_continuity_plans": "Développez des plans de continuité d'activité pour les opérations critiques",
+      "access_training": "Accédez à des programmes de formation complets en conformité de santé",
+      "access_toolkit": "Accédez à une boîte à outils complète de conformité"
+    }
+  },
 
-// Patient impact translations
-"impact": {
-  "patient": {
-    "minimal": "Impact Minimal",
-    "low": "Impact Faible", 
-    "medium": "Impact Moyen",
-    "high": "Impact Élevé",
-    "critical": "Impact Critique"
+  // Contact page
+  "contact_page": {
+    "validation": {
+      "message_failed": "Échec de la validation du message",
+      "submission_limit": "Limite de soumission dépassée",
+      "name_required": "Le nom est requis",
+      "email_required": "L'email est requis",
+      "invalid_email": "Adresse email invalide",
+      "message_required": "Le message est requis"
+    },
+    "form": {
+      "unknown_error": "Erreur inconnue"
+    }
+  },
+
+  // Common UI elements
+  "ui": {
+    "loading": "Chargement...",
+    "saving": "Enregistrement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "add": "Ajouter",
+    "remove": "Retirer",
+    "submit": "Soumettre",
+    "reset": "Réinitialiser",
+    "clear": "Effacer",
+    "search": "Rechercher",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "view": "Voir",
+    "select": "Sélectionner",
+    "confirm": "Confirmer",
+    "continue": "Continuer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "complete": "Terminé",
+    "incomplete": "Incomplet",
+    "pending": "En attente",
+    "draft": "Brouillon",
+    "required": "Requis",
+    "optional": "Optionnel",
+    "yes": "Oui",
+    "no": "Non",
+    "none": "Aucun",
+    "unknown": "Inconnu",
+    "not_specified": "Non spécifié",
+    "no_data_available": "Aucune donnée disponible"
+  },
+
+  // Error messages
+  "errors": {
+    "critical_application_error": "Erreur Critique de l'Application",
+    "something_went_wrong": "Quelque chose s'est mal passé",
+    "reload_page": "Recharger la Page",
+    "go_home": "Aller à l'Accueil",
+    "download_report": "Télécharger le Rapport d'Erreur",
+    "retry": "Réessayer",
+    "error_details": "Détails de l'Erreur",
+    "contact_support": "Contacter le Support",
+    "maximum_retry_attempts": "Nombre maximum de tentatives atteint",
+    "loading_chunk_error": "Échec du chargement des ressources de l'application",
+    "network_error": "Erreur de connexion réseau",
+    "unknown_error": "Erreur inconnue survenue"
   }
-},
-
-// Enhanced assessment translations
-"assessment": {
-  "organization_name": "Nom de l'Organisation",
-  "assessment_type": "Type d'Évaluation",
-  "conducted_by": "Réalisé par",
-  "department": "Département",
-  "review_date": "Date de Révision",
-  "notes": "Notes Additionnelles",
-  "begin_assessment": "Commencer l'Évaluation",
-  "assessment_results": "Résultats de l'Évaluation",
-  "your_score": "Votre Score",
-  "recommendations": "Recommandations",
-  "high_priority": "Priorité Élevée",
-  "medium_priority": "Priorité Moyenne", 
-  "low_priority": "Priorité Faible",
-  "download_report": "Télécharger le Rapport",
-  "retake_assessment": "Refaire l'Évaluation",
-  "compliance_score": "Score de Conformité",
-  "score_with_context": "{{score}}/{{maxScore}} ({{percentage}}%) - {{context}}",
-  "score_context": {
-    "excellent": "Excellente conformité",
-    "good": "Bonne conformité",
-    "fair": "Conformité acceptable",
-    "poor": "Conformité insuffisante"
-  }
-},
-
-// Enhanced systems translations
-"systems": {
-  "system_name": "Nom du Système",
-  "category": "Catégorie",
-  "criticality": "Criticité",
-  "dependencies": "Dépendances",
-  "risk_level": "Niveau de Risque",
-  "backup_procedures": "Procédures de Sauvegarde",
-  "downtime_tolerance": "Tolérance d'Arrêt",
-  "critical": "Critique",
-  "high": "Élevé",
-  "medium": "Moyen",
-  "low": "Faible",
-  "systems_mapped": "Systèmes Cartographiés",
-  "critical_systems": "Systèmes Critiques",
-  "high_risk_systems": "Systèmes à Haut Risque",
-  "criticality_explanation": "{{level}} {{systemType}} - {{impact}}",
-  "impact": {
-    "critical": "Sécurité des patients en danger immédiat",
-    "high": "Impact significatif sur la prestation de soins",
-    "medium": "Impact opérationnel modéré", 
-    "low": "Impact minimal sur les activités"
-  }
-},
-
-// Enhanced training translations
-"training": {
-  "title": "Formation en Conformité",
-  "subtitle": "Programmes de formation complets pour s'assurer que votre personnel comprend et suit les exigences de conformité en santé.",
-  "start_training": "Commencer la Formation",
-  "view_catalog": "Voir le Catalogue",
-  "training_modules": "Modules de Formation",
-  "hipaa_essentials": "Essentiels HIPAA",
-  "security_awareness": "Sensibilisation à la Sécurité",
-  "incident_response": "Réponse aux Incidents",
-  "compliance_updates": "Mises à jour de Conformité",
-  "training_features": "Fonctionnalités de Formation",
-  "interactive_learning": "Apprentissage Interactif",
-  "progress_tracking": "Suivi des Progrès",
-  "certification": "Certification",
-  "ready_start": "Prêt à commencer la formation de votre équipe?",
-  "start_trial": "Commencer l'Essai Gratuit",
-  "progress_message": "{{completed}} sur {{total}} modules complétés ({{percentage}}%)",
-  "progress_with_milestone": "{{completed}}/{{total}} modules complétés ({{percentage}}%) - {{milestone}}",
-  "milestones": {
-    "getting_started": "Tout juste commencé",
-    "beginner": "Construction des bases",
-    "intermediate": "Bons progrès", 
-    "advanced": "Presque arrivé",
-    "expert": "Expert en conformité!"
-  }
-},
-
-// Compliance and regulatory translations
-"compliance": {
-  "deadline_with_urgency": "{{complianceType}} dû le {{dueDate}} - {{urgency}} ({{daysRemaining}} jours restants)",
-  "urgency": {
-    "urgent": "URGENT",
-    "soon": "Échéance proche",
-    "upcoming": "Échéance à venir",
-    "normal": "Dans les temps"
-  }
-},
-
-// Planning translations
-"planning": {
-  "plan_name": "Nom du Plan",
-  "description": "Description",
-  "risk_category": "Catégorie de Risque",
-  "impact_level": "Niveau d'Impact",
-  "recovery_time": "Temps de Récupération",
-  "recovery_point": "Point de Récupération",
-  "procedures": "Procédures",
-  "responsible_party": "Partie Responsable",
-  "testing_schedule": "Calendrier de Tests",
-  "last_tested": "Dernier Test",
-  "status": "Statut",
-  "active": "Actif",
-  "draft": "Brouillon",
-  "under_review": "En Révision",
-  "plans_created": "Plans Créés",
-  "active_plans": "Plans Actifs"
-},
-
-// Education translations  
-"education": {
-  "training_modules": "Modules de Formation",
-  "progress": "Progrès",
-  "completed": "Terminé",
-  "in_progress": "En Cours",
-  "not_started": "Pas Commencé", 
-  "score": "Score",
-  "certificate": "Certificat",
-  "expiry_date": "Date d'Expiration",
-  "renew": "Renouveler",
-  "view_certificate": "Voir le Certificat"
-},
-
-// Resource management translations
-"resources": {
-  "resource_type": "Type de Ressource",
-  "download": "Télécharger",
-  "preview": "Aperçu",
-  "description": "Description",
-  "file_size": "Taille du Fichier",
-  "last_updated": "Dernière Mise à Jour",
-  "downloads_count": "Nombre de Téléchargements",
-  "popular": "Populaire",
-  "new": "Nouveau",
-  "recommended": "Recommandé"
-},
-
-// Navigation translations
-"navigation": {
-  "home": "Accueil",
-  "back": "Retour",
-  "next": "Suivant",
-  "previous": "Précédent",
-  "close": "Fermer",
-  "open": "Ouvrir", 
-  "menu": "Menu",
-  "search": "Rechercher",
-  "filter": "Filtrer",
-  "sort": "Trier",
-  "export": "Exporter",
-  "print": "Imprimer",
-  "share": "Partager"
-},
-
-// Status translations
-"status": {
-  "complete": "Terminé",
-  "incomplete": "Incomplet",
-  "pending": "En Attente",
-  "approved": "Approuvé", 
-  "rejected": "Rejeté",
-  "expired": "Expiré",
-  "valid": "Valide",
-  "invalid": "Invalide",
-  "enabled": "Activé",
-  "disabled": "Désactivé"
-},
-
-// Form translations
-"forms": {
-  "required": "Requis",
-  "optional": "Optionnel",
-  "save_draft": "Sauvegarder le Brouillon",
-  "cancel": "Annuler",
-  "save": "Enregistrer",
-  "update": "Mettre à jour",
-  "delete": "Supprimer",
-  "edit": "Modifier",
-  "add": "Ajouter",
-  "create": "Créer",
-  "confirm_delete": "Êtes-vous sûr de vouloir supprimer cet élément?",
-  "yes": "Oui",
-  "no": "Non",
-  "loading": "Chargement...",
-  "success": "Succès",
-  "error": "Erreur",
-  "warning": "Avertissement",
-  "info": "Information"
-},
-
-// Error messages
-"errors": {
-  "required_field": "Ce champ est requis",
-  "invalid_email": "Adresse e-mail invalide",
-  "password_too_short": "Le mot de passe doit contenir au moins 6 caractères",
-  "passwords_no_match": "Les mots de passe ne correspondent pas",
-  "invalid_phone": "Numéro de téléphone invalide",
-  "network_error": "Erreur de réseau. Veuillez réessayer.",
-  "unexpected_error": "Une erreur inattendue s'est produite",
-  "file_too_large": "Le fichier est trop volumineux",
-  "invalid_file_type": "Type de fichier invalide"
-},
-
-// Success messages
-"success": {
-  "saved": "Enregistré avec succès",
-  "updated": "Mis à jour avec succès",
-  "deleted": "Supprimé avec succès",
-  "sent": "Envoyé avec succès",
-  "completed": "Terminé avec succès",
-  "created": "Créé avec succès"
-},
-
-// Accessibility
-"accessibility": {
-  "skip_to_content": "Passer au contenu principal",
-  "close_modal": "Fermer la modal",
-  "open_menu": "Ouvrir le menu",
-  "close_menu": "Fermer le menu",
-  "next_page": "Page suivante",
-  "previous_page": "Page précédente",
-  "loading": "Chargement en cours",
-  "search_results": "Résultats de recherche"
-},
-
-// CHARACTER ENCODING FIXES for existing French translations:
-// Replace these throughout your fr.ts file:
-// "Ã©" → "é"
-// "Ã¨" → "è" 
-// "Ã " → "à"
-// "Ã´" → "ô"
-// "ÃŠ" → "Ê"
-// "Ã‡" → "Ç"
-// "FranÃ§ais" → "Français"
-
-// Example fixes for your existing translations:
-"nav": {
-  "demo": "Démo",  // was "DÃ©mo"
-  "hipaa_assessment": "Évaluation HIPAA",  // was "Ã‰valuation HIPAA"
-  // ... continue for all encoded characters
-}
-
-  
 };
 
 export default frTranslation;

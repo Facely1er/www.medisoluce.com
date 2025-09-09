@@ -16,6 +16,25 @@ interface SearchResult {
   relevance: number;
 }
 
+interface Assessment {
+  id: string;
+  title?: string;
+  result?: {
+    percentage: number;
+  };
+}
+
+interface Dependency {
+  id: string;
+  name: string;
+  criticality: string;
+}
+
+interface TrainingProgress {
+  moduleId: string;
+  progress: number;
+}
+
 const GlobalSearch: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -53,7 +72,7 @@ const GlobalSearch: React.FC = () => {
     const searchResults: SearchResult[] = [];
 
     // Search assessments
-    assessments.forEach((assessment: any) => {
+    assessments.forEach((assessment: Assessment) => {
       if (assessment.title?.toLowerCase().includes(sanitizedQuery)) {
         searchResults.push({
           id: assessment.id,
@@ -68,7 +87,7 @@ const GlobalSearch: React.FC = () => {
     });
 
     // Search dependencies
-    dependencies.forEach((dependency: any) => {
+    dependencies.forEach((dependency: Dependency) => {
       if (dependency.name.toLowerCase().includes(sanitizedQuery)) {
         searchResults.push({
           id: dependency.id,
@@ -93,7 +112,7 @@ const GlobalSearch: React.FC = () => {
     trainingModules.forEach(module => {
       if (module.title.toLowerCase().includes(sanitizedQuery) || 
           module.description.toLowerCase().includes(sanitizedQuery)) {
-        const progress = trainingProgress.find((p: any) => p.moduleId === module.id);
+        const progress = trainingProgress.find((p: TrainingProgress) => p.moduleId === module.id);
         searchResults.push({
           id: module.id,
           title: module.title,

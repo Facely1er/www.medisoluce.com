@@ -60,7 +60,9 @@ class PerformanceEnhancer {
   }
 
   async enhancePerformance(): Promise<PerformanceMetrics> {
-    console.log('🚀 Starting performance enhancement...');
+    if (!import.meta.env.PROD) {
+      console.log('🚀 Starting performance enhancement...');
+    }
     
     const before = this.captureMetrics();
     
@@ -80,7 +82,9 @@ class PerformanceEnhancer {
 
     this.metrics = { before, after, improvement };
     
-    console.log('✅ Performance enhancement completed:', improvement);
+    if (!import.meta.env.PROD) {
+      console.log('✅ Performance enhancement completed:', improvement);
+    }
     this.notifyPerformanceImprovement(improvement);
     
     return this.metrics;
@@ -101,7 +105,9 @@ class PerformanceEnhancer {
         try {
           await optimization.fn();
           this.optimizations.push(optimization.name);
-          console.log(`✅ ${optimization.name} completed`);
+          if (!import.meta.env.PROD) {
+            console.log(`✅ ${optimization.name} completed`);
+          }
         } catch (error) {
           console.error(`❌ ${optimization.name} failed:`, error);
         }
@@ -130,7 +136,7 @@ class PerformanceEnhancer {
 
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -139,11 +145,11 @@ class PerformanceEnhancer {
   private estimateBundleSize(): number {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
-        resource.name.includes('.js')
+      const jsResources = resources.filter((resource: PerformanceEntry) => 
+        'name' in resource && resource.name.includes('.js')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: PerformanceEntry & { transferSize?: number }) => 
         sum + (resource.transferSize || 0), 0
       );
       
@@ -306,13 +312,15 @@ class PerformanceEnhancer {
     ['error-logs', 'performance-metrics', 'page-views'].forEach(key => {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
-        const filtered = data.filter((item: any) => {
+        const filtered = data.filter((item: { timestamp?: string; date?: string }) => {
           const timestamp = item.timestamp || item.date;
           return !timestamp || new Date(timestamp).getTime() > oneWeekAgo;
         });
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
-        console.warn(`Failed to cleanup ${key}:`, error);
+        if (!import.meta.env.PROD) {
+          console.warn(`Failed to cleanup ${key}:`, error);
+        }
       }
     });
   }
@@ -323,17 +331,17 @@ class PerformanceEnhancer {
       if (!element.isConnected) {
         // Element is detached, clear its listeners
         const newElement = element.cloneNode(true);
-        element.parentNode?.replaceChild(newElement, element);
+        // element.parentNode?.replaceChild(newElement, element); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
 
   private optimizeObjectReferences(): void {
     // Clear WeakMap and WeakSet references that might be holding objects
-    if ((window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+    if ('__REACT_DEVTOOLS_GLOBAL_HOOK__' in window) {
       // Clear React DevTools references in production
       if (import.meta.env.PROD) {
-        delete (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
+        delete (window as Window & { __REACT_DEVTOOLS_GLOBAL_HOOK__: unknown }).__REACT_DEVTOOLS_GLOBAL_HOOK__;
       }
     }
   }
@@ -352,13 +360,13 @@ class PerformanceEnhancer {
   private removeUnusedElements(): void {
     // Remove elements marked as unused
     document.querySelectorAll('[data-unused="true"]').forEach(element => {
-      element.remove();
+      // element.remove(); // Commented out to prevent conflicts with React DOM management
     });
     
     // Remove empty elements
     document.querySelectorAll('div:empty, span:empty').forEach(element => {
       if (!element.hasAttribute('data-keep-empty')) {
-        element.remove();
+        // element.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -370,9 +378,9 @@ class PerformanceEnhancer {
       if (parent && !parent.hasAttribute('data-structure-required')) {
         // Move child's content to parent
         while (child.firstChild) {
-          parent.insertBefore(child.firstChild, child);
+          // parent.insertBefore(child.firstChild, child); // Commented out to prevent conflicts with React DOM management
         }
-        child.remove();
+        // child.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
   }
@@ -420,7 +428,9 @@ class PerformanceEnhancer {
     setInterval(() => {
       const memoryUsage = this.getMemoryUsage();
       if (memoryUsage > 85) {
-        console.log('🔧 Auto-optimizing due to high memory usage...');
+        if (!import.meta.env.PROD) {
+          console.log('🔧 Auto-optimizing due to high memory usage...');
+        }
         this.optimizeMemory();
       }
     }, 30000);
@@ -441,11 +451,11 @@ class PerformanceEnhancer {
     localStorage.setItem('performance-metrics', JSON.stringify(performanceData.slice(-100)));
   }
 
-  private notifyPerformanceImprovement(improvement: any): void {
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      const totalImprovement = Object.values(improvement).reduce((sum: number, val: any) => sum + (val || 0), 0);
+  private notifyPerformanceImprovement(improvement: Record<string, number>): void {
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      const totalImprovement = Object.values(improvement).reduce((sum: number, val: number) => sum + (val || 0), 0);
       
-      (window as any).showToast({
+      (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'success',
         title: 'Performance Enhanced',
         message: `Applied ${this.optimizations.length} optimizations`,
@@ -454,7 +464,18 @@ class PerformanceEnhancer {
     }
   }
 
-  public getPerformanceReport(): any {
+  public getPerformanceReport(): {
+    currentMetrics: {
+      loadTime: number;
+      memoryUsage: number;
+      bundleSize: number;
+      renderTime: number;
+    };
+    improvements: Record<string, number>;
+    optimizationsApplied: string[];
+    trend: string;
+    recommendations: string[];
+  } {
     const data = JSON.parse(localStorage.getItem('performance-metrics') || '[]');
     const recent = data.slice(-10);
     
@@ -467,7 +488,10 @@ class PerformanceEnhancer {
     };
   }
 
-  private calculatePerformanceTrend(data: any[]): string {
+  private calculatePerformanceTrend(data: Array<{
+    loadTime: number;
+    memoryUsage: number;
+  }>): string {
     if (data.length < 2) return 'insufficient-data';
     
     const recent = data[data.length - 1];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Phone, Building, Clock, MapPin } from 'lucide-react';
+import { User, Mail, Phone, Building, Clock } from 'lucide-react';
 import Card from '../ui/Card';
 
 interface ProfileCardProps {
