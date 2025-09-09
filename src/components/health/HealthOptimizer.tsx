@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Activity,
   Zap,
-  Shield,
-  Eye,
   CheckCircle,
   AlertTriangle,
   TrendingUp,
@@ -37,7 +35,47 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
   autoOptimize = true,
   position = 'floating'
 }) => {
-  const [healthData, setHealthData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<{
+    overall: {
+      score: number;
+      status: string;
+      trend: string;
+      confidence: number;
+    };
+    categories: Record<string, {
+      score: number;
+      status: string;
+      trend: number;
+      checks: Array<{
+        name: string;
+        status: 'pass' | 'warning' | 'fail' | 'pending';
+        message?: string;
+        timestamp?: string;
+      }>;
+    }>;
+    recommendations: Array<{
+      title: string;
+      description: string;
+      priority: 'low' | 'medium' | 'high' | 'critical';
+      autoImplementable: boolean;
+    }>;
+    autoHealingActions: Array<{
+      action: string;
+      success: boolean;
+      timestamp: string;
+    }>;
+    predictiveInsights: Array<{
+      insight: string;
+      confidence: number;
+      impact: string;
+    }>;
+    metrics: {
+      uptime: number;
+      responseTime: number;
+      errorRate: number;
+      satisfaction: number;
+    };
+  } | null>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMonitoring, setIsMonitoring] = useState(autoOptimize);
@@ -84,10 +122,10 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
         setHealthData(health);
       }, 2000);
       
-      if ((window as any).showToast) {
+      if ('showToast' in window) {
         // Only show notifications in development mode
         if (!import.meta.env.PROD) {
-          (window as any).showToast({
+          (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
             type: 'success',
             title: 'Optimization Complete',
             message: 'System health has been optimized',
@@ -97,8 +135,8 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
       }
     } catch (error) {
       console.error('Optimization failed:', error);
-      if ((window as any).showToast) {
-        (window as any).showToast({
+      if ('showToast' in window) {
+        (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
           type: 'error',
           title: 'Optimization Failed',
           message: 'Unable to complete system optimization',
@@ -290,7 +328,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                       Detailed Health Analysis
                     </h4>
                     <div className="space-y-3">
-                      {Object.entries(healthData.categories).map(([category, data]: [string, any]) => (
+                      {Object.entries(healthData.categories).map(([category, data]) => (
                         <div key={category}>
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs capitalize text-gray-600 dark:text-gray-300">
@@ -312,7 +350,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                   </div>
 
                   {/* Critical Recommendations */}
-                  {healthData.recommendations.filter((r: any) => r.priority === 'critical').length > 0 && (
+                  {healthData.recommendations.filter((r) => r.priority === 'critical').length > 0 && (
                     <div>
                       <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2 flex items-center">
                         <AlertTriangle className="h-4 w-4 mr-1 text-accent-500" />
@@ -320,9 +358,9 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                       </h4>
                       <div className="space-y-2">
                         {healthData.recommendations
-                          .filter((r: any) => r.priority === 'critical')
+                          .filter((r) => r.priority === 'critical')
                           .slice(0, 3)
-                          .map((rec: any, index: number) => (
+                          .map((rec, index: number) => (
                             <div key={index} className="text-xs p-2 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800 rounded">
                               <div className="font-medium text-accent-800 dark:text-accent-200">
                                 {rec.title}
@@ -348,7 +386,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                         Recent Optimizations
                       </h4>
                       <div className="space-y-1 max-h-24 overflow-y-auto">
-                        {healthData.autoHealingActions.slice(-5).map((action: any, index: number) => (
+                        {healthData.autoHealingActions.slice(-5).map((action, index: number) => (
                           <div key={index} className="text-xs flex items-center justify-between">
                             <span className="text-gray-600 dark:text-gray-300">
                               {action.action}
@@ -399,7 +437,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                         Predictive Insights
                       </h4>
                       <div className="space-y-1">
-                        {healthData.predictiveInsights.slice(0, 2).map((insight: any, index: number) => (
+                        {healthData.predictiveInsights.slice(0, 2).map((insight, index: number) => (
                           <div key={index} className="text-xs p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded">
                             <div className="font-medium text-blue-800 dark:text-blue-200">
                               {insight.metric}

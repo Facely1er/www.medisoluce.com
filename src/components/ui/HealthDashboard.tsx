@@ -2,23 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Activity, 
-  Shield, 
-  Zap, 
   CheckCircle, 
   AlertTriangle, 
   XCircle,
-  TrendingUp,
-  TrendingDown,
   Download,
   RefreshCw,
   Eye,
-  EyeOff,
-  Settings,
-  BarChart3
+  EyeOff
 } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';
 import { systemHealthManager } from '../../utils/systemHealthManager';
+
+interface HealthData {
+  status: 'healthy' | 'warning' | 'critical';
+  overall: string;
+  metrics: {
+    performance: number;
+    security: number;
+    accessibility: number;
+    seo: number;
+  };
+  lastChecked: string;
+  issues: Array<{
+    type: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high';
+  }>;
+  recommendations: Array<{
+    title: string;
+    action: string;
+    priority: 'low' | 'medium' | 'high' | 'critical';
+  }>;
+}
 
 interface HealthDashboardProps {
   showInProduction?: boolean;
@@ -31,7 +47,7 @@ const HealthDashboard: React.FC<HealthDashboardProps> = ({
   autoRefresh = true,
   refreshInterval = 60000
 }) => {
-  const [healthData, setHealthData] = useState<any>(null);
+  const [healthData, setHealthData] = useState<HealthData | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
@@ -271,7 +287,7 @@ const HealthDashboard: React.FC<HealthDashboardProps> = ({
                     Top Recommendations
                   </h4>
                   <div className="space-y-2">
-                    {healthData.recommendations.slice(0, 3).map((rec: any, index: number) => (
+                    {healthData.recommendations.slice(0, 3).map((rec, index: number) => (
                       <div key={index} className={`text-xs p-2 rounded border-l-2 ${
                         rec.priority === 'critical' ? 'border-accent-500 bg-accent-50 dark:bg-accent-900/20' :
                         rec.priority === 'high' ? 'border-warning-500 bg-warning-50 dark:bg-warning-900/20' :

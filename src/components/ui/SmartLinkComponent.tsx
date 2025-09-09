@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
-import { linkAttributes, getOptimizedAnchorText } from '../../utils/linkingStrategy';
+import { getOptimizedAnchorText } from '../../utils/linkingStrategy';
 
 interface SmartLinkProps {
   to: string;

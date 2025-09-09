@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { UserPlus, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
+import { UserPlus, Shield, AlertTriangle } from 'lucide-react';
 import { useToast } from '../ui/Toast';
 import { validateSecureHealthcareInput, rateLimiter } from '../../utils/validation';
 import { securityUtils } from '../../utils/securityUtils';
@@ -19,7 +19,7 @@ const Register: React.FC = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>();
-  const [passwordStrength, setPasswordStrength] = React.useState<any>({ score: 0, feedback: [] });
+  const [passwordStrength, setPasswordStrength] = React.useState<{ score: number; feedback: string[] }>({ score: 0, feedback: [] });
   const [mfaSetupKey, setMfaSetupKey] = React.useState<string | null>(null);
   
   const watchPassword = watch('password');

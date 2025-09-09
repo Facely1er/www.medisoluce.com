@@ -35,8 +35,8 @@ const EnhancedLanguageSelector: React.FC<EnhancedLanguageSelectorProps> = ({
     setIsOpen(false);
     
     // Track language change
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'language_change', {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as { gtag: (command: string, action: string, params: Record<string, string>) => void }).gtag('event', 'language_change', {
         event_category: 'User Preference',
         event_label: newLocale
       });

@@ -1,0 +1,195 @@
+
+> medisoluce-healthcare-compliance@0.1.0 test
+> npx vitest run --run --reporter=json
+
+3:05:09 AM [vite] warning: Duplicate key "contact" in object literal
+247|    
+248|    // Contact page
+249|    "contact": {
+   |    ^
+250|      "title": "Contact Us",
+251|      "subtitle": "Get in touch with our healthcare compliance experts. We're here to help.",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/en.ts
+3:05:09 AM [vite] warning: Duplicate key "impact" in object literal
+364|  
+365|  // Patient impact translations (referenced in useI18nFormatters.ts)
+366|  "impact": {
+   |  ^
+367|    "patient": {
+368|      "minimal": "Minimal Impact",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/en.ts
+3:05:09 AM [vite] warning: Duplicate key "training" in object literal
+427|  
+428|  // Enhanced training translations
+429|  "training": {
+   |  ^
+430|    "title": "Compliance Training",
+431|    "subtitle": "Comprehensive training programs to ensure your staff understands and follows healthcare compliance requirements.",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/en.ts
+3:05:09 AM [vite] warning: Duplicate key "contact" in object literal
+247|    
+248|    // Contact page
+249|    "contact": {
+   |    ^
+250|      "title": "Contactez-Nous",
+251|      "subtitle": "Prenez contact avec nos experts en conformité de santé. Nous sommes là pour vous aider.",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "time" in object literal
+559|    },
+560|  
+561|  "time": {
+   |  ^
+562|    "today": "Aujourd'hui",
+563|    "yesterday": "Hier",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "impact" in object literal
+590|  
+591|  // Patient impact translations
+592|  "impact": {
+   |  ^
+593|    "patient": {
+594|      "minimal": "Impact Minimal",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "assessment" in object literal
+601|  
+602|  // Enhanced assessment translations
+603|  "assessment": {
+   |  ^
+604|    "organization_name": "Nom de l'Organisation",
+605|    "assessment_type": "Type d'Évaluation",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "systems" in object literal
+628|  
+629|  // Enhanced systems translations
+630|  "systems": {
+   |  ^
+631|    "system_name": "Nom du Système",
+632|    "category": "Catégorie",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "training" in object literal
+653|  
+654|  // Enhanced training translations
+655|  "training": {
+   |  ^
+656|    "title": "Formation en Conformité",
+657|    "subtitle": "Programmes de formation complets pour s'assurer que votre personnel comprend et suit les exigences de conformité en santé.",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "planning" in object literal
+692|  
+693|  // Planning translations
+694|  "planning": {
+   |  ^
+695|    "plan_name": "Nom du Plan",
+696|    "description": "Description",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "education" in object literal
+712|  
+713|  // Education translations  
+714|  "education": {
+   |  ^
+715|    "training_modules": "Modules de Formation",
+716|    "progress": "Progrès",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "resources" in object literal
+726|  
+727|  // Resource management translations
+728|  "resources": {
+   |  ^
+729|    "resource_type": "Type de Ressource",
+730|    "download": "Télécharger",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "navigation" in object literal
+740|  
+741|  // Navigation translations
+742|  "navigation": {
+   |  ^
+743|    "home": "Accueil",
+744|    "back": "Retour",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "status" in object literal
+757|  
+758|  // Status translations
+759|  "status": {
+   |  ^
+760|    "complete": "Terminé",
+761|    "incomplete": "Incomplet",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "forms" in object literal
+771|  
+772|  // Form translations
+773|  "forms": {
+   |  ^
+774|    "required": "Requis",
+775|    "optional": "Optionnel",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "errors" in object literal
+793|  
+794|  // Error messages
+795|  "errors": {
+   |  ^
+796|    "required_field": "Ce champ est requis",
+797|    "invalid_email": "Adresse e-mail invalide",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "success" in object literal
+806|  
+807|  // Success messages
+808|  "success": {
+   |  ^
+809|    "saved": "Enregistré avec succès",
+810|    "updated": "Mis à jour avec succès",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "accessibility" in object literal
+816|  
+817|  // Accessibility
+818|  "accessibility": {
+   |  ^
+819|    "skip_to_content": "Passer au contenu principal",
+820|    "close_modal": "Fermer la modal",
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+3:05:09 AM [vite] warning: Duplicate key "nav" in object literal
+838|  
+839|  // Example fixes for your existing translations:
+840|  "nav": {
+   |  ^
+841|    "demo": "Démo",  // was "DÃ©mo"
+842|    "hipaa_assessment": "Évaluation HIPAA",  // was "Ã‰valuation HIPAA"
+
+  Plugin: vite:esbuild
+  File: /workspace/src/i18n/locales/fr.ts
+{"numTotalTestSuites":16,"numPassedTestSuites":16,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":24,"numPassedTests":24,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1755745507489,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["App"],"fullName":"App renders without crashing","status":"passed","title":"renders without crashing","duration":113.98813200000018,"failureMessages":[],"meta":{}},{"ancestorTitles":["App"],"fullName":"App includes essential providers","status":"passed","title":"includes essential providers","duration":59.43901600000004,"failureMessages":[],"meta":{}}],"startTime":1755745509239,"endTime":1755745509412.439,"status":"passed","message":"","name":"/workspace/src/test/App.test.tsx"},{"assertionResults":[{"ancestorTitles":["Validation Utils","validateEmail"],"fullName":"Validation Utils validateEmail validates correct email formats","status":"passed","title":"validates correct email formats","duration":1.2632530000000202,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utils","validateEmail"],"fullName":"Validation Utils validateEmail rejects invalid email formats","status":"passed","title":"rejects invalid email formats","duration":0.18676300000004176,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utils","validatePhone"],"fullName":"Validation Utils validatePhone validates correct phone formats","status":"passed","title":"validates correct phone formats","duration":0.23252200000001721,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utils","validatePhone"],"fullName":"Validation Utils validatePhone rejects invalid phone formats","status":"passed","title":"rejects invalid phone formats","duration":0.13678199999998242,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utils","validatePassword"],"fullName":"Validation Utils validatePassword validates strong passwords","status":"passed","title":"validates strong passwords","duration":0.6387220000000298,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utils","validatePassword"],"fullName":"Validation Utils validatePassword identifies weak passwords","status":"passed","title":"identifies weak passwords","duration":0.32441999999997506,"failureMessages":[],"meta":{}}],"startTime":1755745508552,"endTime":1755745508555.3245,"status":"passed","message":"","name":"/workspace/src/test/validation.test.ts"},{"assertionResults":[{"ancestorTitles":["Validation Utilities","validateEmail"],"fullName":"Validation Utilities validateEmail validates correct email addresses","status":"passed","title":"validates correct email addresses","duration":1.2198489999999538,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validateEmail"],"fullName":"Validation Utilities validateEmail rejects invalid email addresses","status":"passed","title":"rejects invalid email addresses","duration":0.22487999999998465,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validatePassword"],"fullName":"Validation Utilities validatePassword accepts valid passwords","status":"passed","title":"accepts valid passwords","duration":0.5407440000000179,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validatePassword"],"fullName":"Validation Utilities validatePassword rejects passwords that are too short","status":"passed","title":"rejects passwords that are too short","duration":0.3719899999999825,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validatePassword"],"fullName":"Validation Utilities validatePassword accepts minimum length passwords","status":"passed","title":"accepts minimum length passwords","duration":0.19500800000002982,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validatePhone"],"fullName":"Validation Utilities validatePhone validates correct phone numbers","status":"passed","title":"validates correct phone numbers","duration":0.20113100000003215,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","validatePhone"],"fullName":"Validation Utilities validatePhone rejects invalid phone numbers","status":"passed","title":"rejects invalid phone numbers","duration":0.09504699999990862,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","sanitizeInput"],"fullName":"Validation Utilities sanitizeInput trims whitespace and removes dangerous characters","status":"passed","title":"trims whitespace and removes dangerous characters","duration":1.2833369999999604,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","RateLimiter"],"fullName":"Validation Utilities RateLimiter allows attempts within the limit","status":"passed","title":"allows attempts within the limit","duration":0.259488000000033,"failureMessages":[],"meta":{}},{"ancestorTitles":["Validation Utilities","RateLimiter"],"fullName":"Validation Utilities RateLimiter blocks attempts exceeding the limit","status":"passed","title":"blocks attempts exceeding the limit","duration":0.11139000000002852,"failureMessages":[],"meta":{}}],"startTime":1755745508066,"endTime":1755745508071.1113,"status":"passed","message":"","name":"/workspace/src/utils/__tests__/validation.test.tsx"},{"assertionResults":[{"ancestorTitles":["Button Component"],"fullName":"Button Component renders with default props","status":"passed","title":"renders with default props","duration":56.37015799999995,"failureMessages":[],"meta":{}},{"ancestorTitles":["Button Component"],"fullName":"Button Component applies correct variant styles","status":"passed","title":"applies correct variant styles","duration":4.580392000000074,"failureMessages":[],"meta":{}},{"ancestorTitles":["Button Component"],"fullName":"Button Component handles click events","status":"passed","title":"handles click events","duration":7.027379999999994,"failureMessages":[],"meta":{}},{"ancestorTitles":["Button Component"],"fullName":"Button Component is disabled when disabled prop is true","status":"passed","title":"is disabled when disabled prop is true","duration":4.593355999999972,"failureMessages":[],"meta":{}},{"ancestorTitles":["Button Component"],"fullName":"Button Component renders with icon in correct position","status":"passed","title":"renders with icon in correct position","duration":2.433087999999998,"failureMessages":[],"meta":{}},{"ancestorTitles":["Button Component"],"fullName":"Button Component applies fullWidth style when specified","status":"passed","title":"applies fullWidth style when specified","duration":3.191836999999964,"failureMessages":[],"meta":{}}],"startTime":1755745508139,"endTime":1755745508217.192,"status":"passed","message":"","name":"/workspace/src/components/ui/__tests__/Button.test.tsx"}]}

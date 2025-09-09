@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Shield, Lock, Eye, FileText, CheckCircle } from 'lucide-react';
+import { Shield, Lock, CheckCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
 

@@ -4,15 +4,40 @@ import { Download, X, RefreshCw } from 'lucide-react';
 import Button from './Button';
 import { useToast } from './Toast';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 const ServiceWorkerManager: React.FC = () => {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [isInstallable, setIsInstallable] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const { showToast } = useToast();
 
   useEffect(() => {
-    // Service Worker update detection
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered successfully:', registration);
+          
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  setUpdateAvailable(true);
+                }
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         setUpdateAvailable(true);
       });

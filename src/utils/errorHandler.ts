@@ -36,7 +36,7 @@ interface SystemContext {
 interface SecurityEvent {
   eventType: 'csp_violation' | 'failed_auth' | 'suspicious_input' | 'data_access' | 'permission_escalation';
   severity: 'low' | 'medium' | 'high' | 'critical';
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   riskScore: number; // 1-10 scale
   mitigated: boolean;
   investigated: boolean;
@@ -106,7 +106,9 @@ class ErrorHandler {
         
         this.log('External error monitoring initialized');
       }).catch((error) => {
-        console.warn('Failed to initialize external error monitoring:', error);
+        if (!import.meta.env.PROD) {
+          console.warn('Failed to initialize external error monitoring:', error);
+        }
       });
     }
   }
@@ -334,12 +336,12 @@ class ErrorHandler {
     }
   }
 
-  private notifySecurityTeam(incident: any): void {
+  private notifySecurityTeam(incident: SecurityEvent): void {
     // In production, this would send alerts via email, SMS, or SIEM integration
     console.error('Critical security incident detected:', incident);
     
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast({
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'error',
         title: 'Critical Security Alert',
         message: 'Security incident detected and logged for investigation',
@@ -352,7 +354,7 @@ class ErrorHandler {
     // Enhanced security event handling
     if (!errorLog.securityEvent) return;
     
-    const event = errorLog.securityEvent;
+    const _event = errorLog.securityEvent;
     
     // Store security event separately for analysis
     const securityEvents = JSON.parse(localStorage.getItem('security-event-details') || '[]');
@@ -374,14 +376,14 @@ class ErrorHandler {
   }
   
   private checkForSecurityPatterns(newEvent: SecurityEvent): void {
-    const events = JSON.parse(localStorage.getItem('security-event-details') || '[]');
+    const _events = JSON.parse(localStorage.getItem('security-event-details') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentEvents = events.filter((event: any) => 
+    const recentEvents = events.filter((event: { timestamp?: string }) => 
       new Date(event.timestamp || Date.now()).getTime() > oneHourAgo
     );
     
     // Check for attack patterns
-    const sameTypeEvents = recentEvents.filter((event: any) => 
+    const sameTypeEvents = recentEvents.filter((event: { eventType: string }) => 
       event.eventType === newEvent.eventType
     );
     
@@ -503,7 +505,7 @@ class ErrorHandler {
   }
 
   // Business logic error handling
-  handleBusinessError(operation: string, error: any) {
+  handleBusinessError(operation: string, error: unknown) {
     this.logError({
       type: 'business',
       message: `${operation}: ${error.message || error}`,
@@ -512,7 +514,7 @@ class ErrorHandler {
   }
 
   // Network error handling
-  handleNetworkError(url: string, error: any) {
+  handleNetworkError(url: string, error: unknown) {
     this.logError({
       type: 'network',
       message: `Network request failed: ${url}`,
@@ -521,7 +523,7 @@ class ErrorHandler {
   }
 
   // Validation error handling
-  handleValidationError(field: string, value: any, rule: string) {
+  handleValidationError(field: string, value: unknown, rule: string) {
     this.logError({
       type: 'validation',
       message: `Validation failed for ${field}: ${rule}`,
@@ -538,12 +540,12 @@ class ErrorHandler {
     });
 
     // Enhanced statistics with context analysis
-    const contextAnalysis = this.analyzeErrorContext(logs);
+    const _contextAnalysis = this.analyzeErrorContext(logs);
     
     return {
       total: logs.length,
       last24Hours: last24Hours.length,
-      byType: logs.reduce((acc: any, log: ErrorLog) => {
+      byType: logs.reduce((acc: unknown, log: ErrorLog) => {
         acc[log.type] = (acc[log.type] || 0) + 1;
         return acc;
       }, {}),
@@ -557,18 +559,18 @@ class ErrorHandler {
       const recentLogs = logs.slice(-50); // Analyze last 50 errors
       
       // Page-based error analysis
-      const errorsByPage = recentLogs.reduce((acc: any, log) => {
+      const _errorsByPage = recentLogs.reduce((acc: unknown, log) => {
         const page = log.userContext?.currentPage || log.url || 'unknown';
         acc[page] = (acc[page] || 0) + 1;
         return acc;
       }, {});
       
       // User action correlation
-      const errorsWithActions = recentLogs.filter(log => 
+      const _errorsWithActions = recentLogs.filter(log => 
         log.userContext?.userActions && log.userContext.userActions.length > 0
       );
       
-      const commonActionBeforeError = errorsWithActions.reduce((acc: any, log) => {
+      const commonActionBeforeError = errorsWithActions.reduce((acc: unknown, log) => {
         const lastAction = log.userContext?.userActions[0];
         if (lastAction) {
           acc[lastAction] = (acc[lastAction] || 0) + 1;
@@ -593,7 +595,9 @@ class ErrorHandler {
         totalAnalyzed: recentLogs.length
       };
     } catch (error) {
-      console.warn('Error context analysis failed:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Error context analysis failed:', error);
+      }
       return {
         errorsByPage: {},
         commonActionBeforeError: {},
@@ -637,7 +641,7 @@ class ErrorHandler {
     window.URL.revokeObjectURL(url);
   }
   
-  private generateSecurityRecommendations(stats: any): string[] {
+  private generateSecurityRecommendations(stats: unknown): string[] {
     const recommendations: string[] = [];
     
     if (stats.securityAnalysis.highRiskEvents > 0) {
@@ -668,4 +672,4 @@ class ErrorHandler {
   }
 }
 
-export const errorHandler = new ErrorHandler();
+export const _errorHandler = new ErrorHandler();

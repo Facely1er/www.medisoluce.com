@@ -6,7 +6,7 @@ interface SecurityEvent {
   eventType: 'authentication' | 'data_access' | 'suspicious_input' | 'failed_auth' | 'csp_violation' | 'privacy_violation' | 'malware_detected' | 'injection_attempt';
   severity: 'low' | 'medium' | 'high' | 'critical';
   source: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   mitigated: boolean;
   investigated: boolean;
   riskScore: number; // 1-10 scale
@@ -183,7 +183,7 @@ class SecurityManager {
 
   private loadSecurityHistory(): void {
     try {
-      const events = JSON.parse(localStorage.getItem('security-events') || '[]');
+      const _events = JSON.parse(localStorage.getItem('security-events') || '[]');
       const threats = JSON.parse(localStorage.getItem('security-threats') || '[]');
       const vulns = JSON.parse(localStorage.getItem('security-vulnerabilities') || '[]');
 
@@ -197,7 +197,7 @@ class SecurityManager {
 
   public logSecurityEvent(
     eventType: SecurityEvent['eventType'], 
-    details: Record<string, any>, 
+    details: Record<string, unknown>, 
     severity: SecurityEvent['severity']
   ): void {
     const event: SecurityEvent = {
@@ -229,7 +229,7 @@ class SecurityManager {
     }
   }
 
-  private calculateRiskScore(eventType: string, severity: string, details: Record<string, any>): number {
+  private calculateRiskScore(eventType: string, severity: string, details: Record<string, unknown>): number {
     let baseScore = 5;
 
     // Adjust based on severity
@@ -256,7 +256,7 @@ class SecurityManager {
     return Math.min(10, Math.max(1, baseScore));
   }
 
-  private isHIPAARelevant(eventType: string, details: Record<string, any>): boolean {
+  private isHIPAARelevant(eventType: string, details: Record<string, unknown>): boolean {
     const hipaaEventTypes = ['data_access', 'privacy_violation', 'malware_detected'];
     if (hipaaEventTypes.includes(eventType)) return true;
 
@@ -500,7 +500,35 @@ class SecurityManager {
     localStorage.setItem('security-threats', JSON.stringify(this.threatHistory));
   }
 
-  public generateSecurityReport(): any {
+  public generateSecurityReport(): {
+    https: boolean;
+    csp: {
+      enabled: boolean;
+      violations: Array<{
+        timestamp: string;
+        violatedDirective: string;
+        blockedURI: string;
+        sourceFile?: string;
+        lineNumber?: number;
+      }>;
+    };
+    headers: Record<string, boolean>;
+    cookies: {
+      secureCount: number;
+      insecureCount: number;
+      httpOnlyCount: number;
+    };
+    localStorage: {
+      encrypted: boolean;
+      sensitiveDataCount: number;
+    };
+    metrics: {
+      overallScore: number;
+      threatLevel: string;
+      encryptionCoverage: number;
+      complianceScore: number;
+    };
+  } {
     return {
       https: window.location.protocol === 'https:',
       csp: {
@@ -533,7 +561,7 @@ class SecurityManager {
     };
   }
 
-  public async performAdvancedSecurityScan(): Promise<any> {
+  public async performAdvancedSecurityScan(): Promise<unknown> {
     const startTime = Date.now();
     
     const threats = await this.scanForThreats();
@@ -545,7 +573,7 @@ class SecurityManager {
       vulnerabilities,
       compliance,
       threatLevel: this.calculateThreatLevel(threats),
-      mitigatedThreats: threats.filter((t: any) => t.mitigated).length,
+      mitigatedThreats: threats.filter((t: unknown) => t.mitigated).length,
       scanDuration: Date.now() - startTime,
       timestamp: new Date().toISOString()
     };
@@ -693,9 +721,10 @@ class SecurityManager {
       null
     );
 
-    let node;
-    while (node = walker.nextNode()) {
+    let node = walker.nextNode();
+    while (node) {
       textNodes.push(node as Text);
+      node = walker.nextNode();
     }
 
     return textNodes;
@@ -909,7 +938,7 @@ class SecurityManager {
     }
   }
 
-  private getCSPViolations(): any[] {
+  private getCSPViolations(): unknown[] {
     return JSON.parse(localStorage.getItem('csp-violations') || '[]');
   }
 
@@ -1221,7 +1250,7 @@ class SecurityManager {
     }
 
     const recent = history.slice(-5);
-    const scores = recent.map((h: any) => h.overallScore);
+    const scores = recent.map((h: unknown) => h.overallScore);
     const trend = scores[scores.length - 1] - scores[0];
 
     const factors: string[] = [];
@@ -1267,10 +1296,6 @@ class SecurityManager {
 
   public getThreatHistory(): SecurityThreat[] {
     return this.threatHistory;
-  }
-
-  public async scanForVulnerabilities(): Promise<SecurityVulnerability[]> {
-    return this.vulnerabilities;
   }
 
   public cleanup(): void {

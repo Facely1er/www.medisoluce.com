@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Cookie, Settings, Eye, Shield, AlertCircle } from 'lucide-react';
+import { Settings, Eye, Shield, AlertCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
 

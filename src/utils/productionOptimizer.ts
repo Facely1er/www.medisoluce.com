@@ -47,7 +47,8 @@ class ProductionOptimizer {
   }
 
   private async runProductionOptimizations() {
-    console.log('Running production optimizations...');
+    if (!import.meta.env.PROD) {
+        console.log('Running production optimizations...');
     this.isOptimizing = true;
 
     const optimizations = await Promise.allSettled([
@@ -65,8 +66,8 @@ class ProductionOptimizer {
       error: result.status === 'rejected' ? result.reason : null
     }));
 
-    console.log('Production optimizations completed:', results);
-  }
+    console.log($1);
+      }
 
   private async optimizePerformance(): Promise<void> {
     try {
@@ -284,6 +285,7 @@ class ProductionOptimizer {
           localStorage.setItem(key, JSON.stringify(optimized));
         }
       } catch (error) {
+        if (!import.meta.env.PROD) {
         console.warn(`Failed to optimize ${key}:`, error);
       }
     });
@@ -303,7 +305,8 @@ class ProductionOptimizer {
     );
 
     if (missingHeaders.length > 0) {
-      console.warn('Missing security headers:', missingHeaders);
+      if (!import.meta.env.PROD) {
+        console.warn('Missing security headers:', missingHeaders);
     }
   }
 
@@ -318,6 +321,7 @@ class ProductionOptimizer {
       );
 
       if (riskyKeys.length > 0) {
+        if (!import.meta.env.PROD) {
         console.warn('Potentially sensitive data in localStorage:', riskyKeys);
       }
     } catch (error) {
@@ -480,7 +484,7 @@ class ProductionOptimizer {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (Array.isArray(data)) {
           const cutoff = Date.now() - maxAge;
-          const filtered = data.filter((item: any) => {
+          const filtered = data.filter((item: { timestamp?: string; date?: string; createdAt?: string }) => {
             const timestamp = item.timestamp || item.date || item.createdAt;
             return timestamp && new Date(timestamp).getTime() > cutoff;
           });
@@ -509,17 +513,18 @@ class ProductionOptimizer {
   private async analyzeBundleSize(): Promise<void> {
     try {
       const resources = performance.getEntriesByType('resource');
-      const jsResources = resources.filter((resource: any) => 
-        resource.name.endsWith('.js')
+      const jsResources = resources.filter((resource: PerformanceEntry) => 
+        'name' in resource && resource.name.endsWith('.js')
       );
       
-      const totalSize = jsResources.reduce((sum: number, resource: any) => 
+      const totalSize = jsResources.reduce((sum: number, resource: PerformanceEntry & { transferSize?: number }) => 
         sum + (resource.transferSize || 0), 0
       );
       
       const sizeInMB = totalSize / (1024 * 1024);
       
       if (sizeInMB > 2) { // 2MB threshold
+        if (!import.meta.env.PROD) {
         console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
       }
     } catch (error) {
@@ -567,6 +572,7 @@ class ProductionOptimizer {
       try {
         localStorage.removeItem(key);
       } catch (error) {
+        if (!import.meta.env.PROD) {
         console.warn(`Failed to remove temporary key ${key}:`, error);
       }
     });
@@ -580,16 +586,18 @@ class ProductionOptimizer {
       try {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (!Array.isArray(data)) {
-          console.warn(`Data integrity issue with ${key}: not an array`);
+          if (!import.meta.env.PROD) {
+        console.warn(`Data integrity issue with ${key}: not an array`);
           localStorage.setItem(key, '[]');
         } else {
           // Validate structure of items
-          const validItems = data.filter((item: any) => 
-            item && typeof item === 'object' && item.id
+          const validItems = data.filter((item: unknown) => 
+            item && typeof item === 'object' && item !== null && 'id' in item
           );
           
           if (validItems.length !== data.length) {
-            console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
+            if (!import.meta.env.PROD) {
+        console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
             localStorage.setItem(key, JSON.stringify(validItems));
           }
         }
@@ -621,13 +629,15 @@ class ProductionOptimizer {
     try {
       localStorage.setItem('optimization-history', JSON.stringify(this.optimizations));
     } catch (error) {
-      console.warn('Failed to store optimization history:', error);
+      if (!import.meta.env.PROD) {
+        console.warn('Failed to store optimization history:', error);
     }
   }
 
   // Public methods
   public async runFullOptimization(): Promise<OptimizationResult[]> {
-    console.log('Running full production optimization...');
+    if (!import.meta.env.PROD) {
+        console.log('Running full production optimization...');
     this.optimizations = [];
     
     await this.runProductionOptimizations();
@@ -635,7 +645,15 @@ class ProductionOptimizer {
     return this.optimizations;
   }
 
-  public getOptimizationReport(): any {
+  public getOptimizationReport(): {
+    total: number;
+    successful: number;
+    failed: number;
+    successRate: number;
+    byCategory: Record<string, number>;
+    recent: OptimizationResult[];
+    lastRun: string | null;
+  } {
     const successful = this.optimizations.filter(opt => opt.success);
     const failed = this.optimizations.filter(opt => !opt.success);
     
