@@ -10,6 +10,37 @@ export default defineConfig({
       injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+ 
+        navigateFallback: '/index.html',
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: ONE_YEAR_IN_SECONDS // 1 year
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+ 
         inlineWorkboxRuntime: false,
         navigateFallback: undefined,
         runtimeCaching: [
@@ -44,6 +75,7 @@ export default defineConfig({
                 maxEntries: 200,
               },
             },
+ 
           }
         ]
       },
@@ -74,7 +106,21 @@ export default defineConfig({
   ],
   server: {
     port: 5173,
-    host: true
+    host: true,
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block'
+    }
+  },
+  preview: {
+    port: 4173,
+    host: true,
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block'
+    }
   },
   build: {
     outDir: 'dist',
@@ -82,24 +128,62 @@ export default defineConfig({
     minify: 'terser',
     target: 'esnext',
     cssTarget: 'chrome80',
+    reportCompressedSize: true,
     terserOptions: {
       compress: {
         drop_debugger: true,
+ 
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        passes: 2
+      },
+      mangle: {
+        safari10: true
+      },
+      format: {
+        comments: false,
+        ecma: 2015
+ 
         drop_console: process.env.NODE_ENV === 'production',
         pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
       },
       mangle: {
-        safari10: true
+ 
       }
     },
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
-      external: ['@sentry/browser'],
       output: {
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: (id) => {
+ 
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('framer-motion') || id.includes('lucide-react')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('recharts')) {
+              return 'charts-vendor';
+            }
+            if (id.includes('i18next') || id.includes('react-i18next')) {
+              return 'i18n-vendor';
+            }
+            if (id.includes('@supabase')) {
+              return 'supabase-vendor';
+            }
+            if (id.includes('react-router')) {
+              return 'router-vendor';
+            }
+            if (id.includes('react-hook-form')) {
+              return 'form-vendor';
+            }
+            // Group remaining vendor code
+            return 'vendor';
+          }
+ 
           // Vendor chunks
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
@@ -132,6 +216,7 @@ export default defineConfig({
           if (id.includes('performanceOptimizer.ts')) {
             return 'performance';
           }
+ 
         }
       }
     },
@@ -141,16 +226,24 @@ export default defineConfig({
     emptyOutDir: true
   },
   define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
     __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
-    __COMMIT_HASH__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || 'development')
+    __COMMIT_HASH__: JSON.stringify(process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || 'development')
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
+ 
+    exclude: ['@vite/client', '@vite/env']
+  },
+  esbuild: {
+    legalComments: 'none',
+    target: 'es2015'
+ 
     exclude: ['@sentry/browser']
   },
   // Production-specific optimizations
   esbuild: {
     drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
+ 
   }
 });
