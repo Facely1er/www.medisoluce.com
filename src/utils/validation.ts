@@ -166,8 +166,11 @@ export const validatePhone = (phone: string): boolean => {
 };
 
 export const sanitizeInput = (input: string): string => {
-  // Enhanced sanitization for healthcare data protection with comprehensive XSS prevention
+  // Keep behavior aligned with tests: trim and remove angle brackets
   let sanitized = input.trim();
+ 
+  sanitized = sanitized.replace(/[<>]/g, '');
+ 
   
   // Remove potentially dangerous HTML/JavaScript - Enhanced patterns
   // Remove only the angle brackets from tags, preserving content
@@ -212,6 +215,7 @@ export const sanitizeInput = (input: string): string => {
     sanitized = sanitized.substring(0, 5000);
   }
   
+ 
   return sanitized;
 };
 
