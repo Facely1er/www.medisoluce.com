@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -10,8 +12,8 @@ export default defineConfig({
       injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
- 
         navigateFallback: '/index.html',
+        inlineWorkboxRuntime: false,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -20,7 +22,7 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: ONE_YEAR_IN_SECONDS // 1 year
+                maxAgeSeconds: ONE_YEAR_IN_SECONDS
               },
               cacheableResponse: {
                 statuses: [0, 200]
@@ -34,16 +36,13 @@ export default defineConfig({
               cacheName: 'gstatic-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                maxAgeSeconds: ONE_YEAR_IN_SECONDS
               },
               cacheableResponse: {
                 statuses: [0, 200]
               }
             }
- 
-        inlineWorkboxRuntime: false,
-        navigateFallback: undefined,
-        runtimeCaching: [
+          },
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
             handler: 'NetworkFirst',
@@ -56,26 +55,14 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-              }
-            }
-          },
-          {
             urlPattern: /^https?.*/,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'offlineCache',
               expiration: {
-                maxEntries: 200,
-              },
-            },
- 
+                maxEntries: 200
+              }
+            }
           }
         ]
       },
@@ -132,8 +119,8 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_debugger: true,
- 
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        drop_console: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
         passes: 2
       },
       mangle: {
@@ -142,12 +129,6 @@ export default defineConfig({
       format: {
         comments: false,
         ecma: 2015
- 
-        drop_console: process.env.NODE_ENV === 'production',
-        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
-      },
-      mangle: {
- 
       }
     },
     chunkSizeWarningLimit: 1000,
@@ -157,34 +138,6 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: (id) => {
- 
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('framer-motion') || id.includes('lucide-react')) {
-              return 'ui-vendor';
-            }
-            if (id.includes('recharts')) {
-              return 'charts-vendor';
-            }
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'i18n-vendor';
-            }
-            if (id.includes('@supabase')) {
-              return 'supabase-vendor';
-            }
-            if (id.includes('react-router')) {
-              return 'router-vendor';
-            }
-            if (id.includes('react-hook-form')) {
-              return 'form-vendor';
-            }
-            // Group remaining vendor code
-            return 'vendor';
-          }
- 
-          // Vendor chunks
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'vendor';
@@ -216,11 +169,9 @@ export default defineConfig({
           if (id.includes('performanceOptimizer.ts')) {
             return 'performance';
           }
- 
         }
       }
     },
-    // Production optimizations
     cssCodeSplit: true,
     reportCompressedSize: true,
     emptyOutDir: true
@@ -232,18 +183,11 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
- 
     exclude: ['@vite/client', '@vite/env']
   },
   esbuild: {
     legalComments: 'none',
-    target: 'es2015'
- 
+    target: 'es2015',
     exclude: ['@sentry/browser']
-  },
-  // Production-specific optimizations
-  esbuild: {
-    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
- 
   }
 });

@@ -182,7 +182,8 @@ class PerformanceOptimizer {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
         if (!import.meta.env.PROD) {
-        console.log('SW registered:', registration);
+          console.log('SW registered:', registration);
+        }
         
         // Update service worker when new version is available
         registration.addEventListener('updatefound', () => {
@@ -199,7 +200,8 @@ class PerformanceOptimizer {
       })
       .catch((error) => {
         if (!import.meta.env.PROD) {
-        console.log($1);
+          console.log('SW registration failed:', error);
+        }
       });
   }
 
@@ -298,7 +300,8 @@ class PerformanceOptimizer {
 
   private performEmergencyCleanup() {
     if (!import.meta.env.PROD) {
-        console.warn('Emergency memory cleanup triggered');
+      console.warn('Emergency memory cleanup triggered');
+    }
     
     // Aggressive cleanup
     this.clearAllCaches();
@@ -381,7 +384,8 @@ class PerformanceOptimizer {
         localStorage.setItem(key, JSON.stringify(filtered));
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn(`Failed to cleanup ${key}:`, error);
+          console.warn(`Failed to cleanup ${key}:`, error);
+        }
       }
     });
   }

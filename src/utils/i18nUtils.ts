@@ -149,6 +149,7 @@ export class LocaleFormatter {
     } catch (error) {
       if (!import.meta.env.PROD) {
         console.warn('Date formatting failed:', error);
+      }
       return date.toString();
     }
   }
