@@ -621,7 +621,7 @@ class ProjectHealthEnhancer {
   }
 
   private getErrorRate(): number {
-    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
     const recentErrors = errors.filter((error: { timestamp: string }) => 
       new Date(error.timestamp).getTime() > oneHourAgo
@@ -637,7 +637,7 @@ class ProjectHealthEnhancer {
     message?: string;
     timestamp?: string;
   }> {
-    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     return errors.filter((error: { type: string; handled: boolean }) => 
       error.type === 'javascript' && !error.handled
     );
@@ -870,7 +870,7 @@ class ProjectHealthEnhancer {
 
   private enhanceErrorBoundaries(): void {
     // Add error boundary detection
-    const _errorBoundaries = document.querySelectorAll('[data-error-boundary]');
+    const errorBoundaries = document.querySelectorAll('[data-error-boundary]');
     if (errorBoundaries.length === 0) {
       if (!import.meta.env.PROD) {
         console.warn('No error boundaries detected');
@@ -883,14 +883,14 @@ class ProjectHealthEnhancer {
     const originalConsoleError = console.error;
     console.error = (...args) => {
       // Store enhanced error context
-      const _errorContext = {
+      const errorContext = {
         timestamp: new Date().toISOString(),
         url: window.location.href,
         userAgent: navigator.userAgent,
         args: args.map(arg => String(arg))
       };
       
-      const _errors = JSON.parse(localStorage.getItem('enhanced-errors') || '[]');
+      const errors = JSON.parse(localStorage.getItem('enhanced-errors') || '[]');
       errors.push(errorContext);
       localStorage.setItem('enhanced-errors', JSON.stringify(errors.slice(-50)));
       
