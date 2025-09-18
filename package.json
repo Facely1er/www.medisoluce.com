@@ -29,6 +29,7 @@
     "prebuild": "npm run security:check",
     "postinstall": "npm audit --audit-level=high", 
     "predeploy": "node scripts/pre-deployment-check.js",
+    "verify:schema": "node scripts/verify-schema-isolation.js",
     "deploy:vercel": "vercel --prod",
     "deploy:netlify": "netlify deploy --prod --dir=dist",
     "deploy:staging": "vercel",
