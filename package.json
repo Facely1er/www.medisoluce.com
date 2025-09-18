@@ -34,9 +34,7 @@
     "deploy:staging": "vercel",
     "analyze": "npm run build:analyze && open dist/stats.html",
     "start": "npm run build:prod && npx vite preview --port 3000 --host",
-    "deploy:check": "npm run build:prod && npm run test && npm run lint",
-    "deploy:vercel": "npm run build:prod && vercel --prod",
-    "deploy:netlify": "npm run build:prod && netlify deploy --prod --dir=dist"
+    "deploy:check": "npm run build:prod && npm run test && npm run lint"
   },
   "dependencies": {
     "@sentry/browser": "^10.5.0",
