@@ -468,6 +468,7 @@ class SystemHealthManager {
     if (autoFixes.length > 0) {
       if (!import.meta.env.PROD) {
         console.log('Auto-recovery completed:', autoFixes);
+      }
       this.notifyAutoRecovery(autoFixes);
     }
   }
@@ -920,7 +921,8 @@ class SystemHealthManager {
         originalSetItem.call(this, key, value);
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn('localStorage quota exceeded, cleaning up...');
+          console.warn('localStorage quota exceeded, cleaning up...');
+        }
         // Auto-cleanup on quota exceeded
         const systemHealthManager = (window as any).systemHealthManager;
         if (systemHealthManager) {
@@ -942,12 +944,14 @@ class SystemHealthManager {
     window.addEventListener('online', () => {
       if (!import.meta.env.PROD) {
         console.log('Network connection restored');
+      }
       this.notifyNetworkRecovery();
     });
 
     window.addEventListener('offline', () => {
       if (!import.meta.env.PROD) {
         console.log('Network connection lost');
+      }
       this.notifyNetworkIssue();
     });
   }
@@ -975,7 +979,8 @@ class SystemHealthManager {
       const delay = performance.now() - start;
       if (delay > 100) { // >100ms indicates UI thread blocking
         if (!import.meta.env.PROD) {
-        console.warn('UI responsiveness issue detected');
+          console.warn('UI responsiveness issue detected');
+        }
         this.performMemoryCleanup();
       }
     });
@@ -987,7 +992,8 @@ class SystemHealthManager {
       list.getEntries().forEach((entry: unknown) => {
         if (entry.entryType === 'measure' && entry.duration > 100) {
           if (!import.meta.env.PROD) {
-        console.warn('Slow operation detected:', entry);
+            console.warn('Slow operation detected:', entry);
+          }
         }
       });
     }).observe({ entryTypes: ['measure'] });

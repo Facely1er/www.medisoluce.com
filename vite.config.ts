@@ -10,39 +10,8 @@ export default defineConfig({
       injectRegister: 'auto',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
- 
-        navigateFallback: '/index.html',
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: ONE_YEAR_IN_SECONDS // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
- 
         inlineWorkboxRuntime: false,
-        navigateFallback: undefined,
+        navigateFallback: '/index.html',
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
@@ -74,8 +43,7 @@ export default defineConfig({
               expiration: {
                 maxEntries: 200,
               },
-            },
- 
+            }
           }
         ]
       },
@@ -132,8 +100,8 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_debugger: true,
- 
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        drop_console: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug', 'console.trace'] : [],
         passes: 2
       },
       mangle: {
@@ -142,12 +110,6 @@ export default defineConfig({
       format: {
         comments: false,
         ecma: 2015
- 
-        drop_console: process.env.NODE_ENV === 'production',
-        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
-      },
-      mangle: {
- 
       }
     },
     chunkSizeWarningLimit: 1000,
@@ -157,7 +119,6 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: (id) => {
- 
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'react-vendor';
@@ -183,29 +144,6 @@ export default defineConfig({
             // Group remaining vendor code
             return 'vendor';
           }
- 
-          // Vendor chunks
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor';
-            }
-            if (id.includes('framer-motion') || id.includes('lucide-react')) {
-              return 'ui';
-            }
-            if (id.includes('recharts')) {
-              return 'charts';
-            }
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'i18n';
-            }
-            if (id.includes('@supabase/supabase-js')) {
-              return 'supabase';
-            }
-            if (id.includes('react-hook-form')) {
-              return 'forms';
-            }
-            return 'vendor';
-          }
           
           // Security utilities should be in their own chunk to avoid dynamic import conflicts
           if (id.includes('securityUtils.ts')) {
@@ -216,13 +154,11 @@ export default defineConfig({
           if (id.includes('performanceOptimizer.ts')) {
             return 'performance';
           }
- 
         }
       }
     },
     // Production optimizations
     cssCodeSplit: true,
-    reportCompressedSize: true,
     emptyOutDir: true
   },
   define: {
@@ -232,18 +168,12 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
- 
     exclude: ['@vite/client', '@vite/env']
   },
   esbuild: {
     legalComments: 'none',
-    target: 'es2015'
- 
-    exclude: ['@sentry/browser']
-  },
-  // Production-specific optimizations
-  esbuild: {
+    target: 'es2015',
+    exclude: ['@sentry/browser'],
     drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
- 
   }
 });
