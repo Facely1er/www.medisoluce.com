@@ -173,7 +173,6 @@ export default defineConfig({
       }
     },
     cssCodeSplit: true,
-    reportCompressedSize: true,
     emptyOutDir: true
   },
   define: {
