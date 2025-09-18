@@ -220,7 +220,7 @@ class SystemHealthManager {
     const renderTime = this.getRenderTime();
     const bundleSize = await this.getBundleSize();
     const cacheHitRate = this.getCacheHitRate();
-    const _errorRate = this.getErrorRate();
+    const errorRate = this.getErrorRate();
 
     const metrics = [
       memoryUsage <= this.config.performanceThresholds.memoryUsage ? 20 : Math.max(0, 20 - (memoryUsage - this.config.performanceThresholds.memoryUsage)),
@@ -290,7 +290,7 @@ class SystemHealthManager {
     const coreFeatures = await this.testCoreFeatures();
     const dataIntegrity = this.testDataIntegrity();
     const userFlows = this.testUserFlows();
-    const _errorHandling = this.testErrorHandling();
+    const errorHandling = this.testErrorHandling();
     const dependencies = await this.testDependencies();
 
     const checks = [coreFeatures, dataIntegrity, userFlows, errorHandling, dependencies];
@@ -533,7 +533,7 @@ class SystemHealthManager {
   }
 
   private getErrorRate(): number {
-    const _errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const errors = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
     const recentErrors = errors.filter((error: unknown) => 
       new Date(error.timestamp).getTime() > oneHourAgo

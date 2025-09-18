@@ -200,7 +200,7 @@ class PerformanceOptimizer {
       })
       .catch((error) => {
         if (!import.meta.env.PROD) {
-          console.log('Performance optimization failed:', error);
+          console.log('SW registration failed:', error);
         }
       });
   }
