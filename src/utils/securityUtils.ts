@@ -187,7 +187,7 @@ class SecurityManager {
       const threats = JSON.parse(localStorage.getItem('security-threats') || '[]');
       const vulns = JSON.parse(localStorage.getItem('security-vulnerabilities') || '[]');
 
-      this.securityEvents = events;
+      this.securityEvents = _events;
       this.threatHistory = threats;
       this.vulnerabilities = vulns;
     } catch (error) {
