@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Activity, Zap, Shield, CheckCircle, AlertTriangle, XCircle, Play, Pause, Download, RefreshCw, Wrench, Clock } from 'lucide-react';
+import { Activity, Zap, Shield, CheckCircle, AlertTriangle, XCircle, Play, Pause, Download, RefreshCw, Wrench, Clock, Eye, Bug } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';
 import { projectHealthEnhancer } from '../../utils/healthEnhancer';
@@ -35,17 +35,6 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
 
   const shouldShow = !import.meta.env.PROD || showInProduction;
 
-  useEffect(() => {
-    if (!shouldShow) return;
-
-    loadHealthStatus();
-
-    if (isMonitoring) {
-      const interval = setInterval(loadHealthStatus, 60000); // Every minute
-      return () => clearInterval(interval);
-    }
-  }, [shouldShow, isMonitoring, loadHealthStatus]);
-
   const loadHealthStatus = useCallback(async () => {
     try {
       const status = projectHealthEnhancer.getHealthStatus();
@@ -72,11 +61,22 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     }
   }, [autoEnhance, isEnhancing, performEnhancement]);
 
+  useEffect(() => {
+    if (!shouldShow) return;
+
+    loadHealthStatus();
+
+    if (isMonitoring) {
+      const interval = setInterval(loadHealthStatus, 60000); // Every minute
+      return () => clearInterval(interval);
+    }
+  }, [shouldShow, isMonitoring, loadHealthStatus]);
+
   const performEnhancement = useCallback(async () => {
     setIsEnhancing(true);
     try {
       if (!import.meta.env.PROD) {
-        console.log($1);
+        console.log('Starting health enhancement...');
       }
       
       // Run all enhancements
