@@ -323,7 +323,7 @@ class ProjectHealthEnhancer {
     const issues: HealthIssue[] = [];
 
     // Error rate check
-    const _errorRate = this.getErrorRate();
+    const errorRate = this.getErrorRate();
     if (errorRate > 5) {
       issues.push({
         id: 'high-error-rate',
