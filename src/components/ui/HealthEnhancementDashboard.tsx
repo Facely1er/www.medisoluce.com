@@ -35,6 +35,45 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
 
   const shouldShow = !import.meta.env.PROD || showInProduction;
 
+  const loadHealthStatus = useCallback(async () => {
+    try {
+      const status = projectHealthEnhancer.getHealthStatus();
+      const issues = await projectHealthEnhancer.runHealthAudit();
+      const performanceReport = performanceEnhancer.getPerformanceReport();
+      const errorStats = robustErrorHandler.getErrorRecoveryStats();
+
+      setHealthStatus({
+        ...status,
+        issues,
+        performance: performanceReport,
+        errorRecovery: errorStats
+      });
+    } catch (error) {
+      console.error('Failed to load health status:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!shouldShow) return;
+
+    loadHealthStatus();
+
+    if (isMonitoring) {
+      const interval = setInterval(loadHealthStatus, 60000); // Every minute
+      return () => clearInterval(interval);
+    }
+  }, [shouldShow, isMonitoring, loadHealthStatus]);
+
+  // Auto-enhancement effect
+  useEffect(() => {
+    if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) return;
+
+    const criticalIssues = healthStatus.issues?.filter((issue) => issue.severity === 'critical') || [];
+    if (criticalIssues.length > 0) {
+      performEnhancement();
+    }
+  }, [shouldShow, autoEnhance, isEnhancing, healthStatus, performEnhancement]);
+
   const performEnhancement = useCallback(async () => {
     setIsEnhancing(true);
     try {
@@ -83,44 +122,6 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
       setIsEnhancing(false);
     }
   }, []);
-
-  const loadHealthStatus = useCallback(async () => {
-    try {
-      const status = projectHealthEnhancer.getHealthStatus();
-      const issues = await projectHealthEnhancer.runHealthAudit();
-      const performanceReport = performanceEnhancer.getPerformanceReport();
-      const errorStats = robustErrorHandler.getErrorRecoveryStats();
-
-      setHealthStatus({
-        ...status,
-        issues,
-        performance: performanceReport,
-        errorRecovery: errorStats
-      });
-
-      // Auto-enhance if issues detected and auto-enhance is enabled
-      if (autoEnhance && issues.length > 0 && !isEnhancing) {
-        const criticalIssues = issues.filter((issue) => issue.severity === 'critical');
-        if (criticalIssues.length > 0) {
-          await performEnhancement();
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load health status:', error);
-    }
-  }, [autoEnhance, isEnhancing, performEnhancement]);
-
-  useEffect(() => {
-    if (!shouldShow) return;
-
-    loadHealthStatus();
-
-    if (isMonitoring) {
-      const interval = setInterval(loadHealthStatus, 60000); // Every minute
-      return () => clearInterval(interval);
-    }
-  }, [shouldShow, isMonitoring, loadHealthStatus]);
-
 
   const exportHealthReport = () => {
     const report = `
