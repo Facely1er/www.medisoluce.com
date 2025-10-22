@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { 
   AlertTriangle, 
   CheckCircle, 
   Clock, 
-  DollarSign, 
   Shield, 
   Server, 
   Users,
   TrendingUp,
-  FileText,
   Download,
-  BarChart3,
-  Target,
-  Zap
+  BarChart3
 } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
@@ -68,7 +63,6 @@ interface ComprehensiveAssessmentResult {
 }
 
 const EnhancedAssessmentEngine: React.FC = () => {
-  const { t } = useTranslation();
   const [assessmentData, setAssessmentData] = useState<{
     hipaa?: { result?: { percentage: number } };
     dependency?: Array<{ 

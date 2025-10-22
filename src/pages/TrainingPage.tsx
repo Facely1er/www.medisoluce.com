@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { 
   BookOpen, 
   Play, 
@@ -20,8 +18,6 @@ import Button from '../components/ui/Button';
 import Breadcrumbs from '../components/navigation/Breadcrumbs';
 
 const TrainingPage: React.FC = () => {
-  const { t } = useTranslation();
-  const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
   const trainingModules = [
     {

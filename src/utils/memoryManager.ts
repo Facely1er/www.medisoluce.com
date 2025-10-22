@@ -47,7 +47,8 @@ class MemoryManager {
       
       if (usagePercentage > this.config.memoryThreshold) {
         if (!import.meta.env.PROD) {
-        console.warn(`High memory usage: ${usagePercentage.toFixed(1)}%`, memory);
+          console.warn(`High memory usage: ${usagePercentage.toFixed(1)}%`, memory);
+        }
         this.triggerMemoryCleanup();
       }
       
@@ -150,6 +151,7 @@ class MemoryManager {
     if (leakDetector.detachedNodes.size > 100) {
       if (!import.meta.env.PROD) {
         console.warn(`Potential memory leak: ${leakDetector.detachedNodes.size} detached DOM nodes`);
+      }
       leakDetector.detachedNodes.clear();
     }
 
@@ -169,7 +171,8 @@ class MemoryManager {
       
       if (localStorageSize > 5 * 1024 * 1024) { // 5MB
         if (!import.meta.env.PROD) {
-        console.warn(`Large localStorage detected: ${(localStorageSize / 1024 / 1024).toFixed(2)}MB`);
+          console.warn(`Large localStorage detected: ${(localStorageSize / 1024 / 1024).toFixed(2)}MB`);
+        }
         this.cleanupLocalStorage();
       }
 
@@ -183,7 +186,8 @@ class MemoryManager {
       
       if (sessionStorageSize > 1024 * 1024) { // 1MB
         if (!import.meta.env.PROD) {
-        console.warn(`Large sessionStorage detected: ${(sessionStorageSize / 1024 / 1024).toFixed(2)}MB`);
+          console.warn(`Large sessionStorage detected: ${(sessionStorageSize / 1024 / 1024).toFixed(2)}MB`);
+        }
       }
     } catch (error) {
       console.error('Error scanning for large objects:', error);
@@ -192,7 +196,8 @@ class MemoryManager {
 
   private triggerMemoryCleanup() {
     if (!import.meta.env.PROD) {
-        console.log('Triggering memory cleanup...');
+      console.log('Triggering memory cleanup...');
+    }
     this.performCleanup();
     
     // Force garbage collection if available (Chrome DevTools)
@@ -300,12 +305,14 @@ class MemoryManager {
           if (trimmed.length !== data.length) {
             localStorage.setItem(key, JSON.stringify(trimmed));
             if (!import.meta.env.PROD) {
-        console.log($1);
-      }
+              console.log(`Trimmed ${key} from ${data.length} to ${trimmed.length} items`);
+            }
+          }
         }
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn(`Error cleaning up ${key}:`, error);
+          console.warn(`Error cleaning up ${key}:`, error);
+        }
         // For corrupted data, reset to empty array
         if (error instanceof SyntaxError) {
           localStorage.setItem(key, '[]');
@@ -333,18 +340,21 @@ class MemoryManager {
               if (parsed.expires && new Date(parsed.expires).getTime() < Date.now()) {
                 localStorage.removeItem(key);
                 if (!import.meta.env.PROD) {
-        console.log($1);
-      }
+                  console.log(`Removed expired temporary data: ${key}`);
+                }
+              }
             } catch {
               // If not JSON or malformed, remove if older than 1 hour
               localStorage.removeItem(key);
               if (!import.meta.env.PROD) {
-        console.log($1);
-      }
+                console.log(`Removed malformed temporary data: ${key}`);
+              }
+            }
           }
         } catch (error) {
           if (!import.meta.env.PROD) {
-        console.warn(`Error cleaning temporary data ${key}:`, error);
+            console.warn(`Error cleaning temporary data ${key}:`, error);
+          }
         }
       }
     });
@@ -366,7 +376,8 @@ class MemoryManager {
       
       if (usagePercentage > 80) {
         if (!import.meta.env.PROD) {
-        console.warn(`LocalStorage usage high: ${usagePercentage.toFixed(1)}% (${(totalSize / 1024).toFixed(1)}KB)`);
+          console.warn(`LocalStorage usage high: ${usagePercentage.toFixed(1)}% (${(totalSize / 1024).toFixed(1)}KB)`);
+        }
         
         // Emergency cleanup if near quota
         if (usagePercentage > 90) {
@@ -380,7 +391,8 @@ class MemoryManager {
 
   private performEmergencyStorageCleanup() {
     if (!import.meta.env.PROD) {
-        console.warn('Performing emergency storage cleanup...');
+      console.warn('Performing emergency storage cleanup...');
+    }
     
     // More aggressive cleanup for non-critical data
     const lowPriorityKeys = [
@@ -396,11 +408,13 @@ class MemoryManager {
           const emergency = data.slice(-10);
           localStorage.setItem(key, JSON.stringify(emergency));
           if (!import.meta.env.PROD) {
-        console.log($1);
-      }
+            console.log(`Emergency cleanup applied to ${key}`);
+          }
+        }
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn(`Emergency cleanup failed for ${key}:`, error);
+          console.warn(`Emergency cleanup failed for ${key}:`, error);
+        }
       }
     });
   }
@@ -427,6 +441,7 @@ class MemoryManager {
     } catch (error) {
       if (!import.meta.env.PROD) {
         console.warn('Error cleaning session data:', error);
+      }
     }
   }
 
@@ -437,7 +452,8 @@ class MemoryManager {
         observer.disconnect();
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn('Error disconnecting observer:', error);
+          console.warn('Error disconnecting observer:', error);
+        }
       }
     });
   }
@@ -456,6 +472,7 @@ class MemoryManager {
     } catch (error) {
       if (!import.meta.env.PROD) {
         console.warn('Error cleaning performance data:', error);
+      }
     }
   }
 

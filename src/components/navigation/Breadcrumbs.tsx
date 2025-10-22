@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronRight, Home, Shield, Server, BarChart, LifeBuoy, AlertTriangle, BookOpen, Download, User, FileText, Activity } from 'lucide-react';
+import { ChevronRight, Home, Shield, Server, BarChart, LifeBuoy, AlertTriangle, BookOpen, Download, User, FileText } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;

@@ -375,8 +375,7 @@ class AccessibilityEnhancer {
       }
 
       // Warn about missing alt text in development
-      if (if (!import.meta.env.PROD) {
-        !img.getAttribute('alt')) {
+      if (!import.meta.env.PROD && !img.getAttribute('alt')) {
         console.warn('Image missing alt text:', img);
       }
     });

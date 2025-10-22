@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { 
   AlertTriangle, 
   Shield, 
@@ -8,8 +7,6 @@ import {
   Users, 
   Clock,
   CheckCircle,
-  XCircle,
-  Download,
   FileText,
   Server,
   HardDrive
@@ -19,7 +16,6 @@ import Button from '../ui/Button';
 import AssessmentEngine from './AssessmentEngine';
 
 const RansomwareAssessment: React.FC = () => {
-  const { t } = useTranslation();
   const [showAssessment, setShowAssessment] = useState(false);
 
   const ransomwareQuestions = [
@@ -241,19 +237,6 @@ const RansomwareAssessment: React.FC = () => {
     };
   };
 
-  const getRiskLevel = (percentage: number): string => {
-    if (percentage < 30) return 'Critical';
-    if (percentage < 50) return 'High';
-    if (percentage < 70) return 'Medium';
-    return 'Low';
-  };
-
-  const getRiskColor = (percentage: number): string => {
-    if (percentage < 30) return 'text-red-600';
-    if (percentage < 50) return 'text-orange-600';
-    if (percentage < 70) return 'text-yellow-600';
-    return 'text-green-600';
-  };
 
   if (showAssessment) {
     return (

@@ -48,7 +48,8 @@ class ProductionOptimizer {
 
   private async runProductionOptimizations() {
     if (!import.meta.env.PROD) {
-        console.log('Running production optimizations...');
+      console.log('Running production optimizations...');
+    }
     this.isOptimizing = true;
 
     const optimizations = await Promise.allSettled([
@@ -66,8 +67,12 @@ class ProductionOptimizer {
       error: result.status === 'rejected' ? result.reason : null
     }));
 
-    console.log($1);
-      }
+    if (!import.meta.env.PROD) {
+      console.log('Production optimization results:', results);
+    }
+    
+    return results;
+  }
 
   private async optimizePerformance(): Promise<void> {
     try {
@@ -286,7 +291,8 @@ class ProductionOptimizer {
         }
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn(`Failed to optimize ${key}:`, error);
+          console.warn(`Failed to optimize ${key}:`, error);
+        }
       }
     });
   }
@@ -307,6 +313,7 @@ class ProductionOptimizer {
     if (missingHeaders.length > 0) {
       if (!import.meta.env.PROD) {
         console.warn('Missing security headers:', missingHeaders);
+      }
     }
   }
 
@@ -322,7 +329,8 @@ class ProductionOptimizer {
 
       if (riskyKeys.length > 0) {
         if (!import.meta.env.PROD) {
-        console.warn('Potentially sensitive data in localStorage:', riskyKeys);
+          console.warn('Potentially sensitive data in localStorage:', riskyKeys);
+        }
       }
     } catch (error) {
       console.error('localStorage security check failed:', error);
@@ -525,7 +533,8 @@ class ProductionOptimizer {
       
       if (sizeInMB > 2) { // 2MB threshold
         if (!import.meta.env.PROD) {
-        console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
+          console.warn(`Large bundle size detected: ${sizeInMB.toFixed(2)}MB`);
+        }
       }
     } catch (error) {
       console.error('Bundle analysis failed:', error);
@@ -573,7 +582,8 @@ class ProductionOptimizer {
         localStorage.removeItem(key);
       } catch (error) {
         if (!import.meta.env.PROD) {
-        console.warn(`Failed to remove temporary key ${key}:`, error);
+          console.warn(`Failed to remove temporary key ${key}:`, error);
+        }
       }
     });
   }
@@ -587,7 +597,8 @@ class ProductionOptimizer {
         const data = JSON.parse(localStorage.getItem(key) || '[]');
         if (!Array.isArray(data)) {
           if (!import.meta.env.PROD) {
-        console.warn(`Data integrity issue with ${key}: not an array`);
+            console.warn(`Data integrity issue with ${key}: not an array`);
+          }
           localStorage.setItem(key, '[]');
         } else {
           // Validate structure of items
@@ -597,7 +608,8 @@ class ProductionOptimizer {
           
           if (validItems.length !== data.length) {
             if (!import.meta.env.PROD) {
-        console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
+              console.warn(`Data integrity issue with ${key}: ${data.length - validItems.length} invalid items removed`);
+            }
             localStorage.setItem(key, JSON.stringify(validItems));
           }
         }
@@ -631,13 +643,15 @@ class ProductionOptimizer {
     } catch (error) {
       if (!import.meta.env.PROD) {
         console.warn('Failed to store optimization history:', error);
+      }
     }
   }
 
   // Public methods
   public async runFullOptimization(): Promise<OptimizationResult[]> {
     if (!import.meta.env.PROD) {
-        console.log('Running full production optimization...');
+      console.log('Running full production optimization...');
+    }
     this.optimizations = [];
     
     await this.runProductionOptimizations();

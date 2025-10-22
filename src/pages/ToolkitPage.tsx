@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Search, X, Download, FileText, Eye, Star, Tag, Calendar, User, ExternalLink } from 'lucide-react';
+import { Search, Download, FileText, Eye, Star, Tag } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
-import DownloadCard from '../components/toolkit/DownloadCard';
 import Modal from '../components/ui/Modal';
 import Breadcrumbs from '../components/navigation/Breadcrumbs';
 import ReactMarkdown from 'react-markdown';
@@ -25,7 +22,6 @@ export interface DownloadResource {
 }
 
 const ToolkitPage: React.FC = () => {
-  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
