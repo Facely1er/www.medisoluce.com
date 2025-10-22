@@ -3,6 +3,7 @@ import {
   Activity,
   Zap,
   TrendingUp,
+  TrendingDown,
   Download,
   RefreshCw,
   AlertTriangle,
@@ -30,21 +31,51 @@ import {
 
 const HealthDashboardPage: React.FC = () => {
   const [healthData, setHealthData] = useState<{
-    overall: number;
-    performance: number;
-    security: number;
-    accessibility: number;
-    seo: number;
-    lastChecked: string;
+    overall: { score: number; status: string };
+    categories: {
+      performance: { score: number; status: string; details: string };
+      security: { score: number; status: string; details: string };
+      accessibility: { score: number; status: string; details: string };
+      compliance: { score: number; status: string; details: string };
+      userExperience: { score: number; status: string; details: string };
+      dataIntegrity: { score: number; status: string; details: string };
+    };
+    metrics: {
+      uptime: number;
+      responseTime: number;
+      errorRate: number;
+      complianceScore: number;
+    };
+    recommendations: Array<{
+      priority: string;
+      title: string;
+      description: string;
+      estimatedImpact: number;
+      autoImplementable: boolean;
+    }>;
+    autoHealingActions: Array<{
+      action: string;
+      impact: string;
+      success: boolean;
+      category: string;
+      timestamp: number;
+    }>;
+    predictiveInsights: Array<{
+      metric: string;
+      prediction: number;
+      timeframe: string;
+      recommendation: string;
+      confidence: number;
+    }>;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [historicalData, setHistoricalData] = useState<{
-    date: string;
+    time: string;
     overall: number;
     performance: number;
     security: number;
     accessibility: number;
-    seo: number;
+    compliance: number;
   }[]>([]);
   const [optimizing, setOptimizing] = useState(false);
 
@@ -92,8 +123,7 @@ const HealthDashboardPage: React.FC = () => {
         (window as Window & { showToast: (toast: { type: string; title: string; description: string }) => void }).showToast({
           type: 'success',
           title: 'Optimization Complete',
-          message: 'System health has been optimized successfully',
-          duration: 5000
+          description: 'System health has been optimized successfully'
         });
       }
     } catch (error) {

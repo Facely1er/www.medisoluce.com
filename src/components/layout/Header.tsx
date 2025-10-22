@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import { useTranslation } from 'react-i18next';
@@ -20,9 +20,11 @@ const Header: React.FC = () => {
     { name: t('nav.home'), path: '/', icon: <Home className="w-5 h-5" /> },
     { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
     { name: t('nav.hipaa_assessment'), path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
     { name: t('nav.system_dependencies'), path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
     { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
-    { name: t('nav.resource_toolkit'), path: 'https://toolkit.medisoluce.com', icon: <FileText className="w-5 h-5" /> },
+    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <FileText className="w-5 h-5" /> },
     { name: t('nav.dashboard'), path: '/dashboard', icon: <FileText className="w-5 h-5" /> },
   ];
 
@@ -42,7 +44,6 @@ const Header: React.FC = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-transparent'}`}>

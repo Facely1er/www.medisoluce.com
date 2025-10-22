@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AssessmentEngine, { Question, AssessmentResult } from '../components/assessment/AssessmentEngine';
 import AssessmentForm from '../components/forms/AssessmentForm';
@@ -499,7 +498,7 @@ const HIPAACheckPage: React.FC = () => {
               description="Access our comprehensive toolkit with expert-designed templates, policies, and step-by-step implementation guides tailored to your assessment findings."
               primaryAction={{
                 text: "Download Implementation Resources",
-                href: "https://toolkit.medisoluce.com",
+                href: "/toolkit",
                 trackingLabel: "post-assessment-toolkit"
               }}
               secondaryAction={{
@@ -517,7 +516,11 @@ const HIPAACheckPage: React.FC = () => {
         {/* Related Resources Sidebar */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-12">
           <RelatedLinks 
-            links={relatedPages['/hipaa-check'] || []}
+            links={[
+              { title: 'Dependency Manager', url: '/dependency-manager', description: 'Map your critical systems' },
+              { title: 'Business Impact Analysis', url: '/business-impact', description: 'Assess potential impacts' },
+              { title: 'Resource Toolkit', url: '/toolkit', description: 'Download templates and guides' }
+            ]}
             title="Continue Your Compliance Journey"
             variant="inline"
             showCategory={true}

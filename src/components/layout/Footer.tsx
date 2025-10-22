@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -27,13 +27,13 @@ const Footer: React.FC = () => {
         { name: t('dependency.title'), url: '/dependency-manager', icon: <Server className="h-4 w-4" /> },
         { name: t('impact.title'), url: '/business-impact', icon: <BarChart className="h-4 w-4" /> },
         { name: t('continuity.title'), url: '/continuity', icon: <LifeBuoy className="h-4 w-4" /> },
-        { name: t('training.title'), url: 'https://toolkit.medisoluce.com', icon: <BookOpen className="h-4 w-4" /> },
+        { name: t('training.title'), url: '/training', icon: <BookOpen className="h-4 w-4" /> },
       ],
     },
     {
       title: t('footer.resources'),
       links: [
-        { name: t('toolkit.title'), url: 'https://toolkit.medisoluce.com', icon: <Download className="h-4 w-4" /> },
+        { name: t('toolkit.title'), url: '/toolkit', icon: <Download className="h-4 w-4" /> },
         { name: 'HIPAA Guidance', url: 'https://www.hhs.gov/hipaa/index.html', icon: <FileText className="h-4 w-4" /> },
         { name: 'Ransomware Protection', url: 'https://toolkit.medisoluce.com/ransomware', icon: <AlertTriangle className="h-4 w-4" /> },
         { name: 'Security Resources', url: 'https://www.hhs.gov/sites/default/files/cybersecurity-newsletter-december-2021.pdf', icon: <BookOpen className="h-4 w-4" /> },
@@ -56,7 +56,6 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
-              <link rel="home" href="/" />
               <img 
                 src="/medisoluce.png" 
                 alt="MediSoluce Logo" 

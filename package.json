@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx vite",
     "build": "npx vite build",
-    "build:prod": "NODE_ENV=production npx vite build",
+    "build:prod": "cross-env NODE_ENV=production npx vite build",
     "build:analyze": "npx vite build --mode analyze",
     "build:preview": "npm run build && npx vite preview",
     "lint": "eslint .",
@@ -27,7 +27,7 @@
     "security:scan": "npm run security:audit && npm run security:dependencies && npm run security:validate",
     "security:validate": "node -e \"console.log('Security validation complete')\"",
     "prebuild": "npm run security:check",
-    "postinstall": "npm audit --audit-level=high || true", 
+    "postinstall": "npm audit --audit-level=high || true",
     "predeploy": "node scripts/pre-deployment-check.js",
     "verify:schema": "node scripts/verify-schema-isolation.js",
     "deploy:vercel": "vercel --prod",
@@ -40,6 +40,7 @@
   "dependencies": {
     "@sentry/browser": "^10.5.0",
     "@supabase/supabase-js": "^2.39.7",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.0.8",
     "i18next": "^23.7.19",
     "i18next-browser-languagedetector": "^7.2.0",
@@ -52,7 +53,8 @@
     "react-markdown": "^10.1.0",
     "react-pdf": "^10.1.0",
     "react-router-dom": "^6.22.3",
-    "recharts": "^2.12.2"
+    "recharts": "^2.12.2",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -67,13 +69,14 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.18",
     "c8": "^10.1.3",
+    "cross-env": "^10.1.0",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^15.9.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1", 
+    "tailwindcss": "^3.4.1",
     "terser": "^5.43.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",

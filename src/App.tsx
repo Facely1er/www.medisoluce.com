@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { useEffect } from 'react';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import HIPAACheckPage from './pages/HIPAACheckPage';
@@ -21,6 +20,12 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ProfilePage from './pages/ProfilePage';
+import RansomwarePage from './pages/RansomwarePage';
+import HealthDashboardPage from './pages/HealthDashboardPage';
+import TrainingPage from './pages/TrainingPage';
+import ToolkitPage from './pages/ToolkitPage';
+import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
+import RansomwareAssessment from './components/assessment/RansomwareAssessment';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -91,6 +96,12 @@ function AppContent() {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/cookie-policy" element={<CookiePolicyPage />} />
           <Route path="/health" element={<HealthDashboard />} />
+          <Route path="/health-dashboard" element={<HealthDashboardPage />} />
+          <Route path="/ransomware" element={<RansomwarePage />} />
+          <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
+          <Route path="/training" element={<TrainingPage />} />
+          <Route path="/toolkit" element={<ToolkitPage />} />
+          <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />
           <Route path="/security" element={<SecurityDashboard />} />
           <Route path="/production-readiness" element={<ProductionReadinessPage />} />
           <Route path="/profile" element={<ProfilePage />} />

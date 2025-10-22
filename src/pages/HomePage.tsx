@@ -42,7 +42,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon, lin
   );
 };
 
-const statsItems = [
+interface StatItem {
+  labelKey: string;
+  value: string;
+  suffix: string;
+  sourceKey: string;
+  sourceUrl: string;
+}
+
+const statsItems: StatItem[] = [
   { 
     labelKey: 'homepage.stats.hhs_breaches',
     value: '133', 
@@ -150,7 +158,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statsItems.map((stat, index) => (
               <motion.div
-                key={stat.labelKey || stat.label || index}
+                key={stat.labelKey}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -161,7 +169,7 @@ const HomePage: React.FC = () => {
                   {stat.value}{stat.suffix}
                 </p>
                 <p className="mt-2 text-sm font-medium text-gray-600 dark:text-gray-300">
-                  {stat.labelKey ? t(stat.labelKey) : stat.label}
+                  {t(stat.labelKey)}
                 </p>
                 {/* Source citation */}
                 <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -173,7 +181,7 @@ const HomePage: React.FC = () => {
                       rel="noopener noreferrer"
                       className="underline hover:text-primary-500"
                     >
-                      {stat.sourceKey ? t(stat.sourceKey) : stat.source}
+                      {t(stat.sourceKey)}
                     </a>
                   </p>
                 </div>
@@ -522,7 +530,7 @@ const HomePage: React.FC = () => {
                   {t('home.contact_sales')}
                 </Button>
               </Link>
-              <a href="https://toolkit.medisoluce.com" target="_blank" rel="noopener noreferrer">
+              <Link to="/toolkit">
                 <Button 
                   size="lg" 
                   variant="outline" 
@@ -530,7 +538,7 @@ const HomePage: React.FC = () => {
                 >
                   Access Toolkit
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

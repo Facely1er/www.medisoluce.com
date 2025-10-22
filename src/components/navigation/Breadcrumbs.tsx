@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronRight, Home, Shield, Server, BarChart, LifeBuoy, AlertTriangle, BookOpen, Download, User, FileText } from 'lucide-react';
+import { ChevronRight, Home, Shield, Server, BarChart, LifeBuoy, AlertTriangle, BookOpen, Download, User, FileText, Activity } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;
@@ -48,6 +48,16 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customItems, className = '' }
       label: 'Training Center', 
       parent: '/dashboard',
       icon: <BookOpen className="h-4 w-4" />
+    },
+    '/comprehensive-assessment': { 
+      label: 'Comprehensive Assessment', 
+      parent: '/dashboard',
+      icon: <Shield className="h-4 w-4" />
+    },
+    '/ransomware-assessment': { 
+      label: 'Ransomware Assessment', 
+      parent: '/comprehensive-assessment',
+      icon: <AlertTriangle className="h-4 w-4" />
     },
     '/toolkit': { 
       label: 'Resource Toolkit',
