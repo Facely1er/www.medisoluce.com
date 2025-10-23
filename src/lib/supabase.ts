@@ -1,14 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import { securityUtils } from '../utils/securityUtils';
+import backendService from '../services/backendService';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://snrpdosiuwmdaegxkqux.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucnBkb3NpdXdtZGFlZ3hrcXV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkyMTA5MTYsImV4cCI6MjA3NDc4NjkxNn0.tl_ipfmxSwMNLBQ-QeqQPyp_w6xvocTtXqaFGHHFwe0';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables. Please click the "Connect to Supabase" button in the top right to set up your project.');
-}
+// Service role key for admin operations
+const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucnBkb3NpdXdtZGFlZ3hrcXV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTIxMDkxNiwiZXhwIjoyMDc0Nzg2OTE2fQ.Vne8EVle_hZo3mywuaDyXoGvqzEfxDwM-UBXJSgs7aY';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Admin client for service operations
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
 // Enhanced security wrapper for Supabase operations with schema prefixing
 const secureSupabaseWrapper = {
@@ -116,95 +119,35 @@ const secureSupabaseWrapper = {
   }
 };
 
-// Helper functions for common Supabase operations
+// Helper functions for common Supabase operations using backend service
 export const auth = {
   signUp: async (email: string, password: string) => {
-    securityUtils.logSecurityEvent('signup_attempt', {
-      email,
-      timestamp: new Date().toISOString()
-    }, 'low');
-    
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-    
-    if (error) {
-      securityUtils.logSecurityEvent('signup_failed', {
-        email,
-        error: error.message
-      }, 'medium');
-      throw error;
+    const result = await backendService.AuthenticationService.signUp(email, password);
+    if (!result.success) {
+      throw new Error(result.error);
     }
-    
-    securityUtils.logSecurityEvent('successful_signup', {
-      email,
-      userId: data.user?.id
-    }, 'low');
-    
-    return data;
+    return result.data;
   },
 
   signIn: async (email: string, password: string) => {
-    securityUtils.logSecurityEvent('signin_attempt', {
-      email,
-      timestamp: new Date().toISOString()
-    }, 'low');
-    
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
-      securityUtils.logSecurityEvent('signin_failed', {
-        email,
-        error: error.message
-      }, 'medium');
-      throw error;
+    const result = await backendService.AuthenticationService.signIn(email, password);
+    if (!result.success) {
+      throw new Error(result.error);
     }
-    
-    securityUtils.logSecurityEvent('successful_signin', {
-      email,
-      userId: data.user?.id
-    }, 'low');
-    
-    return data;
+    return result.data;
   },
 
   signOut: async () => {
-    const session = await supabase.auth.getSession();
-    const userId = session.data.session?.user?.id;
-    
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
-      securityUtils.logSecurityEvent('signout_failed', {
-        userId,
-        error: error.message
-      }, 'low');
-      throw error;
+    const result = await backendService.AuthenticationService.signOut();
+    if (!result.success) {
+      throw new Error(result.error);
     }
-    
-    securityUtils.logSecurityEvent('successful_signout', {
-      userId
-    }, 'low');
   },
 
   resetPassword: async (email: string) => {
-    securityUtils.logSecurityEvent('password_reset_request', {
-      email,
-      timestamp: new Date().toISOString()
-    }, 'low');
-    
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-    
-    if (error) {
-      securityUtils.logSecurityEvent('password_reset_failed', {
-        email,
-        error: error.message
-      }, 'medium');
-      throw error;
+    const result = await backendService.AuthenticationService.resetPassword(email);
+    if (!result.success) {
+      throw new Error(result.error);
     }
   },
 
@@ -229,3 +172,6 @@ export const getTableName = (table: string): string => {
   }
   return `medisoluce.${table}`;
 };
+
+// Export backend service for direct use
+export { backendService };
