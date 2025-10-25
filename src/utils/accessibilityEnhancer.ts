@@ -444,7 +444,7 @@ class AccessibilityEnhancer {
         element.setAttribute('alt', altText);
       });
       
-      console.log($1);
+      console.log('Accessibility monitoring started');
       }
 
     // Enhanced heading hierarchy check with recommendations
@@ -492,7 +492,7 @@ class AccessibilityEnhancer {
     
     if (fixedElements > 0) {
       if (!import.meta.env.PROD) {
-        console.log($1);
+        console.log('Accessibility monitoring started');
       }
     }
 
@@ -516,7 +516,7 @@ class AccessibilityEnhancer {
     
     if (fixedInputs > 0) {
       if (!import.meta.env.PROD) {
-        console.log($1);
+        console.log('Accessibility monitoring started');
       }
     }
     
@@ -657,7 +657,7 @@ class AccessibilityEnhancer {
       `;
       document.head.appendChild(style);
       if (!import.meta.env.PROD) {
-        console.log($1);
+        console.log('Focus indicators added');
       }
     }
   }
