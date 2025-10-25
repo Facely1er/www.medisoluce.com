@@ -328,7 +328,35 @@ const frTranslation = {
     "platform_features": "Fonctionnalités de la Plateforme",
     "try_real_platform": "Prêt à essayer la vraie plateforme?",
     "start_free": "Commencer Gratuitement",
-    "view_dashboard": "Voir le Tableau de Bord"
+    "view_dashboard": "Voir le Tableau de Bord",
+    "welcome_title": "Bienvenue sur MediSoluce",
+    "welcome_description": "Votre plateforme complète de conformité en santé qui combine la conformité HIPAA, la gestion des dépendances technologiques et la planification de la continuité des activités.",
+    "hipaa_assessment_title": "Évaluation de Conformité HIPAA",
+    "hipaa_assessment_description": "Évaluez la conformité de votre organisation avec des évaluations complètes qui fournissent des scores et des recommandations.",
+    "dependency_mapping_title": "Cartographie des Dépendances Technologiques",
+    "dependency_mapping_description": "Cartographiez et visualisez les dépendances critiques des systèmes de santé pour identifier les vulnérabilités et les risques.",
+    "impact_analysis_title": "Analyse d'Impact Commercial",
+    "impact_analysis_description": "Évaluez comment les défaillances technologiques affectent les soins aux patients et les opérations commerciales.",
+    "training_platform_title": "Plateforme de Formation du Personnel",
+    "training_platform_description": "Modules de formation complets pour s'assurer que votre équipe comprend les exigences de conformité.",
+    "resource_toolkit_title": "Boîte à Outils de Ressources",
+    "resource_toolkit_description": "Téléchargez des modèles, des politiques et des guides d'implémentation adaptés aux organisations de santé.",
+    "comprehensive_hipaa_title": "Évaluation HIPAA Complète",
+    "dependency_mapping_tools_title": "Cartographie des Dépendances",
+    "dependency_mapping_tools_description": "Visualisez les relations critiques du système",
+    "impact_tools_title": "Outils d'Analyse d'Impact",
+    "impact_tools_description": "Évaluez les risques commerciaux et opérationnels",
+    "interactive_training_title": "Formation Interactive",
+    "interactive_training_description": "Éducation à la conformité avec certification",
+    "resource_library_title": "Bibliothèque de Ressources",
+    "resource_library_description": "Modèles, politiques et guides",
+    "features": [
+      "Outils de conformité spécifiques à la santé",
+      "Gestion intégrée des risques et des dépendances",
+      "Conception axée sur la confidentialité avec stockage local des données",
+      "Formation et certification complètes",
+      "Modèles et ressources conçus par des experts"
+    ]
   },
   
   // Form labels and messages

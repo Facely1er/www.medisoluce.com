@@ -2,31 +2,65 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, ChevronDown, Home, BarChart } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import { useTranslation } from 'react-i18next';
-import { Home } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
 
+  // Main navigation items with dropdowns
   const navigationItems = [
-    { name: t('nav.home'), path: '/', icon: <Home className="w-5 h-5" /> },
-    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
-    { name: t('nav.hipaa_assessment'), path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: 'Comprehensive', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: 'Ransomware Lite', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
-    { name: 'CISA/NIST', path: '/cisa-nist-ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
-    { name: t('nav.system_dependencies'), path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
-    { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
-    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <FileText className="w-5 h-5" /> },
-    { name: t('nav.dashboard'), path: '/dashboard', icon: <FileText className="w-5 h-5" /> },
+    { 
+      name: t('nav.home'), 
+      path: '/', 
+      icon: <Home className="w-5 h-5" />,
+      type: 'link'
+    },
+    { 
+      name: 'Assessments', 
+      icon: <ShieldCheck className="w-5 h-5" />,
+      type: 'dropdown',
+      items: [
+        { name: t('nav.hipaa_assessment'), path: '/hipaa-check', icon: <ShieldCheck className="w-4 h-4" /> },
+        { name: 'Comprehensive', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-4 h-4" /> },
+        { name: 'Ransomware Lite', path: '/ransomware-assessment', icon: <AlertTriangle className="w-4 h-4" /> },
+        { name: 'CISA/NIST', path: '/cisa-nist-ransomware-assessment', icon: <AlertTriangle className="w-4 h-4" /> },
+      ]
+    },
+    { 
+      name: 'Management', 
+      icon: <Server className="w-5 h-5" />,
+      type: 'dropdown',
+      items: [
+        { name: t('nav.system_dependencies'), path: '/dependency-manager', icon: <Server className="w-4 h-4" /> },
+        { name: 'Business Impact', path: '/business-impact', icon: <BarChart className="w-4 h-4" /> },
+        { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-4 h-4" /> },
+      ]
+    },
+    { 
+      name: 'Resources', 
+      icon: <FileText className="w-5 h-5" />,
+      type: 'dropdown',
+      items: [
+        { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <FileText className="w-4 h-4" /> },
+        { name: 'Training', path: '/training', icon: <FileText className="w-4 h-4" /> },
+        { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-4 h-4" /> },
+      ]
+    },
+    { 
+      name: t('nav.dashboard'), 
+      path: '/dashboard', 
+      icon: <User className="w-5 h-5" />,
+      type: 'link'
+    },
   ];
 
   useEffect(() => {
@@ -39,11 +73,33 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activeDropdown && !(event.target as Element).closest('.dropdown-container')) {
+        setActiveDropdown(null);
+      }
+    };
+
+    if (activeDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [activeDropdown]);
+
+  useEffect(() => {
     setIsMenuOpen(false);
+    setActiveDropdown(null);
   }, [location]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleDropdown = (itemName: string) => {
+    setActiveDropdown(activeDropdown === itemName ? null : itemName);
+  };
+
+  const closeDropdown = () => {
+    setActiveDropdown(null);
   };
 
   return (
@@ -68,39 +124,64 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center justify-center flex-1">
-            <div className="hidden lg:flex space-x-3">
+            <div className="hidden lg:flex space-x-1">
               {navigationItems.map((item) => (
-                item.path.startsWith('http') ? (
-                  <a
-                    key={item.path}
-                    href={item.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center justify-center space-x-1 px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-gray-600 dark:text-gray-300 text-center`}
-                    data-analytics="external-navigation"
-                    data-nav-item={item.name}
-                    aria-label={`Navigate to ${item.name} (opens in new tab)`}
-                  >
-                    {item.icon}
-                    <span>{item.name}</span>
-                  </a>
-                ) : (
-                  <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center justify-center space-x-1 px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-center ${
-                    location.pathname === item.path
-                      ? 'text-primary-600 dark:text-primary-400'
-                      : 'text-gray-600 dark:text-gray-300'
-                  }`}
-                  data-analytics="main-navigation"
-                  data-nav-item={item.name}
-                  aria-label={`Navigate to ${item.name}`}
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                  </Link>
-                )
+                <div key={item.name} className="relative">
+                  {item.type === 'link' ? (
+                    <Link
+                      to={item.path!}
+                      className={`flex items-center justify-center space-x-1 px-3 py-2 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-center ${
+                        location.pathname === item.path
+                          ? 'text-primary-600 dark:text-primary-400'
+                          : 'text-gray-600 dark:text-gray-300'
+                      }`}
+                      data-analytics="main-navigation"
+                      data-nav-item={item.name}
+                      aria-label={`Navigate to ${item.name}`}
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  ) : (
+                    <div className="relative dropdown-container">
+                      <button
+                        onClick={() => toggleDropdown(item.name)}
+                        className={`flex items-center justify-center space-x-1 px-3 py-2 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-center ${
+                          activeDropdown === item.name
+                            ? 'text-primary-600 dark:text-primary-400'
+                            : 'text-gray-600 dark:text-gray-300'
+                        }`}
+                        aria-label={`Open ${item.name} menu`}
+                      >
+                        {item.icon}
+                        <span>{item.name}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.name ? 'rotate-180' : ''}`} />
+                      </button>
+                      
+                      {activeDropdown === item.name && (
+                        <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+                          <div className="py-1">
+                            {item.items!.map((subItem) => (
+                              <Link
+                                key={subItem.path}
+                                to={subItem.path}
+                                onClick={closeDropdown}
+                                className={`flex items-center space-x-2 px-4 py-2 text-sm transition hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                                  location.pathname === subItem.path
+                                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
+                                    : 'text-gray-700 dark:text-gray-300'
+                                }`}
+                              >
+                                {subItem.icon}
+                                <span>{subItem.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </nav>
@@ -183,31 +264,59 @@ const Header: React.FC = () => {
       >
         <div className="px-4 py-3 space-y-1">
           {navigationItems.map((item) => (
-            item.path.startsWith('http') ? (
-              <a
-                key={item.path}
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-3 px-4 py-3 rounded-md transition hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
-              >
-                {item.icon}
-                <span>{item.name}</span>
-              </a>
-            ) : (
-              <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-md transition ${
-                location.pathname === item.path
-                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
-              }`}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-              </Link>
-            )
+            <div key={item.name}>
+              {item.type === 'link' ? (
+                <Link
+                  to={item.path!}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-md transition ${
+                    location.pathname === item.path
+                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Link>
+              ) : (
+                <div>
+                  <button
+                    onClick={() => toggleDropdown(item.name)}
+                    className={`flex items-center justify-between w-full px-4 py-3 rounded-md transition hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 ${
+                      activeDropdown === item.name ? 'bg-gray-50 dark:bg-gray-700' : ''
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </div>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.name ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {activeDropdown === item.name && (
+                    <div className="ml-6 space-y-1">
+                      {item.items!.map((subItem) => (
+                        <Link
+                          key={subItem.path}
+                          to={subItem.path}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setActiveDropdown(null);
+                          }}
+                          className={`flex items-center space-x-3 px-4 py-2 rounded-md transition ${
+                            location.pathname === subItem.path
+                              ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                              : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                          }`}
+                        >
+                          {subItem.icon}
+                          <span>{subItem.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           ))}
           
           {user && (
