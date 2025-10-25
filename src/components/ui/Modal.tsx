@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import Button from './Button';
+import { accessibilityEnhancer } from '../../utils/accessibilityEnhancer';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,7 +11,8 @@ interface ModalProps {
   children: React.ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showCloseButton?: boolean;
-  preventCloseOnOverlay?: boolean;
+  closeOnOverlayClick?: boolean;
+  className?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -20,8 +22,23 @@ const Modal: React.FC<ModalProps> = ({
   children,
   size = 'md',
   showCloseButton = true,
-  preventCloseOnOverlay = false
+  closeOnOverlayClick = true,
+  className = ''
 }) => {
+  useEffect(() => {
+    if (isOpen) {
+      // Trap focus in modal
+      accessibilityEnhancer.announceToScreenReader(`Modal opened: ${title}`);
+      
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isOpen, title]);
+
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-lg',
@@ -29,72 +46,71 @@ const Modal: React.FC<ModalProps> = ({
     xl: 'max-w-4xl'
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (closeOnOverlayClick && e.target === e.currentTarget) {
+      onClose();
     }
+  };
 
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex min-h-screen items-center justify-center p-4">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-              onClick={preventCloseOnOverlay ? undefined : onClose}
-            />
-
-            {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 overflow-y-auto"
+          onClick={handleOverlayClick}
+          onKeyDown={handleKeyDown}
+        >
+          {/* Backdrop */}
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm" />
+          
+          {/* Modal */}
+          <div className="flex min-h-full items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`relative w-full ${sizeClasses[size]} mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl`}
+              transition={{ duration: 0.2 }}
+              className={`relative w-full ${sizeClasses[size]} bg-white dark:bg-gray-800 rounded-lg shadow-xl ${className}`}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                <h2 id="modal-title" className="text-xl font-semibold text-gray-900 dark:text-white">
                   {title}
-                </h3>
+                </h2>
+                
                 {showCloseButton && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={onClose}
-                    icon={<X className="h-4 w-4" />}
-                  />
+                    className="p-2"
+                    aria-label="Close modal"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
                 )}
               </div>
-
+              
               {/* Content */}
               <div className="p-6">
                 {children}
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

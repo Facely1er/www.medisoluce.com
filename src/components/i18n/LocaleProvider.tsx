@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { rtlUtils, supportedLocales, LocaleConfig } from '../../utils/i18nUtils';
 
@@ -9,7 +9,8 @@ interface LocaleContextType {
   setLocale: (locale: string) => void;
 }
 
-const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
+export const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
+export type { LocaleContextType };
 
 export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
@@ -49,10 +50,4 @@ export const LocaleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   );
 };
 
-export const useLocale = (): LocaleContextType => {
-  const context = useContext(LocaleContext);
-  if (context === undefined) {
-    throw new Error('useLocale must be used within a LocaleProvider');
-  }
-  return context;
-};
+// Hook moved to src/hooks/useLocale.ts to fix fast refresh warning

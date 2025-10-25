@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { 
   Activity,
   Zap,
@@ -14,8 +14,8 @@ import {
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { HealthOverview } from '../components/health/HealthIndicators';
-import HealthOptimizer from '../components/health/HealthOptimizer';
-import { comprehensiveHealthManager } from '../utils/comprehensiveHealthManager';
+// Dynamic imports will be used instead of static imports
+const HealthOptimizer = React.lazy(() => import('../components/health/HealthOptimizer'));
 import { 
   LineChart, 
   Line, 
@@ -87,6 +87,7 @@ const HealthDashboardPage: React.FC = () => {
   const loadHealthData = async () => {
     setIsLoading(true);
     try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
       const health = await comprehensiveHealthManager.getHealthReport();
       setHealthData(health);
     } catch (error) {
@@ -116,6 +117,7 @@ const HealthDashboardPage: React.FC = () => {
   const handleOptimize = async () => {
     setOptimizing(true);
     try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
       await comprehensiveHealthManager.performEmergencyOptimization();
       await loadHealthData(); // Refresh data after optimization
       
@@ -133,17 +135,22 @@ const HealthDashboardPage: React.FC = () => {
     }
   };
 
-  const handleExport = () => {
-    const report = comprehensiveHealthManager.exportComprehensiveReport();
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `medisoluce-comprehensive-health-report-${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+  const handleExport = async () => {
+    try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
+      const report = comprehensiveHealthManager.exportComprehensiveReport();
+      const blob = new Blob([report], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `medisoluce-comprehensive-health-report-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Export failed:', error);
+    }
   };
 
 
@@ -502,11 +509,13 @@ const HealthDashboardPage: React.FC = () => {
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                     Real-time Health Monitor
                   </h3>
-                  <HealthOptimizer
-                    showInProduction={true}
-                    autoOptimize={true}
-                    position="embedded"
-                  />
+                  <Suspense fallback={<div className="text-center py-4">Loading health optimizer...</div>}>
+                    <HealthOptimizer
+                      showInProduction={true}
+                      autoOptimize={true}
+                      position="embedded"
+                    />
+                  </Suspense>
                 </Card>
               </div>
 

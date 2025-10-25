@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { KeyRound } from 'lucide-react';
-import { useToast } from '../ui/Toast';
+import { useToast } from '../../hooks/useToast';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 

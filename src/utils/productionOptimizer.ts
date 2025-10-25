@@ -62,7 +62,7 @@ class ProductionOptimizer {
 
     this.isOptimizing = false;
     
-    const results = optimizations.map((result, index) => ({
+    const results = optimizations.map((result) => ({
       success: result.status === 'fulfilled',
       error: result.status === 'rejected' ? result.reason : null
     }));

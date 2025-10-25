@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, XCircle, Info, X } from 'lucide-react';
 
@@ -17,15 +17,10 @@ interface ToastContextType {
   hideToast: (id: string) => void;
 }
 
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
+export const ToastContext = createContext<ToastContextType | undefined>(undefined);
+export type { ToastContextType };
 
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (context === undefined) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return context;
-};
+// Hook moved to src/hooks/useToast.ts to fix fast refresh warning
 
 const toastIcons = {
   success: <CheckCircle className="h-5 w-5 text-success-500" />,

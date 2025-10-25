@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User, Edit, Save, X, Shield, Building, Clock, Phone, Mail, Bell } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { validateSecureHealthcareInput } from '../utils/validation';
 import { securityUtils } from '../utils/securityUtils';

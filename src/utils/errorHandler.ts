@@ -354,12 +354,12 @@ class ErrorHandler {
     // Enhanced security event handling
     if (!errorLog.securityEvent) return;
     
-    const _event = errorLog.securityEvent;
+    const securityEvent = errorLog.securityEvent;
     
     // Store security event separately for analysis
     const securityEvents = JSON.parse(localStorage.getItem('security-event-details') || '[]');
     securityEvents.push({
-      ...event,
+      ...securityEvent,
       errorId: errorLog.id,
       context: {
         url: errorLog.url,

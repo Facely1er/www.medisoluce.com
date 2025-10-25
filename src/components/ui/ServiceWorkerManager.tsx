@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, X, RefreshCw } from 'lucide-react';
 import Button from './Button';
-import { useToast } from './Toast';
+import { useToast } from '../../hooks/useToast';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -53,7 +53,7 @@ const ServiceWorkerManager: React.FC = () => {
     }
 
     // PWA install prompt
-    const handleBeforeInstallPrompt = (e: Event) => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setIsInstallable(true);

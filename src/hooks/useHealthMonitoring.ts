@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { comprehensiveHealthManager } from '../utils/comprehensiveHealthManager';
+// Dynamic imports will be used instead of static imports
 
 interface UseHealthMonitoringOptions {
   autoRefresh?: boolean;
@@ -55,6 +55,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     setError(null);
     
     try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
       const health = await comprehensiveHealthManager.getHealthReport();
       setHealthData(health);
       setLastUpdate(new Date());
@@ -77,6 +78,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     setError(null);
     
     try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
       await comprehensiveHealthManager.performEmergencyOptimization();
       
       // Refresh health data after optimization
@@ -110,8 +112,9 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     }
   }, [refresh]);
 
-  const exportReport = useCallback(() => {
+  const exportReport = useCallback(async () => {
     try {
+      const { comprehensiveHealthManager } = await import('../utils/comprehensiveHealthManager');
       const report = comprehensiveHealthManager.exportComprehensiveReport();
       const blob = new Blob([report], { type: 'text/plain' });
       const url = window.URL.createObjectURL(blob);

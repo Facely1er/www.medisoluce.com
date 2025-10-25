@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocale } from './LocaleProvider';
+import { useLocale } from '../../hooks/useLocale';
 import { useLocaleFormatter } from '../../utils/i18nUtils';
 
 interface FormattedNumberProps {
@@ -144,27 +144,32 @@ export const FormattedList: React.FC<FormattedListProps> = ({
   const { locale } = useLocale();
 
   const formatList = () => {
-    try {
-      return new Intl.ListFormat(locale, { 
-        style: 'long', 
-        type: type as 'conjunction' | 'disjunction' | 'unit'
-      }).format(items);
-    } catch {
-      // Fallback for unsupported browsers
-      if (items.length === 0) return '';
-      if (items.length === 1) return items[0];
-      if (items.length === 2) {
-        return type === 'disjunction' ? 
-          `${items[0]} or ${items[1]}` : 
-          `${items[0]} and ${items[1]}`;
+    // Check if Intl.ListFormat is available
+    if (typeof Intl !== 'undefined' && 'ListFormat' in Intl) {
+      try {
+        return new (Intl as any).ListFormat(locale, { 
+          style: 'long', 
+          type: type as 'conjunction' | 'disjunction' | 'unit'
+        }).format(items);
+      } catch {
+        // Fall through to fallback implementation
       }
-      
-      const lastItem = items[items.length - 1];
-      const otherItems = items.slice(0, -1);
-      const connector = type === 'disjunction' ? 'or' : 'and';
-      
-      return `${otherItems.join(', ')}, ${connector} ${lastItem}`;
     }
+    
+    // Fallback implementation for unsupported browsers
+    if (items.length === 0) return '';
+    if (items.length === 1) return items[0];
+    if (items.length === 2) {
+      return type === 'disjunction' ? 
+        `${items[0]} or ${items[1]}` : 
+        `${items[0]} and ${items[1]}`;
+    }
+    
+    const lastItem = items[items.length - 1];
+    const otherItems = items.slice(0, -1);
+    const connector = type === 'disjunction' ? 'or' : 'and';
+    
+    return `${otherItems.join(', ')}, ${connector} ${lastItem}`;
   };
 
   return <span className={className}>{formatList()}</span>;

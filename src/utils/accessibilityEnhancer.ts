@@ -707,7 +707,7 @@ class AccessibilityEnhancer {
       
       // Add aria-describedby for error messages
       element.addEventListener('invalid', () => {
-        const _errorId = `${element.id || 'input'}-error`;
+        const errorId = `${element.id || 'input'}-error`;
         let errorElement = document.getElementById(errorId);
         
         if (!errorElement) {
@@ -727,7 +727,7 @@ class AccessibilityEnhancer {
       element.addEventListener('input', () => {
         if (element.validity.valid) {
           element.removeAttribute('aria-invalid');
-          const _errorElement = document.getElementById(`${element.id || 'input'}-error`);
+          const errorElement = document.getElementById(`${element.id || 'input'}-error`);
           if (errorElement) {
             errorElement.remove();
           }

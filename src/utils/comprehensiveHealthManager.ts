@@ -181,7 +181,7 @@ class ComprehensiveHealthManager {
     });
     
     // Test error handling
-    const _errorHandling = this.testErrorHandling();
+    const errorHandlingResult = this.testErrorHandling();
     checks.push({
       name: 'Error Handling',
       description: 'Error boundary and recovery mechanisms',
@@ -278,7 +278,7 @@ class ComprehensiveHealthManager {
     });
     
     // Error rate check
-    const _errorRate = this.getErrorRate();
+    const errorRateValue = this.getErrorRate();
     checks.push({
       name: 'Error Rate',
       description: 'Percentage of user sessions with errors',
@@ -914,7 +914,8 @@ class ComprehensiveHealthManager {
   // Utility methods
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
+      if (!memory) return 0;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;

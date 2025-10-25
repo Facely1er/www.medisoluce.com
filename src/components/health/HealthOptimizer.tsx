@@ -22,7 +22,7 @@ import {
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import ProgressBar from '../ui/ProgressBar';
-import { comprehensiveHealthManager } from '../../utils/comprehensiveHealthManager';
+// Dynamic imports will be used instead of static imports
 
 interface HealthOptimizerProps {
   showInProduction?: boolean;
@@ -90,6 +90,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
 
     const performHealthCheck = async () => {
       try {
+        const { comprehensiveHealthManager } = await import('../../utils/comprehensiveHealthManager');
         const health = await comprehensiveHealthManager.getHealthReport();
         setHealthData(health);
         
@@ -113,12 +114,14 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
   const performOptimization = async () => {
     setIsOptimizing(true);
     try {
+      const { comprehensiveHealthManager } = await import('../../utils/comprehensiveHealthManager');
       await comprehensiveHealthManager.performEmergencyOptimization();
       setLastOptimization(new Date());
       
       // Refresh health data after optimization
       setTimeout(async () => {
-        const health = await comprehensiveHealthManager.getHealthReport();
+        const { comprehensiveHealthManager: manager } = await import('../../utils/comprehensiveHealthManager');
+        const health = await manager.getHealthReport();
         setHealthData(health);
       }, 2000);
       
@@ -148,17 +151,22 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
     }
   };
 
-  const exportHealthReport = () => {
-    const report = comprehensiveHealthManager.exportComprehensiveReport();
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `medisoluce-health-report-${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+  const exportHealthReport = async () => {
+    try {
+      const { comprehensiveHealthManager } = await import('../../utils/comprehensiveHealthManager');
+      const report = comprehensiveHealthManager.exportComprehensiveReport();
+      const blob = new Blob([report], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `medisoluce-health-report-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Export failed:', error);
+    }
   };
 
   const getScoreColor = (score: number) => {
@@ -478,6 +486,7 @@ const HealthOptimizer: React.FC<HealthOptimizerProps> = ({
                       size="sm"
                       variant="outline"
                       onClick={async () => {
+                        const { comprehensiveHealthManager } = await import('../../utils/comprehensiveHealthManager');
                         const health = await comprehensiveHealthManager.getHealthReport();
                         setHealthData(health);
                       }}

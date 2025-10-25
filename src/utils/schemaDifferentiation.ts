@@ -210,7 +210,7 @@ class SchemaDifferentiationManager {
       }
       
       return data === true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }

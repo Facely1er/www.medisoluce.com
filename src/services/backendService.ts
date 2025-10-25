@@ -187,7 +187,7 @@ export class DataService {
   /**
    * Save assessment data
    */
-  static async saveAssessment(assessmentData: any) {
+  static async saveAssessment(assessmentData: Record<string, unknown>) {
     try {
       // For now, save to localStorage as fallback
       const existingAssessments = JSON.parse(localStorage.getItem('hipaa-assessments') || '[]');
@@ -238,7 +238,7 @@ export class DataService {
   /**
    * Save training progress
    */
-  static async saveTrainingProgress(progressData: any) {
+  static async saveTrainingProgress(progressData: Record<string, unknown>) {
     try {
       const existingProgress = JSON.parse(localStorage.getItem('training-progress') || '[]');
       const newProgress = {
@@ -248,7 +248,7 @@ export class DataService {
       };
       
       // Update existing or add new
-      const existingIndex = existingProgress.findIndex((p: any) => p.moduleId === progressData.moduleId);
+      const existingIndex = existingProgress.findIndex((p: Record<string, unknown>) => p.moduleId === progressData.moduleId);
       if (existingIndex >= 0) {
         existingProgress[existingIndex] = newProgress;
       } else {
@@ -295,7 +295,7 @@ export class DataService {
   /**
    * Save system dependencies
    */
-  static async saveDependencies(dependencies: any[]) {
+  static async saveDependencies(dependencies: Record<string, unknown>[]) {
     try {
       localStorage.setItem('system-dependencies', JSON.stringify(dependencies));
 
@@ -337,7 +337,7 @@ export class DataService {
   /**
    * Save business impact assessments
    */
-  static async saveImpactAssessments(assessments: any[]) {
+  static async saveImpactAssessments(assessments: Record<string, unknown>[]) {
     try {
       localStorage.setItem('business-impact-assessments', JSON.stringify(assessments));
 

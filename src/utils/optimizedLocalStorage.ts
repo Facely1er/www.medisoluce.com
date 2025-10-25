@@ -333,7 +333,7 @@ class OptimizedLocalStorageManager {
             expiredCount++;
           }
         }
-      } catch (error) {
+      } catch {
         // Ignore parsing errors for metrics
       }
     });

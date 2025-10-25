@@ -91,7 +91,7 @@ class EnhancedHealthChecker {
     const memoryUsage = this.getMemoryUsage();
     const loadTime = this.getPageLoadTime();
     const renderTime = this.getMeasuredRenderTime();
-    const _errorRate = this.calculateErrorRate();
+    const errorRate = this.calculateErrorRate();
     const bundleSize = await this.estimateBundleSize();
 
     return {

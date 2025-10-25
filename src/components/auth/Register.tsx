@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { UserPlus, Shield, AlertTriangle } from 'lucide-react';
-import { useToast } from '../ui/Toast';
+import { useToast } from '../../hooks/useToast';
 import { validateSecureHealthcareInput, rateLimiter } from '../../utils/validation';
 import { securityUtils } from '../../utils/securityUtils';
 import Button from '../ui/Button';

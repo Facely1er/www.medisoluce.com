@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
-import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
 import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';

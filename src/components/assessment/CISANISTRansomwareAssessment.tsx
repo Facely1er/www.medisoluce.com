@@ -432,7 +432,7 @@ const CISANISTRansomwareAssessment: React.FC = () => {
     };
 
     recommendations.forEach(rec => {
-      if (rec.framework && frameworkScores.hasOwnProperty(rec.framework)) {
+      if (rec.framework && Object.prototype.hasOwnProperty.call(frameworkScores, rec.framework)) {
         frameworkScores[rec.framework]++;
       }
     });

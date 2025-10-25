@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useLocale } from '../components/i18n/LocaleProvider';
+import { useLocale } from './useLocale';
 import { useLocaleFormatter } from '../utils/i18nUtils';
 
 // Custom hook for all i18n formatting needs

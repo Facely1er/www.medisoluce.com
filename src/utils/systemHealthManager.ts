@@ -1061,7 +1061,7 @@ class SystemHealthManager {
     (window as any).domChangeTimeout = setTimeout(() => {
       // Trigger layout optimization
       document.body.style.display = 'none';
-      document.body.offsetHeight; // Force reflow
+      void document.body.offsetHeight; // Force reflow
       document.body.style.display = '';
     }, 100);
   }

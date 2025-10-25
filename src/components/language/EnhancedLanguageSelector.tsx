@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Check, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocale } from '../i18n/LocaleProvider';
+import { useLocale } from '../../hooks/useLocale';
 import { supportedLocales } from '../../utils/i18nUtils';
 import Button from '../ui/Button';
 

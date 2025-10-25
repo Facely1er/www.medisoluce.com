@@ -206,8 +206,8 @@ class PerformanceOptimizer {
   }
 
   private notifyUpdate() {
-    if ((window as any).showToast) {
-      (window as any).showToast({
+    if ((window as Window & { showToast?: (toast: { type: string; title: string; message: string; duration: number }) => void }).showToast) {
+      (window as Window & { showToast: (toast: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'info',
         title: 'Update Available',
         message: 'A new version is available. Refresh to update.',
@@ -247,7 +247,9 @@ class PerformanceOptimizer {
 
   private checkMemoryUsage() {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
+      if (!memory) return;
+      
       const usagePercentage = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
       
       if (usagePercentage > 85) {
@@ -309,8 +311,8 @@ class PerformanceOptimizer {
     this.compactLocalStorage();
     
     // Force garbage collection if available
-    if ((window as any).gc) {
-      (window as any).gc();
+    if ((window as Window & { gc?: () => void }).gc) {
+      (window as Window & { gc: () => void }).gc();
     }
     
     this.logOptimization('Emergency memory cleanup');
@@ -641,5 +643,5 @@ export const performanceOptimizer = new PerformanceOptimizer();
 
 // Auto-initialize in production
 if (import.meta.env.PROD) {
-  performanceOptimizer;
+  performanceOptimizer.initialize();
 }

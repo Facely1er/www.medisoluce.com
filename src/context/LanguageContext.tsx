@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { analytics } from '../utils/analytics';
 
@@ -9,7 +9,8 @@ interface LanguageContextType {
   changeLanguage: (lang: Language) => void;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export type { LanguageContextType };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
@@ -36,10 +37,4 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
-export const useLanguage = (): LanguageContextType => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-};
+// Hook moved to src/hooks/useLanguage.ts to fix fast refresh warning
