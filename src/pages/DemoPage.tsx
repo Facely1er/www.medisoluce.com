@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   ShieldCheck, 
   Server, 
@@ -18,45 +19,46 @@ import {
 const DemoPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { t } = useTranslation();
 
   const demoSteps = useMemo(() => [
     {
-      title: "Welcome to MediSoluce",
-      description: "Your comprehensive healthcare compliance platform combining HIPAA compliance, technology dependency management, and business continuity planning.",
+      title: t('demo.welcome_title'),
+      description: t('demo.welcome_description'),
       component: "overview",
       duration: 3000
     },
     {
-      title: "HIPAA Compliance Assessment",
-      description: "Evaluate your organization's compliance with comprehensive assessments that provide scoring and recommendations.",
+      title: t('demo.hipaa_assessment_title'),
+      description: t('demo.hipaa_assessment_description'),
       component: "assessment",
       duration: 4000
     },
     {
-      title: "Technology Dependency Mapping",
-      description: "Map and visualize critical healthcare system dependencies to identify vulnerabilities and risks.",
+      title: t('demo.dependency_mapping_title'),
+      description: t('demo.dependency_mapping_description'),
       component: "dependencies",
       duration: 4000
     },
     {
-      title: "Business Impact Analysis", 
-      description: "Assess how technology failures affect patient care and business operations.",
+      title: t('demo.impact_analysis_title'), 
+      description: t('demo.impact_analysis_description'),
       component: "impact",
       duration: 3000
     },
     {
-      title: "Staff Training Platform",
-      description: "Comprehensive training modules to ensure your team understands compliance requirements.",
+      title: t('demo.training_platform_title'),
+      description: t('demo.training_platform_description'),
       component: "training",
       duration: 3000
     },
     {
-      title: "Resource Toolkit",
-      description: "Download templates, policies, and implementation guides tailored for healthcare organizations.",
+      title: t('demo.resource_toolkit_title'),
+      description: t('demo.resource_toolkit_description'),
       component: "toolkit",
       duration: 3000
     }
-  ], []);
+  ], [t]);
 
   const nextStep = useCallback(() => {
     setCurrentStep((prev) => (prev + 1) % demoSteps.length);
@@ -369,32 +371,32 @@ const DemoPage: React.FC = () => {
                   {[
                     {
                       icon: <ShieldCheck className="h-5 w-5 text-primary-500" />,
-                      title: "Comprehensive HIPAA Assessment",
+                      title: t('demo.comprehensive_hipaa_title'),
                       description: "10-question evaluation with detailed scoring",
                       link: "/hipaa-check"
                     },
                     {
                       icon: <Server className="h-5 w-5 text-secondary-500" />,
-                      title: "Dependency Mapping",
-                      description: "Visualize critical system relationships",
+                      title: t('demo.dependency_mapping_tools_title'),
+                      description: t('demo.dependency_mapping_tools_description'),
                       link: "/dependency-manager"
                     },
                     {
                       icon: <BarChart className="h-5 w-5 text-accent-500" />,
-                      title: "Impact Analysis Tools",
-                      description: "Assess business and operational risks",
+                      title: t('demo.impact_tools_title'),
+                      description: t('demo.impact_tools_description'),
                       link: "/business-impact"
                     },
                     {
                       icon: <Users className="h-5 w-5 text-success-500" />,
-                      title: "Interactive Training",
-                      description: "Compliance education with certification",
+                      title: t('demo.interactive_training_title'),
+                      description: t('demo.interactive_training_description'),
                       link: "/training"
                     },
                     {
                       icon: <Download className="h-5 w-5 text-warning-500" />,
-                      title: "Resource Library",
-                      description: "Templates, policies, and guides",
+                      title: t('demo.resource_library_title'),
+                      description: t('demo.resource_library_description'),
                       link: "/toolkit"
                     }
                   ].map((feature) => (
@@ -444,18 +446,14 @@ const DemoPage: React.FC = () => {
                   Why Choose MediSoluce?
                 </h3>
                 <div className="space-y-3">
-                  {[
-                    "Healthcare-specific compliance tools",
-                    "Integrated risk and dependency management", 
-                    "Privacy-first design with local data storage",
-                    "Comprehensive training and certification",
-                    "Expert-designed templates and resources"
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-success-500 mr-3 flex-shrink-0" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{benefit}</span>
-                    </div>
-                  ))}
+                  {Array.isArray(t('demo.features', { returnObjects: true })) && 
+                    (t('demo.features', { returnObjects: true }) as string[]).map((benefit: string, index: number) => (
+                      <div key={index} className="flex items-center">
+                        <CheckCircle className="h-4 w-4 text-success-500 mr-3 flex-shrink-0" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{benefit}</span>
+                      </div>
+                    ))
+                  }
                 </div>
               </Card>
             </div>

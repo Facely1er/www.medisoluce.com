@@ -251,7 +251,50 @@ const enTranslation = {
     "action": "Action",
     "run_assessment": "Run Assessment",
     "generate_report": "Generate Report",
-    "schedule_training": "Schedule Training"
+    "schedule_training": "Schedule Training",
+    "modules": {
+      "hipaa_basics": {
+        "title": "HIPAA Compliance Fundamentals",
+        "description": "Essential knowledge for healthcare compliance professionals",
+        "duration": "2 hours",
+        "level": "Beginner",
+        "topics": [
+          "HIPAA Privacy Rule Overview",
+          "Security Rule Requirements",
+          "Breach Notification Procedures",
+          "Patient Rights and Protections"
+        ]
+      },
+      "dependency_management": {
+        "title": "Technology Dependency Management",
+        "description": "Managing and assessing technology dependencies in healthcare",
+        "duration": "1.5 hours",
+        "level": "Intermediate",
+        "topics": [
+          "System Mapping Techniques",
+          "Risk Assessment Methods",
+          "Dependency Visualization",
+          "Impact Analysis"
+        ]
+      },
+      "incident_response": {
+        "title": "Healthcare Incident Response",
+        "description": "Comprehensive incident response for healthcare organizations",
+        "duration": "2.5 hours",
+        "level": "Advanced",
+        "topics": [
+          "Incident Classification",
+          "Response Team Coordination",
+          "Incident Response Planning",
+          "Recovery Procedures"
+        ]
+      }
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
   },
   
   // Contact page
@@ -421,6 +464,15 @@ const enTranslation = {
     "good": "Good compliance", 
     "fair": "Fair compliance",
     "poor": "Poor compliance"
+  },
+  "cisa_nist": {
+    "title": "CISA #StopRansomware Assessment",
+    "subtitle": "Healthcare Sector Implementation",
+    "description": "Official CISA #StopRansomware Guide assessment tailored for healthcare organizations, implementing prevention best practices and response procedures aligned with CISA's Cross-Sector Cybersecurity Performance Goals (CPGs)."
+  },
+  "ransomware": {
+    "title": "Ransomware Protection Assessment",
+    "description": "Evaluate your organization's resilience against ransomware attacks"
   }
 },
 
@@ -609,7 +661,35 @@ const enTranslation = {
   "platform_features": "Platform Features",
   "try_real_platform": "Ready to try the real platform?",
   "start_free": "Start Free",
-  "view_dashboard": "View Dashboard"
+  "view_dashboard": "View Dashboard",
+  "welcome_title": "Welcome to MediSoluce",
+  "welcome_description": "Your comprehensive healthcare compliance platform combining HIPAA compliance, technology dependency management, and business continuity planning.",
+  "hipaa_assessment_title": "HIPAA Compliance Assessment",
+  "hipaa_assessment_description": "Evaluate your organization's compliance with comprehensive assessments that provide scoring and recommendations.",
+  "dependency_mapping_title": "Technology Dependency Mapping",
+  "dependency_mapping_description": "Map and visualize critical healthcare system dependencies to identify vulnerabilities and risks.",
+  "impact_analysis_title": "Business Impact Analysis",
+  "impact_analysis_description": "Assess how technology failures affect patient care and business operations.",
+  "training_platform_title": "Staff Training Platform",
+  "training_platform_description": "Comprehensive training modules to ensure your team understands compliance requirements.",
+  "resource_toolkit_title": "Resource Toolkit",
+  "resource_toolkit_description": "Download templates, policies, and implementation guides tailored for healthcare organizations.",
+  "comprehensive_hipaa_title": "Comprehensive HIPAA Assessment",
+  "dependency_mapping_tools_title": "Dependency Mapping",
+  "dependency_mapping_tools_description": "Visualize critical system relationships",
+  "impact_tools_title": "Impact Analysis Tools",
+  "impact_tools_description": "Assess business and operational risks",
+  "interactive_training_title": "Interactive Training",
+  "interactive_training_description": "Compliance education with certification",
+  "resource_library_title": "Resource Library",
+  "resource_library_description": "Templates, policies, and guides",
+  "features": [
+    "Healthcare-specific compliance tools",
+    "Integrated risk and dependency management",
+    "Privacy-first design with local data storage",
+    "Comprehensive training and certification",
+    "Expert-designed templates and resources"
+  ]
 },
 
 // Privacy page (missing from original en.ts)
@@ -774,6 +854,9 @@ const enTranslation = {
     "not_specified": "Not specified",
     "no_data_available": "No data available"
   },
+
+
+
 
   // Error messages
   "errors": {
