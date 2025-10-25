@@ -26,6 +26,7 @@ import TrainingPage from './pages/TrainingPage';
 import ToolkitPage from './pages/ToolkitPage';
 import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
 import RansomwareAssessment from './components/assessment/RansomwareAssessment';
+import CISANISTRansomwareAssessment from './components/assessment/CISANISTRansomwareAssessment';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -99,6 +100,7 @@ function AppContent() {
           <Route path="/health-dashboard" element={<HealthDashboardPage />} />
           <Route path="/ransomware" element={<RansomwarePage />} />
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
+          <Route path="/cisa-nist-ransomware-assessment" element={<CISANISTRansomwareAssessment />} />
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/toolkit" element={<ToolkitPage />} />
           <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />

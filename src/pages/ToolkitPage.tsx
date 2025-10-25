@@ -181,6 +181,18 @@ const ToolkitPage: React.FC = () => {
       isPopular: false,
       lastUpdated: '2024-01-04',
       author: 'MediSoluce Team'
+    },
+    {
+      id: '13',
+      title: 'CISA/NIST Ransomware Readiness Guide for Healthcare',
+      description: 'Comprehensive implementation guide based on CISA/NIST Cybersecurity Framework 2.0 specifically tailored for healthcare organizations.',
+      fileType: 'md',
+      downloadLink: '/downloads/cisa-nist-ransomware-readiness-guide.md',
+      category: 'Ransomware',
+      tags: ['cisa', 'nist', 'framework', 'ransomware', 'healthcare'],
+      isPopular: true,
+      lastUpdated: '2024-01-16',
+      author: 'MediSoluce Team'
     }
   ];
 
@@ -243,7 +255,7 @@ const ToolkitPage: React.FC = () => {
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button
-                  variant={selectedCategory === null ? "default" : "outline"}
+                  variant={selectedCategory === null ? "primary" : "secondary"}
                   onClick={() => setSelectedCategory(null)}
                   size="sm"
                 >
@@ -252,7 +264,7 @@ const ToolkitPage: React.FC = () => {
                 {categories.map((category) => (
                   <Button
                     key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
+                    variant={selectedCategory === category ? "primary" : "secondary"}
                     onClick={() => setSelectedCategory(category)}
                     size="sm"
                   >
@@ -342,9 +354,11 @@ const ToolkitPage: React.FC = () => {
         title={previewTitle}
         size="lg"
       >
-        <ReactMarkdown className="prose dark:prose-invert max-w-none">
-          {previewContent}
-        </ReactMarkdown>
+        <div className="prose dark:prose-invert max-w-none">
+          <ReactMarkdown>
+            {previewContent}
+          </ReactMarkdown>
+        </div>
       </Modal>
     </div>
   );

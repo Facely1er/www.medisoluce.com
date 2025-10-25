@@ -31,18 +31,28 @@ interface Dependency {
   downtime: string;
 }
 
+interface FormData {
+  name: string;
+  category: string;
+  criticality: 'Critical' | 'High' | 'Medium' | 'Low';
+  dependencies: string;
+  riskLevel: 'High' | 'Medium' | 'Low';
+  backupProcedures: string;
+  downtime: string;
+}
+
 const DependencyManagerPage: React.FC = () => {
   const { t } = useTranslation();
   const [showMapper, setShowMapper] = useState(false);
   const [dependencies, setDependencies] = useLocalStorage<Dependency[]>('system-dependencies', []);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     category: '',
-    criticality: 'Medium' as const,
+    criticality: 'Medium',
     dependencies: '',
-    riskLevel: 'Medium' as const,
+    riskLevel: 'Medium',
     backupProcedures: '',
     downtime: ''
   });

@@ -26,18 +26,18 @@ const frTranslation = {
   "nav": {
     "home": "Accueil",
     "demo": "Démo", 
-    "hipaa_assessment": "Évaluation HIPAA",
-    "system_dependencies": "Dépendances Système",
-    "business_continuity": "Continuité Opérationnelle",
+    "hipaa_assessment": "HIPAA",
+    "system_dependencies": "Dépendances",
+    "business_continuity": "Continuité",
     "training": "Formation",
-    "resource_toolkit": "Boîte à Outils",
+    "resource_toolkit": "Outils",
     "dashboard": "Tableau de Bord",
     "compliance": "Conformité",
     "dependencies": "Dépendances",
     "business_impact": "Impact Opérationnel",
     "continuity": "Continuité",
     "ransomware": "Rançongiciel",
-    "toolkit": "Boîte à outils"
+    "toolkit": "Outils"
   },
   
   // HomePage

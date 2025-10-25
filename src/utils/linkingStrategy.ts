@@ -289,6 +289,35 @@ export const linkingStrategy: Record<string, LinkSuggestion[]> = {
       seoValue: 6
     }
   ],
+  '/cisa-nist-ransomware-assessment': [
+    {
+      fromPage: '/cisa-nist-ransomware-assessment',
+      toPage: '/ransomware-assessment',
+      anchorText: 'compare with standard ransomware assessment',
+      context: 'Alternative assessment approach',
+      priority: 'medium',
+      placement: 'content',
+      seoValue: 7
+    },
+    {
+      fromPage: '/cisa-nist-ransomware-assessment',
+      toPage: '/toolkit',
+      anchorText: 'access CISA/NIST framework implementation resources',
+      context: 'Framework-specific resources',
+      priority: 'high',
+      placement: 'content',
+      seoValue: 8
+    },
+    {
+      fromPage: '/cisa-nist-ransomware-assessment',
+      toPage: '/training',
+      anchorText: 'learn CISA/NIST framework implementation',
+      context: 'Education for framework adoption',
+      priority: 'medium',
+      placement: 'sidebar',
+      seoValue: 6
+    }
+  ],
   '/dashboard': [
     {
       fromPage: '/dashboard',
@@ -501,6 +530,32 @@ export const relatedPages: Record<string, RelatedLink[]> = {
       description: 'Get personalized guidance on resource implementation', 
       icon: 'MessageSquare',
       category: 'Support',
+      seoValue: 6
+    }
+  ],
+  '/cisa-nist-ransomware-assessment': [
+    { 
+      title: 'Standard Ransomware Assessment', 
+      path: '/ransomware-assessment',
+      description: 'Compare with our standard ransomware assessment approach', 
+      icon: 'AlertTriangle',
+      category: 'Assessment',
+      seoValue: 7
+    },
+    { 
+      title: 'CISA/NIST Resources', 
+      path: '/toolkit',
+      description: 'Access framework-specific implementation resources', 
+      icon: 'Download',
+      category: 'Resources',
+      seoValue: 8
+    },
+    { 
+      title: 'Framework Training', 
+      path: '/training',
+      description: 'Learn CISA/NIST framework implementation', 
+      icon: 'BookOpen',
+      category: 'Education',
       seoValue: 6
     }
   ],

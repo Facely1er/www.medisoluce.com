@@ -152,7 +152,7 @@ const RansomwareAssessment: React.FC = () => {
     // Backup recommendations
     if (!answers['backup-strategy'] || ['backup-none', 'backup-basic'].includes(answers['backup-strategy'])) {
       recommendations.push({
-        priority: 'critical' as const,
+        priority: 'high' as const,
         text: 'Implement immutable, air-gapped backup solution immediately. This is your primary defense against ransomware.',
       });
     }
@@ -259,9 +259,13 @@ const RansomwareAssessment: React.FC = () => {
             <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
               Ransomware Protection Assessment
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              Evaluate your organization's resilience against ransomware attacks and identify critical vulnerabilities.
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
+              Comprehensive ransomware protection evaluation with built-in compliance controls for HIPAA, data protection, and regulatory requirements.
             </p>
+            <div className="inline-flex items-center px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">
+              <AlertTriangle className="h-4 w-4 mr-2" />
+              Main Ransomware Protection Tool
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -309,38 +313,80 @@ const RansomwareAssessment: React.FC = () => {
             <Card className="p-6">
               <CheckCircle className="h-8 w-8 text-green-500 mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                What You'll Get
+                Compliance & Protection Benefits
               </h3>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Detailed vulnerability analysis</span>
+                  <span>HIPAA Security Rule compliance</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Prioritized recommendations</span>
+                  <span>Data protection requirements</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Implementation timeline</span>
+                  <span>Common control framework</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Cost-benefit analysis</span>
+                  <span>Regulatory audit readiness</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Compliance impact assessment</span>
+                  <span>Risk management alignment</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Risk level evaluation</span>
+                  <span>Business continuity planning</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Exportable assessment report</span>
+                  <span>Incident response readiness</span>
                 </li>
               </ul>
+            </Card>
+          </div>
+
+          <div className="mb-8">
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Assessment Options
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="border border-primary-200 dark:border-primary-700 rounded-lg p-4">
+                  <div className="flex items-center mb-3">
+                    <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
+                    <h4 className="font-semibold text-gray-900 dark:text-white">Ransomware Lite Assessment</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                    Quick, focused assessment covering essential ransomware protection controls with built-in compliance mapping.
+                  </p>
+                  <ul className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                    <li>• 10 core protection areas</li>
+                    <li>• HIPAA compliance controls</li>
+                    <li>• Data protection requirements</li>
+                    <li>• Common control framework</li>
+                    <li>• Quick implementation guide</li>
+                  </ul>
+                </div>
+                <div className="border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+                  <div className="flex items-center mb-3">
+                    <Shield className="h-6 w-6 text-blue-500 mr-2" />
+                    <h4 className="font-semibold text-gray-900 dark:text-white">CISA/NIST Comprehensive</h4>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                    Full framework-based assessment aligned with CISA/NIST Cybersecurity Framework 2.0 for healthcare.
+                  </p>
+                  <ul className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                    <li>• 20 detailed framework controls</li>
+                    <li>• Complete CISA/NIST mapping</li>
+                    <li>• Healthcare-specific requirements</li>
+                    <li>• Detailed implementation roadmap</li>
+                    <li>• Regulatory compliance guide</li>
+                  </ul>
+                </div>
+              </div>
             </Card>
           </div>
 

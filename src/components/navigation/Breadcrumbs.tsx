@@ -55,8 +55,13 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customItems, className = '' }
       icon: <Shield className="h-4 w-4" />
     },
     '/ransomware-assessment': { 
-      label: 'Ransomware Assessment', 
-      parent: '/comprehensive-assessment',
+      label: 'Ransomware Lite', 
+      parent: '/dashboard',
+      icon: <AlertTriangle className="h-4 w-4" />
+    },
+    '/cisa-nist-ransomware-assessment': { 
+      label: 'CISA/NIST Comprehensive', 
+      parent: '/ransomware-assessment',
       icon: <AlertTriangle className="h-4 w-4" />
     },
     '/toolkit': { 
