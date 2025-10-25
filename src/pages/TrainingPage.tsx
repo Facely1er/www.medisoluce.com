@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { 
   BookOpen, 
   Play, 
@@ -19,7 +18,6 @@ import Button from '../components/ui/Button';
 import Breadcrumbs from '../components/navigation/Breadcrumbs';
 
 const TrainingPage: React.FC = () => {
-  const { t } = useTranslation();
 
   const trainingModules = [
     {

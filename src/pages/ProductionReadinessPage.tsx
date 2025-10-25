@@ -91,7 +91,7 @@ const ProductionReadinessPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [generateProductionReadinessReport]);
 
   const generateProductionReadinessReport = async (): Promise<ProductionReadinessReport> => {
     // Security Assessment

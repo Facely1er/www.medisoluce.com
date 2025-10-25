@@ -7,7 +7,6 @@ import {
   FormField,
   ErrorBoundary,
   LoadingState,
-  LoadingSpinner,
   ToastProvider,
   useToast
 } from '../components/ui';
@@ -75,7 +74,7 @@ const EnhancedAssessmentForm: React.FC = () => {
       
       setIsModalOpen(false);
       
-    } catch (error) {
+    } catch {
       showToast({
         type: 'error',
         title: 'Error',

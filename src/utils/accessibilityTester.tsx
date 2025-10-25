@@ -5,7 +5,7 @@ import { accessibilityEnhancer } from '../../utils/accessibilityEnhancer';
 export const AccessibilityTester = {
   
   // Test component for accessibility violations
-  testComponent: (component: React.ReactElement): Promise<{
+  testComponent: (_component: React.ReactElement): Promise<{
     violations: any[];
     warnings: string[];
     score: number;
@@ -22,7 +22,7 @@ export const AccessibilityTester = {
       try {
         // Test for missing alt text
         const images = element.querySelectorAll('img');
-        images.forEach((img, index) => {
+        images.forEach((img, _index) => {
           if (!img.getAttribute('alt')) {
             violations.push({
               id: 'image-alt',
