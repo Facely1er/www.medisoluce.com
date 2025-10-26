@@ -528,6 +528,16 @@ class PerformanceEnhancer {
     return recommendations;
   }
 
+  public startMonitoring(): void {
+    if (typeof window === 'undefined') return;
+    
+    // Start performance monitoring
+    this.initializeOptimizations();
+    this.setupPerformanceObservers();
+    
+    console.log('Performance monitoring started');
+  }
+
   public cleanup(): void {
     this.observers.forEach(observer => observer.disconnect());
     this.observers = [];

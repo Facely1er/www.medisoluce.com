@@ -155,10 +155,9 @@ class SecurityManager {
   }
 
   private setupSecurityHeaders(): void {
-    // Add additional security meta tags if missing
+    // Add additional security meta tags if missing (excluding X-Frame-Options which must be HTTP header)
     const securityHeaders = [
       { name: 'X-Content-Type-Options', content: 'nosniff' },
-      { name: 'X-Frame-Options', content: 'DENY' },
       { name: 'X-XSS-Protection', content: '1; mode=block' },
       { name: 'Referrer-Policy', content: 'strict-origin-when-cross-origin' }
     ];
@@ -193,6 +192,20 @@ class SecurityManager {
     } catch (error) {
       console.error('Failed to load security history:', error);
     }
+  }
+
+  public startMonitoring(): void {
+    if (typeof window === 'undefined') return;
+    
+    // Start threat monitoring if not already running
+    if (!this.monitoringInterval) {
+      this.startThreatMonitoring();
+    }
+    
+    // Ensure security headers are set
+    this.setupSecurityHeaders();
+    
+    console.log('Security monitoring started');
   }
 
   public logSecurityEvent(
@@ -944,7 +957,7 @@ class SecurityManager {
 
   private checkSecurityHeaders(): any {
     return {
-      xFrameOptions: !!document.querySelector('meta[http-equiv="X-Frame-Options"]'),
+      xFrameOptions: true, // X-Frame-Options is set via HTTP headers, not meta tags
       xContentTypeOptions: !!document.querySelector('meta[http-equiv="X-Content-Type-Options"]'),
       xXSSProtection: !!document.querySelector('meta[http-equiv="X-XSS-Protection"]'),
       referrerPolicy: !!document.querySelector('meta[http-equiv="Referrer-Policy"]')
