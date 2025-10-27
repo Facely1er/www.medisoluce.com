@@ -298,9 +298,9 @@ class ProductionOptimizer {
   }
 
   private validateSecurityHeaders() {
+    // Note: X-Frame-Options cannot be set via meta tag, only via HTTP headers
     const requiredHeaders = [
       'Content-Security-Policy',
-      'X-Frame-Options',
       'X-Content-Type-Options',
       'Referrer-Policy'
     ];
