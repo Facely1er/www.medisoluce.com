@@ -1017,8 +1017,8 @@ class ProjectHealthEnhancer {
   }
 
   private hasSecurityHeaders(): boolean {
+    // Note: X-Frame-Options cannot be set via meta tag, only via HTTP headers
     return !!(
-      true || // X-Frame-Options is set via HTTP headers, not meta tags
       document.querySelector('meta[http-equiv="X-Content-Type-Options"]')
     );
   }
