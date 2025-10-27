@@ -195,6 +195,7 @@ class SecurityManager {
     }
   }
 
+
   public logSecurityEvent(
     eventType: SecurityEvent['eventType'], 
     details: Record<string, unknown>, 
