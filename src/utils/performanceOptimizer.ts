@@ -155,10 +155,18 @@ class PerformanceOptimizer {
     if (this.preloadedResources.has(href)) return;
 
     const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = as;
-    link.href = href;
-    link.crossOrigin = 'anonymous';
+    if (as === 'modulepreload') {
+      // modulepreload is a rel value, not an "as" value
+      link.rel = 'modulepreload';
+      link.href = href;
+      // crossorigin is typically needed for modulepreload
+      link.crossOrigin = 'anonymous';
+    } else {
+      link.rel = 'preload';
+      link.as = as as any; // valid values: script, style, font, image, fetch, etc.
+      link.href = href;
+      if (as === 'font') link.crossOrigin = 'anonymous';
+    }
     
     document.head.appendChild(link);
     this.preloadedResources.add(href);

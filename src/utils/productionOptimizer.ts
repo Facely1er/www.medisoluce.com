@@ -232,6 +232,7 @@ class ProductionOptimizer {
     const preloadPromises = criticalResources.map(resource => {
       return new Promise<void>((resolve) => {
         const link = document.createElement('link');
+        // Use rel=modulepreload for JS modules
         link.rel = 'modulepreload';
         link.href = resource;
         link.onload = () => resolve();

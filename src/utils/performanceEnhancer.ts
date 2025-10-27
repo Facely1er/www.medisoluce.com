@@ -252,11 +252,18 @@ class PerformanceEnhancer {
     criticalResources.forEach(resource => {
       if (!document.querySelector(`link[href="${resource.href}"]`)) {
         const link = document.createElement('link');
-        link.rel = 'preload';
-        link.href = resource.href;
-        link.as = resource.as;
-        if (resource.as === 'font') {
+        if (resource.as === 'modulepreload') {
+          // Use rel=modulepreload instead of preload+as
+          link.rel = 'modulepreload';
+          link.href = resource.href;
           link.crossOrigin = 'anonymous';
+        } else {
+          link.rel = 'preload';
+          link.href = resource.href;
+          link.as = resource.as as any;
+          if (resource.as === 'font') {
+            link.crossOrigin = 'anonymous';
+          }
         }
         document.head.appendChild(link);
       }

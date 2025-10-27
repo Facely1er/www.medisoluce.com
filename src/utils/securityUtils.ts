@@ -155,15 +155,15 @@ class SecurityManager {
   }
 
   private setupSecurityHeaders(): void {
-    // Add additional security meta tags if missing
+    // Add security-related meta tags that are safe to set client-side.
+    // Note: X-Frame-Options MUST be set as an HTTP response header; do not inject via meta.
     const securityHeaders = [
       { name: 'X-Content-Type-Options', content: 'nosniff' },
-      { name: 'X-Frame-Options', content: 'DENY' },
       { name: 'X-XSS-Protection', content: '1; mode=block' },
       { name: 'Referrer-Policy', content: 'strict-origin-when-cross-origin' }
     ];
 
-    securityHeaders.forEach(header => {
+    securityHeaders.forEach((header) => {
       if (!document.querySelector(`meta[http-equiv="${header.name}"]`)) {
         const meta = document.createElement('meta');
         meta.httpEquiv = header.name;
