@@ -195,19 +195,6 @@ class SecurityManager {
     }
   }
 
-  public startMonitoring(): void {
-    if (typeof window === 'undefined') return;
-    
-    // Start threat monitoring if not already running
-    if (!this.monitoringInterval) {
-      this.startThreatMonitoring();
-    }
-    
-    // Ensure security headers are set
-    this.setupSecurityHeaders();
-    
-    console.log('Security monitoring started');
-  }
 
   public logSecurityEvent(
     eventType: SecurityEvent['eventType'], 
