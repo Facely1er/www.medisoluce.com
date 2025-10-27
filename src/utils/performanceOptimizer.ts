@@ -155,8 +155,13 @@ class PerformanceOptimizer {
     if (this.preloadedResources.has(href)) return;
 
     const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = as;
+    // modulepreload uses rel="modulepreload" instead of rel="preload" with as="modulepreload"
+    if (as === 'modulepreload') {
+      link.rel = 'modulepreload';
+    } else {
+      link.rel = 'preload';
+      link.as = as;
+    }
     link.href = href;
     link.crossOrigin = 'anonymous';
     

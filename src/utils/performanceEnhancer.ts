@@ -253,8 +253,8 @@ class PerformanceEnhancer {
       if (!document.querySelector(`link[href="${resource.href}"]`)) {
         const link = document.createElement('link');
         link.rel = 'preload';
-        link.href = resource.href;
         link.as = resource.as;
+        link.href = resource.href;
         if (resource.as === 'font') {
           link.crossOrigin = 'anonymous';
         }

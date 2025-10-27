@@ -156,10 +156,9 @@ class SecurityManager {
 
   private setupSecurityHeaders(): void {
     // Add additional security meta tags if missing
+    // Note: X-Frame-Options can only be set via HTTP headers, not meta tags
     const securityHeaders = [
       { name: 'X-Content-Type-Options', content: 'nosniff' },
-      { name: 'X-Frame-Options', content: 'DENY' },
-      { name: 'X-XSS-Protection', content: '1; mode=block' },
       { name: 'Referrer-Policy', content: 'strict-origin-when-cross-origin' }
     ];
 
@@ -944,10 +943,12 @@ class SecurityManager {
 
   private checkSecurityHeaders(): any {
     return {
-      xFrameOptions: !!document.querySelector('meta[http-equiv="X-Frame-Options"]'),
+      // Note: X-Frame-Options and X-XSS-Protection can only be set via HTTP headers, not meta tags
+      // We check for meta tags that CAN be set via meta elements
       xContentTypeOptions: !!document.querySelector('meta[http-equiv="X-Content-Type-Options"]'),
-      xXSSProtection: !!document.querySelector('meta[http-equiv="X-XSS-Protection"]'),
-      referrerPolicy: !!document.querySelector('meta[http-equiv="Referrer-Policy"]')
+      referrerPolicy: !!document.querySelector('meta[http-equiv="Referrer-Policy"]'),
+      // These headers must be checked via server response (set in vite.config.ts)
+      httpsEnabled: window.location.protocol === 'https:'
     };
   }
 
