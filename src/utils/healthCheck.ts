@@ -177,7 +177,7 @@ class HealthChecker {
   }
 
   private async getPerformanceMetrics() {
-    const _errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const recentErrors = errorLogs.filter((log: unknown) => {
       const logTime = new Date(log.timestamp).getTime();
       const oneHourAgo = Date.now() - (60 * 60 * 1000);
@@ -272,7 +272,7 @@ class HealthChecker {
   // Export health data for debugging
   exportHealthData() {
     const healthHistory = JSON.parse(localStorage.getItem('health-history') || '[]');
-    const _errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
+    const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
     
     const exportData = {
       healthChecks: healthHistory,

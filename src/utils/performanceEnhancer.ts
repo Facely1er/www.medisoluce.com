@@ -330,8 +330,9 @@ class PerformanceEnhancer {
     document.querySelectorAll('*').forEach(element => {
       if (!element.isConnected) {
         // Element is detached, clear its listeners
-        const newElement = element.cloneNode(true);
-        // element.parentNode?.replaceChild(newElement, element); // Commented out to prevent conflicts with React DOM management
+        // Note: Actual listener clearing commented out to prevent conflicts with React DOM management
+        // element.cloneNode(true); // Would create new element without listeners
+        // element.parentNode?.replaceChild(newElement, element); // Commented out
       }
     });
   }
@@ -359,13 +360,13 @@ class PerformanceEnhancer {
 
   private removeUnusedElements(): void {
     // Remove elements marked as unused
-    document.querySelectorAll('[data-unused="true"]').forEach(element => {
+    document.querySelectorAll('[data-unused="true"]').forEach(_element => {
       // element.remove(); // Commented out to prevent conflicts with React DOM management
     });
     
     // Remove empty elements
-    document.querySelectorAll('div:empty, span:empty').forEach(element => {
-      if (!element.hasAttribute('data-keep-empty')) {
+    document.querySelectorAll('div:empty, span:empty').forEach(_element => {
+      if (!_element.hasAttribute('data-keep-empty')) {
         // element.remove(); // Commented out to prevent conflicts with React DOM management
       }
     });
@@ -373,11 +374,11 @@ class PerformanceEnhancer {
 
   private optimizeDOMStructure(): void {
     // Flatten unnecessary nested structures
-    document.querySelectorAll('div > div:only-child').forEach(child => {
-      const parent = child.parentElement;
+    document.querySelectorAll('div > div:only-child').forEach(_child => {
+      const parent = _child.parentElement;
       if (parent && !parent.hasAttribute('data-structure-required')) {
         // Move child's content to parent
-        while (child.firstChild) {
+        while (_child.firstChild) {
           // parent.insertBefore(child.firstChild, child); // Commented out to prevent conflicts with React DOM management
         }
         // child.remove(); // Commented out to prevent conflicts with React DOM management
@@ -451,10 +452,8 @@ class PerformanceEnhancer {
     localStorage.setItem('performance-metrics', JSON.stringify(performanceData.slice(-100)));
   }
 
-  private notifyPerformanceImprovement(improvement: Record<string, number>): void {
+  private notifyPerformanceImprovement(_improvement: Record<string, number>): void {
     if (typeof window !== 'undefined' && 'showToast' in window) {
-      const totalImprovement = Object.values(improvement).reduce((sum: number, val: number) => sum + (val || 0), 0);
-      
       (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'success',
         title: 'Performance Enhanced',

@@ -42,7 +42,7 @@ class PerformanceOptimizer {
 
     this.setupLazyLoading();
     this.setupImageOptimization();
-    this.setupResourcePreloading();
+    // this.setupResourcePreloading(); // Disabled - causes preload errors
     this.setupCacheOptimization();
     this.monitorPerformance();
     this.setupMemoryManagement();
