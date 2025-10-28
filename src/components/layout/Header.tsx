@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
+import Dropdown from '../ui/Dropdown';
 import { useTranslation } from 'react-i18next';
-import { Home } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,16 +16,32 @@ const Header: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const navigationItems = [
+  // Primary navigation items
+  const primaryNavItems = [
     { name: t('nav.home'), path: '/', icon: <Home className="w-5 h-5" /> },
+    { name: t('nav.dashboard'), path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
+  ];
+
+  // Assessment dropdown items
+  const assessmentItems = [
     { name: t('nav.hipaa_assessment'), path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
     { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
     { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
+  ];
+
+  // Tools dropdown items
+  const toolsItems = [
     { name: t('nav.system_dependencies'), path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
     { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
     { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <FileText className="w-5 h-5" /> },
-    { name: t('nav.dashboard'), path: '/dashboard', icon: <FileText className="w-5 h-5" /> },
+  ];
+
+  // Mobile navigation - all items combined
+  const allNavigationItems = [
+    ...primaryNavItems,
+    ...assessmentItems,
+    ...toolsItems,
   ];
 
   useEffect(() => {
@@ -67,27 +83,12 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center justify-center flex-1">
-            <div className="hidden lg:flex space-x-3">
-              {navigationItems.map((item) => (
-                item.path.startsWith('http') ? (
-                  <a
-                    key={item.path}
-                    href={item.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center justify-center space-x-1 px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-gray-600 dark:text-gray-300 text-center`}
-                    data-analytics="external-navigation"
-                    data-nav-item={item.name}
-                    aria-label={`Navigate to ${item.name} (opens in new tab)`}
-                  >
-                    {item.icon}
-                    <span>{item.name}</span>
-                  </a>
-                ) : (
-                  <Link
+            <div className="hidden lg:flex items-center space-x-1">
+              {primaryNavItems.map((item) => (
+                <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center justify-center space-x-1 px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 text-center ${
+                  className={`flex items-center justify-center space-x-1 px-3 py-2 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                     location.pathname === item.path
                       ? 'text-primary-600 dark:text-primary-400'
                       : 'text-gray-600 dark:text-gray-300'
@@ -98,9 +99,20 @@ const Header: React.FC = () => {
                 >
                   {item.icon}
                   <span>{item.name}</span>
-                  </Link>
-                )
+                </Link>
               ))}
+              
+              <Dropdown 
+                label="Assessments" 
+                icon={<ShieldCheck className="w-5 h-5" />}
+                items={assessmentItems}
+              />
+              
+              <Dropdown 
+                label="Tools" 
+                icon={<Wrench className="w-5 h-5" />}
+                items={toolsItems}
+              />
             </div>
           </nav>
 
@@ -181,20 +193,8 @@ const Header: React.FC = () => {
         } bg-white dark:bg-gray-800 shadow-lg`}
       >
         <div className="px-4 py-3 space-y-1">
-          {navigationItems.map((item) => (
-            item.path.startsWith('http') ? (
-              <a
-                key={item.path}
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-3 px-4 py-3 rounded-md transition hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
-              >
-                {item.icon}
-                <span>{item.name}</span>
-              </a>
-            ) : (
-              <Link
+          {allNavigationItems.map((item) => (
+            <Link
               key={item.path}
               to={item.path}
               className={`flex items-center space-x-3 px-4 py-3 rounded-md transition ${
@@ -205,8 +205,7 @@ const Header: React.FC = () => {
             >
               {item.icon}
               <span>{item.name}</span>
-              </Link>
-            )
+            </Link>
           ))}
           
           {user && (
