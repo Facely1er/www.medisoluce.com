@@ -13,52 +13,16 @@
   "categories": ["health", "productivity", "business"],
   "icons": [
     {
-      "src": "/icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/icons/icon-96x96.png",
-      "sizes": "96x96",
+      "src": "/medisoluce.png",
+      "sizes": "any",
       "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -66,53 +30,19 @@
       "name": "HIPAA Assessment",
       "short_name": "HIPAA",
       "description": "Start HIPAA compliance assessment",
-      "url": "/hipaa-assessment",
-      "icons": [
-        {
-          "src": "/icons/hipaa-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "url": "/hipaa-assessment"
     },
     {
       "name": "System Dependencies",
       "short_name": "Dependencies",
       "description": "Map critical system dependencies",
-      "url": "/dependencies",
-      "icons": [
-        {
-          "src": "/icons/dependencies-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
+      "url": "/dependencies"
     },
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "View compliance dashboard",
-      "url": "/dashboard",
-      "icons": [
-        {
-          "src": "/icons/dashboard-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop-home.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "MediSoluce Homepage"
-    },
-    {
-      "src": "/screenshots/mobile-dashboard.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Mobile Dashboard"
+      "url": "/dashboard"
     }
   ],
   "related_applications": [],

@@ -165,6 +165,11 @@ class PerformanceOptimizer {
   }
 
   private preloadFonts() {
+    // Only preload fonts when they're actually needed to avoid "not used within a few seconds" warnings
+    // The fonts are already loaded via the stylesheet in index.html
+    // This method is kept for future use but currently disabled
+    return;
+    
     const fonts = [
       'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
       'https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw0aXpsog.woff2'
