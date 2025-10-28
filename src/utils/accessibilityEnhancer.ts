@@ -132,27 +132,7 @@ class AccessibilityEnhancer {
     const skipLink = document.createElement('a');
     skipLink.href = '#main-content';
     skipLink.textContent = 'Skip to main content';
-    skipLink.className = 'sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-primary-600 text-white p-2 z-50';
-    skipLink.style.cssText = `
-      position: absolute;
-      top: -40px;
-      left: 6px;
-      background: #0073e6;
-      color: white;
-      padding: 8px;
-      text-decoration: none;
-      border-radius: 4px;
-      z-index: 1000;
-      transition: top 0.3s;
-    `;
-    
-    skipLink.addEventListener('focus', () => {
-      skipLink.style.top = '6px';
-    });
-    
-    skipLink.addEventListener('blur', () => {
-      skipLink.style.top = '-40px';
-    });
+    skipLink.className = 'skip-link';
 
     document.body.insertBefore(skipLink, document.body.firstChild);
 
@@ -211,23 +191,13 @@ class AccessibilityEnhancer {
   }
 
   private addScreenReaderContent() {
-    // Add hidden content for screen readers
-    const srOnlyStyle = `
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-    `;
-
-    // Add sr-only class to document
-    const style = document.createElement('style');
-    style.textContent = `.sr-only { ${srOnlyStyle} }`;
-    document.head.appendChild(style);
+    // Add sr-only class using CSS classes instead of inline styles to avoid CSP violations
+    const srOnlyElement = document.createElement('div');
+    srOnlyElement.className = 'sr-only';
+    srOnlyElement.setAttribute('aria-hidden', 'true');
+    
+    // Add to body
+    document.body.appendChild(srOnlyElement);
   }
 
   private setupFocusManagement() {
