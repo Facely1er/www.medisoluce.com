@@ -1,4 +1,5 @@
 // Form validation utilities
+import { securityUtils } from './securityUtils';
 
 // Enhanced security validation with stricter healthcare compliance
 interface ValidationConfig {
@@ -231,15 +232,13 @@ export const validateSecureHealthcareInput = (
   if (validation.riskLevel === 'high') {
     securityAlerts.push('High-risk input detected and blocked');
     
-    // Import security utils dynamically to avoid circular dependencies
-    import('./securityUtils').then(({ securityUtils }) => {
-      securityUtils.logSecurityEvent('suspicious_input', {
-        inputContext: context,
-        riskLevel: validation.riskLevel,
-        sanitizedLength: validation.sanitized.length,
-        originalLength: input.length
-      }, 'high');
-    });
+    // Log security event
+    securityUtils.logSecurityEvent('suspicious_input', {
+      inputContext: context,
+      riskLevel: validation.riskLevel,
+      sanitizedLength: validation.sanitized.length,
+      originalLength: input.length
+    }, 'high');
   }
   
   return {
