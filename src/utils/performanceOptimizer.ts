@@ -42,7 +42,8 @@ class PerformanceOptimizer {
 
     this.setupLazyLoading();
     this.setupImageOptimization();
-    // this.setupResourcePreloading(); // Disabled - causes preload errors
+    // setupResourcePreloading() disabled - manual preloading conflicts with Vite's module preload
+    // See setupResourcePreloading() method for detailed explanation
     this.setupCacheOptimization();
     this.monitorPerformance();
     this.setupMemoryManagement();
@@ -134,21 +135,19 @@ class PerformanceOptimizer {
   }
 
   private setupResourcePreloading() {
-    if (!this.config.enablePreloading) return;
-
-    // Preload critical resources
-    const criticalResources = [
-      '/src/main.tsx',
-      '/src/App.tsx',
-      '/src/components/layout/Layout.tsx'
-    ];
-
-    criticalResources.forEach((resource) => {
-      this.preloadResource(resource, 'modulepreload');
-    });
-
-    // Preload critical fonts
-    this.preloadFonts();
+    // DISABLED: Manual resource preloading conflicts with Vite's built-in module preload system
+    // Vite automatically handles preloading of all JS chunks via <link rel="modulepreload"> tags
+    // Attempting to preload source files or external resources causes console errors:
+    // - Source files don't exist at those paths (they're bundled)
+    // - Invalid 'as' attribute values cause browser errors
+    // - External resources (fonts, etc.) should be handled via HTML preconnect/preload tags
+    
+    // This method is disabled to prevent:
+    // 1. "<link rel=preload> must have a valid 'as' value" errors
+    // 2. Attempts to preload non-existent source files
+    // 3. Conflicts with Vite's automatic preloading
+    
+    return;
   }
 
   private preloadResource(href: string, as: string) {

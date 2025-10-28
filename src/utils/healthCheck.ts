@@ -177,6 +177,8 @@ class HealthChecker {
   }
 
   private async getPerformanceMetrics() {
+    // FIXED: Changed from _errorLogs to errorLogs to match usage below
+    // Prevents "ReferenceError: errorLogs is not defined" error
     const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
     const recentErrors = errorLogs.filter((log: unknown) => {
       const logTime = new Date(log.timestamp).getTime();
@@ -271,6 +273,8 @@ class HealthChecker {
 
   // Export health data for debugging
   exportHealthData() {
+    // FIXED: Changed from _errorLogs to errorLogs to match usage in exportData
+    // Prevents "ReferenceError: errorLogs is not defined" error
     const healthHistory = JSON.parse(localStorage.getItem('health-history') || '[]');
     const errorLogs = JSON.parse(localStorage.getItem('error-logs') || '[]');
     

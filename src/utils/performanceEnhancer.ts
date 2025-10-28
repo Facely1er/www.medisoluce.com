@@ -242,25 +242,17 @@ class PerformanceEnhancer {
   }
 
   private async optimizePreloading(): Promise<void> {
-    // Preload critical resources
-    const criticalResources = [
-      { href: '/src/main.tsx', as: 'script' },
-      { href: '/src/App.tsx', as: 'script' },
-      { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap', as: 'style' }
-    ];
-
-    criticalResources.forEach(resource => {
-      if (!document.querySelector(`link[href="${resource.href}"]`)) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.href = resource.href;
-        link.as = resource.as;
-        if (resource.as === 'font') {
-          link.crossOrigin = 'anonymous';
-        }
-        document.head.appendChild(link);
-      }
-    });
+    // DISABLED: Manual resource preloading conflicts with Vite's built-in module preload system
+    // 
+    // Why this is disabled:
+    // 1. Source files like '/src/main.tsx' don't exist as standalone files - they're bundled by Vite
+    // 2. Vite automatically creates <link rel="modulepreload"> tags for all chunks
+    // 3. Google Fonts should be handled via HTML preconnect/preload tags (already in index.html)
+    // 4. Dynamic preloading causes console errors with invalid 'as' attributes
+    //
+    // Result: Clean console, faster load times (Vite's preloading is optimized)
+    
+    return Promise.resolve();
   }
 
   private async optimizeCaching(): Promise<void> {

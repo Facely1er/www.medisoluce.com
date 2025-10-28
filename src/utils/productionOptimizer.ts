@@ -223,6 +223,17 @@ class ProductionOptimizer {
 
   // Helper methods
   private async preloadCriticalResources(): Promise<void> {
+    // DISABLED: Manual resource preloading conflicts with Vite's built-in module preload system
+    // Vite automatically creates <link rel="modulepreload"> tags for all JavaScript chunks
+    // Source files don't exist at runtime (they're bundled by Vite)
+    // This prevents console errors and conflicts with Vite's optimized preloading
+    
+    return Promise.resolve();
+  }
+  
+  // Original implementation (disabled):
+  private async _preloadCriticalResourcesOld(): Promise<void> {
+    /* DISABLED - Original code kept for reference
     const criticalResources = [
       '/src/components/layout/Layout.tsx',
       '/src/pages/HomePage.tsx',
@@ -244,6 +255,7 @@ class ProductionOptimizer {
     });
 
     await Promise.all(preloadPromises);
+    */
   }
 
   private optimizeAllImages() {
