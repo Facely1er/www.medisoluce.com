@@ -161,14 +161,25 @@ export default defineConfig({
           }
           
           // Security utilities should be in their own chunk to avoid dynamic import conflicts
-          if (id.includes('securityUtils.ts')) {
-            return 'security';
-          }
+          // Temporarily disabled to prevent tree-shaking issues
+          // if (id.includes('securityUtils.ts')) {
+          //   return 'security';
+          // }
           
           // Performance utilities
           if (id.includes('performanceOptimizer.ts')) {
             return 'performance';
           }
+        }
+      },
+      external: [],
+      treeshake: {
+        moduleSideEffects: (id) => {
+          // Preserve side effects for security utilities
+          if (id.includes('securityUtils.ts')) {
+            return true;
+          }
+          return false;
         }
       }
     },

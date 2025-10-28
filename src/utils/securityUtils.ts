@@ -15,6 +15,14 @@ interface SecurityEvent {
   automaticResponse: boolean;
 }
 
+interface CSPViolation {
+  timestamp: string;
+  violatedDirective: string;
+  blockedURI: string;
+  sourceFile?: string;
+  lineNumber?: number;
+}
+
 interface SecurityMetrics {
   overallScore: number;
   threatLevel: 'low' | 'medium' | 'high' | 'critical';
@@ -112,6 +120,14 @@ class SecurityManager {
 
   constructor() {
     this.initialize();
+    
+    // Ensure startMonitoring is always available
+    this.startMonitoring = this.startMonitoring.bind(this);
+    
+    // Explicitly reference the method to prevent tree-shaking
+    if (typeof this.startMonitoring === 'function') {
+      // Method exists and is bound
+    }
   }
 
   private initialize(): void {
@@ -308,7 +324,7 @@ class SecurityManager {
         break;
       case 'failed_auth':
         response.automaticActions.push('Rate limiting applied');
-        this.applyRateLimiting(event.details.email);
+        this.applyRateLimiting(String(event.details.email || 'unknown'));
         break;
     }
 
@@ -574,7 +590,7 @@ class SecurityManager {
       vulnerabilities,
       compliance,
       threatLevel: this.calculateThreatLevel(threats),
-      mitigatedThreats: threats.filter((t: unknown) => t.mitigated).length,
+      mitigatedThreats: threats.filter((t: any) => t.mitigated).length,
       scanDuration: Date.now() - startTime,
       timestamp: new Date().toISOString()
     };
@@ -939,8 +955,13 @@ class SecurityManager {
     }
   }
 
-  private getCSPViolations(): unknown[] {
-    return JSON.parse(localStorage.getItem('csp-violations') || '[]');
+  private getCSPViolations(): CSPViolation[] {
+    try {
+      const violations = JSON.parse(localStorage.getItem('csp-violations') || '[]');
+      return Array.isArray(violations) ? violations : [];
+    } catch {
+      return [];
+    }
   }
 
   private checkSecurityHeaders(): any {
@@ -965,12 +986,20 @@ class SecurityManager {
     };
   }
 
-  private checkLocalStorageSecurity(): boolean {
+  private checkLocalStorageSecurity(): { encrypted: boolean; sensitiveDataCount: number } {
     const sensitiveKeys = ['user-session', 'hipaa-assessments', 'system-dependencies'];
-    return sensitiveKeys.every(key => {
+    const encryptedCount = sensitiveKeys.filter(key => {
       const data = localStorage.getItem(key);
-      return !data || this.isDataEncrypted(data);
-    });
+      return data && this.isDataEncrypted(data);
+    }).length;
+    
+    return {
+      encrypted: sensitiveKeys.every(key => {
+        const data = localStorage.getItem(key);
+        return !data || this.isDataEncrypted(data);
+      }),
+      sensitiveDataCount: encryptedCount
+    };
   }
 
   private isDataEncrypted(data: string): boolean {
@@ -1253,7 +1282,7 @@ class SecurityManager {
     }
 
     const recent = history.slice(-5);
-    const scores = recent.map((h: unknown) => h.overallScore);
+    const scores = recent.map((h: any) => h.overallScore);
     const trend = scores[scores.length - 1] - scores[0];
 
     const factors: string[] = [];
@@ -1304,10 +1333,13 @@ class SecurityManager {
   public startMonitoring(): void {
     // Start all monitoring systems
     if (typeof window === 'undefined') return;
-    
+
     // Monitoring is already started in initialize()
     // This method exists for external callers
-    console.log('Security monitoring is active');
+    console.log('🔒 Security monitoring is active - startMonitoring method called');
+
+    // Ensure the method is not tree-shaken by calling it explicitly
+    this.startThreatMonitoring();
   }
 
   public cleanup(): void {
@@ -1323,7 +1355,10 @@ export const securityManager = new SecurityManager();
 // Security utilities for other components
 export const securityUtils = securityManager;
 
+// Explicitly export the startMonitoring method to prevent tree-shaking
+export const startSecurityMonitoring = () => securityManager.startMonitoring();
+
 // Auto-start security monitoring in production
-if (import.meta.env.PROD) {
+if (process.env.NODE_ENV === 'production') {
   securityManager.startMonitoring();
 }

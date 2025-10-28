@@ -6,6 +6,7 @@ import './i18n';
 import { projectHealthEnhancer } from './utils/healthEnhancer';
 import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';
+import { securityManager } from './utils/securityUtils';
 import { logger } from './utils/logger';
 
 interface UserInteraction {
@@ -132,6 +133,14 @@ const initializeHealthSystem = async () => {
     
     // Start performance monitoring
     performanceEnhancer.startMonitoring();
+    
+    // Start security monitoring
+    try {
+      securityManager.startMonitoring();
+      console.log('✅ Security monitoring started successfully');
+    } catch (error) {
+      console.error('❌ Failed to start security monitoring:', error);
+    }
     
     // Initialize robust error handling
     robustErrorHandler.initialize();

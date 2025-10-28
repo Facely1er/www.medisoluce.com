@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Manager Test</title>
+</head>
+<body>
+    <h1>Security Manager Test</h1>
+    <div id="output"></div>
+    
+    <script type="module">
+        // Test the security manager directly
+        try {
+            // Import the security manager
+            const { securityManager } = await import('./dist/assets/js/index-D9qTTPJ4.js');
+            
+            console.log('Security manager:', securityManager);
+            console.log('startMonitoring method:', typeof securityManager.startMonitoring);
+            
+            if (typeof securityManager.startMonitoring === 'function') {
+                console.log('✅ startMonitoring method is available');
+                securityManager.startMonitoring();
+                document.getElementById('output').innerHTML = '✅ Security monitoring started successfully';
+            } else {
+                console.log('❌ startMonitoring method is not available');
+                document.getElementById('output').innerHTML = '❌ startMonitoring method is not available';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('output').innerHTML = '❌ Error: ' + error.message;
+        }
+    </script>
+</body>
+</html>
