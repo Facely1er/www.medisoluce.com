@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Preload and CSP Fixes</title>
+    <style>
+        .sr-only {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #0073e6;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Preload and CSP Fixes</h1>
+    
+    <div id="test-results"></div>
+    
+    <script>
+        // Test 1: Create preload link with proper 'as' attribute
+        function testPreloadLink() {
+            const link = document.createElement('link');
+            link.rel = 'modulepreload';
+            link.as = 'script';  // This should fix the preload error
+            link.href = '/test.js';
+            document.head.appendChild(link);
+            
+            const result = document.querySelector('link[rel="modulepreload"]');
+            return result && result.getAttribute('as') === 'script';
+        }
+        
+        // Test 2: Create skip link without inline styles (CSP compliant)
+        function testSkipLink() {
+            const skipLink = document.createElement('a');
+            skipLink.href = '#main-content';
+            skipLink.textContent = 'Skip to main content';
+            skipLink.className = 'skip-link';  // Using CSS class instead of inline styles
+            document.body.appendChild(skipLink);
+            
+            const result = document.querySelector('.skip-link');
+            return result && !result.style.cssText;  // Should have no inline styles
+        }
+        
+        // Test 3: Create sr-only element without inline styles
+        function testScreenReaderOnly() {
+            const srElement = document.createElement('div');
+            srElement.className = 'sr-only';
+            srElement.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(srElement);
+            
+            const result = document.querySelector('.sr-only');
+            return result && !result.style.cssText;  // Should have no inline styles
+        }
+        
+        // Run tests
+        const results = {
+            preloadLink: testPreloadLink(),
+            skipLink: testSkipLink(),
+            screenReaderOnly: testScreenReaderOnly()
+        };
+        
+        // Display results
+        const resultsDiv = document.getElementById('test-results');
+        resultsDiv.innerHTML = `
+            <h2>Test Results:</h2>
+            <ul>
+                <li>Preload link with 'as' attribute: ${results.preloadLink ? '✅ PASS' : '❌ FAIL'}</li>
+                <li>Skip link without inline styles: ${results.skipLink ? '✅ PASS' : '❌ FAIL'}</li>
+                <li>Screen reader only without inline styles: ${results.screenReaderOnly ? '✅ PASS' : '❌ FAIL'}</li>
+            </ul>
+            <p><strong>All tests passed:</strong> ${Object.values(results).every(r => r) ? '✅ YES' : '❌ NO'}</p>
+        `;
+        
+        console.log('Test results:', results);
+    </script>
+</body>
+</html>

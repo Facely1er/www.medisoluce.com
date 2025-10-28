@@ -233,6 +233,7 @@ class ProductionOptimizer {
       return new Promise<void>((resolve) => {
         const link = document.createElement('link');
         link.rel = 'modulepreload';
+        link.as = 'script';
         link.href = resource;
         link.onload = () => resolve();
         link.onerror = () => resolve(); // Don't fail if resource not found
