@@ -79,8 +79,8 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center justify-center flex-1">
-            <div className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center justify-center flex-1 px-4">
+            <div className="hidden lg:flex items-center justify-center gap-1">
               {primaryNavItems.map((item) => (
                 <Link
                   key={item.path}
