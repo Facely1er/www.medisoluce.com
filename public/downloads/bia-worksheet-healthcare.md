@@ -1,20 +1,29 @@
-# Business Impact Analysis Worksheet for Healthcare
-
-## ORGANIZATION INFORMATION
-
-**Organization Name:** _________________________________  
-**Completed By:** _________________________________  
-**Title/Position:** _________________________________  
-**Date Completed:** ______________  
-**Review Date:** ______________
+# 📊 Business Impact Analysis Worksheet  
+## *Healthcare Edition*
 
 ---
 
-## EXECUTIVE SUMMARY
+### 📋 ORGANIZATION INFORMATION
 
-**Purpose:** This Business Impact Analysis (BIA) identifies critical business processes and systems within our healthcare organization and assesses the impact of their disruption on patient care, operations, and regulatory compliance.
+| **Field** | **Details** |
+|-----------|------------|
+| **Organization Name:** | _________________________________ |
+| **Completed By:** | _________________________________ |
+| **Title/Position:** | _________________________________ |
+| **Department:** | _________________________________ |
+| **Date Completed:** | ______________ |
+| **Review Date:** | ______________ |
+| **Document Version:** | 2.0 |
 
-**Scope:** All clinical and administrative processes that support patient care delivery and organizational operations.
+---
+
+### 🎯 EXECUTIVE SUMMARY
+
+> **Purpose:** This Business Impact Analysis (BIA) identifies critical business processes and systems within our healthcare organization and assesses the impact of their disruption on patient care, operations, and regulatory compliance.
+>
+> **Scope:** All clinical and administrative processes that support patient care delivery and organizational operations.
+>
+> **Authority:** Chief Executive Officer, Chief Operating Officer
 
 ---
 
@@ -288,3 +297,17 @@
 ## APPENDIX C: SYSTEM ARCHITECTURE DIAGRAMS
 
 [Include network and system architecture diagrams]
+
+---
+
+### ⚠️ DISCLAIMER
+
+> This Business Impact Analysis (BIA) worksheet is provided as a template for informational and educational purposes only. It is not legal, medical, or professional advice.
+>
+> - This template should be customized for your specific organization and reviewed by qualified professionals
+> - Business impact assessments require specialized knowledge and expertise
+> - Results may vary based on organization size, type, and specific circumstances
+> - Consult with qualified business continuity professionals and legal counsel
+> - Regulatory requirements may vary by jurisdiction
+> - The user assumes all responsibility for compliance and implementation
+> - This template does not guarantee compliance with all applicable laws or regulations

@@ -1,14 +1,20 @@
-# EHR Downtime Procedures for Healthcare Organizations
+# 💻 EHR Downtime Procedures  
+## *Maintaining Patient Safety During System Outages*
 
-## DOCUMENT OVERVIEW
+---
 
-**Purpose:** Provide comprehensive procedures for maintaining safe patient care during Electronic Health Record (EHR) system downtime  
-**Scope:** All clinical and administrative staff during planned and unplanned EHR downtime  
-**Authority:** Chief Medical Officer, Chief Information Officer  
-**Effective Date:** [Date]  
-**Review Date:** [Date + 6 months]
+### 📘 DOCUMENT OVERVIEW
 
-⚠️ **CRITICAL:** Patient safety is the highest priority during all downtime events.
+| **Field** | **Details** |
+|-----------|------------|
+| **Purpose:** | Comprehensive procedures for maintaining safe patient care during Electronic Health Record (EHR) system downtime |
+| **Scope:** | All clinical and administrative staff during planned and unplanned EHR downtime |
+| **Authority:** | Chief Medical Officer, Chief Information Officer |
+| **Effective Date:** | [Date] |
+| **Review Date:** | [Date + 6 months] |
+| **Document Owner:** | IT Operations Director |
+
+> ⚠️ **CRITICAL:** Patient safety is the highest priority during all downtime events.
 
 ---
 
@@ -626,3 +632,18 @@ Chief Nursing Officer: ________________________ Date: _________
 **Next Review Date:** [Date + 6 months]
 **Document Owner:** Chief Medical Officer
 **Classification:** Internal Use - Patient Safety Critical
+
+---
+
+### ⚠️ DISCLAIMER
+
+> These EHR downtime procedures are provided as a template for informational and educational purposes only. They are not medical, technical, or legal advice.
+>
+> - These procedures must be customized for your specific EHR system, clinical workflows, and organization
+> - Clinical downtime procedures require medical and IT expertise to develop safely
+> - Patient safety is paramount - procedures must be reviewed by qualified clinical and IT professionals
+> - Regulatory requirements may vary by jurisdiction and organization type
+> - This template does not guarantee compliance with all applicable laws or patient safety requirements
+> - Consult with qualified healthcare IT professionals, clinicians, and compliance officers
+> - All procedures should be tested and validated for your specific environment
+> - The user assumes all responsibility for patient safety and legal compliance

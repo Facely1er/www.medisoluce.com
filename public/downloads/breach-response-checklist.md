@@ -1,6 +1,13 @@
-# HIPAA Breach Response Checklist
+# 🔔 HIPAA Breach Response Checklist  
+## *Critical Incident Response Protocol*
 
-## Immediate Response (0-24 Hours)
+---
+
+> ⚠️ **CRITICAL:** Patient safety and regulatory compliance must be prioritized throughout all breach response activities.
+
+---
+
+### 🚨 PHASE 1: IMMEDIATE RESPONSE (0-24 Hours)
 
 ### Step 1: Discovery and Assessment
 - [ ] **Time of Discovery:** _______________
@@ -159,9 +166,21 @@ Answer the following questions to determine reporting requirements:
 - Document everything throughout the process
 - Preserve all evidence related to the breach
 - Consider cyber insurance notification requirements
-- Consult legal counsel for complex situations
+- **Consult legal counsel for all situations - this is not legal advice**
 - Remember: Not all incidents are reportable breaches
 
 **Breach vs. Incident:**
 - Incident: Potential or suspected breach
 - Breach: Confirmed acquisition, access, use, or disclosure of PHI in violation of HIPAA
+
+---
+
+### ⚠️ DISCLAIMER
+
+> This checklist is provided for educational and informational purposes only. It is not legal, medical, or professional advice. Healthcare organizations should:
+>
+> - Consult with qualified legal counsel experienced in HIPAA compliance
+> - Work with qualified IT security professionals for technical aspects
+> - Follow all applicable federal, state, and local laws and regulations
+> - Adapt these procedures to their specific organizational needs
+> - The user assumes all responsibility for compliance
