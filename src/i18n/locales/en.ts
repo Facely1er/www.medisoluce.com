@@ -111,7 +111,8 @@ const enTranslation = {
     "title": "HIPAA Compliance Assessment",
     "subtitle": "Evaluate your organization's compliance with HIPAA requirements and get personalized recommendations.",
     "self_assessment": "HIPAA Self-Assessment",
-    "description": "Answer the following questions to evaluate your current HIPAA compliance posture."
+    "description": "Answer the following questions to evaluate your current HIPAA compliance posture.",
+    "english_only_notice": "Note: Assessment content is in English only."
   },
   
   // Dependency Manager page

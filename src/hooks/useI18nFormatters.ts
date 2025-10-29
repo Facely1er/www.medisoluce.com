@@ -112,7 +112,7 @@ export const useHealthcareFormatters = () => {
     formatPatientImpact: (level: number) => {
       const levels = ['minimal', 'low', 'medium', 'high', 'critical'];
       const levelText = levels[level - 1] || 'unknown';
-      return formatters.t(`patientImpact.patient.${levelText}`);
+      return formatters.t(`patient_impact.patient.${levelText}`);
     },
     
     // Risk assessment formatting

@@ -3,7 +3,8 @@
 -- in the same Supabase instance
 
 -- Enable necessary extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Note: gen_random_uuid() is built-in to PostgreSQL 13+ and Supabase
+-- uuid-ossp extension not needed if using gen_random_uuid()
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Create custom schema for better organization
@@ -18,8 +19,8 @@ SET search_path TO medisoluce, public;
 
 -- User profiles table
 CREATE TABLE IF NOT EXISTS medisoluce.user_profiles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     email VARCHAR(255) NOT NULL,
     full_name VARCHAR(255),
     organization VARCHAR(255),
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.user_profiles (
 
 -- User preferences table
 CREATE TABLE IF NOT EXISTS medisoluce.user_preferences (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE CASCADE,
     theme VARCHAR(20) DEFAULT 'light' CHECK (theme IN ('light', 'dark', 'auto')),
     language VARCHAR(10) DEFAULT 'en' CHECK (language IN ('en', 'fr', 'es')),
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.user_preferences (
 
 -- HIPAA compliance assessments
 CREATE TABLE IF NOT EXISTS medisoluce.hipaa_assessments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE CASCADE,
     assessment_name VARCHAR(255) NOT NULL,
     assessment_type VARCHAR(100) NOT NULL CHECK (assessment_type IN ('initial', 'periodic', 'incident_response', 'training')),
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.hipaa_assessments (
 
 -- Assessment responses
 CREATE TABLE IF NOT EXISTS medisoluce.assessment_responses (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     assessment_id UUID REFERENCES medisoluce.hipaa_assessments(id) ON DELETE CASCADE,
     question_id VARCHAR(255) NOT NULL,
     question_text TEXT NOT NULL,
@@ -90,7 +91,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.assessment_responses (
 
 -- Compliance findings and recommendations
 CREATE TABLE IF NOT EXISTS medisoluce.compliance_findings (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     assessment_id UUID REFERENCES medisoluce.hipaa_assessments(id) ON DELETE CASCADE,
     finding_type VARCHAR(100) NOT NULL CHECK (finding_type IN ('gap', 'violation', 'recommendation', 'best_practice')),
     severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
@@ -112,7 +113,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.compliance_findings (
 
 -- Security events log
 CREATE TABLE IF NOT EXISTS medisoluce.security_events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE SET NULL,
     event_type VARCHAR(100) NOT NULL CHECK (event_type IN ('authentication', 'data_access', 'suspicious_input', 'failed_auth', 'csp_violation', 'privacy_violation', 'malware_detected', 'injection_attempt')),
     severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
@@ -126,7 +127,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.security_events (
 
 -- Security threats
 CREATE TABLE IF NOT EXISTS medisoluce.security_threats (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     threat_type VARCHAR(100) NOT NULL CHECK (threat_type IN ('malware', 'phishing', 'injection', 'data_breach', 'unauthorized_access', 'privacy_violation')),
     severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
     title VARCHAR(255) NOT NULL,
@@ -146,7 +147,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.security_threats (
 
 -- System health checks
 CREATE TABLE IF NOT EXISTS medisoluce.health_checks (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     check_name VARCHAR(255) NOT NULL,
     check_type VARCHAR(100) NOT NULL CHECK (check_type IN ('performance', 'security', 'compliance', 'accessibility', 'connectivity')),
     status VARCHAR(50) NOT NULL CHECK (status IN ('pass', 'warning', 'fail', 'unknown')),
@@ -160,7 +161,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.health_checks (
 
 -- Performance metrics
 CREATE TABLE IF NOT EXISTS medisoluce.performance_metrics (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE SET NULL,
     metric_name VARCHAR(255) NOT NULL,
     metric_value DECIMAL(10,4) NOT NULL,
@@ -177,7 +178,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.performance_metrics (
 
 -- Training modules
 CREATE TABLE IF NOT EXISTS medisoluce.training_modules (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
     description TEXT,
     module_type VARCHAR(100) NOT NULL CHECK (module_type IN ('hipaa', 'security', 'compliance', 'general')),
@@ -192,7 +193,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.training_modules (
 
 -- User training progress
 CREATE TABLE IF NOT EXISTS medisoluce.user_training_progress (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE CASCADE,
     module_id UUID REFERENCES medisoluce.training_modules(id) ON DELETE CASCADE,
     status VARCHAR(50) DEFAULT 'not_started' CHECK (status IN ('not_started', 'in_progress', 'completed', 'failed')),
@@ -212,7 +213,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.user_training_progress (
 
 -- Audit logs
 CREATE TABLE IF NOT EXISTS medisoluce.audit_logs (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE SET NULL,
     action VARCHAR(100) NOT NULL,
     resource_type VARCHAR(100) NOT NULL,
@@ -226,7 +227,7 @@ CREATE TABLE IF NOT EXISTS medisoluce.audit_logs (
 
 -- Compliance reports
 CREATE TABLE IF NOT EXISTS medisoluce.compliance_reports (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES medisoluce.user_profiles(user_id) ON DELETE CASCADE,
     report_type VARCHAR(100) NOT NULL CHECK (report_type IN ('hipaa_assessment', 'security_audit', 'training_completion', 'system_health', 'compliance_summary')),
     report_name VARCHAR(255) NOT NULL,
