@@ -22,6 +22,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ProfilePage from './pages/ProfilePage';
 import RansomwarePage from './pages/RansomwarePage';
 import RansomwareResiliencePage from './pages/RansomwareResiliencePage';
+import RansomwareThreatDashboardPage from './pages/RansomwareThreatDashboardPage';
 import HealthDashboardPage from './pages/HealthDashboardPage';
 import TrainingPage from './pages/TrainingPage';
 import ToolkitPage from './pages/ToolkitPage';
@@ -31,6 +32,7 @@ import PricingPage from './pages/PricingPage';
 import HIPAAPricingPage from './pages/HIPAAPricingPage';
 import RansomwarePricingPage from './pages/RansomwarePricingPage';
 import ContinuityPricingPage from './pages/ContinuityPricingPage';
+import SegmentAnalysisPage from './pages/SegmentAnalysisPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -105,6 +107,7 @@ function AppContent() {
           <Route path="/ransomware" element={<RansomwarePage />} />
           <Route path="/ransomware-resilience" element={<RansomwareResiliencePage />} />
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
+          <Route path="/ransomware-threat-dashboard" element={<RansomwareThreatDashboardPage />} />
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/toolkit" element={<ToolkitPage />} />
           <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />
@@ -115,6 +118,7 @@ function AppContent() {
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
           <Route path="/pricing/ransomware" element={<RansomwarePricingPage />} />
           <Route path="/pricing/continuity" element={<ContinuityPricingPage />} />
+          <Route path="/segments" element={<SegmentAnalysisPage />} />
         </Routes>
       </Layout>
     </Router>

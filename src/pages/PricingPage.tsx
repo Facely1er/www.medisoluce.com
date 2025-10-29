@@ -319,10 +319,24 @@ const PricingPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-xl text-gray-600 dark:text-gray-300 mb-8"
+              className="text-xl text-gray-600 dark:text-gray-300 mb-4"
             >
               Choose individual suites or save with our Complete Bundle. Start free.
             </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mb-8"
+            >
+              <Link 
+                to="/segments" 
+                className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
+              >
+                <Calculator className="h-5 w-5 mr-2" />
+                Find your perfect solution by organization size →
+              </Link>
+            </motion.div>
 
             {/* Billing Toggle */}
             <div className="flex items-center justify-center gap-4 mb-12">
