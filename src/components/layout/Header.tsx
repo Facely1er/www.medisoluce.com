@@ -22,6 +22,7 @@ const Header: React.FC = () => {
     { name: t('nav.dashboard'), path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
     { name: 'Pricing', path: '/pricing', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'FAQ', path: '/faq', icon: <LifeBuoy className="w-5 h-5" /> },
   ];
 
   // Organized dropdown groups
