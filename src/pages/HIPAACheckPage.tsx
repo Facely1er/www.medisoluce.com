@@ -26,6 +26,8 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'risk-no-planned', text: 'No, but we have one planned', value: 1 },
         { id: 'risk-no', text: 'No, we have not conducted a risk assessment', value: 0 },
       ],
+      regulations: ['Security Rule §164.308(a)(1)', 'Security Rule §164.306(a)'],
+      frameworks: ['HIPAA Security Rule']
     },
     {
       id: 'policies-procedures',
@@ -37,6 +39,8 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'policies-partial', text: 'We have some, but not all required policies', value: 2 },
         { id: 'policies-no', text: t('hipaa_assessment.options.policies_no'), value: 0 },
       ],
+      regulations: ['Security Rule §164.316(a)', 'Privacy Rule §164.530(i)'],
+      frameworks: ['HIPAA Security Rule', 'HIPAA Privacy Rule']
     },
     {
       id: 'employee-training',
@@ -48,6 +52,8 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'training-onboarding', text: t('hipaa_assessment.options.training_onboarding'), value: 2 },
         { id: 'training-never', text: t('hipaa_assessment.options.training_never'), value: 0 },
       ],
+      regulations: ['Security Rule §164.308(a)(5)', 'Privacy Rule §164.530(b)'],
+      frameworks: ['HIPAA Security Rule', 'HIPAA Privacy Rule']
     },
     {
       id: 'encryption',
@@ -59,6 +65,8 @@ const HIPAACheckPage: React.FC = () => {
         { id: 'encryption-rest', text: 'Only at rest', value: 2 },
         { id: 'encryption-none', text: 'No encryption in place', value: 0 },
       ],
+      regulations: ['Security Rule §164.312(a)(2)(iv)', 'Security Rule §164.312(e)(2)(ii)'],
+      frameworks: ['HIPAA Security Rule']
     },
     {
       id: 'access-controls',

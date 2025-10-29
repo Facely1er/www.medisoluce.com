@@ -16,32 +16,29 @@ const Header: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  // Primary navigation items
+  // Simplified navigation - direct links for better UX
   const primaryNavItems = [
     { name: t('nav.home'), path: '/', icon: <Home className="w-5 h-5" /> },
     { name: t('nav.dashboard'), path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
+    { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
+    { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
+    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
   ];
 
-  // Assessment dropdown items
-  const assessmentItems = [
-    { name: t('nav.hipaa_assessment'), path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
+  // Less frequently used items moved to dropdown
+  const moreItems = [
     { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
     { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
-  ];
-
-  // Tools dropdown items
-  const toolsItems = [
-    { name: t('nav.system_dependencies'), path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
     { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
-    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <FileText className="w-5 h-5" /> },
+    { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
   ];
 
   // Mobile navigation - all items combined
   const allNavigationItems = [
     ...primaryNavItems,
-    ...assessmentItems,
-    ...toolsItems,
+    ...moreItems,
   ];
 
   useEffect(() => {
@@ -103,15 +100,9 @@ const Header: React.FC = () => {
               ))}
               
               <Dropdown 
-                label="Assessments" 
-                icon={<ShieldCheck className="w-5 h-5" />}
-                items={assessmentItems}
-              />
-              
-              <Dropdown 
-                label="Tools" 
-                icon={<Wrench className="w-5 h-5" />}
-                items={toolsItems}
+                label="More" 
+                icon={<AlertTriangle className="w-5 h-5" />}
+                items={moreItems}
               />
             </div>
           </nav>
