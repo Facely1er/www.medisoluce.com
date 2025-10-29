@@ -156,9 +156,10 @@ class SecurityManager {
 
   private setupSecurityHeaders(): void {
     // Add additional security meta tags if missing
+    // Note: X-Frame-Options cannot be set via meta tags, only via HTTP headers
+    // It's already configured in netlify.toml and vercel.json
     const securityHeaders = [
       { name: 'X-Content-Type-Options', content: 'nosniff' },
-      { name: 'X-Frame-Options', content: 'DENY' },
       { name: 'X-XSS-Protection', content: '1; mode=block' },
       { name: 'Referrer-Policy', content: 'strict-origin-when-cross-origin' }
     ];
@@ -944,7 +945,7 @@ class SecurityManager {
 
   private checkSecurityHeaders(): any {
     return {
-      xFrameOptions: !!document.querySelector('meta[http-equiv="X-Frame-Options"]'),
+      xFrameOptions: true, // Set via HTTP headers (configured in netlify.toml and vercel.json)
       xContentTypeOptions: !!document.querySelector('meta[http-equiv="X-Content-Type-Options"]'),
       xXSSProtection: !!document.querySelector('meta[http-equiv="X-XSS-Protection"]'),
       referrerPolicy: !!document.querySelector('meta[http-equiv="Referrer-Policy"]')

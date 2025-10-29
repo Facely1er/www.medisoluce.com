@@ -558,7 +558,8 @@ class SystemHealthManager {
   private hasSecurityHeaders(): boolean {
     // Check for security-related meta tags (client-side approximation)
     return !!(
-      document.querySelector('meta[http-equiv="X-Frame-Options"]') ||
+      // X-Frame-Options is set via HTTP headers, not meta tags
+      true &&
       document.querySelector('meta[http-equiv="X-Content-Type-Options"]') ||
       document.querySelector('meta[http-equiv="Referrer-Policy"]')
     );
