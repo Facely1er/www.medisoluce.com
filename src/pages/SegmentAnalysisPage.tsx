@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import { analytics } from '../utils/analytics';
 import { 
   Users, 
   Building2, 
@@ -53,6 +54,11 @@ interface SegmentData {
 
 const SegmentAnalysisPage: React.FC = () => {
   const { t } = useTranslation();
+
+  // Privacy-respecting analytics tracking
+  useEffect(() => {
+    analytics.trackPageView('/segments', 'Segment Analysis Page');
+  }, []);
 
   const segments: SegmentData[] = [
     {
@@ -529,8 +535,8 @@ const SegmentAnalysisPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <SEOHead 
         title="Healthcare Compliance Solutions by Organization Size | MediSoluce"
-        description="Find the perfect HIPAA compliance, ransomware protection, and business continuity solution for your healthcare organization size. Compare solutions for small practices, medium organizations, large hospitals, and enterprise health systems."
-        keywords="healthcare compliance by size, small practice HIPAA, medium healthcare compliance, large hospital compliance, enterprise health system compliance, HIPAA solutions by organization size"
+        description="Find the perfect HIPAA compliance, ransomware protection, and business continuity solution for your healthcare organization size. Privacy-first design with no data collection."
+        keywords="healthcare compliance by size, small practice HIPAA, medium healthcare compliance, large hospital compliance, enterprise health system compliance, HIPAA solutions by organization size, privacy-by-design, HIPAA compliant"
       />
 
       {/* Hero Section */}
@@ -561,6 +567,92 @@ const SegmentAnalysisPage: React.FC = () => {
                 </Link>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy-by-Design Indicator */}
+      <section className="bg-success-50 dark:bg-success-900/20 border-b border-success-200 dark:border-success-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-4xl mx-auto flex items-center justify-center gap-3 text-sm">
+            <Shield className="h-5 w-5 text-success-600 dark:text-success-400 flex-shrink-0" />
+            <span className="text-success-800 dark:text-success-200">
+              <strong>Privacy-First:</strong> This page is informational only - no personal data collected. 
+              <Link to="/privacy" className="underline hover:text-success-900 dark:hover:text-success-100 ml-1">
+                Learn more about our privacy-by-design approach
+              </Link>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy Notice Section */}
+      <section className="py-12 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-white dark:bg-gray-800 border-l-4 border-l-primary-500">
+              <div className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <Lock className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                      Privacy-by-Design Aligned
+                      <span className="text-xs bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-300 px-2 py-1 rounded-full">
+                        No Data Collected
+                      </span>
+                    </h3>
+                    <p className="text-gray-700 dark:text-gray-300 mb-3">
+                      This segment analysis page is designed with privacy-by-design principles. It provides comprehensive 
+                      information about healthcare compliance solutions without collecting any personal data, tracking user 
+                      behavior, or requiring authentication.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-success-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">No Personal Data</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">No forms, inputs, or data collection</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-success-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">No Account Required</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">Accessible anonymously</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-success-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">No Tracking Cookies</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">Only privacy-respecting analytics</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-5 w-5 text-success-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">HIPAA-Compliant</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">Designed for healthcare privacy</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <Link 
+                        to="/privacy" 
+                        className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium inline-flex items-center gap-1"
+                      >
+                        Read our complete Privacy Policy
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

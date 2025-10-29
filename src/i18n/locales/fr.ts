@@ -29,7 +29,7 @@ const frTranslation = {
     "hipaa_assessment": "Évaluation HIPAA",
     "system_dependencies": "Dépendances Système",
     "business_continuity": "Continuité Opérationnelle",
-    "training": "Formation",
+    "training_nav": "Formation",
     "resource_toolkit": "Boîte à Outils",
     "dashboard": "Tableau de Bord",
     "compliance": "Conformité",
@@ -254,7 +254,16 @@ const frTranslation = {
     "progress_tracking": "Suivi des Progrès",
     "certification": "Certification",
     "ready_start": "Prêt à commencer la formation de votre équipe?",
-    "start_trial": "Commencer l'Essai Gratuit"
+    "start_trial": "Commencer l'Essai Gratuit",
+    "progress_message": "{{completed}} sur {{total}} modules terminés ({{percentage}}%)",
+    "progress_with_milestone": "{{completed}}/{{total}} modules terminés ({{percentage}}%) - {{milestone}}",
+    "milestones": {
+      "getting_started": "Début de parcours",
+      "beginner": "Construction des bases",
+      "intermediate": "Bonne progression",
+      "advanced": "Presque terminé",
+      "expert": "Expert en conformité!"
+    }
   },
   
   // Toolkit page (redirected to external toolkit)
@@ -308,7 +317,18 @@ const frTranslation = {
     "phone_field": "Téléphone",
     "organization": "Organisation",
     "message": "Message",
-    "send": "Envoyer le Message"
+    "send": "Envoyer le Message",
+    "validation": {
+      "message_failed": "Échec de la validation du message",
+      "submission_limit": "Limite de soumission dépassée",
+      "name_required": "Le nom est requis",
+      "email_required": "L'email est requis",
+      "invalid_email": "Adresse email invalide",
+      "message_required": "Le message est requis"
+    },
+    "form": {
+      "unknown_error": "Erreur inconnue"
+    }
   },
   
   // Thanks page
@@ -416,7 +436,15 @@ const frTranslation = {
     "medium_priority": "Priorité Moyenne",
     "low_priority": "Priorité Faible",
     "download_report": "Télécharger le Rapport",
-    "retake_assessment": "Refaire l'Évaluation"
+    "retake_assessment": "Refaire l'Évaluation",
+    "compliance_score": "Score de Conformité",
+    "score_with_context": "{{score}}/{{maxScore}} ({{percentage}}%) - {{context}}",
+    "score_context": {
+      "excellent": "Excellente conformité",
+      "good": "Bonne conformité",
+      "fair": "Conformité acceptable",
+      "poor": "Faible conformité"
+    }
   },
   
   // System management
@@ -434,9 +462,46 @@ const frTranslation = {
     "low": "Faible",
     "systems_mapped": "Systèmes Cartographiés",
     "critical_systems": "Systèmes Critiques",
-    "high_risk_systems": "Systèmes à Haut Risque"
+    "high_risk_systems": "Systèmes à Haut Risque",
+    "criticality_explanation": "{{level}} {{systemType}} - {{impact}}",
+    "systemImpact": {
+      "critical": "Sécurité des patients en risque immédiat",
+      "high": "Impact significatif sur la prestation des soins",
+      "medium": "Impact opérationnel modéré",
+      "low": "Impact commercial minimal"
+    }
   },
   
+  // Risk assessment translations
+  "risk": {
+    "critical": "Risque Critique",
+    "high": "Risque Élevé",
+    "medium": "Risque Moyen",
+    "low": "Risque Faible"
+  },
+
+  // Patient impact translations
+  "patient_impact": {
+    "patient": {
+      "minimal": "Impact Minimal",
+      "low": "Impact Faible",
+      "medium": "Impact Moyen",
+      "high": "Impact Élevé",
+      "critical": "Impact Critique"
+    }
+  },
+
+  // Compliance and regulatory translations
+  "compliance": {
+    "deadline_with_urgency": "{{complianceType}} due le {{dueDate}} - {{urgency}} ({{daysRemaining}} jours restants)",
+    "urgency": {
+      "urgent": "URGENT",
+      "soon": "Bientôt dû",
+      "upcoming": "Échéance à venir",
+      "normal": "Dans les délais"
+    }
+  },
+
   // Business continuity
   "planning": {
     "plan_name": "Nom du Plan",
@@ -527,7 +592,16 @@ const frTranslation = {
     "last_month": "Le Mois Dernier",
     "this_year": "Cette Année",
     "never": "Jamais",
-    "always": "Toujours"
+    "always": "Toujours",
+    "minutes": "{{count}} minute",
+    "minutes_plural": "{{count}} minutes",
+    "hours": "{{count}} heure",
+    "hours_plural": "{{count}} heures",
+    "days": "{{count}} jour",
+    "days_plural": "{{count}} jours",
+    "per_hour": "/heure",
+    "per_day": "/jour",
+    "per_month": "/mois"
   },
   
   // Language selector
@@ -710,7 +784,7 @@ const frTranslation = {
     }
   },
 
-  // Contact page
+  // Contact page (keeping for backward compatibility)
   "contact_page": {
     "validation": {
       "message_failed": "Échec de la validation du message",
