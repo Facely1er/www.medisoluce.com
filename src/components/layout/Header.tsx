@@ -25,10 +25,11 @@ const Header: React.FC = () => {
     { name: 'FAQ', path: '/faq', icon: <LifeBuoy className="w-5 h-5" /> },
   ];
 
-  // Organized dropdown groups
-  const dropdownGroups = [
+  // Top-level dropdown menus
+  const topLevelDropdowns = [
     {
-      title: 'Privacy Compliance',
+      label: 'Privacy Compliance',
+      icon: <ShieldCheck className="w-5 h-5" />,
       items: [
         { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
         { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
@@ -36,7 +37,8 @@ const Header: React.FC = () => {
       ]
     },
     {
-      title: 'Risk & Resilience',
+      label: 'Risk & Resilience',
+      icon: <AlertTriangle className="w-5 h-5" />,
       items: [
         { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
         { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
@@ -44,7 +46,8 @@ const Header: React.FC = () => {
       ]
     },
     {
-      title: 'Continuity & Recovery',
+      label: 'Continuity & Recovery',
+      icon: <LifeBuoy className="w-5 h-5" />,
       items: [
         { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
         { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
@@ -55,7 +58,7 @@ const Header: React.FC = () => {
   // Mobile navigation - all items combined
   const allNavigationItems = [
     ...primaryNavItems,
-    ...dropdownGroups.flatMap(group => group.items),
+    ...topLevelDropdowns.flatMap(dropdown => dropdown.items),
   ];
 
   useEffect(() => {
@@ -116,11 +119,14 @@ const Header: React.FC = () => {
                 </Link>
               ))}
               
-              <Dropdown 
-                label="Assessments" 
-                icon={<ShieldCheck className="w-5 h-5" />}
-                groups={dropdownGroups}
-              />
+              {topLevelDropdowns.map((dropdown) => (
+                <Dropdown 
+                  key={dropdown.label}
+                  label={dropdown.label} 
+                  icon={dropdown.icon}
+                  items={dropdown.items}
+                />
+              ))}
             </div>
           </nav>
 
