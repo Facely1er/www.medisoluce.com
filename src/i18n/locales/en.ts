@@ -43,7 +43,7 @@ const enTranslation = {
   // HomePage
   "home": {
     "title": "Healthcare Ransomware Resilience",
-    "title_subtitle": "Defend Patient Care, Not Just Patient Data",
+    "title_subtitle": "Defend Patient Care,\nNot Just Patient Data",
     "subtitle": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
     "subtitle_carousel": {
       "main": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
