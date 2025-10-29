@@ -48,31 +48,53 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
   ];
 
   return (
-    <div className="relative overflow-hidden bg-gray-50 dark:bg-gray-900">
-      <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10">
-        <svg
-          className="h-full w-full"
-          viewBox="0 0 800 800"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern
-              id="grid"
-              width="40"
-              height="40"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 0 10 L 40 10 M 10 0 L 10 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="0.5"
-                className="text-gray-300 dark:text-gray-700"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+      {/* Animated Background */}
+      <div className="absolute inset-0 z-0">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-indigo-400/10 to-purple-400/10 dark:from-blue-600/5 dark:via-indigo-600/5 dark:to-purple-600/5 animate-pulse"></div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/20 dark:bg-blue-400/10 rounded-full animate-float"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-indigo-200/20 dark:bg-indigo-400/10 rounded-full animate-float-reverse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-purple-200/20 dark:bg-purple-400/10 rounded-full animate-float" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-pink-200/20 dark:bg-pink-400/10 rounded-full animate-float-reverse" style={{ animationDelay: '1s' }}></div>
+          
+          {/* Additional floating elements */}
+          <div className="absolute top-1/3 left-1/3 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-indigo-300/20 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-lg rotate-45 animate-float" style={{ animationDelay: '3s' }}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-20 h-20 bg-gradient-to-br from-purple-300/20 to-pink-300/20 dark:from-purple-500/10 dark:to-pink-500/10 rounded-lg rotate-12 animate-float-reverse" style={{ animationDelay: '5s' }}></div>
+        </div>
+        
+        {/* Animated grid pattern */}
+        <div className="absolute inset-0 opacity-30 dark:opacity-10">
+          <svg
+            className="h-full w-full"
+            viewBox="0 0 800 800"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <pattern
+                id="animatedGrid"
+                width="60"
+                height="60"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 0 15 L 60 15 M 15 0 L 15 60"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  className="text-blue-300 dark:text-blue-700"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#animatedGrid)" />
+          </svg>
+        </div>
+        
+        {/* Subtle overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/40 dark:bg-gray-900/40"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
@@ -105,15 +127,26 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-6"
+              className="mt-8"
             >
               {Array.isArray(subtitle) ? (
-                <TextCarousel 
-                  texts={subtitle}
-                  className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-                />
+                <div className="relative p-8 rounded-2xl bg-white/10 dark:bg-gray-800/20 backdrop-blur-sm border border-white/20 dark:border-gray-700/30">
+                  <TextCarousel 
+                    texts={subtitle}
+                    className="text-xl md:text-2xl text-gray-800 dark:text-gray-100 max-w-4xl mx-auto font-medium leading-relaxed"
+                    interval={5000}
+                  />
+                  {/* Decorative elements around the carousel */}
+                  <div className="absolute -top-4 -left-4 w-8 h-8 border-2 border-primary-300 dark:border-primary-600 rounded-full opacity-50 animate-pulse-glow"></div>
+                  <div className="absolute -bottom-4 -right-4 w-6 h-6 border-2 border-secondary-300 dark:border-secondary-600 rounded-full opacity-50 animate-pulse-glow" style={{ animationDelay: '2s' }}></div>
+                  
+                  {/* Shimmer effect overlay */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+                  </div>
+                </div>
               ) : (
-                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-200 max-w-4xl mx-auto font-medium leading-relaxed">
                   {subtitle}
                 </p>
               )}

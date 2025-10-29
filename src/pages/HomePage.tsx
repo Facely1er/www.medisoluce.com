@@ -130,7 +130,11 @@ const HomePage: React.FC = () => {
       <HeroBanner
         title={t('home.title_subtitle')}
         titleSubtitle={t('home.title')}
-        subtitle={t('home.subtitle')}
+        subtitle={[
+          "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
+          "Protect patient data with comprehensive compliance solutions designed specifically for healthcare organizations.",
+          "Transform your cybersecurity posture with integrated risk assessment and business continuity planning tools."
+        ]}
         ctaText={t('home.hero_cta_primary')}
         ctaLink="/business-impact"
         secondaryCtaText={t('home.hero_cta_secondary')}

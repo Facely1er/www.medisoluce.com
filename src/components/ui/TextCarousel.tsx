@@ -31,14 +31,14 @@ const TextCarousel: React.FC<TextCarouselProps> = ({
       <AnimatePresence mode="wait">
         <motion.span
           key={currentIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 1.05 }}
           transition={{ 
-            duration: 0.5,
+            duration: 0.6,
             ease: "easeInOut"
           }}
-          className="block"
+          className="block font-medium leading-relaxed"
         >
           {texts[currentIndex]}
         </motion.span>
@@ -46,15 +46,15 @@ const TextCarousel: React.FC<TextCarouselProps> = ({
       
       {/* Progress indicators */}
       {texts.length > 1 && (
-        <div className="flex justify-center mt-4 space-x-2">
+        <div className="flex justify-center mt-6 space-x-3">
           {texts.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentIndex 
-                  ? 'bg-primary-500 scale-125' 
-                  : 'bg-gray-300 dark:bg-gray-600 hover:bg-primary-300 dark:hover:bg-primary-700'
+                  ? 'bg-primary-500 scale-125 shadow-lg' 
+                  : 'bg-gray-300 dark:bg-gray-600 hover:bg-primary-300 dark:hover:bg-primary-700 hover:scale-110'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
