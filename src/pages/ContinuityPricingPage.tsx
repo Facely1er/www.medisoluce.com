@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { FileText, CheckCircle, ArrowRight, Server, Users, Clock, Shield, Activity } from 'lucide-react';
+import { FileText, CheckCircle, ArrowRight, Server, Users, Clock, Shield, Activity, Calculator } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
 const ContinuityPricingPage: React.FC = () => {
+  const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
+
+  useEffect(() => {
+    const factors = getPricingFactorsFromStorage();
+    const calculated = calculateDynamicPricing(factors, 'continuity');
+    setDynamicPricing(calculated);
+  }, []);
 
   const tiers = [
     {
@@ -66,9 +74,9 @@ const ContinuityPricingPage: React.FC = () => {
   ];
 
   const stats = [
-    { value: '4 hours', label: 'Typical EHR Downtime Duration', icon: Clock },
-    { value: '$1M+', label: 'Lost Revenue Per Day of Downtime', icon: Activity },
-    { value: '95%', label: 'Organizations Unprepared for Outages', icon: Shield }
+    { value: 'Critical', label: 'EHR Availability Requirements', icon: Clock },
+    { value: 'Significant', label: 'Operational Disruption Impact', icon: Activity },
+    { value: 'Essential', label: 'Continuity Planning for Patient Care', icon: Shield }
   ];
 
   const benefits = [
@@ -290,6 +298,29 @@ const ContinuityPricingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Pricing Banner */}
+      {dynamicPricing && dynamicPricing.recommendations.length > 0 && (
+        <section className="py-8 bg-success-50 dark:bg-success-900/20 border-t border-b border-success-200 dark:border-success-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <Card className="p-6 bg-white dark:bg-gray-800 border border-success-200 dark:border-success-800">
+                <div className="flex items-start gap-3">
+                  <Calculator className="h-5 w-5 text-success-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                      Personalized Pricing Available
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Our pricing has been customized based on your organization's continuity planning needs.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Pricing Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">

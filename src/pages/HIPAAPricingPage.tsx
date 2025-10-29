@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { ShieldCheck, CheckCircle, ArrowRight, AlertTriangle, FileText, Users, Lock, Download } from 'lucide-react';
+import { ShieldCheck, CheckCircle, ArrowRight, AlertTriangle, FileText, Users, Lock, Download, Calculator } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
 const HIPAAPricingPage: React.FC = () => {
+  const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
+
+  useEffect(() => {
+    const factors = getPricingFactorsFromStorage();
+    const calculated = calculateDynamicPricing(factors, 'hipaa');
+    setDynamicPricing(calculated);
+  }, []);
 
   const tiers = [
     {
@@ -66,9 +74,9 @@ const HIPAAPricingPage: React.FC = () => {
   ];
 
   const stats = [
-    { value: '$100K-$1.6M', label: 'Average HIPAA Violation Fine', icon: AlertTriangle },
-    { value: '60%', label: 'Reduction in Violation Risk', icon: ShieldCheck },
-    { value: '30 days', label: 'To Full Compliance', icon: CheckCircle }
+    { value: 'Up to $1.9M', label: 'Maximum Annual HIPAA Penalties', icon: AlertTriangle },
+    { value: 'Multiple', label: 'Required Safeguards for HIPAA Compliance', icon: ShieldCheck },
+    { value: 'Ongoing', label: 'Compliance & Training Required', icon: CheckCircle }
   ];
 
   const benefits = [
@@ -98,7 +106,7 @@ const HIPAAPricingPage: React.FC = () => {
     <div className="min-h-screen">
       <SEOHead 
         title="HIPAA Compliance Suite - MediSoluce"
-        description="Protect patient data and avoid $100K-$1.6M HIPAA fines with comprehensive compliance tools. Start free assessment."
+        description="Protect patient data and avoid HIPAA penalties with comprehensive compliance tools. Start free assessment."
         keywords="HIPAA compliance, patient data protection, HIPAA assessment, healthcare privacy"
       />
 
@@ -129,7 +137,7 @@ const HIPAAPricingPage: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-600 dark:text-gray-300 mb-8"
             >
-              Protect patient data and avoid HIPAA fines with comprehensive compliance assessment, 
+              Protect patient data with comprehensive compliance assessment, 
               policy templates, and implementation guidance.
             </motion.p>
             <motion.div
@@ -227,6 +235,29 @@ const HIPAAPricingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Pricing Banner */}
+      {dynamicPricing && dynamicPricing.recommendations.length > 0 && (
+        <section className="py-8 bg-primary-50 dark:bg-primary-900/20 border-t border-b border-primary-200 dark:border-primary-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <Card className="p-6 bg-white dark:bg-gray-800 border border-primary-200 dark:border-primary-800">
+                <div className="flex items-start gap-3">
+                  <Calculator className="h-5 w-5 text-primary-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                      Personalized Pricing Available
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Our pricing has been customized based on your organization's risk profile and assessment results.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Pricing Section */}
       <section className="py-16 bg-white dark:bg-gray-800">

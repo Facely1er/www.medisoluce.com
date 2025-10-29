@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock } from 'lucide-react';
+import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock, Calculator } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
 const RansomwarePricingPage: React.FC = () => {
+  const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
+
+  useEffect(() => {
+    const factors = getPricingFactorsFromStorage();
+    const calculated = calculateDynamicPricing(factors, 'ransomware');
+    setDynamicPricing(calculated);
+  }, []);
 
   const tiers = [
     {
@@ -66,9 +74,9 @@ const RansomwarePricingPage: React.FC = () => {
   ];
 
   const stats = [
-    { value: '$10.9M', label: 'Average Healthcare Data Breach Cost', icon: AlertTriangle },
-    { value: '70%', label: 'Healthcare Organizations Hit by Ransomware', icon: Shield },
-    { value: '22 days', label: 'Average Recovery Time', icon: Clock }
+    { value: 'Proven', label: 'Healthcare-Specific Response Procedures', icon: AlertTriangle },
+    { value: 'Multiple', label: 'Threat Containment Methods Available', icon: Shield },
+    { value: 'Rapid', label: 'Threat Response Capabilities', icon: Clock }
   ];
 
   const benefits = [
@@ -121,7 +129,7 @@ const RansomwarePricingPage: React.FC = () => {
     <div className="min-h-screen">
       <SEOHead 
         title="Ransomware Resilience Suite - MediSoluce"
-        description="Protect against $10.9M ransomware attacks with healthcare-specific defense and response playbooks. Start free assessment."
+        description="Protect against ransomware attacks with healthcare-specific defense and response playbooks. Start free assessment."
         keywords="ransomware protection, healthcare security, ransomware response playbook, cyber defense"
       />
 
@@ -291,6 +299,29 @@ const RansomwarePricingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Dynamic Pricing Banner */}
+      {dynamicPricing && dynamicPricing.recommendations.length > 0 && (
+        <section className="py-8 bg-accent-50 dark:bg-accent-900/20 border-t border-b border-accent-200 dark:border-accent-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <Card className="p-6 bg-white dark:bg-gray-800 border border-accent-200 dark:border-accent-800">
+                <div className="flex items-start gap-3">
+                  <Calculator className="h-5 w-5 text-accent-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                      Personalized Pricing Available
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      Our pricing has been customized based on your organization's ransomware risk level.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Pricing Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -371,13 +402,13 @@ const RansomwarePricingPage: React.FC = () => {
                 <div className="space-y-4">
                   <h3 className="font-semibold text-gray-900 dark:text-white flex items-center">
                     <AlertTriangle className="h-5 w-5 mr-2 text-red-500" />
-                    Average Healthcare Ransomware Attack Costs
+                    Healthcare Ransomware Attack Impact
                   </h3>
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-                    <li>• $10.9M average total cost per breach</li>
-                    <li>• 22 days average recovery time</li>
-                    <li>• $4.45M average business interruption cost</li>
-                    <li>• 70% of attacks disrupt patient care</li>
+                    <li>• Significant financial and operational costs from breaches</li>
+                    <li>• Extended recovery time impacting patient care</li>
+                    <li>• Business interruption and revenue loss</li>
+                    <li>• Attacks can disrupt patient care and clinical operations</li>
                   </ul>
                 </div>
                 <div className="space-y-4">

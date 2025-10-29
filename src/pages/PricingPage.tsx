@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { ShieldCheck, Lock, FileText, CheckCircle, Star, ArrowRight, Zap, Users, Briefcase, Shield, Wrench } from 'lucide-react';
+import { ShieldCheck, Lock, FileText, CheckCircle, Star, ArrowRight, Zap, Users, Briefcase, Shield, Wrench, Calculator, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
 const PricingPage: React.FC = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
   const [selectedPersona, setSelectedPersona] = useState<string>('all');
+  const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
+  const [showStandardPricing, setShowStandardPricing] = useState(false);
+
+  // Calculate dynamic pricing based on user's assessment data
+  useEffect(() => {
+    const factors = getPricingFactorsFromStorage();
+    const calculated = calculateDynamicPricing(factors, 'bundle');
+    setDynamicPricing(calculated);
+  }, []);
 
   const stakeholders = [
     { id: 'all', label: 'View All', icon: <Users className="h-4 w-4" />, color: 'gray' },
@@ -192,8 +202,20 @@ const PricingPage: React.FC = () => {
   };
 
   const BundleCard = ({ tier, isPopular }: { tier: 'essential' | 'professional' | 'enterprise', isPopular?: boolean }) => {
-    const price = pricing.bundle[tier];
+    // Use dynamic pricing if available and user hasn't opted for standard
+    const useStandard = showStandardPricing || !dynamicPricing;
+    const price = useStandard 
+      ? pricing.bundle[tier] 
+      : {
+          monthly: dynamicPricing.bundle[tier],
+          annual: dynamicPricing.bundle[tier] * 10, // Annual is typically 10x monthly
+          savings: dynamicPricing.savings[tier]
+        };
     const tierFeatures = features[tier];
+
+    const basePrice = useStandard 
+      ? (pricing.hipaa[tier].monthly * 3)
+      : (dynamicPricing.essential * 3);
 
     return (
       <Card hover className={`h-full flex flex-col border-2 ${isPopular ? 'border-primary-500 dark:border-primary-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
@@ -216,7 +238,7 @@ const PricingPage: React.FC = () => {
               <div className="flex items-center text-success-700 dark:text-success-300">
                 <Zap className="h-5 w-5 mr-2" />
                 <span className="font-semibold">
-                  Save ${price.savings}/month ({((price.savings / ((pricing.hipaa[tier].monthly * 3))) * 100).toFixed(0)}% off)
+                  Save ${useStandard ? price.savings : dynamicPricing.savings[tier]}/month ({((useStandard ? price.savings : dynamicPricing.savings[tier]) / basePrice) * 100).toFixed(0)}% off)
                 </span>
               </div>
             </div>
@@ -232,8 +254,13 @@ const PricingPage: React.FC = () => {
               </span>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              vs ${billingCycle === 'monthly' ? (pricing.hipaa[tier].monthly * 3) : (pricing.hipaa[tier].annual * 3)} billed separately
+              vs ${billingCycle === 'monthly' ? basePrice : basePrice * 10} billed separately
             </p>
+            {!useStandard && dynamicPricing && (
+              <p className="text-xs text-primary-600 dark:text-primary-400 mt-1">
+                * Personalized pricing based on your assessment
+              </p>
+            )}
           </div>
 
           <div className="mb-6">
@@ -319,6 +346,49 @@ const PricingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Pricing Banner */}
+      {dynamicPricing && dynamicPricing.recommendations.length > 0 && (
+        <section className="py-8 bg-accent-50 dark:bg-accent-900/20 border-b border-accent-200 dark:border-accent-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <Card className="p-6 bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 border-2 border-primary-200 dark:border-primary-800">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-primary-500 flex items-center justify-center">
+                      <Calculator className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                        Personalized Pricing Based on Your Assessment
+                      </h3>
+                      <button
+                        onClick={() => setShowStandardPricing(!showStandardPricing)}
+                        className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                      >
+                        {showStandardPricing ? 'Show Personalized' : 'Show Standard'}
+                      </button>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                      {dynamicPricing.rationale}
+                    </p>
+                    <div className="space-y-2">
+                      {dynamicPricing.recommendations.map((rec, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-sm">
+                          <AlertCircle className="h-4 w-4 text-accent-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700 dark:text-gray-300">{rec}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stakeholder Personas Section */}
       <section className="py-12 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -526,26 +596,26 @@ const PricingPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-white dark:bg-gray-800 p-6">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
-                  $100K-$1.6M
+                  Significant
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Average HIPAA violation fine
+                  HIPAA violation penalties
                 </p>
               </Card>
               <Card className="bg-white dark:bg-gray-800 p-6">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
-                  $10.9M
+                  Substantial
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Average healthcare data breach cost
+                  Healthcare data breach costs
                 </p>
               </Card>
               <Card className="bg-white dark:bg-gray-800 p-6">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  22 days
+                  Extended
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Average healthcare recovery time
+                  Recovery time after incidents
                 </p>
               </Card>
             </div>
