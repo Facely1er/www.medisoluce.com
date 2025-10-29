@@ -1017,11 +1017,7 @@ class ProjectHealthEnhancer {
   }
 
   private hasSecurityHeaders(): boolean {
-    return !!(
-      // X-Frame-Options is set via HTTP headers, not meta tags
-      true &&
-      document.querySelector('meta[http-equiv="X-Content-Type-Options"]')
-    );
+    return !!document.querySelector('meta[http-equiv="X-Content-Type-Options"]');
   }
 
   private generateRecommendations(issues: HealthIssue[]): string[] {

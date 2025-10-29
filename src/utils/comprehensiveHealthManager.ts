@@ -972,8 +972,6 @@ class ComprehensiveHealthManager {
 
   private hasSecurityHeaders(): boolean {
     return !!(
-      // X-Frame-Options is set via HTTP headers, not meta tags
-      true &&
       document.querySelector('meta[http-equiv="X-Content-Type-Options"]') ||
       document.querySelector('meta[http-equiv="Referrer-Policy"]')
     );

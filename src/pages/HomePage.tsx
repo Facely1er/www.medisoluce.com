@@ -9,7 +9,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import GlobalSearch from '../components/search/GlobalSearch';
 import { analytics } from '../utils/analytics';
-import { ShieldCheck, Server, FileText, CheckCircle, BarChart, ArrowRight, Download, BookOpen } from 'lucide-react';
+import { ShieldCheck, Server, FileText, CheckCircle, BarChart, ArrowRight, Download, BookOpen, Users, Briefcase, Shield, Wrench } from 'lucide-react';
 
 interface FeatureCardProps {
   title: string;
@@ -494,6 +494,104 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Persona-Based Quick Links */}
+      <section className="py-16 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                Find Your Starting Point
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-300">
+                Quick access based on your role and priorities
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  role: "I'm a Compliance Officer",
+                  description: "Need audit-ready documentation and training",
+                  icon: <Shield className="h-8 w-8 text-primary-500" />,
+                  recommended: "HIPAA Professional Suite",
+                  link: "/hipaa-check",
+                  color: "bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800"
+                },
+                {
+                  role: "I'm an IT Director",
+                  description: "Need security & ransomware defense",
+                  icon: <Wrench className="h-8 w-8 text-accent-500" />,
+                  recommended: "Enterprise Bundle",
+                  link: "/pricing",
+                  color: "bg-accent-50 dark:bg-accent-900/20 border-accent-200 dark:border-accent-800"
+                },
+                {
+                  role: "I'm an Operations Manager",
+                  description: "Need business continuity planning",
+                  icon: <FileText className="h-8 w-8 text-success-500" />,
+                  recommended: "Continuity Professional Suite",
+                  link: "/continuity",
+                  color: "bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800"
+                },
+                {
+                  role: "I'm a Practice Manager",
+                  description: "Need affordable compliance solution",
+                  icon: <Users className="h-8 w-8 text-secondary-500" />,
+                  recommended: "Essential HIPAA - Start Free",
+                  link: "/hipaa-check",
+                  color: "bg-secondary-50 dark:bg-secondary-900/20 border-secondary-200 dark:border-secondary-800"
+                },
+                {
+                  role: "I'm a CEO/CFO",
+                  description: "Need financial risk protection",
+                  icon: <Briefcase className="h-8 w-8 text-primary-500" />,
+                  recommended: "Complete Bundle - Best ROI",
+                  link: "/pricing",
+                  color: "bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800"
+                },
+                {
+                  role: "I'm Exploring Options",
+                  description: "Need to understand all capabilities",
+                  icon: <Download className="h-8 w-8 text-primary-500" />,
+                  recommended: "View All Features",
+                  link: "/pricing",
+                  color: "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                }
+              ].map((persona, idx) => (
+                <Link key={idx} to={persona.link}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    viewport={{ once: true }}
+                    className={`group p-6 rounded-xl border-2 ${persona.color} transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer h-full`}
+                  >
+                    <div className="flex items-start mb-4">
+                      <div className="flex-shrink-0">
+                        {persona.icon}
+                      </div>
+                      <div className="ml-4 flex-1">
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                          {persona.role}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                          {persona.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+                        {persona.recommended}
+                      </span>
+                      <ArrowRight className="h-4 w-4 text-primary-600 dark:text-primary-400 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* CTA Section */}
       <section className="py-16 bg-primary-600">

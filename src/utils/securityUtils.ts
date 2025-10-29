@@ -1314,5 +1314,5 @@ export const securityUtils = securityManager;
 
 // Auto-start security monitoring in production
 if (import.meta.env.PROD) {
-  securityManager;
+  void securityManager;
 }

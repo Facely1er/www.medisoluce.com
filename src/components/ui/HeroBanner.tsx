@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Button from './Button';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Database, FileCheck, Calculator, Download } from 'lucide-react';
+import { ShieldCheck, Database, FileCheck, Calculator, Download } from 'lucide-react';
 import TextCarousel from './TextCarousel';
 
 interface HeroBannerProps {

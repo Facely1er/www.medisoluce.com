@@ -639,5 +639,5 @@ export const robustErrorHandler = new RobustErrorHandler();
 
 // Auto-initialize in production
 if (import.meta.env.PROD) {
-  robustErrorHandler;
+  void robustErrorHandler;
 }

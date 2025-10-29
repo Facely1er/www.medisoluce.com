@@ -640,5 +640,5 @@ export const performanceOptimizer = new PerformanceOptimizer();
 
 // Auto-initialize in production
 if (import.meta.env.PROD) {
-  performanceOptimizer;
+  void performanceOptimizer;
 }

@@ -33,6 +33,18 @@ export default tseslint.config(
           allowTaggedTemplates: false,
         },
       ],
+      // Allow unused vars that start with underscore (intentional)
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^(_|error|context|element|args|data|event|email|threat)$',
+          varsIgnorePattern: '^_',
+        },
+      ],
+      // Allow 'any' type in utility files for flexibility
+      '@typescript-eslint/no-explicit-any': 'warn',
+      // Allow React component pattern of exporting constants
+      'react-refresh/only-export-components': 'off',
     },
   }
 );

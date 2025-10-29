@@ -558,8 +558,6 @@ class SystemHealthManager {
   private hasSecurityHeaders(): boolean {
     // Check for security-related meta tags (client-side approximation)
     return !!(
-      // X-Frame-Options is set via HTTP headers, not meta tags
-      true &&
       document.querySelector('meta[http-equiv="X-Content-Type-Options"]') ||
       document.querySelector('meta[http-equiv="Referrer-Policy"]')
     );
@@ -1062,7 +1060,7 @@ class SystemHealthManager {
     (window as any).domChangeTimeout = setTimeout(() => {
       // Trigger layout optimization
       document.body.style.display = 'none';
-      document.body.offsetHeight; // Force reflow
+      void document.body.offsetHeight; // Force reflow
       document.body.style.display = '';
     }, 100);
   }

@@ -18,6 +18,8 @@ export interface DownloadResource {
   isPopular: boolean;
   lastUpdated?: string;
   author?: string;
+  fileSize?: string;
+  downloadCount?: number;
   onView?: (resource: DownloadResource) => void;
 }
 
@@ -27,6 +29,7 @@ const ToolkitPage: React.FC = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [previewContent, setPreviewContent] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
+  const [previewLoading, setPreviewLoading] = useState(false);
   
   const categories = [
     'HIPAA Compliance',
@@ -48,7 +51,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['policy', 'hipaa', 'privacy'],
       isPopular: true,
       lastUpdated: '2024-01-15',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '8.2 KB',
+      downloadCount: 1247
     },
     {
       id: '2',
@@ -60,7 +65,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['breach', 'incident response', 'hipaa'],
       isPopular: true,
       lastUpdated: '2024-01-10',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '12.8 KB',
+      downloadCount: 982
     },
     {
       id: '3',
@@ -72,7 +79,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['baa', 'vendor', 'agreement'],
       isPopular: false,
       lastUpdated: '2024-01-08',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '15.4 KB',
+      downloadCount: 756
     },
     {
       id: '4',
@@ -84,7 +93,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['training', 'documentation', 'compliance'],
       isPopular: false,
       lastUpdated: '2024-01-05',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '10.7 KB',
+      downloadCount: 634
     },
     {
       id: '5',
@@ -96,7 +107,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['mapping', 'inventory', 'dependencies'],
       isPopular: true,
       lastUpdated: '2024-01-12',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '5.3 KB',
+      downloadCount: 891
     },
     {
       id: '6',
@@ -108,7 +121,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['bia', 'impact', 'analysis'],
       isPopular: false,
       lastUpdated: '2024-01-07',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '9.6 KB',
+      downloadCount: 543
     },
     {
       id: '7',
@@ -120,7 +135,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['continuity', 'plan', 'disaster recovery'],
       isPopular: false,
       lastUpdated: '2024-01-09',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '14.2 KB',
+      downloadCount: 678
     },
     {
       id: '8',
@@ -132,7 +149,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['ransomware', 'incident response', 'security'],
       isPopular: true,
       lastUpdated: '2024-01-11',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '22.5 KB',
+      downloadCount: 1156
     },
     {
       id: '9',
@@ -144,7 +163,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['risk assessment', 'security', 'hipaa'],
       isPopular: true,
       lastUpdated: '2024-01-13',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '7.1 KB',
+      downloadCount: 1094
     },
     {
       id: '10',
@@ -156,7 +177,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['ehr', 'downtime', 'procedures'],
       isPopular: false,
       lastUpdated: '2024-01-06',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '11.9 KB',
+      downloadCount: 445
     },
     {
       id: '11',
@@ -168,7 +191,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['backup', 'data protection', 'strategy'],
       isPopular: false,
       lastUpdated: '2024-01-14',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '16.8 KB',
+      downloadCount: 522
     },
     {
       id: '12',
@@ -180,7 +205,9 @@ const ToolkitPage: React.FC = () => {
       tags: ['vendor', 'risk', 'assessment'],
       isPopular: false,
       lastUpdated: '2024-01-04',
-      author: 'MediSoluce Team'
+      author: 'MediSoluce Team',
+      fileSize: '6.5 KB',
+      downloadCount: 389
     }
   ];
 
@@ -194,10 +221,31 @@ const ToolkitPage: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const handlePreview = (resource: DownloadResource) => {
+  const handlePreview = async (resource: DownloadResource) => {
     setPreviewTitle(resource.title);
-    setPreviewContent(`# ${resource.title}\n\n${resource.description}\n\n**Category:** ${resource.category}\n\n**Tags:** ${resource.tags.join(', ')}\n\n**Last Updated:** ${resource.lastUpdated}\n\n**Author:** ${resource.author}`);
+    setPreviewLoading(true);
     setShowPreviewModal(true);
+    
+    // Load actual content from the file if it's a markdown file
+    if (resource.fileType === 'md') {
+      try {
+        const response = await fetch(resource.downloadLink);
+        if (response.ok) {
+          const content = await response.text();
+          setPreviewContent(content);
+        } else {
+          setPreviewContent(`# ${resource.title}\n\n${resource.description}\n\n**Category:** ${resource.category}\n\n**Tags:** ${resource.tags.join(', ')}\n\n**Last Updated:** ${resource.lastUpdated}\n\n**Author:** ${resource.author}\n\n*Unable to load preview content.*`);
+        }
+      } catch {
+        setPreviewContent(`# ${resource.title}\n\n${resource.description}\n\n**Category:** ${resource.category}\n\n**Tags:** ${resource.tags.join(', ')}\n\n**Last Updated:** ${resource.lastUpdated}\n\n**Author:** ${resource.author}\n\n*Error loading preview content.*`);
+      } finally {
+        setPreviewLoading(false);
+      }
+    } else {
+      // For non-markdown files, show metadata
+      setPreviewContent(`# ${resource.title}\n\n${resource.description}\n\n**Category:** ${resource.category}\n\n**Tags:** ${resource.tags.join(', ')}\n\n**Last Updated:** ${resource.lastUpdated}\n\n**Author:** ${resource.author}\n\n**File Type:** ${resource.fileType.toUpperCase()}\n\n*Preview not available for ${resource.fileType.toUpperCase()} files. Please download to view the content.*`);
+      setPreviewLoading(false);
+    }
   };
 
   const handleDownload = (resource: DownloadResource) => {
@@ -218,15 +266,66 @@ const ToolkitPage: React.FC = () => {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center space-x-3 mb-4">
-              <Download className="h-8 w-8 text-primary-500" />
-              <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
-                Resource Toolkit
-              </h1>
+              <div className="p-3 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg">
+                <Download className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
+                  Resource Toolkit
+                </h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {resources.length} resources available
+                </p>
+              </div>
             </div>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
               Download comprehensive templates, policies, and implementation guides tailored for healthcare organizations. 
               All resources are designed by compliance experts and regularly updated.
             </p>
+          </div>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <Card className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Resources</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{resources.length}</p>
+                </div>
+                <FileText className="h-10 w-10 text-blue-600 dark:text-blue-400" />
+              </div>
+            </Card>
+            <Card className="p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Popular Resources</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {resources.filter(r => r.isPopular).length}
+                  </p>
+                </div>
+                <Star className="h-10 w-10 text-green-600 dark:text-green-400" />
+              </div>
+            </Card>
+            <Card className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Downloads</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {resources.reduce((sum, r) => sum + (r.downloadCount || 0), 0).toLocaleString()}
+                  </p>
+                </div>
+                <Download className="h-10 w-10 text-purple-600 dark:text-purple-400" />
+              </div>
+            </Card>
+            <Card className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Categories</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{categories.length}</p>
+                </div>
+                <Tag className="h-10 w-10 text-orange-600 dark:text-orange-400" />
+              </div>
+            </Card>
           </div>
 
           {/* Search and Filter */}
@@ -248,58 +347,133 @@ const ToolkitPage: React.FC = () => {
                   size="sm"
                 >
                   All Categories
+                  <span className="ml-2 px-2 py-0.5 rounded-full bg-white/20 text-xs font-semibold">
+                    {resources.length}
+                  </span>
                 </Button>
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(category)}
-                    size="sm"
-                  >
-                    {category}
-                  </Button>
-                ))}
+                {categories.map((category) => {
+                  const count = resources.filter(r => r.category === category).length;
+                  return (
+                    <Button
+                      key={category}
+                      variant={selectedCategory === category ? "default" : "outline"}
+                      onClick={() => setSelectedCategory(category)}
+                      size="sm"
+                    >
+                      {category}
+                      <span className="ml-2 px-2 py-0.5 rounded-full bg-white/20 text-xs font-semibold">
+                        {count}
+                      </span>
+                    </Button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
+          {/* Results Count */}
+          {(searchQuery || selectedCategory) && (
+            <div className="mb-4 px-4 py-2 bg-primary-50 dark:bg-primary-900/20 rounded-lg inline-flex items-center text-sm text-gray-700 dark:text-gray-300">
+              <span className="font-semibold">{filteredResources.length}</span>
+              <span className="mx-2">
+                {filteredResources.length === 1 ? 'resource' : 'resources'} found
+              </span>
+              {(searchQuery || selectedCategory) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory(null);
+                  }}
+                  className="ml-3 text-xs"
+                >
+                  Clear filters
+                </Button>
+              )}
+            </div>
+          )}
+
           {/* Resources Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {filteredResources.map((resource) => (
-              <Card key={resource.id} className="p-6 hover:shadow-lg transition-shadow">
+          {filteredResources.length === 0 ? (
+            <div className="text-center py-16">
+              <FileText className="h-16 w-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                No resources found
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+                Try adjusting your search or filter criteria to find what you're looking for.
+              </p>
+              <Button onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory(null);
+              }}>
+                Clear Filters
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {filteredResources.map((resource) => (
+              <Card key={resource.id} className="p-6 hover:shadow-xl transition-all duration-300 border-l-4 border-l-primary-500 dark:border-l-primary-400">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
-                      <FileText className="h-6 w-6 text-primary-500" />
+                  <div className="flex items-start space-x-3 flex-1">
+                    <div className="p-3 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/30 dark:to-primary-800/30 rounded-lg">
+                      <FileText className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        {resource.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start gap-2 mb-1">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
+                          {resource.title}
+                        </h3>
+                        {resource.isPopular && (
+                          <Star className="h-5 w-5 text-yellow-500 fill-current flex-shrink-0 mt-0.5" />
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-2">
                         {resource.description}
                       </p>
                     </div>
                   </div>
-                  {resource.isPopular && (
-                    <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {resource.tags.slice(0, 2).map((tag, idx) => (
+                    <span 
+                      key={idx}
+                      className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                  {resource.tags.length > 2 && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      +{resource.tags.length - 2}
+                    </span>
                   )}
                 </div>
 
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                {/* Metadata */}
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <div className="flex items-center gap-4">
                     <span className="flex items-center space-x-1">
                       <FileText className="h-4 w-4" />
-                      <span>{resource.fileType.toUpperCase()}</span>
+                      <span className="font-medium">{resource.fileType.toUpperCase()}</span>
                     </span>
-                    <span className="flex items-center space-x-1">
-                      <Tag className="h-4 w-4" />
-                      <span>{resource.category}</span>
-                    </span>
+                    {resource.fileSize && (
+                      <span>{resource.fileSize}</span>
+                    )}
                   </div>
+                  {resource.downloadCount && resource.downloadCount > 0 && (
+                    <span className="flex items-center space-x-1">
+                      <Download className="h-4 w-4" />
+                      <span>{resource.downloadCount.toLocaleString()}</span>
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex items-center space-x-3">
+                {/* Actions */}
+                <div className="flex items-center space-x-2">
                   <Button
                     onClick={() => handleDownload(resource)}
                     className="flex-1"
@@ -316,35 +490,65 @@ const ToolkitPage: React.FC = () => {
                   </Button>
                 </div>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Custom Resource Request */}
-          <div className="mt-16 bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
-            <div className="text-center">
-              <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+          <Card className="mt-16 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20 border-2 border-primary-200 dark:border-primary-800">
+            <div className="p-8 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-500 mb-4">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-3">
                 Need a Custom Resource?
               </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Can't find what you're looking for? We can create custom templates and guides tailored to your specific needs.
+              <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
+                Can't find what you're looking for? We can create custom templates and guides tailored to your specific needs. 
+                Our compliance experts will work with you to develop the exact resources your organization requires.
               </p>
-              <Button onClick={() => window.location.href = '/contact'}>
-                Request Custom Resource
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button 
+                  onClick={() => window.location.href = '/contact'}
+                  size="lg"
+                  className="shadow-lg"
+                >
+                  Request Custom Resource
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => window.location.href = '/contact'}
+                  size="lg"
+                >
+                  Contact Support
+                </Button>
+              </div>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
 
       <Modal
         isOpen={showPreviewModal}
-        onClose={() => setShowPreviewModal(false)}
+        onClose={() => {
+          setShowPreviewModal(false);
+          setPreviewContent('');
+          setPreviewLoading(false);
+        }}
         title={previewTitle}
         size="lg"
       >
-        <ReactMarkdown className="prose dark:prose-invert max-w-none">
-          {previewContent}
-        </ReactMarkdown>
+        {previewLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+          </div>
+        ) : (
+          <div className="max-h-[70vh] overflow-y-auto">
+            <ReactMarkdown className="prose dark:prose-invert max-w-none">
+              {previewContent}
+            </ReactMarkdown>
+          </div>
+        )}
       </Modal>
     </div>
   );
