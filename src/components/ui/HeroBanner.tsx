@@ -97,7 +97,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className={`text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight ${titleSubtitle ? '' : 'mt-0'}`}
+              className={`text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight ${titleSubtitle ? '' : 'mt-0'} whitespace-pre-line`}
             >
               {title}
             </motion.h1>
