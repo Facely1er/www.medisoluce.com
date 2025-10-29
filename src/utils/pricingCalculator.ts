@@ -1,14 +1,9 @@
-/**
- * Dynamic Pricing Calculator
- * Calculates personalized pricing based on user's assessment data
- */
-
 export interface PricingFactors {
   organizationSize?: 'small' | 'medium' | 'large';
-  complianceMaturity?: 'low' | 'medium' | 'high';
   riskLevel?: 'low' | 'medium' | 'high' | 'critical';
-  industry?: string;
-  hasExistingTools?: boolean;
+  hasHadBreach?: boolean;
+  complianceStatus?: 'compliant' | 'partial' | 'non-compliant';
+  budget?: 'limited' | 'moderate' | 'flexible';
 }
 
 export interface CalculatedPricing {
@@ -23,184 +18,132 @@ export interface CalculatedPricing {
     enterprise: number;
   };
   essential: number;
-  professional: number;
-  enterprise: number;
-  rationale: string;
   recommendations: string[];
+  rationale: string;
 }
 
-// Standard pricing as baseline
-const STANDARD_PRICING = {
+const BASE_PRICING = {
+  hipaa: {
+    essential: 49,
+    professional: 149,
+    enterprise: 499
+  },
+  ransomware: {
+    essential: 49,
+    professional: 149,
+    enterprise: 499
+  },
+  continuity: {
+    essential: 49,
+    professional: 149,
+    enterprise: 499
+  },
   bundle: {
     essential: 99,
     professional: 299,
     enterprise: 999
-  },
-  individual: {
-    essential: 49,
-    professional: 149,
-    enterprise: 499
   }
 };
 
-/**
- * Get pricing factors from localStorage (from assessment data)
- */
 export function getPricingFactorsFromStorage(): PricingFactors {
   try {
-    const assessmentData = localStorage.getItem('hipaa-assessment-data');
-    const ransomwareData = localStorage.getItem('ransomware-assessment-data');
-    const continuityData = localStorage.getItem('continuity-assessment-data');
-    
-    const factors: PricingFactors = {};
-    
-    // Parse assessment data to determine factors
-    if (assessmentData) {
-      const data = JSON.parse(assessmentData);
-      // Analyze the assessment data to determine risk level, size, etc.
-      // This is a simplified implementation
-      factors.complianceMaturity = data.progress > 80 ? 'high' : data.progress > 40 ? 'medium' : 'low';
+    const stored = localStorage.getItem('pricingFactors');
+    if (stored) {
+      return JSON.parse(stored);
     }
-    
-    if (ransomwareData) {
-      const data = JSON.parse(ransomwareData);
-      factors.riskLevel = data.criticalCount > 5 ? 'critical' : data.criticalCount > 2 ? 'high' : 'medium';
-    }
-    
-    return factors;
   } catch (error) {
-    console.warn('Could not load pricing factors from storage:', error);
-    return {};
+    console.error('Error loading pricing factors:', error);
   }
+  
+  // Return default factors
+  return {
+    organizationSize: 'small',
+    riskLevel: 'medium',
+    hasHadBreach: false,
+    complianceStatus: 'partial',
+    budget: 'moderate'
+  };
 }
 
-/**
- * Calculate dynamic pricing based on user's profile and needs
- */
 export function calculateDynamicPricing(
-  factors: PricingFactors, 
-  productType: 'bundle' | 'hipaa' | 'ransomware' | 'continuity'
+  factors: PricingFactors,
+  productType: 'hipaa' | 'ransomware' | 'continuity' | 'bundle'
 ): CalculatedPricing {
-  // Start with standard pricing
-  let essentialPrice = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.essential 
-    : STANDARD_PRICING.individual.essential;
-  let professionalPrice = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.professional 
-    : STANDARD_PRICING.individual.professional;
-  let enterprisePrice = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.enterprise 
-    : STANDARD_PRICING.individual.enterprise;
+  const basePrices = BASE_PRICING[productType];
   
+  // Calculate multiplier based on factors
+  let multiplier = 1.0;
   const recommendations: string[] = [];
-  let rationale = 'Based on our assessment, we recommend the following pricing:';
   
-  // Adjust pricing based on factors
-  let discount = 1.0; // No discount by default
-  
-  // Apply discounts for low maturity (need more help) or high risk (urgent need)
-  if (factors.complianceMaturity === 'low') {
-    discount = 0.85; // 15% discount for those starting their compliance journey
-    recommendations.push('Starter discount applied: You\'re early in your compliance journey');
-    rationale = 'We\'re offering you a special rate to help you get started with compliance.';
-  } else if (factors.complianceMaturity === 'high') {
-    recommendations.push('Your organization shows strong compliance maturity');
+  // Organization size factor
+  if (factors.organizationSize === 'medium') {
+    multiplier *= 0.95;
+  } else if (factors.organizationSize === 'large') {
+    multiplier *= 0.9;
+    recommendations.push('Large organization discount applied');
   }
   
-  if (factors.riskLevel === 'critical' || factors.riskLevel === 'high') {
-    discount = Math.min(discount, 0.80); // Up to 20% discount for high risk (they need it urgently)
-    recommendations.push('Priority support recommended due to identified risks');
-    if (factors.riskLevel === 'critical') {
-      rationale = 'Your assessment revealed critical vulnerabilities. We\'re offering priority pricing to help you address these issues immediately.';
-    }
+  // Risk level factor
+  if (factors.riskLevel === 'high' || factors.riskLevel === 'critical') {
+    recommendations.push('High risk detected - comprehensive protection recommended');
   }
   
-  if (factors.organizationSize === 'small') {
-    discount = Math.min(discount, 0.85); // 15% discount for small practices
-    recommendations.push('Small practice discount applied');
-    rationale = 'We understand the challenges small practices face and want to make compliance affordable.';
+  // Previous breach factor
+  if (factors.hasHadBreach) {
+    recommendations.push('Previous breach history - enhanced security features recommended');
   }
   
-  if (factors.hasExistingTools === false) {
-    recommendations.push('No existing tools detected - we can help you build from scratch');
+  // Compliance status factor
+  if (factors.complianceStatus === 'non-compliant') {
+    multiplier *= 0.85;
+    recommendations.push('Non-compliant status - special pricing to help you get started');
+  } else if (factors.complianceStatus === 'partial') {
+    multiplier *= 0.9;
+    recommendations.push('Partial compliance - discounted pricing to complete your requirements');
   }
   
-  // Apply discounts
-  essentialPrice = Math.round(essentialPrice * discount);
-  professionalPrice = Math.round(professionalPrice * discount);
-  enterprisePrice = Math.round(enterprisePrice * discount);
+  // Budget factor
+  if (factors.budget === 'limited') {
+    multiplier *= 0.8;
+    recommendations.push('Budget-conscious pricing applied');
+  }
   
-  // Calculate savings vs standard pricing
-  const standardEssential = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.essential 
-    : STANDARD_PRICING.individual.essential;
-  const standardProfessional = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.professional 
-    : STANDARD_PRICING.individual.professional;
-  const standardEnterprise = productType === 'bundle' 
-    ? STANDARD_PRICING.bundle.enterprise 
-    : STANDARD_PRICING.individual.enterprise;
-  
-  // Calculate savings for bundle (compared to buying 3 individual suites)
-  const individualSuiteCost = STANDARD_PRICING.individual;
-  const bundleSavings = {
-    essential: (individualSuiteCost.essential * 3) - essentialPrice,
-    professional: (individualSuiteCost.professional * 3) - professionalPrice,
-    enterprise: (individualSuiteCost.enterprise * 3) - enterprisePrice
+  // Apply multiplier to prices
+  const adjustedPrices = {
+    essential: Math.round(basePrices.essential * multiplier),
+    professional: Math.round(basePrices.professional * multiplier),
+    enterprise: Math.round(basePrices.enterprise * multiplier)
   };
   
-  if (recommendations.length === 0) {
-    recommendations.push('Standard pricing applies');
+  // Calculate savings compared to base prices
+  const savings = {
+    essential: basePrices.essential - adjustedPrices.essential,
+    professional: basePrices.professional - adjustedPrices.professional,
+    enterprise: basePrices.enterprise - adjustedPrices.enterprise
+  };
+  
+  // Generate rationale
+  let rationale = 'Based on your assessment, we\'ve customized pricing for your organization. ';
+  if (multiplier < 1.0) {
+    const discount = Math.round((1 - multiplier) * 100);
+    rationale += `You qualify for a ${discount}% discount.`;
+  } else {
+    rationale += 'Standard pricing applies.';
   }
   
   return {
-    bundle: {
-      essential: essentialPrice,
-      professional: professionalPrice,
-      enterprise: enterprisePrice
-    },
-    savings: bundleSavings,
-    essential: essentialPrice,
-    professional: professionalPrice,
-    enterprise: enterprisePrice,
-    rationale,
-    recommendations
+    bundle: adjustedPrices,
+    savings,
+    essential: adjustedPrices.essential,
+    recommendations: recommendations.length > 0 ? recommendations : ['Standard pricing based on your needs'],
+    rationale
   };
 }
 
-/**
- * Calculate ROI based on pricing and potential losses
- */
-export function calculateROI(monthlyPrice: number, potentialLosses: number): {
-  monthlyROI: number;
-  annualROI: number;
-  breakEvenMonths: number;
-} {
-  const annualPrice = monthlyPrice * 12;
-  const monthlyROI = ((potentialLosses - monthlyPrice) / monthlyPrice) * 100;
-  const annualROI = ((potentialLosses - annualPrice) / annualPrice) * 100;
-  const breakEvenMonths = annualPrice / monthlyPrice;
-  
-  return {
-    monthlyROI,
-    annualROI,
-    breakEvenMonths
-  };
-}
-
-/**
- * Get recommended tier based on factors
- */
-export function getRecommendedTier(factors: PricingFactors): 'essential' | 'professional' | 'enterprise' {
-  if (factors.organizationSize === 'large' || factors.riskLevel === 'critical') {
-    return 'enterprise';
+export function savePricingFactors(factors: PricingFactors): void {
+  try {
+    localStorage.setItem('pricingFactors', JSON.stringify(factors));
+  } catch (error) {
+    console.error('Error saving pricing factors:', error);
   }
-  
-  if (factors.organizationSize === 'medium' || 
-      factors.riskLevel === 'high' || 
-      factors.complianceMaturity === 'medium') {
-    return 'professional';
-  }
-  
-  return 'essential';
 }
