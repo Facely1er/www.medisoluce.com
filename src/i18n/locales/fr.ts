@@ -42,14 +42,17 @@ const frTranslation = {
   
   // HomePage
   "home": {
-    "title": "Gestion de la Conformité et des Technologies de Santé Sécurisées",
-    "subtitle": "La seule plateforme qui combine la conformité HIPAA avec la gestion des dépendances technologiques et la continuité des activités pour protéger les données des patients et la prestation des soins.",
+    "title": "Résilience aux Rançongiciels dans la Santé",
+    "title_subtitle": "Défendre les Soins aux Patients, Pas Seulement les Données",
+    "subtitle": "Les rançongiciels constituent un risque pour la sécurité des patients. MediSoluce unit la préparation HIPAA/HITECH, les guides de réponse aux rançongiciels et les bases de continuité pour que les hôpitaux continuent de fonctionner pendant les incidents cybernétiques.",
     "subtitle_carousel": {
-      "main": "La seule plateforme qui combine la conformité HIPAA avec la gestion des dépendances technologiques et la continuité des activités pour protéger les données des patients et la prestation des soins.",
+      "main": "Les rançongiciels constituent un risque pour la sécurité des patients. MediSoluce unit la préparation HIPAA/HITECH, les guides de réponse aux rançongiciels et les bases de continuité pour que les hôpitaux continuent de fonctionner pendant les incidents cybernétiques.",
       "protection": "Protégez les données des patients avec une conformité HIPAA complète, une évaluation des risques technologiques et une planification de la continuité des activités.",
       "trusted": "La solution intégrée en laquelle les organisations de santé font confiance pour la conformité réglementaire et la résilience opérationnelle.",
       "safety": "Assurez la sécurité des patients grâce à une gestion proactive de la conformité et à la cartographie des dépendances technologiques."
     },
+    "hero_cta_primary": "Lancer le Calculateur d'Impact",
+    "hero_cta_secondary": "Télécharger la Note d'Information",
     "hero_features": {
       "hipaa_title": "Conformité HIPAA",
       "hipaa_desc": "Évaluation complète et analyse des lacunes",
@@ -189,6 +192,50 @@ const frTranslation = {
     "post_incident": "Analyse Post-Incident",
     "protect_organization": "Protégez votre organisation des rançongiciels",
     "start_assessment": "Commencer l'Évaluation"
+  },
+  
+  // Ransomware Resilience page
+  "ransomware_resilience": {
+    "hero_title": "Résilience aux Rançongiciels dans la Santé",
+    "hero_headline": "Défendre les Soins aux Patients, Pas Seulement les Données",
+    "hero_subtitle": "Les rançongiciels constituent un risque pour la sécurité des patients. MediSoluce unit la préparation HIPAA/HITECH, les guides de réponse aux rançongiciels et les bases de continuité pour que les hôpitaux continuent de fonctionner pendant les incidents cybernétiques.",
+    "cta_run_calculator": "Lancer le Calculateur d'Impact",
+    "cta_download_onepager": "Télécharger la Note d'Information",
+    "stats_section_title": "Réalité des Rançongiciels (Santé, 2025)",
+    "stat_1_value": "190-192,7M",
+    "stat_1_description": "Personnes touchées (violation du fournisseur Change Healthcare)",
+    "stat_1_note": "Le rayon d'impact des fournisseurs est réel.",
+    "stat_2_value": "293 + 130",
+    "stat_2_description": "Attaques sur prestataires + entreprises de santé (T1-T3 2025)",
+    "stat_2_note": "Pression soutenue, pas un pic.",
+    "stat_3_value": "~63,5 / mois",
+    "stat_3_description": "Moyenne des grandes violations HHS en 2025 (≥500 enregistrements)",
+    "stat_3_note": "Les interruptions perturban diagnostics et réclamations.",
+    "feature_hipaa_title": "Préparation HIPAA/HITECH",
+    "feature_hipaa_desc": "Cartographie des flux de données PHI, correction des lacunes, politiques, formation.",
+    "feature_playbooks_title": "Guides de Rançongiciels",
+    "feature_playbooks_desc": "Exercices de table ronde, intégrité sauvegarde/restauration, durcissement des privilèges.",
+    "feature_continuity_title": "Bases de Continuité",
+    "feature_continuity_desc": "Priorisation des opérations cliniques, tableaux de bord exécutifs, SLA de récupération.",
+    "feature_controls_title": "Contrôles Intégrés",
+    "feature_control_1": "Isolation des violations des fournisseurs (BAA/tiers)",
+    "feature_control_2": "Configurations de base et liste de surveillance des vulnérabilités",
+    "feature_control_3": "Minimisation PHI et flux de données sécurisés",
+    "feature_control_4": "Tableau de bord exécutif et liste de contrôle de préparation 24h",
+    "pricing_section_title": "Les Chiffres de la Guérison - Transparence des Coûts",
+    "pricing_hipaa_desc": "Programme HIPAA/Confidentialité",
+    "pricing_hipaa_market": "145 000 $",
+    "pricing_hipaa_medisoluce": "1 200 $",
+    "pricing_hipaa_savings": "143 800 $",
+    "pricing_ransomware_desc": "Préparation/IR Rançongiciels",
+    "pricing_ransomware_market": "75 000 $",
+    "pricing_ransomware_medisoluce": "Inclus",
+    "pricing_ransomware_savings": "75 000 $",
+    "pricing_toolkit_desc": "Politiques et Boîtes à Outils",
+    "pricing_toolkit_market": "30 000 $",
+    "pricing_toolkit_medisoluce": "Inclus",
+    "pricing_toolkit_savings": "30 000 $",
+    "pricing_note": "Illustratif; adapter à la base de votre organisation."
   },
   
   // Training page (redirected to external toolkit)

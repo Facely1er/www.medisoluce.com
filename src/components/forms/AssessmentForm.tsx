@@ -52,12 +52,16 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
     
     setSavedDrafts([...savedDrafts, draft]);
     
-            if (typeof window !== 'undefined' && 'showToast' in window) {
-          (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
+    if (typeof window !== 'undefined' && 'showToast' in window) {
+      (window as Window & { showToast: (options: { type: string; title: string; message: string }) => void }).showToast({
         type: 'success',
         title: 'Draft Saved',
         message: 'Your assessment has been saved as a draft.'
       });
+    }
+  };
+
+  const onFormSubmit = (data: AssessmentFormData) => {
     // Enhanced security validation for all form inputs
     const validationResults = {
       organizationName: validateSecureHealthcareInput(data.organizationName, 'general'),
@@ -112,27 +116,8 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
       assessmentType: sanitizedData.assessmentType
     }, 'low');
     
-    return;
-  }
-  
-  // Use sanitized data for submission
-  const sanitizedData: AssessmentFormData = {
-    organizationName: validationResults.organizationName.sanitized,
-    assessmentType: data.assessmentType, // Dropdown value, already safe
-    conductedBy: validationResults.conductedBy.sanitized,
-    department: validationResults.department.sanitized,
-    reviewDate: data.reviewDate, // Date input, already safe
-    notes: validationResults.notes.sanitized
-  };
-  
-  // Log successful form submission
-  securityUtils.logSecurityEvent('assessment_form_submitted', {
-    organizationName: sanitizedData.organizationName.substring(0, 50), // Log partial for audit
-    assessmentType: sanitizedData.assessmentType
-  }, 'low');
-  
-  // Call the onSubmit prop with sanitized data
-  onSubmit(sanitizedData);
+    // Call the onSubmit prop with sanitized data
+    onSubmit(sanitizedData);
   };
 
   const assessmentTypes = [
@@ -154,7 +139,7 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

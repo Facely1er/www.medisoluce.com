@@ -42,14 +42,17 @@ const enTranslation = {
   
   // HomePage
   "home": {
-    "title": "Secure Healthcare Compliance & Technology Management",
-    "subtitle": "The only platform that combines HIPAA compliance with technology dependency management and business continuity to protect patient data and care delivery.",
+    "title": "Healthcare Ransomware Resilience",
+    "title_subtitle": "Defend Patient Care, Not Just Patient Data",
+    "subtitle": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
     "subtitle_carousel": {
-      "main": "The only platform that combines HIPAA compliance with technology dependency management and business continuity to protect patient data and care delivery.",
+      "main": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
       "protection": "Protect patient data with comprehensive HIPAA compliance, technology risk assessment, and business continuity planning.",
       "trusted": "The integrated solution healthcare organizations trust for regulatory compliance and operational resilience.",
       "safety": "Ensure patient safety through proactive compliance management and technology dependency mapping."
     },
+    "hero_cta_primary": "Run Impact Calculator",
+    "hero_cta_secondary": "Download 1-Pager",
     "hero_features": {
       "hipaa_title": "HIPAA Compliance",
       "hipaa_desc": "Comprehensive assessment and gap analysis",
@@ -189,6 +192,50 @@ const enTranslation = {
     "post_incident": "Post-Incident Analysis",
     "protect_organization": "Protect your organization from ransomware",
     "start_assessment": "Start Assessment"
+  },
+  
+  // Ransomware Resilience page
+  "ransomware_resilience": {
+    "hero_title": "Healthcare Ransomware Resilience",
+    "hero_headline": "Defend Patient Care, Not Just Patient Data",
+    "hero_subtitle": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
+    "cta_run_calculator": "Run Impact Calculator",
+    "cta_download_onepager": "Download 1-Pager",
+    "stats_section_title": "Ransomware Reality (Healthcare, 2025)",
+    "stat_1_value": "190-192.7M",
+    "stat_1_description": "Individuals impacted (Change Healthcare vendor breach)",
+    "stat_1_note": "Vendor blast radius is real.",
+    "stat_2_value": "293 + 130",
+    "stat_2_description": "Attacks on providers + healthcare businesses (Q1-Q3 2025)",
+    "stat_2_note": "Sustained pressure, not a spike.",
+    "stat_3_value": "~63.5 / mo",
+    "stat_3_description": "Avg. large HHS breaches in 2025 (≥500 records)",
+    "stat_3_note": "Downtime disrupts diagnostics & claims.",
+    "feature_hipaa_title": "HIPAA/HITECH Readiness",
+    "feature_hipaa_desc": "PHI data-flow mapping, gap remediation, policies, training.",
+    "feature_playbooks_title": "Ransomware Playbooks",
+    "feature_playbooks_desc": "Tabletop drills, backup/restore integrity, privilege hardening.",
+    "feature_continuity_title": "Continuity Baselines",
+    "feature_continuity_desc": "Clinical operations prioritization, exec dashboards, recovery SLAs.",
+    "feature_controls_title": "Built-In Controls",
+    "feature_control_1": "Vendor breach isolation (BAA/third-party)",
+    "feature_control_2": "Config baselines & vulnerability watchlist",
+    "feature_control_3": "PHI minimization & secure data-flows",
+    "feature_control_4": "Exec dashboard & 24h readiness checklist",
+    "pricing_section_title": "The Healing Numbers - Cost Transparency",
+    "pricing_hipaa_desc": "HIPAA/Privacy Program",
+    "pricing_hipaa_market": "$145,000",
+    "pricing_hipaa_medisoluce": "$1,200",
+    "pricing_hipaa_savings": "$143,800",
+    "pricing_ransomware_desc": "Ransomware Readiness/IR",
+    "pricing_ransomware_market": "$75,000",
+    "pricing_ransomware_medisoluce": "Included",
+    "pricing_ransomware_savings": "$75,000",
+    "pricing_toolkit_desc": "Policies & Toolkits",
+    "pricing_toolkit_market": "$30,000",
+    "pricing_toolkit_medisoluce": "Included",
+    "pricing_toolkit_savings": "$30,000",
+    "pricing_note": "Illustrative; adapt to your org's baseline."
   },
   
   // Training page

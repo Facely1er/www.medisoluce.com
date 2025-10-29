@@ -3,11 +3,12 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Button from './Button';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Database, FileCheck } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Database, FileCheck, Calculator, Download } from 'lucide-react';
 import TextCarousel from './TextCarousel';
 
 interface HeroBannerProps {
   title: string;
+  titleSubtitle?: string;
   subtitle: string | string[];
   ctaText?: string;
   ctaLink?: string;
@@ -18,6 +19,7 @@ interface HeroBannerProps {
 
 const HeroBanner: React.FC<HeroBannerProps> = ({
   title,
+  titleSubtitle,
   subtitle,
   ctaText,
   ctaLink = '/',
@@ -81,11 +83,21 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
             transition={{ duration: 0.5 }}
             className="text-center"
           >
+            {titleSubtitle && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.05 }}
+                className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-2"
+              >
+                {titleSubtitle}
+              </motion.p>
+            )}
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight"
+              className={`text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-gray-900 dark:text-white leading-tight ${titleSubtitle ? '' : 'mt-0'}`}
             >
               {title}
             </motion.h1>
@@ -118,8 +130,8 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
                   <Link to={ctaLink}>
                     <Button
                       size="lg"
-                      icon={<ArrowRight className="h-5 w-5" />}
-                      iconPosition="right"
+                      icon={<Calculator className="h-5 w-5" />}
+                      iconPosition="left"
                     >
                       {ctaText}
                     </Button>
@@ -130,6 +142,8 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
                     <Button
                       variant="outline"
                       size="lg"
+                      icon={<Download className="h-5 w-5" />}
+                      iconPosition="left"
                     >
                       {secondaryCtaText}
                     </Button>

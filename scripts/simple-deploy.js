@@ -8,9 +8,9 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Configuration
-const SUPABASE_URL = 'https://snrpdosiuwmdaegxkqux.supabase.co';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNucnBkb3NpdXdtZGFlZ3hrcXV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTIxMDkxNiwiZXhwIjoyMDc0Nzg2OTE2fQ.Vne8EVle_hZo3mywuaDyXoGvqzEfxDwM-UBXJSgs7aY';
+// Configuration - Update with your Supabase project credentials
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co';
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'UPDATE_WITH_SERVICE_ROLE_KEY';
 
 // Create Supabase client with service role
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);

@@ -124,20 +124,16 @@ const HomePage: React.FC = () => {
       <SEOHead 
         title={t('home.title')}
         description={t('home.subtitle')}
-        keywords="healthcare compliance, HIPAA, medical technology, business continuity, ransomware protection"
+        keywords="healthcare ransomware, ransomware resilience, HIPAA readiness, ransomware playbooks, business continuity, patient safety"
       />
       
       <HeroBanner
-        title={t('home.title')}
-        subtitle={[
-          t('home.subtitle_carousel.main'),
-          t('home.subtitle_carousel.protection'),
-          t('home.subtitle_carousel.trusted'),
-          t('home.subtitle_carousel.safety')
-        ]}
-        ctaText={t('start_free_assessment')}
-        ctaLink="/hipaa-check"
-        secondaryCtaText={t('home.explore_toolkit')}
+        title={t('home.title_subtitle')}
+        titleSubtitle={t('home.title')}
+        subtitle={t('home.subtitle')}
+        ctaText={t('home.hero_cta_primary')}
+        ctaLink="/business-impact"
+        secondaryCtaText={t('home.hero_cta_secondary')}
         secondaryCtaLink="https://toolkit.medisoluce.com"
       />
 

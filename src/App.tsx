@@ -21,6 +21,7 @@ import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ProfilePage from './pages/ProfilePage';
 import RansomwarePage from './pages/RansomwarePage';
+import RansomwareResiliencePage from './pages/RansomwareResiliencePage';
 import HealthDashboardPage from './pages/HealthDashboardPage';
 import TrainingPage from './pages/TrainingPage';
 import ToolkitPage from './pages/ToolkitPage';
@@ -98,6 +99,7 @@ function AppContent() {
           <Route path="/health" element={<HealthDashboard />} />
           <Route path="/health-dashboard" element={<HealthDashboardPage />} />
           <Route path="/ransomware" element={<RansomwarePage />} />
+          <Route path="/ransomware-resilience" element={<RansomwareResiliencePage />} />
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/toolkit" element={<ToolkitPage />} />
