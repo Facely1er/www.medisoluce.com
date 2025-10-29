@@ -23,6 +23,7 @@ const Header: React.FC = () => {
     { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
     { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
     { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
+    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
     { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
   ];
 
@@ -32,7 +33,6 @@ const Header: React.FC = () => {
     { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
     { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
     { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
   ];
 
   // Mobile navigation - all items combined
