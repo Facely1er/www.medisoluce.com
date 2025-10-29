@@ -121,7 +121,7 @@ Other Assets:
 ├── manifest.webmanifest
 ├── robots.txt
 ├── sitemap.xml
-└── 11 downloadable resources in /downloads
+└── 12 downloadable resources in /downloads
 ```
 
 ### Build Optimizations:
@@ -402,7 +402,7 @@ Preparation:      12.11 seconds
 ✅ 1 CSS file (63.17 KB)
 ✅ 2 Service worker files
 ✅ PWA manifest
-✅ 11 downloadable resources
+✅ 12 downloadable resources
 ✅ robots.txt
 ✅ sitemap.xml
 ✅ All assets optimized and minified

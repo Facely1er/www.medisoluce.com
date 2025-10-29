@@ -29,10 +29,12 @@ import ToolkitPage from './pages/ToolkitPage';
 import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
 import RansomwareAssessment from './components/assessment/RansomwareAssessment';
 import PricingPage from './pages/PricingPage';
+import PricingOverviewPage from './pages/PricingOverviewPage';
 import HIPAAPricingPage from './pages/HIPAAPricingPage';
 import RansomwarePricingPage from './pages/RansomwarePricingPage';
 import ContinuityPricingPage from './pages/ContinuityPricingPage';
 import SegmentAnalysisPage from './pages/SegmentAnalysisPage';
+import FAQPage from './pages/FAQPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -114,11 +116,12 @@ function AppContent() {
           <Route path="/security" element={<SecurityDashboard />} />
           <Route path="/production-readiness" element={<ProductionReadinessPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/pricing" element={<PricingOverviewPage />} />
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
           <Route path="/pricing/ransomware" element={<RansomwarePricingPage />} />
           <Route path="/pricing/continuity" element={<ContinuityPricingPage />} />
           <Route path="/segments" element={<SegmentAnalysisPage />} />
+          <Route path="/faq" element={<FAQPage />} />
         </Routes>
       </Layout>
     </Router>

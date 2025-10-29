@@ -12,6 +12,8 @@ export interface PricingFactors {
   currentComplianceLevel?: 'compliant' | 'partial' | 'non-compliant';
   industry?: string;
   annualRevenue?: number;
+  hasHadBreach?: boolean;
+  budget?: 'limited' | 'moderate' | 'flexible';
 }
 
 export interface CalculatedPricing {
@@ -296,3 +298,13 @@ export function getPricingFactorsFromStorage(): PricingFactors {
   }
 }
 
+/**
+ * Save pricing factors to local storage
+ */
+export function savePricingFactors(factors: PricingFactors): void {
+  try {
+    localStorage.setItem('pricingFactors', JSON.stringify(factors));
+  } catch (error) {
+    console.error('Error saving pricing factors:', error);
+  }
+}

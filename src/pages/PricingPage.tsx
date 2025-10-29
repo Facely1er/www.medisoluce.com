@@ -238,7 +238,7 @@ const PricingPage: React.FC = () => {
               <div className="flex items-center text-success-700 dark:text-success-300">
                 <Zap className="h-5 w-5 mr-2" />
                 <span className="font-semibold">
-                  Save ${useStandard ? price.savings : dynamicPricing.savings[tier]}/month ({((useStandard ? price.savings : dynamicPricing.savings[tier]) / basePrice) * 100).toFixed(0)}% off)
+                  Save ${useStandard ? price.savings : dynamicPricing.savings[tier]}/month ({(((useStandard ? price.savings : dynamicPricing.savings[tier]) / basePrice) * 100).toFixed(0)}% off)
                 </span>
               </div>
             </div>
