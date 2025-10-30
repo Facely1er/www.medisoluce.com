@@ -36,6 +36,7 @@
     "sync:status": "node -e \"console.log('Data sync status available in application')\"",
     "schema:validate": "npm run verify:schema:js",
     "schema:metrics": "node -e \"console.log('Schema metrics available in application dashboard')\"",
+    "verify:production": "node scripts/verify-production-readiness.js",
     "deploy:vercel": "vercel --prod",
     "deploy:netlify": "netlify deploy --prod --dir=dist",
     "deploy:staging": "vercel",
