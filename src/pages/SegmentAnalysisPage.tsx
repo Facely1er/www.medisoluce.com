@@ -9,7 +9,7 @@ import { analytics } from '../utils/analytics';
 import { 
   Users, 
   Building2, 
-  Hospital, 
+  Heart, 
   Briefcase, 
   AlertCircle, 
   CheckCircle, 
@@ -256,7 +256,7 @@ const SegmentAnalysisPage: React.FC = () => {
       name: 'Large Hospitals & Health Systems',
       size: 'Large',
       employeeRange: '200-1,000 employees',
-      icon: <Hospital className="w-8 h-8 text-white" />,
+      icon: <Heart className="w-8 h-8 text-white" />,
       color: 'bg-accent-500',
       description: 'Major hospitals, health systems, and healthcare networks with complex operations, multiple locations, and enterprise-level compliance requirements.',
       useCases: [
