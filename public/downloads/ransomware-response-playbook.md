@@ -1,5 +1,5 @@
 # 🦠 Ransomware Response Playbook  
-## *Healthcare Critical Incident Response*
+### *Healthcare Critical Incident Response*
 
 ---
 

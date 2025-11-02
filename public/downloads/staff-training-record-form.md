@@ -1,5 +1,5 @@
 # 👥 Staff Training Record Form  
-## *HIPAA Compliance Documentation*
+### *HIPAA Compliance Documentation*
 
 ---
 

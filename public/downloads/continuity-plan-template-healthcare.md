@@ -1,5 +1,5 @@
 # 🏥 Healthcare Business Continuity Plan Template  
-## *Comprehensive Emergency Preparedness Guide*
+### *Comprehensive Emergency Preparedness Guide*
 
 ---
 

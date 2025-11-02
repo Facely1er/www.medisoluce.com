@@ -1,5 +1,5 @@
 # 🔔 HIPAA Breach Response Checklist  
-## *Critical Incident Response Protocol*
+### *Critical Incident Response Protocol*
 
 ---
 

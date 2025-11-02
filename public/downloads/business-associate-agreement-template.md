@@ -1,5 +1,5 @@
 # 🤝 Business Associate Agreement  
-## *HIPAA-Compliant Template*
+### *HIPAA-Compliant Template*
 
 ---
 
