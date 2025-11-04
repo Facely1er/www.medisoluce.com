@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -9,16 +8,11 @@ import { analytics } from '../utils/analytics';
 import { 
   Users, 
   Building2, 
-  Hospital, 
   Briefcase, 
   AlertCircle, 
   CheckCircle, 
   ArrowRight,
   Shield,
-  DollarSign,
-  Clock,
-  FileText,
-  Zap,
   TrendingUp,
   Target,
   Lock
@@ -53,8 +47,6 @@ interface SegmentData {
 }
 
 const SegmentAnalysisPage: React.FC = () => {
-  const { t } = useTranslation();
-
   // Privacy-respecting analytics tracking
   useEffect(() => {
     analytics.trackPageView('/segments', 'Segment Analysis Page');
@@ -256,7 +248,7 @@ const SegmentAnalysisPage: React.FC = () => {
       name: 'Large Hospitals & Health Systems',
       size: 'Large',
       employeeRange: '200-1,000 employees',
-      icon: <Hospital className="w-8 h-8 text-white" />,
+      icon: <Building2 className="w-8 h-8 text-white" />,
       color: 'bg-accent-500',
       description: 'Major hospitals, health systems, and healthcare networks with complex operations, multiple locations, and enterprise-level compliance requirements.',
       useCases: [

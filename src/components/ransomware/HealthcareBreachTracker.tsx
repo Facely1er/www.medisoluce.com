@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hospital, AlertTriangle, Calendar, ExternalLink } from 'lucide-react';
+import { Building2, AlertTriangle, Calendar, ExternalLink } from 'lucide-react';
 import Card from '../ui/Card';
 import { RSSItem } from '../../services/rssFeedService';
 
@@ -40,7 +40,7 @@ const HealthcareBreachTracker: React.FC<HealthcareBreachTrackerProps> = ({
     <Card className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <Hospital className="h-6 w-6 text-accent-500" />
+          <Building2 className="h-6 w-6 text-accent-500" />
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Healthcare Breach Tracker
@@ -73,7 +73,7 @@ const HealthcareBreachTracker: React.FC<HealthcareBreachTrackerProps> = ({
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Hospital className="h-4 w-4 text-accent-600 dark:text-accent-400" />
+                    <Building2 className="h-4 w-4 text-accent-600 dark:text-accent-400" />
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
                       {breach.title}
                     </h4>
