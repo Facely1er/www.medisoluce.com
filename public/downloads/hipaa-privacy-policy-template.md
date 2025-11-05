@@ -1,5 +1,5 @@
 # 🔒 HIPAA Privacy Policy Template  
-## *Healthcare Organization Privacy Notice*
+### *Healthcare Organization Privacy Notice*
 
 ---
 

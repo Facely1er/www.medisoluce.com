@@ -1,5 +1,5 @@
 # 💻 EHR Downtime Procedures  
-## *Maintaining Patient Safety During System Outages*
+### *Maintaining Patient Safety During System Outages*
 
 ---
 

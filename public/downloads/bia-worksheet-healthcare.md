@@ -1,5 +1,5 @@
 # 📊 Business Impact Analysis Worksheet  
-## *Healthcare Edition*
+### *Healthcare Edition*
 
 ---
 

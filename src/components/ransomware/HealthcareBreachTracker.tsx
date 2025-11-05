@@ -102,7 +102,7 @@ const HealthcareBreachTracker: React.FC<HealthcareBreachTrackerProps> = ({
 
               {breach.categories && breach.categories.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-3">
-                  {breach.categories.map((category, idx) => (
+                  {breach.categories.map((category, idx: number) => (
                     <span 
                       key={idx}
                       className="text-xs px-2 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-700"

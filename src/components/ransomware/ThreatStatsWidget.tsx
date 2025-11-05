@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
-  AlertTriangle, 
-  TrendingUp, 
-  TrendingDown, 
-  Activity,
-  Shield,
-  Building2,
-  Clock
-} from 'lucide-react';
+  import { 
+    AlertTriangle, 
+    TrendingUp, 
+    TrendingDown, 
+    Activity,
+    Shield,
+    Building2,
+    Clock
+  } from 'lucide-react';
 import Card from '../ui/Card';
 import { ThreatTrend } from '../../utils/ransomwareAnalyzer';
 
@@ -59,7 +59,7 @@ const ThreatStatsWidget: React.FC<ThreatStatsWidgetProps> = ({ stats, trend }) =
       {/* Healthcare Breaches */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <Building2 className="h-8 w-8 text-accent-500" />
+            <Building2 className="h-8 w-8 text-accent-500" />
           {stats.healthcareBreaches > 5 && (
             <AlertTriangle className="h-5 w-5 text-accent-600 dark:text-accent-400" />
           )}
