@@ -75,7 +75,7 @@ export function calculateDynamicPricing(
       case 'small':
         essential = Math.max(essential * 0.9, 44);
         professional = Math.max(professional * 0.95, 142);
-        enterprise = enterprise;
+        enterprise = Math.max(enterprise * 0.98, 539);
         recommendations.push('Consider Essential plan for small organizations');
         break;
       default:
@@ -114,7 +114,7 @@ export function calculateDynamicPricing(
         rationale.push('High risk requires advanced security measures');
         break;
       case 'medium':
-        professional = professional;
+        // Medium risk uses standard pricing - no adjustment needed
         recommendations.push('Medium risk - Standard Professional plan sufficient');
         break;
       case 'low':
