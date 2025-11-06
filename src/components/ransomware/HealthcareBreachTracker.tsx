@@ -72,8 +72,8 @@ const HealthcareBreachTracker: React.FC<HealthcareBreachTrackerProps> = ({
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Building2 className="h-4 w-4 text-accent-600 dark:text-accent-400" />
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Building2 className="h-4 w-4 text-accent-600 dark:text-accent-400" />
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
                       {breach.title}
                     </h4>
