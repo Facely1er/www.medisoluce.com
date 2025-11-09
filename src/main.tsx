@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import './i18n';
+import i18n, { initPromise } from './i18n';
 import { projectHealthEnhancer } from './utils/healthEnhancer';
 import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';
@@ -142,11 +142,22 @@ const initializeHealthSystem = async () => {
   }
 };
 
-initializeMonitoring();
-initializeHealthSystem();
+// Wait for i18n to initialize before rendering
+initPromise.then(() => {
+  initializeMonitoring();
+  initializeHealthSystem();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}).catch((error) => {
+  logger.error('Failed to initialize i18n:', error);
+  // Render app anyway to show error state
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+});
