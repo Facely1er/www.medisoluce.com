@@ -24,18 +24,25 @@ self.addEventListener('install', (event) => {
   console.log('Service Worker: Installing...');
   
   event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then((cache) => {
+    (async () => {
+      try {
+        // Check if CacheStorage is available
+        if (typeof caches === 'undefined') {
+          console.warn('Service Worker: CacheStorage not available, skipping cache');
+          return self.skipWaiting();
+        }
+        
+        const cache = await caches.open(STATIC_CACHE);
         console.log('Service Worker: Caching static files');
-        return cache.addAll(STATIC_FILES);
-      })
-      .then(() => {
+        await cache.addAll(STATIC_FILES);
         console.log('Service Worker: Static files cached');
         return self.skipWaiting();
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Service Worker: Failed to cache static files', error);
-      })
+        // Still skip waiting even if caching fails
+        return self.skipWaiting();
+      }
+    })()
   );
 });
 
@@ -44,9 +51,16 @@ self.addEventListener('activate', (event) => {
   console.log('Service Worker: Activating...');
   
   event.waitUntil(
-    caches.keys()
-      .then((cacheNames) => {
-        return Promise.all(
+    (async () => {
+      try {
+        // Check if CacheStorage is available
+        if (typeof caches === 'undefined') {
+          console.warn('Service Worker: CacheStorage not available');
+          return self.clients.claim();
+        }
+        
+        const cacheNames = await caches.keys();
+        await Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
               console.log('Service Worker: Deleting old cache', cacheName);
@@ -54,11 +68,13 @@ self.addEventListener('activate', (event) => {
             }
           })
         );
-      })
-      .then(() => {
         console.log('Service Worker: Activated');
         return self.clients.claim();
-      })
+      } catch (error) {
+        console.error('Service Worker: Error during activation', error);
+        return self.clients.claim();
+      }
+    })()
   );
 });
 
@@ -74,6 +90,12 @@ self.addEventListener('fetch', (event) => {
 
   // Skip chrome-extension and other non-http requests
   if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
+  // Skip external resources (Google Fonts, CDNs, etc.) - let browser handle them directly
+  // Don't intercept external requests at all - let them pass through naturally
+  if (url.origin !== self.location.origin) {
     return;
   }
 
@@ -132,7 +154,18 @@ async function handleRequest(request) {
 
       // If it's a navigation request and we have no cache, show offline page
       if (request.mode === 'navigate') {
-        return caches.match('/offline.html');
+        if (typeof caches !== 'undefined') {
+          const offlinePage = await caches.match('/offline.html');
+          if (offlinePage) {
+            return offlinePage;
+          }
+        }
+        // Fallback if cache is not available or offline page not found
+        return new Response('Offline - Please check your connection', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: { 'Content-Type': 'text/html' },
+        });
       }
 
       // For other requests, return a generic offline response
@@ -149,10 +182,30 @@ async function handleRequest(request) {
     
     // Return offline page for navigation requests
     if (request.mode === 'navigate') {
-      return caches.match('/offline.html');
+      if (typeof caches !== 'undefined') {
+        try {
+          const offlinePage = await caches.match('/offline.html');
+          if (offlinePage) {
+            return offlinePage;
+          }
+        } catch (cacheError) {
+          console.error('Service Worker: Error accessing cache', cacheError);
+        }
+      }
+      // Fallback if cache is not available or offline page not found
+      return new Response('Offline - Please check your connection', {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: { 'Content-Type': 'text/html' },
+      });
     }
     
-    throw error;
+    // For non-navigation requests, return a generic error response
+    return new Response('Service Worker Error', {
+      status: 500,
+      statusText: 'Internal Server Error',
+      headers: { 'Content-Type': 'text/plain' },
+    });
   }
 }
 
@@ -171,6 +224,10 @@ function isApiCall(pathname) {
 
 async function getFromCache(request, cacheName) {
   try {
+    // Check if CacheStorage is available
+    if (typeof caches === 'undefined') {
+      return null;
+    }
     const cache = await caches.open(cacheName);
     return await cache.match(request);
   } catch (error) {
@@ -181,10 +238,20 @@ async function getFromCache(request, cacheName) {
 
 async function cacheResponse(request, response, cacheName) {
   try {
+    // Check if CacheStorage is available
+    if (typeof caches === 'undefined') {
+      return;
+    }
+    // Only cache successful responses
+    if (!response || !response.ok) {
+      return;
+    }
+    // Response is already cloned before being passed to this function
     const cache = await caches.open(cacheName);
     await cache.put(request, response);
   } catch (error) {
-    console.error('Service Worker: Error caching response', error);
+    // Silently fail for cache errors - don't break the app
+    console.warn('Service Worker: Error caching response', error);
   }
 }
 
