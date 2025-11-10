@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font fallback if Google Fonts fail to load */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
 /* Custom animations for hero section */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
