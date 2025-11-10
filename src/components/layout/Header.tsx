@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench, Lock, Shield, RefreshCw } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import Dropdown from '../ui/Dropdown';
@@ -26,36 +26,34 @@ const Header: React.FC = () => {
   ];
 
   // Organized dropdown groups
-  const dropdownGroups = [
-    {
-      title: 'Privacy Compliance',
-      items: [
-        { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
-        { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
-        { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
-      ]
-    },
-    {
-      title: 'Risk & Resilience',
-      items: [
-        { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
-        { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
-        { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
-      ]
-    },
-    {
-      title: 'Continuity & Recovery',
-      items: [
-        { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
-        { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
-      ]
-    }
+  const privacyComplianceItems = [
+    { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
+    { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
+  ];
+
+  const riskResilienceItems = [
+    { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
+    { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
+    { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
+  ];
+
+  const continuityRecoveryItems = [
+    { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
+    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
+  ];
+
+  // For mobile navigation - all items combined
+  const allDropdownItems = [
+    ...privacyComplianceItems,
+    ...riskResilienceItems,
+    ...continuityRecoveryItems,
   ];
 
   // Mobile navigation - all items combined
   const allNavigationItems = [
     ...primaryNavItems,
-    ...dropdownGroups.flatMap(group => group.items),
+    ...allDropdownItems,
   ];
 
   useEffect(() => {
@@ -117,9 +115,21 @@ const Header: React.FC = () => {
               ))}
               
               <Dropdown 
-                label="Assessments" 
-                icon={<ShieldCheck className="w-5 h-5" />}
-                groups={dropdownGroups}
+                label="Privacy Compliance" 
+                icon={<Lock className="w-5 h-5" />}
+                items={privacyComplianceItems}
+              />
+              
+              <Dropdown 
+                label="Risk & Resilience" 
+                icon={<Shield className="w-5 h-5" />}
+                items={riskResilienceItems}
+              />
+              
+              <Dropdown 
+                label="Continuity & Recovery" 
+                icon={<RefreshCw className="w-5 h-5" />}
+                items={continuityRecoveryItems}
               />
             </div>
           </nav>
