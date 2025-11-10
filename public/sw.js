@@ -81,27 +81,34 @@ self.addEventListener('activate', (event) => {
 // Fetch event - serve from cache or network
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
+  
+  try {
+    const url = new URL(request.url);
 
-  // Skip non-GET requests
-  if (request.method !== 'GET') {
+    // Skip non-GET requests
+    if (request.method !== 'GET') {
+      return;
+    }
+
+    // Skip chrome-extension and other non-http requests
+    if (!url.protocol.startsWith('http')) {
+      return;
+    }
+
+    // Skip external resources (Google Fonts, CDNs, etc.) - let browser handle them directly
+    // Don't intercept external requests at all - let them pass through naturally
+    if (url.origin !== self.location.origin) {
+      return;
+    }
+
+    event.respondWith(
+      handleRequest(request)
+    );
+  } catch (error) {
+    // If URL parsing fails or any other error, let the request pass through
+    console.warn('Service Worker: Error in fetch handler', error);
     return;
   }
-
-  // Skip chrome-extension and other non-http requests
-  if (!url.protocol.startsWith('http')) {
-    return;
-  }
-
-  // Skip external resources (Google Fonts, CDNs, etc.) - let browser handle them directly
-  // Don't intercept external requests at all - let them pass through naturally
-  if (url.origin !== self.location.origin) {
-    return;
-  }
-
-  event.respondWith(
-    handleRequest(request)
-  );
 });
 
 async function handleRequest(request) {
@@ -228,10 +235,25 @@ async function getFromCache(request, cacheName) {
     if (typeof caches === 'undefined') {
       return null;
     }
+    
+    // Check if cache API is accessible
+    if (!caches || typeof caches.open !== 'function') {
+      return null;
+    }
+    
     const cache = await caches.open(cacheName);
+    
+    // Check if cache.match is available
+    if (!cache || typeof cache.match !== 'function') {
+      return null;
+    }
+    
     return await cache.match(request);
   } catch (error) {
-    console.error('Service Worker: Error getting from cache', error);
+    // Silently fail - don't break the app
+    if (error.name !== 'TypeError' && error.name !== 'SecurityError') {
+      console.warn('Service Worker: Error getting from cache', error);
+    }
     return null;
   }
 }
@@ -242,16 +264,42 @@ async function cacheResponse(request, response, cacheName) {
     if (typeof caches === 'undefined') {
       return;
     }
+    
+    // Check if cache API is accessible
+    if (!caches || typeof caches.open !== 'function') {
+      return;
+    }
+    
     // Only cache successful responses
     if (!response || !response.ok) {
       return;
     }
+    
+    // Don't cache external requests
+    try {
+      const url = new URL(request.url);
+      if (url.origin !== self.location.origin) {
+        return;
+      }
+    } catch (urlError) {
+      // If URL parsing fails, don't cache
+      return;
+    }
+    
     // Response is already cloned before being passed to this function
     const cache = await caches.open(cacheName);
+    
+    // Check if cache.put is available
+    if (!cache || typeof cache.put !== 'function') {
+      return;
+    }
+    
     await cache.put(request, response);
   } catch (error) {
     // Silently fail for cache errors - don't break the app
-    console.warn('Service Worker: Error caching response', error);
+    if (error.name !== 'TypeError' && error.name !== 'SecurityError' && error.name !== 'QuotaExceededError') {
+      console.warn('Service Worker: Error caching response', error);
+    }
   }
 }
 

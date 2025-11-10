@@ -177,31 +177,43 @@ class PerformanceOptimizer {
   private setupCacheOptimization() {
     if (!this.config.enableCaching || !('serviceWorker' in navigator)) return;
 
-    // Register service worker for advanced caching
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        if (!import.meta.env.PROD) {
-          console.log('SW registered:', registration);
-        }
-        
-        // Update service worker when new version is available
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          if (newWorker) {
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New version available
-                this.notifyUpdate();
+    // VitePWA handles service worker registration automatically
+    // Only register manual sw.js if VitePWA is not active
+    // Check if a service worker is already registered
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      // If no service worker is registered, register the manual one
+      // Otherwise, VitePWA is handling it
+      if (registrations.length === 0) {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            if (!import.meta.env.PROD) {
+              console.log('SW registered:', registration);
+            }
+            
+            // Update service worker when new version is available
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New version available
+                    this.notifyUpdate();
+                  }
+                });
               }
             });
-          }
-        });
-      })
-      .catch((error) => {
-        if (!import.meta.env.PROD) {
-          console.log('SW registration failed:', error);
-        }
-      });
+          })
+          .catch((error) => {
+            if (!import.meta.env.PROD) {
+              console.log('SW registration failed:', error);
+            }
+          });
+      }
+    }).catch((error) => {
+      if (!import.meta.env.PROD) {
+        console.log('SW registration check failed:', error);
+      }
+    });
   }
 
   private notifyUpdate() {
