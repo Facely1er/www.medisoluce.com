@@ -5,7 +5,7 @@ import enTranslation from './locales/en';
 import frTranslation from './locales/fr';
 
 // Enhanced i18n configuration with automatic language detection
-i18n
+const initPromise = i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -123,4 +123,8 @@ const formatDateTime = (value: Date | string, locale: string): string => {
     return value.toString();
   }
 };
+
+// Export the initialization promise for waiting
+export { initPromise };
+
 export default i18n;

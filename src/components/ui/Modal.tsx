@@ -89,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
               </div>
 
               {/* Content */}
-              <div className="p-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
+              <div className="p-6">
                 {children}
               </div>
             </motion.div>

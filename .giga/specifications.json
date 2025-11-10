@@ -1,22 +1,22 @@
 [
   {
     "fileName": "main-overview.mdc",
-    "description": "Complete system overview detailing the healthcare compliance platform architecture, key components, and their interactions"
+    "description": "Complete system overview documenting the healthcare compliance platform architecture, key components, and integration points between HIPAA assessment, health monitoring, and security systems"
   },
   {
-    "fileName": "hipaa-compliance-engine.mdc",
-    "description": "Detailed documentation of the HIPAA compliance assessment engine, including scoring algorithms, regulatory mapping, and recommendation generation logic"
+    "fileName": "compliance-algorithms.mdc",
+    "description": "Detailed documentation of core algorithms including HIPAA compliance scoring, healthcare security risk assessment, ransomware threat analysis, and impact calculations with their mathematical models and implementation details"
   },
   {
-    "fileName": "healthcare-data-models.mdc",
-    "description": "Comprehensive documentation of data models for HIPAA compliance assessments, system dependencies, business impact analysis, and health monitoring systems"
+    "fileName": "data-models.mdc",
+    "description": "Comprehensive documentation of healthcare-specific data models including HIPAA compliance assessments, security events, health monitoring metrics, and their relationships with emphasis on PHI protection requirements"
   },
   {
-    "fileName": "system-dependency-flows.mdc",
-    "description": "Documentation of healthcare system dependency mapping, criticality assessment algorithms, and risk level calculations for interconnected medical systems"
+    "fileName": "system-workflows.mdc",
+    "description": "Documentation of critical data flows and business processes including compliance assessment workflow, health monitoring pipeline, threat detection system, and impact analysis procedures"
   },
   {
-    "fileName": "business-impact-algorithms.mdc",
-    "description": "Detailed documentation of healthcare-specific impact assessment methodologies, patient care impact scoring, and recovery time objective calculations"
+    "fileName": "security-framework.mdc",
+    "description": "Detailed documentation of the healthcare security implementation including PHI protection mechanisms, HIPAA compliance validation, healthcare-specific threat detection, and medical data encryption patterns"
   }
 ]

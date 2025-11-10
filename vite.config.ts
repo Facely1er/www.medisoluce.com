@@ -17,7 +17,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'google-fonts-cache',
               expiration: {
@@ -25,13 +25,18 @@ export default defineConfig({
                 maxAgeSeconds: ONE_YEAR_IN_SECONDS
               },
               cacheableResponse: {
-                statuses: [0, 200]
+                statuses: [200]
+              },
+              networkTimeoutSeconds: 3,
+              fetchOptions: {
+                mode: 'cors',
+                credentials: 'omit'
               }
             }
           },
           {
             urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'gstatic-fonts-cache',
               expiration: {
@@ -39,7 +44,12 @@ export default defineConfig({
                 maxAgeSeconds: ONE_YEAR_IN_SECONDS
               },
               cacheableResponse: {
-                statuses: [0, 200]
+                statuses: [200]
+              },
+              networkTimeoutSeconds: 3,
+              fetchOptions: {
+                mode: 'cors',
+                credentials: 'omit'
               }
             }
           },
