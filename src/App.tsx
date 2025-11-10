@@ -15,6 +15,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
 import ProductionReadinessPage from './pages/ProductionReadinessPage';
+import DeploymentPage from './pages/DeploymentPage';
 import SecurityDashboard from './components/security/SecurityDashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -115,6 +116,7 @@ function AppContent() {
           <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />
           <Route path="/security" element={<SecurityDashboard />} />
           <Route path="/production-readiness" element={<ProductionReadinessPage />} />
+          <Route path="/deployment" element={<DeploymentPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/pricing" element={<PricingOverviewPage />} />
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
