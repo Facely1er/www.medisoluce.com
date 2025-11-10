@@ -1312,7 +1312,4 @@ export const securityManager = new SecurityManager();
 // Security utilities for other components
 export const securityUtils = securityManager;
 
-// Auto-start security monitoring in production
-if (import.meta.env.PROD) {
-  securityManager.startMonitoring();
-}
+// Security monitoring is automatically initialized in the constructor
