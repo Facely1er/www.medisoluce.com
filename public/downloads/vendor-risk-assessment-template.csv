@@ -1,0 +1,78 @@
+Assessment Category,Risk Factor,Weight,Score (1-5),Weighted Score,Risk Level,Comments,Mitigation Required,Action Items,Responsible Party,Due Date
+General Information,Vendor Name,N/A,N/A,N/A,N/A,[Vendor Company Name],N/A,Document vendor details,Procurement,
+General Information,Service Type,N/A,N/A,N/A,N/A,[Description of services],N/A,Categorize service type,Procurement,
+General Information,Contract Value,N/A,N/A,N/A,N/A,[Annual contract value],N/A,Document financial exposure,Finance,
+General Information,Data Access Level,N/A,N/A,N/A,N/A,[PHI/PII/Internal/Public],N/A,Classify data sensitivity,Privacy Officer,
+General Information,Criticality Level,N/A,N/A,N/A,N/A,[Critical/High/Medium/Low],N/A,Assess business criticality,Operations,
+Security Controls,Data Encryption at Rest,5,3,15,Medium,Basic encryption implemented,Yes,Require AES-256 encryption,IT Security,2024-06-01
+Security Controls,Data Encryption in Transit,5,4,20,Low,TLS 1.3 implemented,No,Current implementation adequate,IT Security,
+Security Controls,Access Control Management,4,2,8,High,Basic username/password only,Yes,Require multi-factor authentication,IT Security,2024-05-01
+Security Controls,Security Monitoring and Logging,4,3,12,Medium,Basic logging in place,Yes,Require SIEM integration,IT Security,2024-07-01
+Security Controls,Vulnerability Management,4,2,8,High,No formal program,Yes,Require regular vulnerability scans,IT Security,2024-05-15
+Security Controls,Incident Response Plan,4,3,12,Medium,Plan exists but not tested,Yes,Require annual testing,IT Security,2024-08-01
+Security Controls,Security Awareness Training,3,3,9,Medium,Annual training provided,No,Adequate current training,HR,
+Security Controls,Penetration Testing,3,2,6,High,No recent testing,Yes,Require annual pen testing,IT Security,2024-06-01
+Security Controls,Network Segmentation,4,2,8,High,Flat network architecture,Yes,Implement network segmentation,Network Admin,2024-07-01
+Security Controls,Endpoint Protection,3,4,12,Low,Next-gen endpoint protection,No,Current solution adequate,IT Security,
+Compliance,HIPAA Compliance Program,5,3,15,Medium,Program exists but gaps identified,Yes,Conduct compliance audit,Compliance,2024-05-01
+Compliance,SOC 2 Type II Report,4,4,16,Low,Current report available,No,Annual report review adequate,Compliance,
+Compliance,HITECH Compliance,4,3,12,Medium,Compliance claimed but not verified,Yes,Request compliance documentation,Compliance,2024-06-01
+Compliance,State Privacy Law Compliance,3,3,9,Medium,Multi-state compliance claimed,Yes,Verify state-specific compliance,Legal,2024-07-01
+Compliance,Industry Certifications,3,4,12,Low,ISO 27001 and others,No,Certifications current and valid,Compliance,
+Compliance,Business Associate Agreement,5,4,20,Low,Comprehensive BAA in place,No,BAA adequately addresses risks,Legal,
+Compliance,Data Breach History,4,2,8,High,Two breaches in past 3 years,Yes,Enhanced monitoring required,Risk Management,2024-05-01
+Compliance,Regulatory Audit History,3,3,9,Medium,Clean audit record,No,No additional action needed,Compliance,
+Data Management,Data Classification,4,3,12,Medium,Basic classification scheme,Yes,Align with organizational standards,Privacy Officer,2024-06-01
+Data Management,Data Retention Policies,4,4,16,Low,Comprehensive retention policies,No,Policies meet requirements,Compliance,
+Data Management,Secure Data Disposal,4,2,8,High,Basic deletion procedures,Yes,Require certified disposal,IT Security,2024-05-15
+Data Management,Data Location/Residency,5,3,15,Medium,US-based but some offshore,Yes,Restrict to domestic processing,Legal,2024-07-01
+Data Management,Data Backup Procedures,4,4,16,Low,Comprehensive backup program,No,Backup procedures adequate,IT Operations,
+Data Management,Data Recovery Testing,3,2,6,High,No regular testing,Yes,Require quarterly recovery tests,IT Operations,2024-06-01
+Data Management,Data Minimization,3,3,9,Medium,Some minimization practices,Yes,Enhance data minimization,Privacy Officer,2024-08-01
+Data Management,Data Quality Controls,3,3,9,Medium,Basic quality controls,No,Adequate for current needs,Operations,
+Operational Risk,Business Continuity Plan,4,3,12,Medium,Plan exists but not tested,Yes,Require annual BCP testing,Operations,2024-06-01
+Operational Risk,Disaster Recovery Plan,4,3,12,Medium,DR plan documented,Yes,Test DR procedures,IT Operations,2024-07-01
+Operational Risk,Service Level Agreements,4,4,16,Low,Comprehensive SLA in place,No,SLA meets requirements,Operations,
+Operational Risk,Financial Stability,4,4,16,Low,Strong financial position,No,No concerns identified,Finance,
+Operational Risk,Geographic Diversity,3,2,6,High,Single data center location,Yes,Require geographic redundancy,Operations,2024-08-01
+Operational Risk,Vendor Dependencies,3,3,9,Medium,Multiple sub-vendors,Yes,Document sub-vendor risks,Procurement,2024-06-01
+Operational Risk,Scalability,3,4,12,Low,Demonstrated scalability,No,Adequate scalability,Operations,
+Operational Risk,Service Availability,4,4,16,Low,99.9% uptime SLA,No,Availability meets requirements,Operations,
+Personnel Security,Background Checks,4,3,12,Medium,Basic background checks,Yes,Require enhanced screening,HR,2024-06-01
+Personnel Security,Security Clearances,3,2,6,High,No clearances required/held,Yes,Assess clearance requirements,Security,2024-07-01
+Personnel Security,Access Management,4,2,8,High,Manual access provisioning,Yes,Implement automated access mgmt,IT Security,2024-05-01
+Personnel Security,Separation Procedures,4,3,12,Medium,Standard termination process,Yes,Enhance access removal,HR,2024-06-01
+Personnel Security,Contractor Management,3,3,9,Medium,Basic contractor oversight,Yes,Enhance contractor screening,HR,2024-08-01
+Personnel Security,Training and Certification,3,3,9,Medium,Role-based training,No,Training adequate,HR,
+Physical Security,Facility Security,4,3,12,Medium,Badge access and cameras,Yes,Assess biometric requirements,Facilities,2024-07-01
+Physical Security,Data Center Security,5,4,20,Low,Tier III data center,No,Security adequate,Facilities,
+Physical Security,Environmental Controls,3,4,12,Low,Redundant HVAC and power,No,Environmental controls adequate,Facilities,
+Physical Security,Visitor Management,3,3,9,Medium,Basic visitor procedures,Yes,Enhance visitor screening,Security,2024-08-01
+Physical Security,Asset Management,3,2,6,High,Manual asset tracking,Yes,Implement automated tracking,Operations,2024-06-01
+Technical Architecture,System Architecture,4,3,12,Medium,Adequate but aging,Yes,Plan architecture refresh,IT Architecture,2024-09-01
+Technical Architecture,Integration Capabilities,4,4,16,Low,Strong API capabilities,No,Integration capabilities adequate,IT Architecture,
+Technical Architecture,Performance Monitoring,3,3,9,Medium,Basic monitoring,Yes,Enhance performance monitoring,IT Operations,2024-08-01
+Technical Architecture,Capacity Management,3,3,9,Medium,Adequate capacity planning,No,Current capacity adequate,IT Operations,
+Technical Architecture,Change Management,3,2,6,High,Limited change control,Yes,Implement formal change mgmt,IT Operations,2024-06-01
+Technical Architecture,Version Control,3,3,9,Medium,Basic version control,Yes,Enhance version management,Development,2024-07-01
+Technical Architecture,Testing Procedures,4,2,8,High,Limited testing framework,Yes,Implement comprehensive testing,QA,2024-06-01
+Communication,Notification Procedures,3,3,9,Medium,Email notifications,Yes,Add SMS and phone notifications,Communications,2024-07-01
+Communication,Escalation Procedures,4,3,12,Medium,Basic escalation matrix,Yes,Document escalation timeframes,Operations,2024-06-01
+Communication,Reporting Requirements,3,4,12,Low,Comprehensive reporting,No,Reporting meets needs,Operations,
+Communication,Communication Channels,3,3,9,Medium,Multiple channels available,No,Communication adequate,Communications,
+Legal and Contractual,Contract Terms,4,4,16,Low,Favorable contract terms,No,Contract terms acceptable,Legal,
+Legal and Contractual,Liability and Insurance,4,3,12,Medium,Standard liability coverage,Yes,Assess additional coverage,Legal,2024-06-01
+Legal and Contractual,Intellectual Property,3,4,12,Low,Clear IP ownership,No,IP terms acceptable,Legal,
+Legal and Contractual,Termination Clauses,4,3,12,Medium,Standard termination terms,Yes,Negotiate data return terms,Legal,2024-07-01
+Legal and Contractual,Dispute Resolution,3,3,9,Medium,Arbitration required,No,Dispute terms acceptable,Legal,
+Legal and Contractual,Governing Law,3,4,12,Low,Favorable jurisdiction,No,Legal jurisdiction acceptable,Legal,
+Vendor Management,Relationship Management,3,3,9,Medium,Quarterly business reviews,Yes,Increase meeting frequency,Procurement,2024-06-01
+Vendor Management,Performance Metrics,4,3,12,Medium,Basic SLA monitoring,Yes,Enhance performance tracking,Operations,2024-07-01
+Vendor Management,Cost Management,3,4,12,Low,Competitive pricing,No,Cost management adequate,Finance,
+Vendor Management,Contract Management,3,2,6,High,Manual contract tracking,Yes,Implement contract management,Legal,2024-08-01
+Vendor Management,Vendor Assessment,4,2,8,High,Annual assessment only,Yes,Implement continuous monitoring,Risk Management,2024-05-01
+Vendor Management,Alternative Vendors,4,1,4,Critical,No alternative identified,Yes,Identify backup vendors,Procurement,2024-04-01
+Summary,Total Weighted Score,N/A,N/A,547,N/A,Score out of possible 800,N/A,Overall risk assessment,Risk Management,
+Summary,Overall Risk Rating,N/A,N/A,N/A,High,68% risk score requires action,N/A,Develop risk mitigation plan,Risk Management,2024-04-01
+Summary,Recommendation,N/A,N/A,N/A,N/A,Approve with conditions,N/A,Implement risk controls,Risk Management,2024-06-01
+Summary,Review Date,N/A,N/A,N/A,N/A,Annual review required,N/A,Schedule next assessment,Risk Management,2024-12-01

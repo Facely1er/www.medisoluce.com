@@ -1,0 +1,22 @@
+[
+  {
+    "fileName": "main-overview.mdc",
+    "description": "Complete system overview detailing the healthcare compliance platform architecture, key components, and their interactions"
+  },
+  {
+    "fileName": "hipaa-compliance-engine.mdc",
+    "description": "Detailed documentation of the HIPAA compliance assessment engine, including scoring algorithms, regulatory mapping, and recommendation generation logic"
+  },
+  {
+    "fileName": "healthcare-data-models.mdc",
+    "description": "Comprehensive documentation of data models for HIPAA compliance assessments, system dependencies, business impact analysis, and health monitoring systems"
+  },
+  {
+    "fileName": "system-dependency-flows.mdc",
+    "description": "Documentation of healthcare system dependency mapping, criticality assessment algorithms, and risk level calculations for interconnected medical systems"
+  },
+  {
+    "fileName": "business-impact-algorithms.mdc",
+    "description": "Detailed documentation of healthcare-specific impact assessment methodologies, patient care impact scoring, and recovery time objective calculations"
+  }
+]
