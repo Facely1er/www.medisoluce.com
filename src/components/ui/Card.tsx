@@ -39,4 +39,5 @@ const Card: React.FC<CardProps> = memo(({
 
 Card.displayName = 'Card';
 
+export type { CardProps };
 export default Card;

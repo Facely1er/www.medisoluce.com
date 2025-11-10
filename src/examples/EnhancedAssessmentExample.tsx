@@ -7,9 +7,9 @@ import {
   FormField,
   ErrorBoundary,
   LoadingState,
-  ToastProvider,
-  useToast
+  ToastProvider
 } from '../components/ui';
+import { useToast } from '../hooks/useToast';
 import { AccessibilityTestWrapper } from '../../utils/accessibilityTester';
 import { useTranslation } from 'react-i18next';
 

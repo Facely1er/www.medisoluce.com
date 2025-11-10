@@ -177,7 +177,7 @@ export const useErrorHandler = (): UseErrorHandlerReturn => {
     setError(null);
   }, []);
 
-  const ErrorBoundary = React.useCallback(({ children }: { children: ReactNode }) => {
+  const ErrorBoundaryWrapper = React.useCallback(({ children }: { children: ReactNode }) => {
     return (
       <ErrorBoundary
         onError={(error) => setError(error)}
@@ -212,7 +212,7 @@ export const useErrorHandler = (): UseErrorHandlerReturn => {
     );
   }, [error, resetError]);
 
-  return { error, resetError, ErrorBoundary };
+  return { error, resetError, ErrorBoundary: ErrorBoundaryWrapper };
 };
 
 // Higher-order component for wrapping components with error boundaries
