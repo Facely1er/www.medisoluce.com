@@ -75,10 +75,24 @@ npm run test:coverage
 
 ### Environment Setup
 
-1. Copy `.env.example` to `.env.local`
-2. Configure environment variables
+1. Copy `env.example` to `.env.local`:
+   ```bash
+   cp env.example .env.local
+   ```
+
+2. Configure your Supabase credentials in `.env.local`:
+   ```env
+   VITE_SUPABASE_URL=https://your-project-id.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key-here
+   ```
+   
+   Get these values from your [Supabase project dashboard](https://app.supabase.com/project/YOUR_PROJECT/settings/api)
+
 3. Install dependencies: `npm install`
+
 4. Start dev server: `npm run dev`
+
+**Note:** For production deployment, use `env.production.example` as a template and set environment variables in your deployment platform (Vercel, Netlify, etc.).
 
 ### Code Quality
 

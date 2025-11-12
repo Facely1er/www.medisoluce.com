@@ -16,10 +16,24 @@ import path from 'path';
 // =============================================
 
 const SUPABASE_CONFIG = {
-  url: process.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co',
-  anonKey: process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2VreGlwenp2Y2Vlc2Rqc3JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTc0MTUsImV4cCI6MjA3MzQzMzQxNX0.W-598e6_uv5ES9DqgVr9ExdeY4uzZxcIZulrvioGqpA',
-  serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'UPDATE_WITH_SERVICE_ROLE_KEY'
+  url: process.env.VITE_SUPABASE_URL,
+  anonKey: process.env.VITE_SUPABASE_ANON_KEY,
+  serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY
 };
+
+// Validate required environment variables
+if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey || !SUPABASE_CONFIG.serviceRoleKey) {
+  console.error('❌ Error: Missing required environment variables');
+  console.error('Please set:');
+  console.error('  - VITE_SUPABASE_URL');
+  console.error('  - VITE_SUPABASE_ANON_KEY');
+  console.error('  - SUPABASE_SERVICE_ROLE_KEY');
+  console.error('\nExample:');
+  console.error('  export VITE_SUPABASE_URL=https://your-project.supabase.co');
+  console.error('  export VITE_SUPABASE_ANON_KEY=your-anon-key');
+  console.error('  export SUPABASE_SERVICE_ROLE_KEY=your-service-role-key');
+  process.exit(1);
+}
 
 const SCHEMA_CONFIG = {
   SCHEMA_PREFIX: 'medisoluce',

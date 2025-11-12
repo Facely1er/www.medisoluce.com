@@ -2,11 +2,11 @@ import { createClient } from '@supabase/supabase-js';
 import { securityUtils } from '../utils/securityUtils';
 import backendService from '../services/backendService';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2VreGlwenp2Y2Vlc2Rqc3JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTc0MTUsImV4cCI6MjA3MzQzMzQxNX0.W-598e6_uv5ES9DqgVr9ExdeY4uzZxcIZulrvioGqpA';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-// Service role key for admin operations (update this with your actual service role key from Supabase dashboard)
-const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || 'UPDATE_WITH_SERVICE_ROLE_KEY';
+// Service role key for admin operations (only set via environment variable)
+const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 

@@ -11,9 +11,20 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
 
-// Configuration - Update with your Supabase project credentials
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co';
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'UPDATE_WITH_SERVICE_ROLE_KEY';
+// Configuration - Requires environment variables
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  console.error('❌ Error: Missing required environment variables');
+  console.error('Please set:');
+  console.error('  - VITE_SUPABASE_URL');
+  console.error('  - SUPABASE_SERVICE_ROLE_KEY');
+  console.error('\nExample:');
+  console.error('  export VITE_SUPABASE_URL=https://your-project.supabase.co');
+  console.error('  export SUPABASE_SERVICE_ROLE_KEY=your-service-role-key');
+  process.exit(1);
+}
 
 // Create Supabase client with service role
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);

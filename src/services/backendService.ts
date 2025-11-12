@@ -11,10 +11,38 @@ import { createClient } from '@supabase/supabase-js';
 // CONFIGURATION
 // =============================================
 
+/**
+ * Validates required environment variables
+ * Throws error in production if missing
+ */
+function validateEnvVars() {
+  const isProduction = import.meta.env.PROD;
+  const url = import.meta.env.VITE_SUPABASE_URL;
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (isProduction) {
+    if (!url || !anonKey) {
+      throw new Error(
+        'Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be set in production'
+      );
+    }
+  } else {
+    // In development, warn but don't throw
+    if (!url || !anonKey) {
+      console.warn(
+        '⚠️ Missing Supabase environment variables. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file'
+      );
+    }
+  }
+}
+
+// Validate environment variables on module load
+validateEnvVars();
+
 const SUPABASE_CONFIG = {
-  url: import.meta.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co',
-  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2VreGlwenp2Y2Vlc2Rqc3JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTc0MTUsImV4cCI6MjA3MzQzMzQxNX0.W-598e6_uv5ES9DqgVr9ExdeY4uzZxcIZulrvioGqpA',
-  serviceRoleKey: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || 'UPDATE_WITH_SERVICE_ROLE_KEY'
+  url: import.meta.env.VITE_SUPABASE_URL || '',
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+  serviceRoleKey: import.meta.env.SUPABASE_SERVICE_ROLE_KEY || ''
 };
 
 // =============================================
