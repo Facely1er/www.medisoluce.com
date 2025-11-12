@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Button from './Button';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Database, FileCheck, Calculator, Download } from 'lucide-react';
+import { ShieldCheck, Database, FileCheck, Download } from 'lucide-react';
 import TextCarousel from './TextCarousel';
 
 interface HeroBannerProps {
@@ -163,7 +163,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
                   <Link to={ctaLink}>
                     <Button
                       size="lg"
-                      icon={<Calculator className="h-5 w-5" />}
+                      icon={<ShieldCheck className="h-5 w-5" />}
                       iconPosition="left"
                     >
                       {ctaText}

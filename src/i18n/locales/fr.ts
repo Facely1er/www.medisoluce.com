@@ -51,8 +51,6 @@ const frTranslation = {
       "trusted": "La solution intégrée en laquelle les organisations de santé font confiance pour la conformité réglementaire et la résilience opérationnelle.",
       "safety": "Assurez la sécurité des patients grâce à une gestion proactive de la conformité et à la cartographie des dépendances technologiques."
     },
-    "hero_cta_primary": "Lancer le Calculateur d'Impact",
-    "hero_cta_secondary": "Télécharger la Note d'Information",
     "hero_features": {
       "hipaa_title": "Conformité HIPAA",
       "hipaa_desc": "Évaluation complète et analyse des lacunes",

@@ -135,10 +135,8 @@ const HomePage: React.FC = () => {
           "Protect patient data with comprehensive compliance solutions designed specifically for healthcare organizations.",
           "Transform your cybersecurity posture with integrated risk assessment and business continuity planning tools."
         ]}
-        ctaText={t('home.hero_cta_primary')}
-        ctaLink="/business-impact"
-        secondaryCtaText={t('home.hero_cta_secondary')}
-        secondaryCtaLink="https://toolkit.medisoluce.com"
+        ctaText={t('start_free_assessment')}
+        ctaLink="/hipaa-check"
       />
 
    

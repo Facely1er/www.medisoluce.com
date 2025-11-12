@@ -51,8 +51,6 @@ const enTranslation = {
       "trusted": "The integrated solution healthcare organizations trust for regulatory compliance and operational resilience.",
       "safety": "Ensure patient safety through proactive compliance management and technology dependency mapping."
     },
-    "hero_cta_primary": "Run Impact Calculator",
-    "hero_cta_secondary": "Download 1-Pager",
     "hero_features": {
       "hipaa_title": "HIPAA Compliance",
       "hipaa_desc": "Comprehensive assessment and gap analysis",
