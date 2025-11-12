@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
-
 export default defineConfig({
   plugins: [
     react(),
@@ -14,45 +12,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         navigateFallback: '/index.html',
         inlineWorkboxRuntime: false,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: ONE_YEAR_IN_SECONDS
-              },
-              cacheableResponse: {
-                statuses: [200]
-              },
-              networkTimeoutSeconds: 3,
-              fetchOptions: {
-                mode: 'cors',
-                credentials: 'omit'
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'gstatic-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: ONE_YEAR_IN_SECONDS
-              },
-              cacheableResponse: {
-                statuses: [200]
-              },
-              networkTimeoutSeconds: 3,
-              fetchOptions: {
-                mode: 'cors',
-                credentials: 'omit'
-              }
-            }
-          },
           {
             urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
             handler: 'NetworkFirst',
@@ -61,16 +23,22 @@ export default defineConfig({
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60 * 24 // 24 hours
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
               }
             }
           },
           {
-            urlPattern: /^https?.*/,
+            urlPattern: /^https:\/\/(?!fonts\.googleapis\.com|fonts\.gstatic\.com).*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'offlineCache',
               expiration: {
                 maxEntries: 200
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
               }
             }
           }
