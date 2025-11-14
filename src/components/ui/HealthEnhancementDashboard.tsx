@@ -121,7 +121,7 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     } finally {
       setIsEnhancing(false);
     }
-  }, []);
+  }, [loadHealthStatus]);
 
   const exportHealthReport = () => {
     const report = `

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  RefreshCw, 
-  AlertTriangle, 
-  TrendingUp,
+import {
+  RefreshCw,
+  AlertTriangle,
   Download,
   Shield,
   Activity
@@ -12,49 +11,59 @@ import Card from '../ui/Card';
 import ThreatFeedWidget from './ThreatFeedWidget';
 import ThreatStatsWidget from './ThreatStatsWidget';
 import HealthcareBreachTracker from './HealthcareBreachTracker';
-import { 
-  fetchAllFeeds, 
-  searchThreats, 
+import {
+  fetchAllFeeds,
+  searchThreats,
   getThreatStatistics,
   type RSSItem,
-  type AggregatedThreatData 
+  type AggregatedThreatData
 } from '../../services/rssFeedService';
-import { 
+import {
   analyzeThreatTrends,
-  calculateOrganizationRiskScore,
-  groupThreatsByType,
-  type ThreatInsight 
+  calculateOrganizationRiskScore
 } from '../../utils/ransomwareAnalyzer';
-import { 
-  LineChart, 
-  Line, 
-  BarChart,
-  Bar,
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell
 } from 'recharts';
 
+interface ThreatStatistics {
+  totalThreats: number;
+  criticalThreats: number;
+  recentThreats: number;
+  trendDirection: 'up' | 'down' | 'stable';
+}
+
+interface ThreatTrend {
+  direction: 'increasing' | 'decreasing' | 'stable';
+  percentage: number;
+  period: string;
+}
+
+interface RiskScore {
+  score: number;
+  level: 'critical' | 'high' | 'medium' | 'low';
+  factors: string[];
+}
+
 interface RansomwareThreatDashboardProps {
   autoRefresh?: boolean;
   refreshInterval?: number;
 }
 
-const RansomwareThreatDashboard: React.FC<RansomwareThreatDashboardProps> = ({ 
+const RansomwareThreatDashboard: React.FC<RansomwareThreatDashboardProps> = ({
   autoRefresh = true,
   refreshInterval = 300000 // 5 minutes
 }) => {
   const [threatData, setThreatData] = useState<AggregatedThreatData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [stats, setStats] = useState<any>(null);
-  const [trend, setTrend] = useState<any>(null);
-  const [riskScore, setRiskScore] = useState<any>(null);
+  const [stats, setStats] = useState<ThreatStatistics | null>(null);
+  const [trend, setTrend] = useState<ThreatTrend | null>(null);
+  const [riskScore, setRiskScore] = useState<RiskScore | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<RSSItem[]>([]);
 

@@ -6,19 +6,15 @@ import SEOHead from '../components/ui/SEOHead';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { analytics } from '../utils/analytics';
-import { 
-  Users, 
-  Building2, 
-  Stethoscope, 
-  Briefcase, 
-  AlertCircle, 
-  CheckCircle, 
+import {
+  Users,
+  Building2,
+  Stethoscope,
+  Briefcase,
+  AlertCircle,
+  CheckCircle,
   ArrowRight,
   Shield,
-  DollarSign,
-  Clock,
-  FileText,
-  Zap,
   TrendingUp,
   Target,
   Lock
@@ -53,7 +49,6 @@ interface SegmentData {
 }
 
 const SegmentAnalysisPage: React.FC = () => {
-  const { t } = useTranslation();
 
   // Privacy-respecting analytics tracking
   useEffect(() => {

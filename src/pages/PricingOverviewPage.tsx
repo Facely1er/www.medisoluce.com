@@ -18,15 +18,6 @@ const PricingOverviewPage: React.FC = () => {
     setDynamicPricing(calculated);
   }, []);
 
-  const stakeholders = [
-    { id: 'all', label: 'View All', icon: <Users className="h-4 w-4" />, color: 'gray' },
-    { id: 'executive', label: '👔 C-Level Executive', icon: <Briefcase className="h-4 w-4" />, color: 'primary' },
-    { id: 'compliance', label: '📋 Compliance Officer', icon: <Shield className="h-4 w-4" />, color: 'primary' },
-    { id: 'it', label: '💻 IT Director', icon: <Wrench className="h-4 w-4" />, color: 'accent' },
-    { id: 'operations', label: '⚕️ Operations Manager', icon: <FileText className="h-4 w-4" />, color: 'success' },
-    { id: 'practice', label: '🏥 Practice Manager', icon: <Users className="h-4 w-4" />, color: 'secondary' }
-  ];
-
   const roleBasedRecommendations = {
     executive: {
       title: 'For C-Level Executives',

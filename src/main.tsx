@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import i18n, { initPromise } from './i18n';
+import { initPromise } from './i18n';
 import { projectHealthEnhancer } from './utils/healthEnhancer';
 import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';

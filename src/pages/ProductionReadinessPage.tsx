@@ -77,23 +77,7 @@ const ProductionReadinessPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOptimizing, setIsOptimizing] = useState(false);
 
-  useEffect(() => {
-    performReadinessAssessment();
-  }, [performReadinessAssessment]);
-
-  const performReadinessAssessment = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const report = await generateProductionReadinessReport();
-      setReport(report);
-    } catch (error) {
-      console.error('Failed to generate readiness report:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const generateProductionReadinessReport = async (): Promise<ProductionReadinessReport> => {
+  const generateProductionReadinessReport = useCallback(async (): Promise<ProductionReadinessReport> => {
     // Security Assessment
     const securityReport = securityManager.generateSecurityReport();
     const securityScore = calculateSecurityScore(securityReport);
@@ -180,7 +164,23 @@ const ProductionReadinessPage: React.FC = () => {
       recommendations,
       timestamp: new Date().toISOString()
     };
-  };
+  }, []);
+
+  const performReadinessAssessment = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const reportData = await generateProductionReadinessReport();
+      setReport(reportData);
+    } catch (error) {
+      console.error('Failed to generate readiness report:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [generateProductionReadinessReport]);
+
+  useEffect(() => {
+    performReadinessAssessment();
+  }, [performReadinessAssessment]);
 
   const calculateSecurityScore = (securityReport: {
     https: boolean;
