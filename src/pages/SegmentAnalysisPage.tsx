@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';

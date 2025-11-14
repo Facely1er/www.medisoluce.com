@@ -426,7 +426,7 @@ class ErrorHandler {
           height: window.innerHeight
         }
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         isAuthenticated: false,
         currentPage: 'unknown',
@@ -439,11 +439,16 @@ class ErrorHandler {
 
   private captureSystemContext(): SystemContext {
     try {
-      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-      const battery = (navigator as any).getBattery ? (navigator as any).getBattery() : null;
-      
+      type NavigatorWithConnection = Navigator & { connection?: { effectiveType?: string }; mozConnection?: { effectiveType?: string }; webkitConnection?: { effectiveType?: string }; getBattery?: () => Promise<{ level?: number }> };
+      type PerformanceWithMemory = Performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number } };
+
+      const nav = navigator as NavigatorWithConnection;
+      const connection = nav.connection || nav.mozConnection || nav.webkitConnection;
+      const battery = nav.getBattery ? nav.getBattery() : null;
+
+      const perf = performance as PerformanceWithMemory;
       return {
-        memoryUsage: (performance as any).memory ? Math.round(((performance as any).memory.usedJSHeapSize / (performance as any).memory.totalJSHeapSize) * 100) : undefined,
+        memoryUsage: perf.memory ? Math.round((perf.memory.usedJSHeapSize / perf.memory.totalJSHeapSize) * 100) : undefined,
         connectionType: connection?.effectiveType || 'unknown',
         devicePixelRatio: window.devicePixelRatio,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -462,8 +467,10 @@ class ErrorHandler {
 
   private sendToExternalMonitoring(errorLog: ErrorLog) {
     // Send to external service (Sentry, LogRocket, etc.)
-    if (typeof window !== 'undefined' && (window as any).Sentry) {
-      (window as any).Sentry.addBreadcrumb({
+    type WindowWithSentry = Window & { Sentry?: { addBreadcrumb: (breadcrumb: unknown) => void } };
+    const windowWithSentry = window as WindowWithSentry;
+    if (typeof window !== 'undefined' && windowWithSentry.Sentry) {
+      windowWithSentry.Sentry.addBreadcrumb({
         message: errorLog.message,
         category: errorLog.type,
         level: errorLog.type === 'business' ? 'error' : 'info',

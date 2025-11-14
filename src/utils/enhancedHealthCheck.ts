@@ -131,7 +131,7 @@ class EnhancedHealthChecker {
 
   private async checkI18nHealth() {
     try {
-      const i18n = (window as any).i18n;
+      const i18n = (window as Window & { i18n?: unknown }).i18n;
       if (!i18n) {
         return {
           localesLoaded: 0,
@@ -234,7 +234,7 @@ class EnhancedHealthChecker {
 
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -515,9 +515,10 @@ class EnhancedHealthChecker {
   }
 
   private alertCriticalIssues(issues: string[]) {
-    if (typeof window !== 'undefined' && (window as any).showToast) {
+    const windowWithToast = window as Window & { showToast?: (toast: { type: string; title: string; message: string; duration: number }) => void };
+    if (typeof window !== 'undefined' && windowWithToast.showToast) {
       issues.forEach(issue => {
-        (window as any).showToast({
+        windowWithToast.showToast!({
           type: 'error',
           title: 'Critical System Issue',
           message: issue,
