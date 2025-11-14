@@ -914,7 +914,7 @@ class ComprehensiveHealthManager {
   // Utility methods
   private getMemoryUsage(): number {
     if ('memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       return Math.round((memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100);
     }
     return 0;
@@ -1059,8 +1059,8 @@ class ComprehensiveHealthManager {
   private calculateTrend(category: string): number {
     const history = this.healthHistory.slice(-5);
     if (history.length < 2) return 0;
-    
-    const scores = history.map(h => (h.categories as any)[category]?.score || 0);
+
+    const scores = history.map(h => (h.categories as Record<string, { score?: number }>)[category]?.score || 0);
     return scores[scores.length - 1] - scores[0];
   }
 
@@ -1084,8 +1084,8 @@ class ComprehensiveHealthManager {
 
   private generateRecommendations(categories: unknown): HealthRecommendation[] {
     const recommendations: HealthRecommendation[] = [];
-    
-    Object.entries(categories).forEach(([category, data]: [string, any]) => {
+
+    Object.entries(categories as Record<string, { score: number; checks: HealthCheck[] }>).forEach(([category, data]) => {
       if (data.score < 80) {
         const failedChecks = data.checks.filter((check: HealthCheck) => check.status !== 'pass');
         
@@ -1186,7 +1186,7 @@ Health Score: ${latest.overall.score}/100
 Trend: ${latest.overall.trend.toUpperCase()} (${latest.overall.confidence}% confidence)
 
 CATEGORY BREAKDOWN:
-${Object.entries(latest.categories).map(([category, data]: [string, any]) => 
+${Object.entries(latest.categories).map(([category, data]: [string, { score: number; status: string }]) =>
   `- ${category.charAt(0).toUpperCase() + category.slice(1)}: ${data.score}% (${data.status})`
 ).join('\n')}
 

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  CheckCircle, 
-  AlertTriangle, 
-  XCircle, 
-  Server, 
+import {
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
   Download,
   RefreshCw,
   Cloud,
@@ -16,7 +15,6 @@ import {
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import ProgressBar from '../components/ui/ProgressBar';
 
 interface DeploymentStatus {
   platform: string;
@@ -42,11 +40,7 @@ const DeploymentPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [overallScore, setOverallScore] = useState(0);
 
-  useEffect(() => {
-    performDeploymentAssessment();
-  }, []);
-
-  const performDeploymentAssessment = async () => {
+  const performDeploymentAssessment = useCallback(async () => {
     setIsLoading(true);
     try {
       const deploymentChecks = assessDeploymentConfiguration();
@@ -63,7 +57,11 @@ const DeploymentPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    performDeploymentAssessment();
+  }, [performDeploymentAssessment]);
 
   const assessDeploymentConfiguration = (): DeploymentCheck[] => {
     const checks: DeploymentCheck[] = [

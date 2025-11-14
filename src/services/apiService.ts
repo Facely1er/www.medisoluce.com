@@ -5,7 +5,7 @@
  * including authentication, data management, and compliance operations.
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, Session } from '@supabase/supabase-js';
 import { securityUtils } from '../utils/securityUtils';
 
 // =============================================
@@ -39,12 +39,20 @@ interface FilterParams {
   [key: string]: unknown;
 }
 
+type UserProfileData = Record<string, unknown>;
+type AssessmentData = Record<string, unknown>;
+type ComplianceFindingData = Record<string, unknown>;
+type SecurityEventData = Record<string, unknown>;
+type TrainingProgressData = Record<string, unknown>;
+type AuditLogData = Record<string, unknown>;
+type PerformanceMetricData = Record<string, unknown>;
+
 // =============================================
 // MAIN API SERVICE CLASS
 // =============================================
 
 class MediSoluceAPIService {
-  private supabase: any;
+  private supabase: ReturnType<typeof createClient>;
   private schemaPrefix: string = 'medisoluce';
 
   constructor() {
@@ -57,7 +65,7 @@ class MediSoluceAPIService {
    */
   private setupErrorHandling(): void {
     // Global error handler for API calls
-    this.supabase.auth.onAuthStateChange((event: string, session: any) => {
+    this.supabase.auth.onAuthStateChange((event: string, session: Session | null) => {
       if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         // Handle auth state changes
         securityUtils.logSecurityEvent('auth_state_change', {
@@ -78,7 +86,7 @@ class MediSoluceAPIService {
   /**
    * Handle API errors
    */
-  private handleError(error: any, context: string): APIResponse {
+  private handleError(error: unknown, context: string): APIResponse {
     const errorMessage = error?.message || 'Unknown error occurred';
     
     // Log security event for errors
@@ -263,7 +271,7 @@ class MediSoluceAPIService {
   /**
    * Create user profile
    */
-  async createUserProfile(profileData: any): Promise<APIResponse> {
+  async createUserProfile(profileData: UserProfileData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('user_profiles'))
@@ -312,7 +320,7 @@ class MediSoluceAPIService {
   /**
    * Update user profile
    */
-  async updateUserProfile(userId: string, updates: any): Promise<APIResponse> {
+  async updateUserProfile(userId: string, updates: UserProfileData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('user_profiles'))
@@ -344,7 +352,7 @@ class MediSoluceAPIService {
   /**
    * Create HIPAA assessment
    */
-  async createAssessment(assessmentData: any): Promise<APIResponse> {
+  async createAssessment(assessmentData: AssessmentData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('hipaa_assessments'))
@@ -410,7 +418,7 @@ class MediSoluceAPIService {
   /**
    * Update assessment
    */
-  async updateAssessment(assessmentId: string, updates: any): Promise<APIResponse> {
+  async updateAssessment(assessmentId: string, updates: AssessmentData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('hipaa_assessments'))
@@ -438,7 +446,7 @@ class MediSoluceAPIService {
   /**
    * Create assessment response
    */
-  async createAssessmentResponse(responseData: any): Promise<APIResponse> {
+  async createAssessmentResponse(responseData: Record<string, unknown>): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('assessment_responses'))
@@ -485,7 +493,7 @@ class MediSoluceAPIService {
   /**
    * Create compliance finding
    */
-  async createComplianceFinding(findingData: any): Promise<APIResponse> {
+  async createComplianceFinding(findingData: ComplianceFindingData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('compliance_findings'))
@@ -539,7 +547,7 @@ class MediSoluceAPIService {
   /**
    * Log security event
    */
-  async logSecurityEvent(eventData: any): Promise<APIResponse> {
+  async logSecurityEvent(eventData: SecurityEventData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('security_events'))
@@ -621,7 +629,7 @@ class MediSoluceAPIService {
   /**
    * Create training progress
    */
-  async createTrainingProgress(progressData: any): Promise<APIResponse> {
+  async createTrainingProgress(progressData: TrainingProgressData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('user_training_progress'))
@@ -677,7 +685,7 @@ class MediSoluceAPIService {
   /**
    * Create audit log
    */
-  async createAuditLog(logData: any): Promise<APIResponse> {
+  async createAuditLog(logData: AuditLogData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('audit_logs'))
@@ -755,7 +763,7 @@ class MediSoluceAPIService {
   /**
    * Create performance metric
    */
-  async createPerformanceMetric(metricData: any): Promise<APIResponse> {
+  async createPerformanceMetric(metricData: PerformanceMetricData): Promise<APIResponse> {
     try {
       const { data, error } = await this.supabase
         .from(this.getTableName('performance_metrics'))

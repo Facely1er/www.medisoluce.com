@@ -29,7 +29,6 @@ import TrainingPage from './pages/TrainingPage';
 import ToolkitPage from './pages/ToolkitPage';
 import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
 import RansomwareAssessment from './components/assessment/RansomwareAssessment';
-import PricingPage from './pages/PricingPage';
 import PricingOverviewPage from './pages/PricingOverviewPage';
 import HIPAAPricingPage from './pages/HIPAAPricingPage';
 import RansomwarePricingPage from './pages/RansomwarePricingPage';

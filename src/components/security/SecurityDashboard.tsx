@@ -17,17 +17,55 @@ import Button from '../ui/Button';
 import { securityManager } from '../../utils/securityUtils';
 import { advancedSecurityScanner } from '../../utils/advancedSecurityScanner';
 
+interface ScanResult {
+  score: number;
+  status: string;
+  issues: Array<{ severity: string; message: string }>;
+  vulnerabilities: unknown[];
+  complianceIssues: Array<{ regulation: string; status: string }>;
+  recommendations: Array<{ title: string; description?: string; action?: string; priority: string }>;
+}
+
+interface SecurityReport {
+  https: boolean;
+  csp?: { enabled: boolean };
+  headers?: Record<string, boolean>;
+  cookies?: { secureCount: number; insecureCount: number };
+  localStorage: boolean;
+  metrics?: {
+    overallScore: number;
+    encryptionCoverage: number;
+    securityTrend: { direction: string; confidence: number };
+  };
+  threats?: {
+    active: Array<{ type: string; description: string; severity: string }>;
+    mitigated: unknown[];
+  };
+}
+
+interface ThreatScan {
+  threatLevel: string;
+  overallScore: number;
+}
+
 interface SecurityDashboardData {
-  scanResult: any;
-  securityReport: any;
-  threatScan: any;
+  scanResult: ScanResult;
+  securityReport: SecurityReport;
+  threatScan: ThreatScan;
+}
+
+interface ThreatHistoryItem {
+  timestamp: string;
+  type: string;
+  severity: string;
+  description: string;
 }
 
 const SecurityDashboard: React.FC = () => {
   const [securityData, setSecurityData] = useState<SecurityDashboardData | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [isMonitoring, setIsMonitoring] = useState(true);
-  const [threatHistory, setThreatHistory] = useState<any[]>([]);
+  const [_threatHistory, _setThreatHistory] = useState<ThreatHistoryItem[]>([]);
   const [lastScan, setLastScan] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -50,14 +88,14 @@ const SecurityDashboard: React.FC = () => {
       ]);
 
       setSecurityData({
-        scanResult,
-        securityReport,
+        scanResult: scanResult as ScanResult,
+        securityReport: securityReport as SecurityReport,
         threatScan: {
-          threatLevel: securityReport?.securityTrend?.direction || 'low',
-          overallScore: securityReport?.metrics?.overallScore || 85
+          threatLevel: (securityReport as SecurityReport)?.metrics?.securityTrend?.direction || 'low',
+          overallScore: (securityReport as SecurityReport)?.metrics?.overallScore || 85
         }
       });
-      setThreatHistory(threatHistoryData);
+      _setThreatHistory(threatHistoryData as ThreatHistoryItem[]);
       setLastScan(new Date());
     } catch (error) {
       console.error('Security scan failed:', error);
@@ -254,18 +292,18 @@ const SecurityDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <Lock className="h-8 w-8 text-primary-500" />
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  complianceIssues.filter((c: any) => c.regulation === 'HIPAA' && c.status === 'compliant').length > 0 
+                  complianceIssues.filter((c) => c.regulation === 'HIPAA' && c.status === 'compliant').length > 0
                     ? 'bg-success-100 text-success-700 dark:bg-success-900/20 dark:text-success-400'
                     : 'bg-warning-100 text-warning-700 dark:bg-warning-900/20 dark:text-warning-400'
                 }`}>
-                  {complianceIssues.filter((c: any) => c.regulation === 'HIPAA').length} Issues
+                  {complianceIssues.filter((c) => c.regulation === 'HIPAA').length} Issues
                 </span>
               </div>
               <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
                 HIPAA Compliance
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                {complianceIssues.filter((c: any) => c.regulation === 'HIPAA' && c.status === 'compliant').length > 0 
+                {complianceIssues.filter((c) => c.regulation === 'HIPAA' && c.status === 'compliant').length > 0 
                   ? 'Compliant' 
                   : 'Needs Review'}
               </p>
@@ -319,7 +357,7 @@ const SecurityDashboard: React.FC = () => {
               </h3>
               <div className="space-y-4">
                 {activeThreats.slice(0, 5).length > 0 ? (
-                  activeThreats.slice(0, 5).map((threat: any, index: number) => (
+                  activeThreats.slice(0, 5).map((threat, index: number) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <div className={`p-2 rounded-full ${getThreatLevelColor(threat.severity)}`}>
@@ -355,7 +393,7 @@ const SecurityDashboard: React.FC = () => {
               </h3>
               <div className="space-y-3">
                 {recommendations.slice(0, 5).length > 0 ? (
-                  recommendations.slice(0, 5).map((rec: any, index: number) => (
+                  recommendations.slice(0, 5).map((rec, index: number) => (
                     <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className={`p-1 rounded-full mt-1 ${
                         rec.priority === 'high' || rec.priority === 'immediate' ? 'bg-red-100 dark:bg-red-900/20' :
