@@ -102,17 +102,16 @@ const ContactPage: React.FC = () => {
       
       // Track form submission
       analytics.trackFormSubmit('Contact Form');
-      
-      if (!import.meta.env.PROD) {
-        console.log($1);
-      }
+
       window.location.href = '/thanks';
     } catch (error) {
       securityUtils.logSecurityEvent('contact_form_submission_failed', {
         email: data.email,
         error: error instanceof Error ? error.message : t('contact_page.form.unknown_error')
       }, 'low');
-      console.error('Error submitting form:', error);
+      if (!import.meta.env.PROD) {
+        console.error('Error submitting form:', error);
+      }
     }
   };
 

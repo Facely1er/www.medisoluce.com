@@ -572,13 +572,11 @@ const HIPAACheckPage: React.FC = () => {
           
           {/* Strategic Internal Links */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-            <a
-              href="https://toolkit.medisoluce.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/training"
               className="group p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all"
               data-analytics="pre-assessment-link"
-              data-link-destination="https://training.medisoluce.com"
+              data-link-destination="/training"
               aria-label="Access HIPAA training modules to strengthen your knowledge before assessment"
             >
               <div className="flex items-center space-x-2 mb-2">
@@ -590,15 +588,13 @@ const HIPAACheckPage: React.FC = () => {
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Strengthen your compliance knowledge with interactive training modules
               </p>
-            </a>
-            
-            <a
-              href="https://toolkit.medisoluce.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+
+            <Link
+              to="/toolkit"
               className="group p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all"
               data-analytics="pre-assessment-link"
-              data-link-destination="https://toolkit.medisoluce.com"
+              data-link-destination="/toolkit"
               aria-label="Download HIPAA compliance templates and implementation resources"
             >
               <div className="flex items-center space-x-2 mb-2">
@@ -610,7 +606,7 @@ const HIPAACheckPage: React.FC = () => {
               <p className="text-sm text-gray-600 dark:text-gray-300">
                 Access templates, policies, and implementation guides
               </p>
-            </a>
+            </Link>
             
             <Link 
               to="/dependency-manager"
