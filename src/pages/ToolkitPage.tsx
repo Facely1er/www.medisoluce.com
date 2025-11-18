@@ -348,11 +348,23 @@ const ToolkitPage: React.FC = () => {
                 >
                   All Categories
                   <span className="ml-2 px-2 py-0.5 rounded-full bg-white/20 text-xs font-semibold">
-                    {resources.length}
+                    {searchQuery === '' ? resources.length : resources.filter(resource =>
+                      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+                    ).length}
                   </span>
                 </Button>
                 {categories.map((category) => {
-                  const count = resources.filter(r => r.category === category).length;
+                  // Count resources in this category that also match the current search query
+                  const count = resources.filter(resource => {
+                    const matchesCategory = resource.category === category;
+                    const matchesSearch = searchQuery === '' ||
+                      resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+                    return matchesCategory && matchesSearch;
+                  }).length;
                   return (
                     <Button
                       key={category}
