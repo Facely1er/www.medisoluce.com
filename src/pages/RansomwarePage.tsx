@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Search, X, AlertTriangle, Shield, Lock, FileText, Download, CheckCircle, Clock, Users } from 'lucide-react';
+import { Search, X, AlertTriangle, Shield, FileText, CheckCircle, Clock } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
@@ -292,7 +292,7 @@ const RansomwarePage: React.FC = () => {
                 </Link>
                 <Link to="/contact">
                   <Button size="lg" variant="outline" className="bg-white text-primary-600 hover:bg-gray-100">
-                    Contact Security Experts
+                    {t('ransomware.contact_experts')}
                   </Button>
                 </Link>
               </div>

@@ -189,7 +189,77 @@ const frTranslation = {
     "recovery_operations": "Opérations de Récupération",
     "post_incident": "Analyse Post-Incident",
     "protect_organization": "Protégez votre organisation des rançongiciels",
-    "start_assessment": "Commencer l'Évaluation"
+    "start_assessment": "Commencer l'Évaluation",
+    "search_placeholder": "Rechercher des ressources sur les rançongiciels...",
+    "prevention_desc": "Mesures proactives pour prévenir les attaques de rançongiciels",
+    "prevention_features": {
+      "email": "Sécurité des e-mails et protection contre le hameçonnage",
+      "endpoint": "Protection des terminaux et antivirus",
+      "network": "Segmentation du réseau",
+      "access": "Contrôles d'accès et authentification",
+      "updates": "Mises à jour et correctifs de sécurité réguliers"
+    },
+    "detection_desc": "Détection précoce des menaces de rançongiciels",
+    "detection_features": {
+      "monitoring": "Surveillance des menaces en temps réel",
+      "anomaly": "Systèmes de détection d'anomalies",
+      "siem": "Gestion des informations et événements de sécurité (SIEM)",
+      "behavioral": "Analyse comportementale",
+      "intelligence": "Intégration du renseignement sur les menaces"
+    },
+    "response_desc": "Réponse immédiate aux incidents de rançongiciels",
+    "response_features": {
+      "playbooks": "Guides de réponse aux incidents",
+      "isolation": "Procédures d'isolement et de confinement",
+      "communication": "Protocoles de communication",
+      "legal": "Notification légale et réglementaire",
+      "forensic": "Enquête médico-légale"
+    },
+    "recovery_desc": "Récupération du système et continuité des activités",
+    "recovery_features": {
+      "backup": "Procédures de sauvegarde et de restauration",
+      "recovery_plans": "Plans de récupération du système",
+      "data_recovery": "Stratégies de récupération des données",
+      "continuity": "Planification de la continuité des activités",
+      "review": "Examen post-incident"
+    },
+    "initial_response_desc": "Actions immédiates pour contenir la menace",
+    "initial_response_actions": {
+      "isolate": "Isoler les systèmes affectés",
+      "disconnect": "Déconnecter du réseau",
+      "preserve": "Préserver les preuves",
+      "notify": "Notifier l'équipe de réponse aux incidents"
+    },
+    "impact_assessment_desc": "Évaluer la portée et l'impact de l'attaque",
+    "impact_assessment_actions": {
+      "identify": "Identifier les systèmes et données affectés",
+      "patient": "Évaluer l'impact sur les soins aux patients",
+      "exfiltration": "Déterminer l'exfiltration de données",
+      "disruption": "Évaluer la perturbation opérationnelle"
+    },
+    "recovery_operations_desc": "Restaurer les systèmes et les opérations",
+    "recovery_operations_actions": {
+      "restore": "Restaurer à partir de sauvegardes propres",
+      "verify": "Vérifier l'intégrité du système",
+      "reconnect": "Reconnecter les systèmes progressivement",
+      "monitor": "Surveiller la réinfection"
+    },
+    "post_incident_desc": "Apprendre et s'améliorer à partir de l'incident",
+    "post_incident_actions": {
+      "analysis": "Effectuer une analyse post-mortem",
+      "update": "Mettre à jour les contrôles de sécurité",
+      "training": "Améliorer les programmes de formation",
+      "document": "Documenter les leçons apprises"
+    },
+    "cta_description": "Commencez votre évaluation de protection contre les rançongiciels aujourd'hui et identifiez les vulnérabilités avant que les attaquants ne le fassent.",
+    "contact_experts": "Contacter les Experts en Sécurité",
+    "categories": {
+      "prevention": "Prévention",
+      "detection": "Détection",
+      "response": "Réponse",
+      "recovery": "Récupération",
+      "training": "Formation"
+    }
   },
   
   // Ransomware Resilience page
