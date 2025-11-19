@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
       <SEOHead 
         title={t('home.title')}
         description={t('home.subtitle')}
-        keywords="healthcare ransomware, ransomware resilience, HIPAA readiness, ransomware playbooks, business continuity, patient safety"
+        keywords="healthcare ransomware, ransomware resilience, HIPAA readiness, ransomware playbooks, business continuity, patient safety, data protection, PHI protection, HIPAA data security, healthcare data encryption"
       />
       
       <HeroBanner

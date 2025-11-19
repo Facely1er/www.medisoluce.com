@@ -76,7 +76,7 @@ const RansomwareResiliencePage: React.FC = () => {
       <SEOHead 
         title={t('ransomware_resilience.hero_title')}
         description={t('ransomware_resilience.hero_subtitle')}
-        keywords="healthcare ransomware, HIPAA readiness, ransomware playbooks, business continuity, patient safety"
+        keywords="healthcare ransomware, HIPAA readiness, ransomware playbooks, business continuity, patient safety, data protection, PHI protection, HIPAA data security, healthcare data encryption"
       />
       
       {/* Hero Section */}

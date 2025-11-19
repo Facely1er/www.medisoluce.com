@@ -342,10 +342,11 @@ const enTranslation = {
   // Ransomware page
   "ransomware": {
     "title": "Ransomware Protection & Response",
-    "subtitle": "Protect your healthcare organization from ransomware attacks with comprehensive prevention, detection, and response strategies.",
+    "subtitle": "Data protection is the primary defense against ransomware. Secure your PHI with encryption, backups, and access controls to prevent breaches and ensure HIPAA compliance.",
     "assess_readiness": "Assess Readiness",
     "view_playbook": "View Playbook",
     "protection_framework": "Ransomware Protection Framework",
+    "data_protection": "Data Protection",
     "prevention": "Prevention",
     "detection": "Detection",
     "response": "Response",
@@ -358,58 +359,73 @@ const enTranslation = {
     "protect_organization": "Protect your organization from ransomware",
     "start_assessment": "Start Assessment",
     "search_placeholder": "Search ransomware resources...",
-    "prevention_desc": "Proactive measures to prevent ransomware attacks",
+    "data_protection_desc": "Comprehensive data protection strategies to secure PHI and prevent ransomware data breaches",
+    "data_protection_features": {
+      "encryption": "PHI encryption at rest and in transit",
+      "backups": "Secure offline and immutable backup strategies",
+      "access_controls": "Access controls and data access monitoring",
+      "classification": "Data classification and inventory management",
+      "hipaa_compliance": "HIPAA-compliant data handling procedures"
+    },
+    "prevention_desc": "Proactive measures to prevent ransomware attacks with emphasis on data protection",
     "prevention_features": {
       "email": "Email security and phishing protection",
       "endpoint": "Endpoint protection and antivirus",
       "network": "Network segmentation",
-      "access": "Access controls and authentication",
-      "updates": "Regular security updates and patches"
+      "access": "Data access controls and authentication",
+      "updates": "Regular security updates and patches",
+      "encryption": "Data encryption for PHI protection"
     },
-    "detection_desc": "Early detection of ransomware threats",
+    "detection_desc": "Early detection of ransomware threats with focus on data access monitoring",
     "detection_features": {
       "monitoring": "Real-time threat monitoring",
       "anomaly": "Anomaly detection systems",
       "siem": "Security information and event management (SIEM)",
       "behavioral": "Behavioral analysis",
-      "intelligence": "Threat intelligence integration"
+      "intelligence": "Threat intelligence integration",
+      "data_access": "PHI access monitoring and anomaly detection"
     },
-    "response_desc": "Immediate response to ransomware incidents",
+    "response_desc": "Immediate response to ransomware incidents prioritizing data breach assessment",
     "response_features": {
       "playbooks": "Incident response playbooks",
       "isolation": "Isolation and containment procedures",
       "communication": "Communication protocols",
       "legal": "Legal and regulatory notification",
-      "forensic": "Forensic investigation"
+      "forensic": "Forensic investigation",
+      "data_assessment": "PHI exposure and data breach assessment"
     },
-    "recovery_desc": "System recovery and business continuity",
+    "recovery_desc": "System recovery and business continuity with emphasis on data recovery verification",
     "recovery_features": {
       "backup": "Backup and restoration procedures",
       "recovery_plans": "System recovery plans",
-      "data_recovery": "Data recovery strategies",
+      "data_recovery": "Data recovery strategies and verification",
       "continuity": "Business continuity planning",
-      "review": "Post-incident review"
+      "review": "Post-incident review",
+      "backup_integrity": "Backup integrity and data verification checks"
     },
-    "initial_response_desc": "Immediate actions to contain the threat",
+    "initial_response_desc": "Immediate actions to contain the threat and assess data protection status",
     "initial_response_actions": {
       "isolate": "Isolate affected systems",
       "disconnect": "Disconnect from network",
       "preserve": "Preserve evidence",
-      "notify": "Notify incident response team"
+      "notify": "Notify incident response team",
+      "data_assessment": "Assess data protection and PHI exposure risk"
     },
-    "impact_assessment_desc": "Evaluate the scope and impact of the attack",
+    "impact_assessment_desc": "Evaluate the scope and impact of the attack with focus on PHI exposure",
     "impact_assessment_actions": {
       "identify": "Identify affected systems and data",
       "patient": "Assess patient care impact",
-      "exfiltration": "Determine data exfiltration",
-      "disruption": "Evaluate operational disruption"
+      "exfiltration": "Determine data exfiltration and PHI exposure",
+      "disruption": "Evaluate operational disruption",
+      "phi_evaluation": "Evaluate PHI exposure and breach notification requirements"
     },
-    "recovery_operations_desc": "Restore systems and operations",
+    "recovery_operations_desc": "Restore systems and operations with data recovery verification",
     "recovery_operations_actions": {
       "restore": "Restore from clean backups",
-      "verify": "Verify system integrity",
+      "verify": "Verify system integrity and data recovery",
       "reconnect": "Reconnect systems gradually",
-      "monitor": "Monitor for reinfection"
+      "monitor": "Monitor for reinfection",
+      "data_verification": "Verify data integrity and backup restoration"
     },
     "post_incident_desc": "Learn and improve from the incident",
     "post_incident_actions": {
@@ -421,6 +437,7 @@ const enTranslation = {
     "cta_description": "Start your ransomware protection assessment today and identify vulnerabilities before attackers do.",
     "contact_experts": "Contact Security Experts",
     "categories": {
+      "data_protection": "Data Protection",
       "prevention": "Prevention",
       "detection": "Detection",
       "response": "Response",
@@ -432,8 +449,8 @@ const enTranslation = {
   // Ransomware Resilience page
   "ransomware_resilience": {
     "hero_title": "Healthcare Ransomware Resilience",
-    "hero_headline": "Defend Patient Care, Not Just Patient Data",
-    "hero_subtitle": "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
+    "hero_headline": "Defend Patient Care Through Data Protection",
+    "hero_subtitle": "Data protection is the primary defense against ransomware. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines with comprehensive PHI protection strategies so hospitals keep operating during cyber incidents.",
     "cta_run_calculator": "Run Impact Calculator",
     "cta_download_onepager": "Download 1-Pager",
     "stats_section_title": "Ransomware Reality in Healthcare",
@@ -447,16 +464,16 @@ const enTranslation = {
     "stat_3_description": "Large breaches affecting 500+ records reported to HHS",
     "stat_3_note": "Source: HHS breach portal.",
     "feature_hipaa_title": "HIPAA/HITECH Readiness",
-    "feature_hipaa_desc": "PHI data-flow mapping, gap remediation, policies, training.",
+    "feature_hipaa_desc": "PHI data-flow mapping, gap remediation, policies, training with emphasis on data protection.",
     "feature_playbooks_title": "Ransomware Playbooks",
-    "feature_playbooks_desc": "Tabletop drills, backup/restore integrity, privilege hardening.",
+    "feature_playbooks_desc": "Tabletop drills, backup/restore integrity, privilege hardening, and data breach response procedures.",
     "feature_continuity_title": "Continuity Baselines",
-    "feature_continuity_desc": "Clinical operations prioritization, exec dashboards, recovery SLAs.",
-    "feature_controls_title": "Built-In Controls",
-    "feature_control_1": "Vendor breach isolation (BAA/third-party)",
-    "feature_control_2": "Config baselines & vulnerability watchlist",
-    "feature_control_3": "PHI minimization & secure data-flows",
-    "feature_control_4": "Exec dashboard & 24h readiness checklist",
+    "feature_continuity_desc": "Clinical operations prioritization, exec dashboards, recovery SLAs with data recovery verification.",
+    "feature_controls_title": "Built-In Data Protection Controls",
+    "feature_control_1": "Vendor breach isolation (BAA/third-party) with PHI exposure assessment",
+    "feature_control_2": "Config baselines & vulnerability watchlist with data encryption monitoring",
+    "feature_control_3": "PHI minimization & secure data-flows with access controls",
+    "feature_control_4": "Exec dashboard & 24h readiness checklist with data protection status",
     "pricing_section_title": "The Healing Numbers - Cost Transparency",
     "pricing_hipaa_desc": "HIPAA/Privacy Program",
     "pricing_hipaa_market": "$145,000",
@@ -553,14 +570,14 @@ const enTranslation = {
       },
       "ransomware_protection": {
         "title": "Ransomware Protection Strategies",
-        "description": "Advanced cybersecurity for healthcare organizations",
+        "description": "Advanced cybersecurity for healthcare organizations with focus on data protection",
         "duration": "3 hours",
         "level": "Advanced",
         "topics": {
           "attack_vectors": "Ransomware Attack Vectors",
-          "prevention": "Prevention Strategies",
-          "incident_response": "Incident Response Planning",
-          "recovery": "Recovery Procedures"
+          "prevention": "Prevention Strategies with Data Protection",
+          "incident_response": "Incident Response Planning & PHI Breach Assessment",
+          "recovery": "Recovery Procedures & Data Verification"
         }
       }
     },
@@ -583,10 +600,10 @@ const enTranslation = {
       },
       "cybersecurity": {
         "name": "Cybersecurity Healthcare Professional",
-        "description": "Specialized in healthcare cybersecurity",
+        "description": "Specialized in healthcare cybersecurity with data protection focus",
         "requirements": {
-          "ransomware": "Complete Ransomware Protection",
-          "security": "Pass security assessment"
+          "ransomware": "Complete Ransomware Protection module with data protection focus",
+          "security": "Pass security assessment including PHI protection"
         }
       }
     },

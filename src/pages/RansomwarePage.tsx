@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Search, X, AlertTriangle, Shield, FileText, CheckCircle, Clock } from 'lucide-react';
+import { Search, X, AlertTriangle, Shield, FileText, CheckCircle, Clock, Lock } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
@@ -14,6 +14,7 @@ const RansomwarePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [
+    t('ransomware.categories.data_protection'),
     t('ransomware.categories.prevention'),
     t('ransomware.categories.detection'),
     t('ransomware.categories.response'),
@@ -23,6 +24,18 @@ const RansomwarePage: React.FC = () => {
 
   const protectionFramework = [
     {
+      title: t('ransomware.data_protection'),
+      description: t('ransomware.data_protection_desc'),
+      icon: <Lock className="h-8 w-8 text-primary-500" />,
+      features: [
+        t('ransomware.data_protection_features.encryption'),
+        t('ransomware.data_protection_features.backups'),
+        t('ransomware.data_protection_features.access_controls'),
+        t('ransomware.data_protection_features.classification'),
+        t('ransomware.data_protection_features.hipaa_compliance')
+      ]
+    },
+    {
       title: t('ransomware.prevention'),
       description: t('ransomware.prevention_desc'),
       icon: <Shield className="h-8 w-8 text-primary-500" />,
@@ -31,7 +44,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.prevention_features.endpoint'),
         t('ransomware.prevention_features.network'),
         t('ransomware.prevention_features.access'),
-        t('ransomware.prevention_features.updates')
+        t('ransomware.prevention_features.updates'),
+        t('ransomware.prevention_features.encryption')
       ]
     },
     {
@@ -43,7 +57,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.detection_features.anomaly'),
         t('ransomware.detection_features.siem'),
         t('ransomware.detection_features.behavioral'),
-        t('ransomware.detection_features.intelligence')
+        t('ransomware.detection_features.intelligence'),
+        t('ransomware.detection_features.data_access')
       ]
     },
     {
@@ -55,7 +70,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.response_features.isolation'),
         t('ransomware.response_features.communication'),
         t('ransomware.response_features.legal'),
-        t('ransomware.response_features.forensic')
+        t('ransomware.response_features.forensic'),
+        t('ransomware.response_features.data_assessment')
       ]
     },
     {
@@ -67,7 +83,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.recovery_features.recovery_plans'),
         t('ransomware.recovery_features.data_recovery'),
         t('ransomware.recovery_features.continuity'),
-        t('ransomware.recovery_features.review')
+        t('ransomware.recovery_features.review'),
+        t('ransomware.recovery_features.backup_integrity')
       ]
     }
   ];
@@ -80,7 +97,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.initial_response_actions.isolate'),
         t('ransomware.initial_response_actions.disconnect'),
         t('ransomware.initial_response_actions.preserve'),
-        t('ransomware.initial_response_actions.notify')
+        t('ransomware.initial_response_actions.notify'),
+        t('ransomware.initial_response_actions.data_assessment')
       ]
     },
     {
@@ -90,7 +108,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.impact_assessment_actions.identify'),
         t('ransomware.impact_assessment_actions.patient'),
         t('ransomware.impact_assessment_actions.exfiltration'),
-        t('ransomware.impact_assessment_actions.disruption')
+        t('ransomware.impact_assessment_actions.disruption'),
+        t('ransomware.impact_assessment_actions.phi_evaluation')
       ]
     },
     {
@@ -100,7 +119,8 @@ const RansomwarePage: React.FC = () => {
         t('ransomware.recovery_operations_actions.restore'),
         t('ransomware.recovery_operations_actions.verify'),
         t('ransomware.recovery_operations_actions.reconnect'),
-        t('ransomware.recovery_operations_actions.monitor')
+        t('ransomware.recovery_operations_actions.monitor'),
+        t('ransomware.recovery_operations_actions.data_verification')
       ]
     },
     {
@@ -120,7 +140,7 @@ const RansomwarePage: React.FC = () => {
       <SEOHead 
         title={t('ransomware.title')}
         description={t('ransomware.subtitle')}
-        keywords="healthcare ransomware, ransomware protection, HIPAA ransomware, healthcare cybersecurity, ransomware response"
+        keywords="healthcare ransomware, ransomware protection, HIPAA ransomware, healthcare cybersecurity, ransomware response, data protection, PHI protection, HIPAA data security, healthcare data encryption"
       />
       
       <div className="py-8">

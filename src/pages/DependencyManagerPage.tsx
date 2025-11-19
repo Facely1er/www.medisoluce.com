@@ -642,9 +642,9 @@ const DependencyManagerPage: React.FC = () => {
                     to="/ransomware"
                     className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium ml-1"
                     data-analytics="dependency-security-link"
-                    aria-label="Learn about ransomware protection for your critical healthcare systems"
+                    aria-label="Learn about data protection and ransomware defense for your critical healthcare systems"
                   >
-                    Explore our ransomware protection strategies
+                    Explore our data protection and ransomware defense strategies
                   </Link>
                 </p>
                 <p className="text-gray-600 dark:text-gray-300">

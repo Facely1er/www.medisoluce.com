@@ -142,7 +142,7 @@ const ToolkitPage: React.FC = () => {
     {
       id: '8',
       title: 'Ransomware Response Playbook',
-      description: 'Detailed playbook for preparing for and responding to ransomware attacks in healthcare.',
+      description: 'Detailed playbook for preparing for and responding to ransomware attacks in healthcare with emphasis on data protection and PHI security.',
       fileType: 'md',
       downloadLink: '/downloads/ransomware-response-playbook.md',
       category: 'Ransomware',

@@ -341,10 +341,11 @@ const frTranslation = {
   // Ransomware page
   "ransomware": {
     "title": "Protection et Réponse aux Rançongiciels",
-    "subtitle": "Protégez votre organisation de santé contre les attaques de rançongiciels avec des stratégies complètes de prévention, détection et réponse.",
+    "subtitle": "La protection des données est la défense principale contre les rançongiciels. Sécurisez vos RPS avec le chiffrement, les sauvegardes et les contrôles d'accès pour prévenir les violations et assurer la conformité HIPAA.",
     "assess_readiness": "Évaluer la Préparation",
     "view_playbook": "Voir le Guide",
     "protection_framework": "Cadre de Protection contre les Rançongiciels",
+    "data_protection": "Protection des Données",
     "prevention": "Prévention",
     "detection": "Détection",
     "response": "Réponse",
@@ -357,58 +358,73 @@ const frTranslation = {
     "protect_organization": "Protégez votre organisation des rançongiciels",
     "start_assessment": "Commencer l'Évaluation",
     "search_placeholder": "Rechercher des ressources sur les rançongiciels...",
-    "prevention_desc": "Mesures proactives pour prévenir les attaques de rançongiciels",
+    "data_protection_desc": "Stratégies complètes de protection des données pour sécuriser les RPS et prévenir les violations de données par rançongiciels",
+    "data_protection_features": {
+      "encryption": "Chiffrement des RPS au repos et en transit",
+      "backups": "Stratégies de sauvegarde hors ligne et immuables sécurisées",
+      "access_controls": "Contrôles d'accès et surveillance de l'accès aux données",
+      "classification": "Classification des données et gestion de l'inventaire",
+      "hipaa_compliance": "Procédures de manipulation des données conformes à la HIPAA"
+    },
+    "prevention_desc": "Mesures proactives pour prévenir les attaques de rançongiciels avec accent sur la protection des données",
     "prevention_features": {
       "email": "Sécurité des e-mails et protection contre le hameçonnage",
       "endpoint": "Protection des terminaux et antivirus",
       "network": "Segmentation du réseau",
-      "access": "Contrôles d'accès et authentification",
-      "updates": "Mises à jour et correctifs de sécurité réguliers"
+      "access": "Contrôles d'accès aux données et authentification",
+      "updates": "Mises à jour et correctifs de sécurité réguliers",
+      "encryption": "Chiffrement des données pour la protection des RPS"
     },
-    "detection_desc": "Détection précoce des menaces de rançongiciels",
+    "detection_desc": "Détection précoce des menaces de rançongiciels avec focus sur la surveillance de l'accès aux données",
     "detection_features": {
       "monitoring": "Surveillance des menaces en temps réel",
       "anomaly": "Systèmes de détection d'anomalies",
       "siem": "Gestion des informations et événements de sécurité (SIEM)",
       "behavioral": "Analyse comportementale",
-      "intelligence": "Intégration du renseignement sur les menaces"
+      "intelligence": "Intégration du renseignement sur les menaces",
+      "data_access": "Surveillance de l'accès aux RPS et détection d'anomalies"
     },
-    "response_desc": "Réponse immédiate aux incidents de rançongiciels",
+    "response_desc": "Réponse immédiate aux incidents de rançongiciels en priorisant l'évaluation des violations de données",
     "response_features": {
       "playbooks": "Guides de réponse aux incidents",
       "isolation": "Procédures d'isolement et de confinement",
       "communication": "Protocoles de communication",
       "legal": "Notification légale et réglementaire",
-      "forensic": "Enquête médico-légale"
+      "forensic": "Enquête médico-légale",
+      "data_assessment": "Évaluation de l'exposition des RPS et des violations de données"
     },
-    "recovery_desc": "Récupération du système et continuité des activités",
+    "recovery_desc": "Récupération du système et continuité des activités avec accent sur la vérification de la récupération des données",
     "recovery_features": {
       "backup": "Procédures de sauvegarde et de restauration",
       "recovery_plans": "Plans de récupération du système",
-      "data_recovery": "Stratégies de récupération des données",
+      "data_recovery": "Stratégies de récupération des données et vérification",
       "continuity": "Planification de la continuité des activités",
-      "review": "Examen post-incident"
+      "review": "Examen post-incident",
+      "backup_integrity": "Vérification de l'intégrité des sauvegardes et des données"
     },
-    "initial_response_desc": "Actions immédiates pour contenir la menace",
+    "initial_response_desc": "Actions immédiates pour contenir la menace et évaluer le statut de protection des données",
     "initial_response_actions": {
       "isolate": "Isoler les systèmes affectés",
       "disconnect": "Déconnecter du réseau",
       "preserve": "Préserver les preuves",
-      "notify": "Notifier l'équipe de réponse aux incidents"
+      "notify": "Notifier l'équipe de réponse aux incidents",
+      "data_assessment": "Évaluer la protection des données et le risque d'exposition des RPS"
     },
-    "impact_assessment_desc": "Évaluer la portée et l'impact de l'attaque",
+    "impact_assessment_desc": "Évaluer la portée et l'impact de l'attaque avec focus sur l'exposition des RPS",
     "impact_assessment_actions": {
       "identify": "Identifier les systèmes et données affectés",
       "patient": "Évaluer l'impact sur les soins aux patients",
-      "exfiltration": "Déterminer l'exfiltration de données",
-      "disruption": "Évaluer la perturbation opérationnelle"
+      "exfiltration": "Déterminer l'exfiltration de données et l'exposition des RPS",
+      "disruption": "Évaluer la perturbation opérationnelle",
+      "phi_evaluation": "Évaluer l'exposition des RPS et les exigences de notification de violation"
     },
-    "recovery_operations_desc": "Restaurer les systèmes et les opérations",
+    "recovery_operations_desc": "Restaurer les systèmes et les opérations avec vérification de la récupération des données",
     "recovery_operations_actions": {
       "restore": "Restaurer à partir de sauvegardes propres",
-      "verify": "Vérifier l'intégrité du système",
+      "verify": "Vérifier l'intégrité du système et la récupération des données",
       "reconnect": "Reconnecter les systèmes progressivement",
-      "monitor": "Surveiller la réinfection"
+      "monitor": "Surveiller la réinfection",
+      "data_verification": "Vérifier l'intégrité des données et la restauration des sauvegardes"
     },
     "post_incident_desc": "Apprendre et s'améliorer à partir de l'incident",
     "post_incident_actions": {
@@ -420,6 +436,7 @@ const frTranslation = {
     "cta_description": "Commencez votre évaluation de protection contre les rançongiciels aujourd'hui et identifiez les vulnérabilités avant que les attaquants ne le fassent.",
     "contact_experts": "Contacter les Experts en Sécurité",
     "categories": {
+      "data_protection": "Protection des Données",
       "prevention": "Prévention",
       "detection": "Détection",
       "response": "Réponse",
@@ -431,8 +448,8 @@ const frTranslation = {
   // Ransomware Resilience page
   "ransomware_resilience": {
     "hero_title": "Résilience aux Rançongiciels dans la Santé",
-    "hero_headline": "Défendre les Soins aux Patients, Pas Seulement les Données",
-    "hero_subtitle": "Les rançongiciels constituent un risque pour la sécurité des patients. MediSoluce unit la préparation HIPAA/HITECH, les guides de réponse aux rançongiciels et les bases de continuité pour que les hôpitaux continuent de fonctionner pendant les incidents cybernétiques.",
+    "hero_headline": "Défendre les Soins aux Patients par la Protection des Données",
+    "hero_subtitle": "La protection des données est la défense principale contre les rançongiciels. MediSoluce unit la préparation HIPAA/HITECH, les guides de réponse aux rançongiciels et les bases de continuité avec des stratégies complètes de protection des RPS pour que les hôpitaux continuent de fonctionner pendant les incidents cybernétiques.",
     "cta_run_calculator": "Lancer le Calculateur d'Impact",
     "cta_download_onepager": "Télécharger la Note d'Information",
     "stats_section_title": "Réalité des Rançongiciels dans la Santé",
@@ -446,16 +463,16 @@ const frTranslation = {
     "stat_3_description": "Grandes violations affectant 500+ enregistrements signalées au HHS",
     "stat_3_note": "Source: Portail des violations HHS.",
     "feature_hipaa_title": "Préparation HIPAA/HITECH",
-    "feature_hipaa_desc": "Cartographie des flux de données PHI, correction des lacunes, politiques, formation.",
+    "feature_hipaa_desc": "Cartographie des flux de données PHI, correction des lacunes, politiques, formation avec accent sur la protection des données.",
     "feature_playbooks_title": "Guides de Rançongiciels",
-    "feature_playbooks_desc": "Exercices de table ronde, intégrité sauvegarde/restauration, durcissement des privilèges.",
+    "feature_playbooks_desc": "Exercices de table ronde, intégrité sauvegarde/restauration, durcissement des privilèges et procédures de réponse aux violations de données.",
     "feature_continuity_title": "Bases de Continuité",
-    "feature_continuity_desc": "Priorisation des opérations cliniques, tableaux de bord exécutifs, SLA de récupération.",
-    "feature_controls_title": "Contrôles Intégrés",
-    "feature_control_1": "Isolation des violations des fournisseurs (BAA/tiers)",
-    "feature_control_2": "Configurations de base et liste de surveillance des vulnérabilités",
-    "feature_control_3": "Minimisation PHI et flux de données sécurisés",
-    "feature_control_4": "Tableau de bord exécutif et liste de contrôle de préparation 24h",
+    "feature_continuity_desc": "Priorisation des opérations cliniques, tableaux de bord exécutifs, SLA de récupération avec vérification de la récupération des données.",
+    "feature_controls_title": "Contrôles de Protection des Données Intégrés",
+    "feature_control_1": "Isolation des violations des fournisseurs (BAA/tiers) avec évaluation de l'exposition des RPS",
+    "feature_control_2": "Configurations de base et liste de surveillance des vulnérabilités avec surveillance du chiffrement des données",
+    "feature_control_3": "Minimisation PHI et flux de données sécurisés avec contrôles d'accès",
+    "feature_control_4": "Tableau de bord exécutif et liste de contrôle de préparation 24h avec statut de protection des données",
     "pricing_section_title": "Les Chiffres de la Guérison - Transparence des Coûts",
     "pricing_hipaa_desc": "Programme HIPAA/Confidentialité",
     "pricing_hipaa_market": "145 000 $",
@@ -552,14 +569,14 @@ const frTranslation = {
       },
       "ransomware_protection": {
         "title": "Stratégies de Protection contre les Rançongiciels",
-        "description": "Cybersécurité avancée pour les organisations de santé",
+        "description": "Cybersécurité avancée pour les organisations de santé avec focus sur la protection des données",
         "duration": "3 heures",
         "level": "Avancé",
         "topics": {
           "attack_vectors": "Vecteurs d'Attaque des Rançongiciels",
-          "prevention": "Stratégies de Prévention",
-          "incident_response": "Planification de la Réponse aux Incidents",
-          "recovery": "Procédures de Récupération"
+          "prevention": "Stratégies de Prévention avec Protection des Données",
+          "incident_response": "Planification de la Réponse aux Incidents et Évaluation des Violations RPS",
+          "recovery": "Procédures de Récupération et Vérification des Données"
         }
       }
     },
@@ -582,10 +599,10 @@ const frTranslation = {
       },
       "cybersecurity": {
         "name": "Professionnel en Cybersécurité en Santé",
-        "description": "Spécialisé en cybersécurité en santé",
+        "description": "Spécialisé en cybersécurité en santé avec focus sur la protection des données",
         "requirements": {
-          "ransomware": "Terminer la Protection contre les Rançongiciels",
-          "security": "Réussir l'évaluation de sécurité"
+          "ransomware": "Terminer le module de Protection contre les Rançongiciels avec focus sur la protection des données",
+          "security": "Réussir l'évaluation de sécurité incluant la protection des RPS"
         }
       }
     },
