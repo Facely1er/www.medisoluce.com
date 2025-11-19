@@ -190,7 +190,77 @@ const enTranslation = {
     "recovery_operations": "Recovery Operations",
     "post_incident": "Post-Incident Analysis",
     "protect_organization": "Protect your organization from ransomware",
-    "start_assessment": "Start Assessment"
+    "start_assessment": "Start Assessment",
+    "search_placeholder": "Search ransomware resources...",
+    "prevention_desc": "Proactive measures to prevent ransomware attacks",
+    "prevention_features": {
+      "email": "Email security and phishing protection",
+      "endpoint": "Endpoint protection and antivirus",
+      "network": "Network segmentation",
+      "access": "Access controls and authentication",
+      "updates": "Regular security updates and patches"
+    },
+    "detection_desc": "Early detection of ransomware threats",
+    "detection_features": {
+      "monitoring": "Real-time threat monitoring",
+      "anomaly": "Anomaly detection systems",
+      "siem": "Security information and event management (SIEM)",
+      "behavioral": "Behavioral analysis",
+      "intelligence": "Threat intelligence integration"
+    },
+    "response_desc": "Immediate response to ransomware incidents",
+    "response_features": {
+      "playbooks": "Incident response playbooks",
+      "isolation": "Isolation and containment procedures",
+      "communication": "Communication protocols",
+      "legal": "Legal and regulatory notification",
+      "forensic": "Forensic investigation"
+    },
+    "recovery_desc": "System recovery and business continuity",
+    "recovery_features": {
+      "backup": "Backup and restoration procedures",
+      "recovery_plans": "System recovery plans",
+      "data_recovery": "Data recovery strategies",
+      "continuity": "Business continuity planning",
+      "review": "Post-incident review"
+    },
+    "initial_response_desc": "Immediate actions to contain the threat",
+    "initial_response_actions": {
+      "isolate": "Isolate affected systems",
+      "disconnect": "Disconnect from network",
+      "preserve": "Preserve evidence",
+      "notify": "Notify incident response team"
+    },
+    "impact_assessment_desc": "Evaluate the scope and impact of the attack",
+    "impact_assessment_actions": {
+      "identify": "Identify affected systems and data",
+      "patient": "Assess patient care impact",
+      "exfiltration": "Determine data exfiltration",
+      "disruption": "Evaluate operational disruption"
+    },
+    "recovery_operations_desc": "Restore systems and operations",
+    "recovery_operations_actions": {
+      "restore": "Restore from clean backups",
+      "verify": "Verify system integrity",
+      "reconnect": "Reconnect systems gradually",
+      "monitor": "Monitor for reinfection"
+    },
+    "post_incident_desc": "Learn and improve from the incident",
+    "post_incident_actions": {
+      "analysis": "Conduct post-mortem analysis",
+      "update": "Update security controls",
+      "training": "Enhance training programs",
+      "document": "Document lessons learned"
+    },
+    "cta_description": "Start your ransomware protection assessment today and identify vulnerabilities before attackers do.",
+    "contact_experts": "Contact Security Experts",
+    "categories": {
+      "prevention": "Prevention",
+      "detection": "Detection",
+      "response": "Response",
+      "recovery": "Recovery",
+      "training": "Training"
+    }
   },
   
   // Ransomware Resilience page
