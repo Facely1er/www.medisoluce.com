@@ -207,7 +207,135 @@ const frTranslation = {
     "recovery_strategy": "Stratégie de Récupération",
     "testing_training": "Tests et Formation",
     "ready_strengthen": "Prêt à renforcer votre planification de continuité?",
-    "start_planning": "Commencer la Planification"
+    "start_planning": "Commencer la Planification",
+    "cta_description": "Commencez à créer des plans de continuité complets pour votre organisation de santé.",
+    "continuity_areas": {
+      "system_recovery": {
+        "title": "Récupération du Système",
+        "description": "Procédures détaillées pour restaurer les systèmes de santé critiques",
+        "features": {
+          "rto": "Objectifs de temps de récupération",
+          "prioritization": "Priorisation des systèmes",
+          "restoration": "Restauration des données"
+        }
+      },
+      "operational_procedures": {
+        "title": "Procédures Opérationnelles",
+        "description": "Flux de travail alternatifs pendant les pannes système",
+        "features": {
+          "manual": "Processus manuels",
+          "communication": "Protocoles de communication",
+          "allocation": "Allocation des ressources"
+        }
+      },
+      "staff_response": {
+        "title": "Réponse du Personnel",
+        "description": "Rôles et responsabilités du personnel pendant les incidents",
+        "features": {
+          "teams": "Équipes de réponse",
+          "training": "Exigences de formation",
+          "chains": "Chaînes de communication"
+        }
+      },
+      "patient_safety": {
+        "title": "Sécurité des Patients",
+        "description": "Maintenir les soins aux patients pendant les perturbations",
+        "features": {
+          "continuity": "Continuité des soins critiques",
+          "data_access": "Accès aux données des patients",
+          "protocols": "Protocoles de traitement"
+        }
+      }
+    },
+    "risk_categories": {
+      "natural_disasters": "Catastrophes Naturelles",
+      "technology_failures": "Défaillances Technologiques",
+      "cyber_security_incidents": "Incidents de Cybersécurité",
+      "power_outages": "Pannes d'Électricité",
+      "staff_shortages": "Pénuries de Personnel",
+      "supply_chain_disruptions": "Perturbations de la Chaîne d'Approvisionnement",
+      "facility_issues": "Problèmes d'Installation",
+      "regulatory_changes": "Changements Réglementaires"
+    },
+    "status": {
+      "active": "Actif",
+      "draft": "Brouillon",
+      "under_review": "En Révision"
+    },
+    "manager": {
+      "title": "Gestionnaire de Plans de Continuité",
+      "subtitle": "Créez et gérez des plans de continuité des activités pour votre organisation de santé",
+      "back_to_overview": "Retour à l'Aperçu",
+      "edit_plan": "Modifier le Plan de Continuité",
+      "create_plan": "Créer un Plan de Continuité",
+      "form": {
+        "plan_name": "Nom du Plan *",
+        "plan_name_placeholder": "ex: Plan de Panne du Système DSE",
+        "risk_category": "Catégorie de Risque",
+        "risk_category_select": "Sélectionner une Catégorie de Risque",
+        "impact_level": "Niveau d'Impact",
+        "recovery_time_objective": "Objectif de Temps de Récupération (RTO)",
+        "recovery_time_objective_placeholder": "ex: 4 heures, 24 heures",
+        "recovery_point_objective": "Objectif de Point de Récupération (RPO)",
+        "recovery_point_objective_placeholder": "ex: 1 heure, 8 heures",
+        "responsible_party": "Partie Responsable",
+        "responsible_party_placeholder": "ex: Directeur TI, Gestionnaire des Installations",
+        "testing_schedule": "Calendrier de Tests",
+        "testing_schedule_placeholder": "ex: Trimestriel, Annuel",
+        "last_tested": "Dernier Test",
+        "plan_description": "Description du Plan",
+        "plan_description_placeholder": "Brève description de ce plan de continuité...",
+        "recovery_procedures": "Procédures de Récupération",
+        "recovery_procedures_placeholder": "Procédures de récupération détaillées étape par étape..."
+      }
+    },
+    "modal": {
+      "delete_title": "Confirmer la Suppression",
+      "delete_message": "Êtes-vous sûr de vouloir supprimer ce plan de continuité? Cette action ne peut pas être annulée.",
+      "cancel": "Annuler",
+      "delete": "Supprimer"
+    },
+    "table": {
+      "plan_name": "Nom du Plan",
+      "risk_category": "Catégorie de Risque",
+      "impact_level": "Niveau d'Impact",
+      "status": "Statut",
+      "actions": "Actions",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "download": "Télécharger",
+      "no_plans": "Aucun plan de continuité créé pour le moment",
+      "create_first": "Créez votre premier plan de continuité"
+    },
+    "template": {
+      "title": "MODÈLE DE PLAN DE CONTINUITÉ DES ACTIVITÉS",
+      "organization": "Organisation: [Nom de Votre Organisation]",
+      "plan_type": "Type de Plan: [Catégorie de Risque]",
+      "created": "Créé:",
+      "executive_summary": "RÉSUMÉ EXÉCUTIF",
+      "purpose": "Objectif: [Décrivez l'objectif de ce plan de continuité]",
+      "scope": "Portée: [Définissez ce que ce plan couvre]",
+      "authority": "Autorité: [Qui a l'autorité d'activer ce plan]",
+      "plan_activation": "ACTIVATION DU PLAN",
+      "activation_triggers": "Déclencheurs d'Activation:",
+      "activation_authority": "Autorité d'Activation:",
+      "primary": "Principal: [Nom et contact]",
+      "secondary": "Secondaire: [Nom et contact]",
+      "recovery_procedures": "PROCÉDURES DE RÉCUPÉRATION",
+      "phase_1": "Phase 1: Réponse Immédiate (0-4 heures)",
+      "phase_2": "Phase 2: Récupération à Court Terme (4-72 heures)",
+      "phase_3": "Phase 3: Récupération à Long Terme (72+ heures)",
+      "communication_plan": "PLAN DE COMMUNICATION",
+      "internal_communications": "Communications Internes:",
+      "external_communications": "Communications Externes:",
+      "testing_and_training": "TESTS ET FORMATION",
+      "testing_schedule": "Calendrier de Tests:",
+      "training_requirements": "Exigences de Formation:",
+      "approval": "APPROBATION",
+      "plan_approved_by": "Plan Approuvé Par: _________________ Date: _________",
+      "next_review_date": "Date de Prochaine Révision: _________________",
+      "generated_by": "Généré par la Plateforme de Conformité en Santé MediSoluce"
+    }
   },
   
   // Ransomware page
@@ -958,6 +1086,87 @@ const frTranslation = {
       "devices_none": "Aucune sécurité spécifique pour les appareils mobiles",
       "emergency_informal": "Des procédures d'urgence informelles existent",
       "emergency_none": "Aucune procédure d'accès d'urgence"
+    },
+    "questions": {
+      "risk_assessment": {
+        "text": "Votre organisation a-t-elle effectué une évaluation complète des risques au cours de la dernière année?",
+        "description": "HIPAA exige que les entités couvertes effectuent des évaluations régulières des risques pour identifier les vulnérabilités potentielles aux PHI.",
+        "options": {
+          "yes_comprehensive": "Oui, nous avons effectué une évaluation complète qui couvre tous les systèmes et processus",
+          "yes_partial": "Oui, mais elle était limitée en portée ou ne couvrait pas tous les systèmes",
+          "no_planned": "Non, mais nous en avons une prévue",
+          "no": "Non, nous n'avons pas effectué d'évaluation des risques"
+        }
+      },
+      "policies_procedures": {
+        "text": "Votre organisation dispose-t-elle de politiques et procédures HIPAA documentées?",
+        "description": "Des politiques et procédures écrites sont requises pour démontrer la conformité aux réglementations HIPAA.",
+        "options": {
+          "yes_comprehensive": "Oui, complètes et régulièrement mises à jour",
+          "yes_outdated": "Oui, mais elles doivent être mises à jour",
+          "partial": "Nous en avons certaines, mais pas toutes les politiques requises"
+        }
+      },
+      "employee_training": {
+        "text": "À quelle fréquence votre organisation mène-t-elle une formation HIPAA pour les employés?",
+        "description": "Une formation régulière garantit que le personnel comprend ses obligations pour protéger les informations des patients."
+      },
+      "encryption": {
+        "text": "Les PHI sont-ils chiffrés au repos et en transit dans vos systèmes?",
+        "description": "Le chiffrement est une spécification d'implémentation adressable sous la Règle de Sécurité HIPAA.",
+        "options": {
+          "both": "Oui, à la fois au repos et en transit"
+        }
+      },
+      "access_controls": {
+        "text": "Comment gérez-vous les contrôles d'accès aux systèmes contenant des PHI?",
+        "description": "Les contrôles d'accès garantissent que seul le personnel autorisé peut accéder aux informations de santé protégées.",
+        "options": {
+          "rbac_audit": "Accès basé sur les rôles avec audit et certification réguliers",
+          "rbac": "Contrôles d'accès basés sur les rôles sans révision régulière",
+          "basic": "Contrôles de base nom d'utilisateur/mot de passe"
+        }
+      },
+      "business_associates": {
+        "text": "Avez-vous des Contrats de Sous-traitant (BAAs) avec tous les fournisseurs qui accèdent aux PHI?",
+        "description": "Les BAAs sont requis pour tous les tiers qui accèdent, transmettent ou stockent des PHI en votre nom.",
+        "options": {
+          "all_reviewed": "Oui, avec tous les fournisseurs et régulièrement révisés",
+          "all": "Oui, avec tous les fournisseurs"
+        }
+      },
+      "incident_response": {
+        "text": "Votre organisation dispose-t-elle d'un plan de réponse aux incidents testé pour les violations de données?",
+        "description": "Un plan documenté et testé est essentiel pour une réponse appropriée aux incidents de sécurité.",
+        "options": {
+          "tested": "Oui, documenté et régulièrement testé",
+          "documented": "Oui, documenté mais non testé"
+        }
+      },
+      "audit_logs": {
+        "text": "Des journaux d'audit sont-ils maintenus pour les systèmes contenant des PHI?",
+        "description": "Les journaux d'audit aident à suivre qui a accédé aux PHI, quand et quelles actions ont été effectuées.",
+        "options": {
+          "comprehensive_monitored": "Oui, journaux complets avec surveillance active",
+          "comprehensive": "Oui, journaux complets sans surveillance active"
+        }
+      },
+      "device_security": {
+        "text": "Comment sécurisez-vous les appareils mobiles et les postes de travail qui accèdent aux PHI?",
+        "description": "La sécurité des appareils mobiles est essentielle alors que les soins de santé deviennent plus mobiles.",
+        "options": {
+          "mdm_encryption": "Solution MDM avec chiffrement, effacement à distance et politiques d'appareil",
+          "basic": "Mesures de sécurité de base (mots de passe uniquement)"
+        }
+      },
+      "emergency_access": {
+        "text": "Avez-vous des procédures pour l'accès d'urgence aux PHI pendant les pannes système?",
+        "description": "Les procédures d'accès d'urgence garantissent la continuité des soins aux patients pendant les pannes système.",
+        "options": {
+          "documented_tested": "Oui, documentées et régulièrement testées",
+          "documented": "Oui, documentées mais non testées"
+        }
+      }
     },
     "rules": {
       "privacy_description": "Protège la confidentialité des informations de santé individuellement identifiables",
