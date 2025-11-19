@@ -372,7 +372,7 @@ class ProjectHealthEnhancer {
               console.log(`✅ Fixed: ${issue.title}`);
             }
           }
-        } catch (error) {
+        } catch {
           console.error(`❌ Error fixing ${issue.title}:`, error);
           fixResults.push(false);
         }
@@ -904,7 +904,7 @@ class ProjectHealthEnhancer {
     window.fetch = async (...args) => {
       try {
         return await originalFetch(...args);
-      } catch (error) {
+      } catch {
         if (!import.meta.env.PROD) {
           console.log('🔄 Retrying failed fetch...');
         }

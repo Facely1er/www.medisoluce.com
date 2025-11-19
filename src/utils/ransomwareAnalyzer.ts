@@ -270,7 +270,8 @@ export function analyzeThreatTrends(items: RSSItem[]): ThreatTrend {
     return pubDate > last7d;
   });
   
-  const last24hItems = items.filter(item => {
+  // Filter items from last 24 hours (currently unused but kept for future use)
+  items.filter(item => {
     const pubDate = new Date(item.pubDate).getTime();
     return pubDate > last24h;
   });

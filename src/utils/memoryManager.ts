@@ -42,6 +42,7 @@ class MemoryManager {
     if (!('memory' in performance)) return;
 
     const checkMemory = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const memory = (performance as any).memory;
       const usagePercentage = (memory.usedJSHeapSize / memory.jsHeapSizeLimit) * 100;
       
@@ -72,6 +73,7 @@ class MemoryManager {
     // Detect potential memory leaks
     const leakDetector = {
       detachedNodes: new Set<Node>(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       largeObjects: new Map<string, any>(),
       eventListenerCount: 0
     };
@@ -103,11 +105,8 @@ class MemoryManager {
   private interceptCommonLeakSources() {
     // Intercept addEventListener to track listeners
     const originalAddEventListener = EventTarget.prototype.addEventListener;
-    const originalRemoveEventListener = EventTarget.prototype.removeEventListener;
     
     EventTarget.prototype.addEventListener = function(type, listener, options) {
-      // Track event listeners
-      const listenerId = `${type}-${Date.now()}-${Math.random()}`;
       
       if (typeof listener === 'function') {
         const wrappedListener = function(this: EventTarget, ...args: unknown[]) {
@@ -201,7 +200,9 @@ class MemoryManager {
     this.performCleanup();
     
     // Force garbage collection if available (Chrome DevTools)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).gc) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gc();
     }
   }
@@ -551,6 +552,7 @@ class MemoryManager {
 
   public getMemoryReport() {
     const profiles = JSON.parse(localStorage.getItem('memory-profiles') || '[]');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const current = ('memory' in performance) ? (performance as any).memory : null;
     
     return {

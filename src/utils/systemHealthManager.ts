@@ -747,7 +747,6 @@ class SystemHealthManager {
 
   private checkDataPrivacy(): boolean {
     // Check privacy controls
-    const hasConsentManagement = !!localStorage.getItem('user-consent');
     const hasDataMinimization = this.checkDataMinimization();
     const hasLocalStorage = this.hasSecureLocalStorage();
     
@@ -918,7 +917,7 @@ class SystemHealthManager {
     Storage.prototype.setItem = function(key: string, value: string) {
       try {
         originalSetItem.call(this, key, value);
-      } catch (error) {
+      } catch {
         if (!import.meta.env.PROD) {
           console.warn('localStorage quota exceeded, cleaning up...');
         }

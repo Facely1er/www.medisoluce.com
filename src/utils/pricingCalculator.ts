@@ -262,7 +262,13 @@ export function getPricingFactorsFromStorage(): PricingFactors {
     // Calculate ransomware score from impact assessments
     let ransomwareScore: number | undefined;
     if (impactAssessments.length > 0) {
-      const avgRisk = impactAssessments.reduce((sum: number, a: any) => {
+      interface ImpactAssessment {
+        patientImpact: number;
+        operationalImpact: number;
+        financialImpact: number;
+        complianceImpact: number;
+      }
+      const avgRisk = impactAssessments.reduce((sum: number, a: ImpactAssessment) => {
         const overallRisk = (a.patientImpact + a.operationalImpact + a.financialImpact + a.complianceImpact) / 4;
         return sum + overallRisk;
       }, 0) / impactAssessments.length;
@@ -271,14 +277,10 @@ export function getPricingFactorsFromStorage(): PricingFactors {
 
     // Count critical systems
     const numberOfSystems = dependencies.length;
-    const criticalSystems = dependencies.filter((d: any) => d.criticality === 'Critical').length;
 
     // Get organization size from profile or estimate
     const organizationSize = userProfile.organizationSize || 
       estimateOrganizationSize(userProfile.numberOfEmployees);
-
-    const hipaaRiskScore = hipaaScore ? (100 - hipaaScore) / 10 : undefined;
-    const ransomwareRiskScore = ransomwareScore ? (100 - ransomwareScore) / 10 : undefined;
     const riskLevel = calculateRiskLevel({ hipaa: hipaaScore, ransomware: ransomwareScore });
 
     return {

@@ -352,12 +352,12 @@ class PerformanceEnhancer {
 
   private removeUnusedElements(): void {
     // Remove elements marked as unused
-    document.querySelectorAll('[data-unused="true"]').forEach(_element => {
+    document.querySelectorAll('[data-unused="true"]').forEach(() => {
       // element.remove(); // Commented out to prevent conflicts with React DOM management
     });
     
     // Remove empty elements
-    document.querySelectorAll('div:empty, span:empty').forEach(_element => {
+    document.querySelectorAll('div:empty, span:empty').forEach(() => {
       if (!_element.hasAttribute('data-keep-empty')) {
         // element.remove(); // Commented out to prevent conflicts with React DOM management
       }
@@ -444,7 +444,7 @@ class PerformanceEnhancer {
     localStorage.setItem('performance-metrics', JSON.stringify(performanceData.slice(-100)));
   }
 
-  private notifyPerformanceImprovement(_improvement: Record<string, number>): void {
+  private notifyPerformanceImprovement(): void {
     if (typeof window !== 'undefined' && 'showToast' in window) {
       (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'success',

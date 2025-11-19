@@ -426,7 +426,7 @@ class ErrorHandler {
           height: window.innerHeight
         }
       };
-    } catch (_error) {
+    } catch {
       return {
         isAuthenticated: false,
         currentPage: 'unknown',
@@ -455,7 +455,7 @@ class ErrorHandler {
         language: navigator.language,
         batteryLevel: battery?.level ? Math.round(battery.level * 100) : undefined
       };
-    } catch (error) {
+    } catch {
       return {
         connectionType: 'unknown',
         devicePixelRatio: 1,
@@ -481,7 +481,8 @@ class ErrorHandler {
         }
       });
       
-      (window as any).Sentry.captureException(new Error(errorLog.message), {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).Sentry?.captureException(new Error(errorLog.message), {
         tags: {
           type: errorLog.type,
           environment: errorLog.environment,
@@ -501,7 +502,9 @@ class ErrorHandler {
   }
 
   private showUserError(message: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (typeof window !== 'undefined' && (window as any).showToast) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).showToast({
         type: 'error',
         title: 'Error',

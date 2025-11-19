@@ -10,6 +10,7 @@
  * - Schema-aware data organization
  */
 
+import React from 'react';
 import { securityUtils } from './securityUtils';
 
 // =============================================
@@ -333,7 +334,7 @@ class OptimizedLocalStorageManager {
             expiredCount++;
           }
         }
-      } catch (error) {
+      } catch {
         // Ignore parsing errors for metrics
       }
     });
@@ -360,7 +361,7 @@ class OptimizedLocalStorageManager {
             cleanedCount++;
           }
         }
-      } catch (error) {
+      } catch {
         // Remove corrupted items
         this.removeItem(key);
         cleanedCount++;
@@ -395,7 +396,7 @@ class OptimizedLocalStorageManager {
             size: itemString.length + key.length
           });
         }
-      } catch (error) {
+      } catch {
         // Remove corrupted items
         this.removeItem(key);
       }
@@ -516,7 +517,7 @@ export function useOptimizedLocalStorage<T>(
   key: string, 
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void, () => void] {
-  const storageManager = new OptimizedLocalStorageManager();
+  const storageManager = React.useMemo(() => new OptimizedLocalStorageManager(), []);
   
   // Get initial value
   const [storedValue, setStoredValue] = React.useState<T>(() => {
@@ -533,7 +534,7 @@ export function useOptimizedLocalStorage<T>(
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
     }
-  }, [key, storedValue]);
+  }, [key, storedValue, storageManager]);
 
   // Remove value function
   const removeValue = React.useCallback(() => {
@@ -543,7 +544,7 @@ export function useOptimizedLocalStorage<T>(
     } catch (error) {
       console.error(`Error removing localStorage key "${key}":`, error);
     }
-  }, [key, initialValue]);
+  }, [key, initialValue, storageManager]);
 
   return [storedValue, setValue, removeValue];
 }

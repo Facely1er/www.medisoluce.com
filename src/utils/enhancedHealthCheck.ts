@@ -357,7 +357,7 @@ class EnhancedHealthChecker {
     }
   }
 
-  private calculateContrastRatio(_color1: string, _color2: string): number {
+  private calculateContrastRatio(): number {
     // Simplified contrast calculation - would use a proper library in production
     // This is a placeholder that returns a reasonable value
     return 7; // Assume good contrast

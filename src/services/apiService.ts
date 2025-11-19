@@ -35,9 +35,6 @@ interface PaginationParams {
   sortOrder?: 'asc' | 'desc';
 }
 
-interface FilterParams {
-  [key: string]: unknown;
-}
 
 type UserProfileData = Record<string, unknown>;
 type AssessmentData = Record<string, unknown>;
@@ -791,7 +788,7 @@ class MediSoluceAPIService {
    */
   async testConnection(): Promise<APIResponse> {
     try {
-      const { data, error } = await this.supabase
+      const { error } = await this.supabase
         .from(this.getTableName('health_checks'))
         .select('id')
         .limit(1);
@@ -826,7 +823,7 @@ class MediSoluceAPIService {
         'audit_logs'
       ];
 
-      const stats: any = {};
+      const stats: Record<string, number | null> = {};
 
       for (const table of tables) {
         const { count, error } = await this.supabase

@@ -128,7 +128,7 @@ export class LocaleFormatter {
         maximumFractionDigits: 1,
         ...options
       }).format(value / 100);
-    } catch (error) {
+    } catch {
       return `${value}%`;
     }
   }
@@ -166,7 +166,7 @@ export class LocaleFormatter {
         minute: '2-digit',
         ...options
       }).format(dateObj);
-    } catch (error) {
+    } catch {
       return date.toString();
     }
   }
@@ -194,7 +194,7 @@ export class LocaleFormatter {
       }
       
       return this.formatDate(dateObj, { month: 'short', day: 'numeric' });
-    } catch (error) {
+    } catch {
       return date.toString();
     }
   }
