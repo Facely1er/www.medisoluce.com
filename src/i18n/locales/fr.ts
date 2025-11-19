@@ -622,6 +622,10 @@ const frTranslation = {
       "resource_toolkit": {
         "title": "Boîte à Outils de Ressources",
         "description": "Téléchargez des modèles et guides"
+      },
+      "ransomware_protection": {
+        "title": "Protection contre les Rançongiciels",
+        "description": "Apprenez les stratégies de protection des données"
       }
     },
     "levels": {

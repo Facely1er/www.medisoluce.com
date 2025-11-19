@@ -285,7 +285,7 @@ const TrainingPage: React.FC = () => {
             <h2 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-4">
               {t('training.related_resources')}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               <Link 
                 to="/hipaa-check"
                 className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
@@ -343,6 +343,21 @@ const TrainingPage: React.FC = () => {
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {t('training.related.resource_toolkit.description')}
+                </p>
+              </Link>
+
+              <Link 
+                to="/ransomware"
+                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-accent-300 dark:hover:border-accent-600 transition-colors"
+              >
+                <div className="flex items-center space-x-2 mb-2">
+                  <AlertTriangle className="h-5 w-5 text-accent-500" />
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {t('training.related.ransomware_protection.title')}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {t('training.related.ransomware_protection.description')}
                 </p>
               </Link>
             </div>

@@ -170,12 +170,34 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
           {/* Draw relationship lines */}
           {relationships.map((rel, index) => {
             const fromPos = nodePositions[rel.from];
-            // For internal dependencies, use nodePositions; for external, use externalPositions
-            const toPos = rel.toNode 
-              ? nodePositions[rel.to] 
-              : externalPositions[rel.to];
+            if (!fromPos) return null; // Skip if source node position not found
             
-            if (!fromPos || !toPos) return null;
+            // For internal dependencies, use nodePositions; for external, use externalPositions
+            let toPos: { x: number; y: number } | undefined;
+            if (rel.toNode) {
+              // Internal dependency - use nodePositions
+              toPos = nodePositions[rel.to];
+            } else {
+              // External dependency - use externalPositions, or calculate on-the-fly if missing
+              toPos = externalPositions[rel.to];
+              // If position not calculated, create a default position to the right of source
+              if (!toPos) {
+                // Calculate a default position for external dependencies that weren't in the memo
+                // Place them to the right of the source node
+                const externalCount = relationships.filter(
+                  r => r.from === rel.from && !r.toNode
+                ).length;
+                const externalIndex = relationships
+                  .filter(r => r.from === rel.from && !r.toNode)
+                  .findIndex(r => r.to === rel.to);
+                toPos = {
+                  x: fromPos.x + 250 + (externalIndex * 20),
+                  y: fromPos.y + (externalIndex * 30)
+                };
+              }
+            }
+            
+            if (!toPos) return null;
             
             return (
               <line
@@ -208,8 +230,42 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
           </defs>
 
           {/* Draw external dependency markers */}
-          {Object.entries(externalPositions).map(([extName, extPos]) => {
-            return (
+          {(() => {
+            // Get unique external dependencies (deduplicate by name)
+            const uniqueExternalDeps = new Map<string, { rel: typeof relationships[0]; extPos: { x: number; y: number } }>();
+            
+            relationships
+              .filter(rel => !rel.toNode) // Only external dependencies
+              .forEach(rel => {
+                // Only process if we haven't seen this external dependency name yet
+                if (!uniqueExternalDeps.has(rel.to)) {
+                  // Get position from externalPositions, or calculate on-the-fly if missing
+                  let extPos = externalPositions[rel.to];
+                  if (!extPos) {
+                    const fromPos = nodePositions[rel.from];
+                    if (fromPos) {
+                      // Calculate position to the right of source node
+                      const externalCount = relationships.filter(
+                        r => r.from === rel.from && !r.toNode
+                      ).length;
+                      const externalIndex = relationships
+                        .filter(r => r.from === rel.from && !r.toNode)
+                        .findIndex(r => r.to === rel.to);
+                      extPos = {
+                        x: fromPos.x + 250 + (externalIndex * 20),
+                        y: fromPos.y + (externalIndex * 30)
+                      };
+                    } else {
+                      return; // Skip if source position not found
+                    }
+                  }
+                  
+                  uniqueExternalDeps.set(rel.to, { rel, extPos });
+                }
+              });
+            
+            // Render unique external dependencies
+            return Array.from(uniqueExternalDeps.entries()).map(([extName, { extPos }]) => (
               <g key={`ext-${extName}`}>
                 {/* External dependency circle (smaller, dashed border) */}
                 <circle
@@ -232,8 +288,8 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
                   {extName.length > 12 ? extName.substring(0, 12) + '...' : extName}
                 </text>
               </g>
-            );
-          })}
+            ));
+          })()}
 
           {/* Draw nodes */}
           {dependencies.map((dep) => {

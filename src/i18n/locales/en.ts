@@ -623,6 +623,10 @@ const enTranslation = {
       "resource_toolkit": {
         "title": "Resource Toolkit",
         "description": "Download templates and guides"
+      },
+      "ransomware_protection": {
+        "title": "Ransomware Protection",
+        "description": "Learn data protection strategies"
       }
     },
     "levels": {

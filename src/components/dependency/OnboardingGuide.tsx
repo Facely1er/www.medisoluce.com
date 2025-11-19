@@ -42,6 +42,12 @@ const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip, f
     // Show onboarding if not completed OR if parent forces it to show
     if (!hasCompletedOnboarding || forceShow) {
       setIsVisible(true);
+      // Reset to first step when force-showing
+      if (forceShow && hasCompletedOnboarding) {
+        setCurrentStep(0);
+      }
+    } else {
+      setIsVisible(false);
     }
   }, [hasCompletedOnboarding, forceShow]);
 
@@ -276,7 +282,10 @@ const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip, f
   };
 
   const handleComplete = () => {
-    setHasCompletedOnboarding(true);
+    // Only mark as completed if not force-showing (i.e., user-initiated completion)
+    if (!forceShow) {
+      setHasCompletedOnboarding(true);
+    }
     setIsVisible(false);
     if (onComplete) {
       onComplete();
@@ -284,7 +293,10 @@ const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip, f
   };
 
   const handleSkip = () => {
-    setHasCompletedOnboarding(true);
+    // Only mark as completed if not force-showing (i.e., user-initiated skip)
+    if (!forceShow) {
+      setHasCompletedOnboarding(true);
+    }
     setIsVisible(false);
     if (onSkip) {
       onSkip();
