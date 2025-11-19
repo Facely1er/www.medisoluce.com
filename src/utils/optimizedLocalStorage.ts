@@ -534,7 +534,8 @@ export function useOptimizedLocalStorage<T>(
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
     }
-  }, [key, storedValue, storageManager]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, storedValue]);
 
   // Remove value function
   const removeValue = React.useCallback(() => {
@@ -544,7 +545,8 @@ export function useOptimizedLocalStorage<T>(
     } catch (error) {
       console.error(`Error removing localStorage key "${key}":`, error);
     }
-  }, [key, initialValue, storageManager]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, initialValue]);
 
   return [storedValue, setValue, removeValue];
 }
