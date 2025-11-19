@@ -42,6 +42,21 @@ const helpContent: Record<string, { title: string; content: string; variant?: 'i
     title: 'Backup Procedures',
     content: 'Describe the backup and recovery procedures for this system. Include backup frequency, recovery time objectives (RTO), and recovery point objectives (RPO).',
     variant: 'info'
+  },
+  vendor: {
+    title: 'Vendor Name',
+    content: 'Enter the name of the vendor or manufacturer of this system. This helps track vendor relationships and support contacts.',
+    variant: 'info'
+  },
+  vendorContact: {
+    title: 'Vendor Contact',
+    content: 'Enter vendor support contact information (email, phone, support portal URL). This is critical for incident response.',
+    variant: 'info'
+  },
+  complianceStatus: {
+    title: 'HIPAA Compliance Status',
+    content: 'Assess the HIPAA compliance status of this system. Update this regularly as part of your compliance monitoring program.',
+    variant: 'warning'
   }
 };
 

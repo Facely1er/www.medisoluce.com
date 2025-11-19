@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { 
@@ -18,7 +18,19 @@ import {
   Network,
   List,
   HelpCircle,
-  RefreshCw
+  RefreshCw,
+  Search,
+  Filter,
+  X,
+  AlertTriangle,
+  CheckCircle,
+  TrendingUp,
+  Users,
+  Building2,
+  Shield,
+  Copy,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -39,6 +51,11 @@ interface Dependency {
   riskLevel: 'High' | 'Medium' | 'Low';
   backupProcedures: string;
   downtime: string;
+  vendor?: string;
+  vendorContact?: string;
+  complianceStatus?: 'Compliant' | 'Non-Compliant' | 'Under Review' | 'Not Assessed';
+  lastAssessed?: string;
+  notes?: string;
 }
 
 const DependencyManagerPage: React.FC = () => {
@@ -50,14 +67,36 @@ const DependencyManagerPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'list' | 'graph'>('list');
   const [selectedDependencyId, setSelectedDependencyId] = useState<string | undefined>();
   const [showOnboarding, setShowOnboarding] = useLocalStorage<boolean>('show-dependency-onboarding', true);
-  const [formData, setFormData] = useState({
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [filterCriticality, setFilterCriticality] = useState<string>('all');
+  const [filterRiskLevel, setFilterRiskLevel] = useState<string>('all');
+  const [selectedDependencies, setSelectedDependencies] = useState<Set<string>>(new Set());
+  const [showValidation, setShowValidation] = useState(true);
+  const [formData, setFormData] = useState<{
+    name: string;
+    category: string;
+    criticality: 'Critical' | 'High' | 'Medium' | 'Low';
+    dependencies: string;
+    riskLevel: 'High' | 'Medium' | 'Low';
+    backupProcedures: string;
+    downtime: string;
+    vendor: string;
+    vendorContact: string;
+    complianceStatus: 'Compliant' | 'Non-Compliant' | 'Under Review' | 'Not Assessed';
+    notes: string;
+  }>({
     name: '',
     category: '',
-    criticality: 'Medium' as const,
+    criticality: 'Medium',
     dependencies: '',
-    riskLevel: 'Medium' as const,
+    riskLevel: 'Medium',
     backupProcedures: '',
-    downtime: ''
+    downtime: '',
+    vendor: '',
+    vendorContact: '',
+    complianceStatus: 'Not Assessed',
+    notes: ''
   });
 
   const systemCategories = [
@@ -99,6 +138,171 @@ const DependencyManagerPage: React.FC = () => {
     },
   ];
 
+  // Dependency validation
+  const validateDependencies = useMemo(() => {
+    const issues: Array<{ type: 'circular' | 'missing' | 'warning'; message: string; dependencyId: string }> = [];
+    
+    dependencies.forEach(dep => {
+      // Check for circular dependencies
+      const checkCircular = (currentId: string, visited: Set<string>, path: string[]): boolean => {
+        if (visited.has(currentId)) {
+          if (path.includes(currentId)) {
+            return true; // Circular dependency found
+          }
+          return false;
+        }
+        visited.add(currentId);
+        path.push(currentId);
+        
+        const currentDep = dependencies.find(d => d.id === currentId);
+        if (currentDep) {
+          currentDep.dependencies.forEach(depName => {
+            const targetDep = dependencies.find(d => d.name === depName);
+            if (targetDep && checkCircular(targetDep.id, visited, [...path])) {
+              issues.push({
+                type: 'circular',
+                message: `Circular dependency detected: ${path.join(' → ')} → ${targetDep.name}`,
+                dependencyId: currentId
+              });
+            }
+          });
+        }
+        return false;
+      };
+      
+      checkCircular(dep.id, new Set(), []);
+      
+      // Check for missing dependencies
+      dep.dependencies.forEach(depName => {
+        const targetDep = dependencies.find(d => d.name === depName);
+        if (!targetDep) {
+          issues.push({
+            type: 'missing',
+            message: `Missing dependency: "${depName}" is not mapped as a system`,
+            dependencyId: dep.id
+          });
+        }
+      });
+      
+      // Warnings
+      if (dep.criticality === 'Critical' && dep.riskLevel === 'High') {
+        issues.push({
+          type: 'warning',
+          message: 'Critical system with high risk level requires immediate attention',
+          dependencyId: dep.id
+        });
+      }
+      
+      if (dep.criticality === 'Critical' && !dep.backupProcedures) {
+        issues.push({
+          type: 'warning',
+          message: 'Critical system missing backup procedures',
+          dependencyId: dep.id
+        });
+      }
+    });
+    
+    return issues;
+  }, [dependencies]);
+
+  // Filtered dependencies based on search and filters
+  const filteredDependencies = useMemo(() => {
+    return dependencies.filter(dep => {
+      // Search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          dep.name.toLowerCase().includes(query) ||
+          dep.category.toLowerCase().includes(query) ||
+          dep.dependencies.some(d => d.toLowerCase().includes(query)) ||
+          dep.backupProcedures.toLowerCase().includes(query) ||
+          (dep.vendor && dep.vendor.toLowerCase().includes(query));
+        if (!matchesSearch) return false;
+      }
+      
+      // Category filter
+      if (filterCategory !== 'all' && dep.category !== filterCategory) return false;
+      
+      // Criticality filter
+      if (filterCriticality !== 'all' && dep.criticality !== filterCriticality) return false;
+      
+      // Risk level filter
+      if (filterRiskLevel !== 'all' && dep.riskLevel !== filterRiskLevel) return false;
+      
+      return true;
+    });
+  }, [dependencies, searchQuery, filterCategory, filterCriticality, filterRiskLevel]);
+
+  // Risk analysis statistics
+  const riskStats = useMemo(() => {
+    const total = dependencies.length;
+    const critical = dependencies.filter(d => d.criticality === 'Critical').length;
+    const highRisk = dependencies.filter(d => d.riskLevel === 'High').length;
+    const criticalHighRisk = dependencies.filter(d => d.criticality === 'Critical' && d.riskLevel === 'High').length;
+    const missingBackups = dependencies.filter(d => d.criticality === 'Critical' && !d.backupProcedures).length;
+    const nonCompliant = dependencies.filter(d => d.complianceStatus === 'Non-Compliant').length;
+    const validationIssues = validateDependencies.length;
+    
+    return {
+      total,
+      critical,
+      highRisk,
+      criticalHighRisk,
+      missingBackups,
+      nonCompliant,
+      validationIssues,
+      complianceRate: total > 0 ? ((total - nonCompliant) / total * 100).toFixed(1) : '0'
+    };
+  }, [dependencies, validateDependencies]);
+
+  // System templates for common healthcare systems
+  const systemTemplates = [
+    {
+      name: 'Epic EHR',
+      category: 'ehr',
+      criticality: 'Critical' as const,
+      riskLevel: 'Medium' as const,
+      dependencies: 'Network, Database Server, Power Supply',
+      downtime: '15 minutes',
+      backupProcedures: 'Daily incremental backups, weekly full backups. RTO: 15 minutes, RPO: 1 hour.',
+      vendor: 'Epic Systems',
+      complianceStatus: 'Compliant' as const
+    },
+    {
+      name: 'PACS Server',
+      category: 'clinical',
+      criticality: 'Critical' as const,
+      riskLevel: 'Medium' as const,
+      dependencies: 'Network, Storage Array, DICOM Gateway',
+      downtime: '30 minutes',
+      backupProcedures: 'Real-time replication to secondary site. RTO: 30 minutes, RPO: 0 (real-time).',
+      vendor: 'Vendor Name',
+      complianceStatus: 'Compliant' as const
+    },
+    {
+      name: 'Network Infrastructure',
+      category: 'infrastructure',
+      criticality: 'Critical' as const,
+      riskLevel: 'Low' as const,
+      dependencies: 'Power Supply, Internet Service Provider',
+      downtime: '0 minutes',
+      backupProcedures: 'Redundant network paths, UPS backup power. RTO: 0 minutes.',
+      vendor: 'Network Vendor',
+      complianceStatus: 'Compliant' as const
+    },
+    {
+      name: 'Pharmacy Management System',
+      category: 'clinical',
+      criticality: 'High' as const,
+      riskLevel: 'Medium' as const,
+      dependencies: 'EHR System, Network, Database Server',
+      downtime: '1 hour',
+      backupProcedures: 'Daily backups with 4-hour RPO. RTO: 1 hour.',
+      vendor: 'Pharmacy Vendor',
+      complianceStatus: 'Compliant' as const
+    }
+  ];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -110,7 +314,12 @@ const DependencyManagerPage: React.FC = () => {
       dependencies: formData.dependencies.split(',').map(d => d.trim()).filter(d => d),
       riskLevel: formData.riskLevel,
       backupProcedures: formData.backupProcedures,
-      downtime: formData.downtime
+      downtime: formData.downtime,
+      vendor: formData.vendor || undefined,
+      vendorContact: formData.vendorContact || undefined,
+      complianceStatus: formData.complianceStatus,
+      lastAssessed: formData.complianceStatus !== 'Not Assessed' ? new Date().toISOString().split('T')[0] : undefined,
+      notes: formData.notes || undefined
     };
 
     if (editingId) {
@@ -130,7 +339,11 @@ const DependencyManagerPage: React.FC = () => {
       dependencies: '',
       riskLevel: 'Medium',
       backupProcedures: '',
-      downtime: ''
+      downtime: '',
+      vendor: '',
+      vendorContact: '',
+      complianceStatus: 'Not Assessed',
+      notes: ''
     });
     setIsEditing(false);
     setEditingId(null);
@@ -144,10 +357,73 @@ const DependencyManagerPage: React.FC = () => {
       dependencies: dependency.dependencies.join(', '),
       riskLevel: dependency.riskLevel,
       backupProcedures: dependency.backupProcedures,
-      downtime: dependency.downtime
+      downtime: dependency.downtime,
+      vendor: dependency.vendor || '',
+      vendorContact: dependency.vendorContact || '',
+      complianceStatus: dependency.complianceStatus || 'Not Assessed',
+      notes: dependency.notes || ''
     });
     setIsEditing(true);
     setEditingId(dependency.id);
+  };
+
+  const handleUseTemplate = (template: typeof systemTemplates[0]) => {
+    setFormData({
+      name: template.name,
+      category: template.category,
+      criticality: template.criticality,
+      dependencies: template.dependencies,
+      riskLevel: template.riskLevel,
+      backupProcedures: template.backupProcedures,
+      downtime: template.downtime,
+      vendor: template.vendor || '',
+      vendorContact: '',
+      complianceStatus: template.complianceStatus,
+      notes: ''
+    });
+  };
+
+  const handleBulkDelete = () => {
+    if (selectedDependencies.size > 0 && window.confirm(`Delete ${selectedDependencies.size} selected dependencies?`)) {
+      setDependencies(deps => deps.filter(dep => !selectedDependencies.has(dep.id)));
+      setSelectedDependencies(new Set());
+    }
+  };
+
+  const handleBulkUpdate = (field: 'criticality' | 'riskLevel' | 'complianceStatus', value: string) => {
+    if (selectedDependencies.size > 0) {
+      setDependencies(deps => deps.map(dep => {
+        if (selectedDependencies.has(dep.id)) {
+          return {
+            ...dep,
+            [field]: value,
+            ...(field === 'complianceStatus' && value !== 'Not Assessed' ? { lastAssessed: new Date().toISOString().split('T')[0] } : {})
+          };
+        }
+        return dep;
+      }));
+      setSelectedDependencies(new Set());
+    }
+  };
+
+  const handleToggleSelect = (id: string) => {
+    setSelectedDependencies(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedDependencies.size === filteredDependencies.length) {
+      setSelectedDependencies(new Set());
+    } else {
+      setSelectedDependencies(new Set(filteredDependencies.map(d => d.id)));
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -172,7 +448,12 @@ const DependencyManagerPage: React.FC = () => {
       dependencies: dep.dependencies.join(', '),
       riskLevel: dep.riskLevel,
       downtime: dep.downtime,
-      backupProcedures: dep.backupProcedures
+      backupProcedures: dep.backupProcedures,
+      vendor: dep.vendor || '',
+      vendorContact: dep.vendorContact || '',
+      complianceStatus: dep.complianceStatus || 'Not Assessed',
+      lastAssessed: dep.lastAssessed || '',
+      notes: dep.notes || ''
     }));
     return data;
   };
@@ -198,7 +479,12 @@ const DependencyManagerPage: React.FC = () => {
               : item.dependencies || [],
             riskLevel: item.riskLevel || 'Medium',
             backupProcedures: item.backupProcedures || '',
-            downtime: item.downtime || ''
+            downtime: item.downtime || '',
+            vendor: item.vendor || '',
+            vendorContact: item.vendorContact || '',
+            complianceStatus: item.complianceStatus || 'Not Assessed',
+            lastAssessed: item.lastAssessed || '',
+            notes: item.notes || ''
           }));
           setDependencies(prev => [...prev, ...formatted]);
         }
@@ -255,11 +541,140 @@ const DependencyManagerPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Risk Analysis Dashboard */}
+            {dependencies.length > 0 && (
+              <Card className="p-6 mb-6 bg-gradient-to-r from-primary-50 to-accent-50 dark:from-gray-800 dark:to-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                    <TrendingUp className="h-5 w-5 mr-2 text-primary-600" />
+                    Risk Analysis Dashboard
+                  </h3>
+                  {validateDependencies.length > 0 && (
+                    <button
+                      onClick={() => setShowValidation(!showValidation)}
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                    >
+                      {showValidation ? 'Hide' : 'Show'} Validation Issues ({validateDependencies.length})
+                    </button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{riskStats.total}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Total Systems</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-red-600">{riskStats.critical}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Critical</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">{riskStats.highRisk}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">High Risk</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-red-700">{riskStats.criticalHighRisk}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Critical + High Risk</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-yellow-600">{riskStats.missingBackups}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Missing Backups</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">{riskStats.complianceRate}%</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Compliance Rate</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-accent-600">{riskStats.validationIssues}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Issues Found</div>
+                  </div>
+                </div>
+                {showValidation && validateDependencies.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="space-y-2">
+                      {validateDependencies.slice(0, 5).map((issue, idx) => (
+                        <div key={idx} className={`flex items-start space-x-2 text-sm p-2 rounded ${
+                          issue.type === 'circular' ? 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200' :
+                          issue.type === 'missing' ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200' :
+                          'bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200'
+                        }`}>
+                          <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                          <span>{issue.message}</span>
+                        </div>
+                      ))}
+                      {validateDependencies.length > 5 && (
+                        <div className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                          + {validateDependencies.length - 5} more issues
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )}
+
+            {/* Search and Filter Bar */}
+            <Card className="p-4 mb-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search dependencies by name, category, vendor..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                    >
+                      <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    </button>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Filter className="h-5 w-5 text-gray-400" />
+                  <select
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white text-sm"
+                  >
+                    <option value="all">All Categories</option>
+                    {systemCategories.map(cat => (
+                      <option key={cat.value} value={cat.value}>{cat.name}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={filterCriticality}
+                    onChange={(e) => setFilterCriticality(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white text-sm"
+                  >
+                    <option value="all">All Criticality</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                  <select
+                    value={filterRiskLevel}
+                    onChange={(e) => setFilterRiskLevel(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white text-sm"
+                  >
+                    <option value="all">All Risk Levels</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+              </div>
+            </Card>
+
             {/* Action Bar */}
             <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center space-x-2">
                 <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  variant={viewMode === 'list' ? 'primary' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('list')}
                   icon={<List className="h-4 w-4" />}
@@ -267,13 +682,26 @@ const DependencyManagerPage: React.FC = () => {
                   List View
                 </Button>
                 <Button
-                  variant={viewMode === 'graph' ? 'default' : 'outline'}
+                  variant={viewMode === 'graph' ? 'primary' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('graph')}
                   icon={<Network className="h-4 w-4" />}
                 >
                   Graph View
                 </Button>
+                {selectedDependencies.size > 0 && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleBulkDelete}
+                      icon={<Trash2 className="h-4 w-4" />}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      Delete ({selectedDependencies.size})
+                    </Button>
+                  </>
+                )}
               </div>
               <div className="flex items-center space-x-2">
                 <label className="cursor-pointer">
@@ -287,7 +715,6 @@ const DependencyManagerPage: React.FC = () => {
                     variant="outline"
                     size="sm"
                     icon={<Upload className="h-4 w-4" />}
-                    as="span"
                   >
                     Import
                   </Button>
@@ -311,6 +738,28 @@ const DependencyManagerPage: React.FC = () => {
                 )}
               </div>
             </div>
+
+            {/* System Templates */}
+            {!isEditing && (
+              <Card className="p-4 mb-6 bg-blue-50 dark:bg-blue-900/20">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">Quick Start Templates</h3>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">Click to use as starting point</span>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                  {systemTemplates.map((template, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleUseTemplate(template)}
+                      className="text-left p-2 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 transition-colors text-xs"
+                    >
+                      <div className="font-medium text-gray-900 dark:text-white">{template.name}</div>
+                      <div className="text-gray-600 dark:text-gray-400 capitalize">{template.category.replace('_', ' ')}</div>
+                    </button>
+                  ))}
+                </div>
+              </Card>
+            )}
 
             {/* Add/Edit Form */}
             <Card className="p-6 mb-8">
@@ -454,41 +903,103 @@ const DependencyManagerPage: React.FC = () => {
             {/* Dependencies View */}
             {viewMode === 'graph' ? (
               <DependencyGraph
-                dependencies={dependencies}
+                dependencies={filteredDependencies}
                 selectedId={selectedDependencyId}
                 onSelect={setSelectedDependencyId}
               />
             ) : (
               <Card className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-medium">System Dependencies ({dependencies.length})</h2>
+                  <div>
+                    <h2 className="text-xl font-medium">System Dependencies</h2>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      Showing {filteredDependencies.length} of {dependencies.length} systems
+                      {(searchQuery || filterCategory !== 'all' || filterCriticality !== 'all' || filterRiskLevel !== 'all') && (
+                        <button
+                          onClick={() => {
+                            setSearchQuery('');
+                            setFilterCategory('all');
+                            setFilterCriticality('all');
+                            setFilterRiskLevel('all');
+                          }}
+                          className="ml-2 text-primary-600 dark:text-primary-400 hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      )}
+                    </p>
+                  </div>
+                  {filteredDependencies.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleSelectAll}
+                      icon={selectedDependencies.size === filteredDependencies.length ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+                    >
+                      {selectedDependencies.size === filteredDependencies.length ? 'Deselect All' : 'Select All'}
+                    </Button>
+                  )}
                 </div>
 
-                {dependencies.length === 0 ? (
+                {filteredDependencies.length === 0 ? (
                   <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                     <Server className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No dependencies mapped yet. Add your first system dependency above.</p>
-                    <Button
-                      variant="outline"
-                      className="mt-4"
-                      onClick={() => setShowOnboarding(true)}
-                      icon={<HelpCircle className="h-4 w-4" />}
-                    >
-                      Show Tutorial
-                    </Button>
+                    {dependencies.length === 0 ? (
+                      <>
+                        <p>No dependencies mapped yet. Add your first system dependency above.</p>
+                        <Button
+                          variant="outline"
+                          className="mt-4"
+                          onClick={() => setShowOnboarding(true)}
+                          icon={<HelpCircle className="h-4 w-4" />}
+                        >
+                          Show Tutorial
+                        </Button>
+                      </>
+                    ) : (
+                      <p>No dependencies match your search or filter criteria.</p>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {dependencies.map((dep) => (
-                    <div key={dep.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    {filteredDependencies.map((dep) => {
+                      const isSelected = selectedDependencies.has(dep.id);
+                      const depIssues = validateDependencies.filter(issue => issue.dependencyId === dep.id);
+                      return (
+                    <div key={dep.id} className={`border rounded-lg p-4 transition-colors ${
+                      isSelected ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' :
+                      depIssues.length > 0 ? 'border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/10' :
+                      'border-gray-200 dark:border-gray-700'
+                    }`}>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-3">
+                          <button
+                            onClick={() => handleToggleSelect(dep.id)}
+                            className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {isSelected ? <CheckSquare className="h-5 w-5" /> : <Square className="h-5 w-5" />}
+                          </button>
                           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                             {dep.name}
                           </h3>
                           <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getCriticalityColor(dep.criticality)}`}>
                             {dep.criticality}
                           </span>
+                          {dep.complianceStatus && dep.complianceStatus !== 'Not Assessed' && (
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              dep.complianceStatus === 'Compliant' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300' :
+                              dep.complianceStatus === 'Non-Compliant' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' :
+                              'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'
+                            }`}>
+                              <Shield className="h-3 w-3 inline mr-1" />
+                              {dep.complianceStatus}
+                            </span>
+                          )}
+                          {depIssues.length > 0 && (
+                            <span title={`${depIssues.length} validation issue(s)`}>
+                              <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button size="sm" variant="ghost" onClick={() => handleEdit(dep)}>
@@ -500,7 +1011,7 @@ const DependencyManagerPage: React.FC = () => {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
                         <div>
                           <span className="font-medium text-gray-700 dark:text-gray-300">Category:</span>
                           <span className="ml-2 text-gray-600 dark:text-gray-400 capitalize">
@@ -515,6 +1026,21 @@ const DependencyManagerPage: React.FC = () => {
                           <span className="font-medium text-gray-700 dark:text-gray-300">Max Downtime:</span>
                           <span className="ml-2 text-gray-600 dark:text-gray-400">{dep.downtime || 'Not specified'}</span>
                         </div>
+                        {dep.vendor && (
+                          <div>
+                            <span className="font-medium text-gray-700 dark:text-gray-300 flex items-center">
+                              <Building2 className="h-3 w-3 mr-1" />
+                              Vendor:
+                            </span>
+                            <span className="ml-2 text-gray-600 dark:text-gray-400">{dep.vendor}</span>
+                          </div>
+                        )}
+                        {dep.lastAssessed && (
+                          <div>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Last Assessed:</span>
+                            <span className="ml-2 text-gray-600 dark:text-gray-400">{dep.lastAssessed}</span>
+                          </div>
+                        )}
                       </div>
                       
                       {dep.dependencies.length > 0 && (
@@ -536,8 +1062,32 @@ const DependencyManagerPage: React.FC = () => {
                           <span className="text-gray-600 dark:text-gray-400">{dep.backupProcedures}</span>
                         </div>
                       )}
+                      {dep.notes && (
+                        <div className="mt-3">
+                          <span className="font-medium text-gray-700 dark:text-gray-300">Notes: </span>
+                          <span className="text-gray-600 dark:text-gray-400">{dep.notes}</span>
+                        </div>
+                      )}
+                      {depIssues.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                            <span className="font-medium text-yellow-800 dark:text-yellow-200 text-sm">
+                              Validation Issues ({depIssues.length})
+                            </span>
+                          </div>
+                          <div className="space-y-1">
+                            {depIssues.map((issue, idx) => (
+                              <div key={idx} className="text-xs text-yellow-700 dark:text-yellow-300">
+                                • {issue.message}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    ))}
+                    );
+                    })}
                   </div>
                 )}
               </Card>
