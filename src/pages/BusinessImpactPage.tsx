@@ -38,31 +38,47 @@ const BusinessImpactPage: React.FC = () => {
 
   const impactAreas = [
     {
-      title: 'Patient Care',
-      description: 'Direct impact on patient treatment and care delivery',
+      title: t('impact.impact_areas.patient_care.title'),
+      description: t('impact.impact_areas.patient_care.description'),
       icon: <Activity className="h-6 w-6 text-white" />,
-      metrics: ['Treatment delays', 'Patient safety risks', 'Care quality impact'],
+      metrics: [
+        t('impact.impact_areas.patient_care.metrics.delays'),
+        t('impact.impact_areas.patient_care.metrics.safety'),
+        t('impact.impact_areas.patient_care.metrics.quality')
+      ],
       color: 'bg-primary-500',
     },
     {
-      title: 'Operations',
-      description: 'Effect on daily healthcare operations and workflow',
+      title: t('impact.impact_areas.operations.title'),
+      description: t('impact.impact_areas.operations.description'),
       icon: <Clock className="h-6 w-6 text-white" />,
-      metrics: ['Staff productivity', 'Resource utilization', 'Process efficiency'],
+      metrics: [
+        t('impact.impact_areas.operations.metrics.productivity'),
+        t('impact.impact_areas.operations.metrics.utilization'),
+        t('impact.impact_areas.operations.metrics.efficiency')
+      ],
       color: 'bg-secondary-500',
     },
     {
-      title: 'Financial',
-      description: 'Financial implications and revenue impact',
+      title: t('impact.impact_areas.financial.title'),
+      description: t('impact.impact_areas.financial.description'),
       icon: <BarChart2 className="h-6 w-6 text-white" />,
-      metrics: ['Revenue loss', 'Recovery costs', 'Insurance claims'],
+      metrics: [
+        t('impact.impact_areas.financial.metrics.revenue_loss'),
+        t('impact.impact_areas.financial.metrics.recovery_costs'),
+        t('impact.impact_areas.financial.metrics.insurance')
+      ],
       color: 'bg-accent-500',
     },
     {
-      title: 'Compliance',
-      description: 'Regulatory compliance and reporting requirements',
+      title: t('impact.impact_areas.compliance.title'),
+      description: t('impact.impact_areas.compliance.description'),
       icon: <FileText className="h-6 w-6 text-white" />,
-      metrics: ['HIPAA violations', 'Reporting delays', 'Documentation gaps'],
+      metrics: [
+        t('impact.impact_areas.compliance.metrics.violations'),
+        t('impact.impact_areas.compliance.metrics.delays'),
+        t('impact.impact_areas.compliance.metrics.gaps')
+      ],
       color: 'bg-success-500',
     },
   ];

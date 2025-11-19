@@ -130,28 +130,28 @@ const DashboardPage: React.FC = () => {
 
   const tasks = [
     {
-      title: 'Complete Risk Assessment',
+      title: t('dashboard.tasks.risk_assessment.title'),
       dueDate: '2024-03-25',
-      priority: 'High',
-      type: 'Assessment',
+      priority: t('dashboard.priorities.high'),
+      type: t('dashboard.task_types.assessment'),
     },
     {
-      title: 'Review Access Controls',
+      title: t('dashboard.tasks.access_controls.title'),
       dueDate: '2024-03-28',
-      priority: 'Medium',
-      type: 'Security',
+      priority: t('dashboard.priorities.medium'),
+      type: t('dashboard.task_types.security'),
     },
     {
-      title: 'Update Privacy Policies',
+      title: t('dashboard.tasks.privacy_policies.title'),
       dueDate: '2024-04-01',
-      priority: 'Medium',
-      type: 'Policy',
+      priority: t('dashboard.priorities.medium'),
+      type: t('dashboard.task_types.policy'),
     },
     {
-      title: 'Staff Training Review',
+      title: t('dashboard.tasks.training_review.title'),
       dueDate: '2024-04-05',
-      priority: 'Low',
-      type: 'Training',
+      priority: t('dashboard.priorities.low'),
+      type: t('dashboard.task_types.training'),
     },
   ];
 

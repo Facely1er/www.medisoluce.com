@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   BookOpen, 
   Play, 
@@ -19,66 +20,66 @@ import Button from '../components/ui/Button';
 import Breadcrumbs from '../components/navigation/Breadcrumbs';
 
 const TrainingPage: React.FC = () => {
-  const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const trainingModules = [
     {
       id: 'hipaa-basics',
-      title: 'HIPAA Compliance Fundamentals',
-      description: 'Essential knowledge for healthcare compliance professionals',
-      duration: '2 hours',
-      level: 'Beginner',
+      title: t('training.modules.hipaa_basics.title'),
+      description: t('training.modules.hipaa_basics.description'),
+      duration: t('training.modules.hipaa_basics.duration'),
+      level: t('training.levels.beginner'),
       icon: <Shield className="h-8 w-8 text-primary-500" />,
       topics: [
-        'HIPAA Privacy Rule Overview',
-        'Security Rule Requirements',
-        'Breach Notification Procedures',
-        'Patient Rights and Protections'
+        t('training.modules.hipaa_basics.topics.privacy_rule'),
+        t('training.modules.hipaa_basics.topics.security_rule'),
+        t('training.modules.hipaa_basics.topics.breach_notification'),
+        t('training.modules.hipaa_basics.topics.patient_rights')
       ],
       completed: false
     },
     {
       id: 'dependency-management',
-      title: 'Technology Dependency Management',
-      description: 'Managing and assessing technology dependencies in healthcare',
-      duration: '1.5 hours',
-      level: 'Intermediate',
+      title: t('training.modules.dependency_management.title'),
+      description: t('training.modules.dependency_management.description'),
+      duration: t('training.modules.dependency_management.duration'),
+      level: t('training.levels.intermediate'),
       icon: <Server className="h-8 w-8 text-secondary-500" />,
       topics: [
-        'Dependency Mapping Techniques',
-        'Risk Assessment Methodologies',
-        'Vendor Management Best Practices',
-        'Technology Lifecycle Planning'
+        t('training.modules.dependency_management.topics.mapping'),
+        t('training.modules.dependency_management.topics.risk_assessment'),
+        t('training.modules.dependency_management.topics.vendor_management'),
+        t('training.modules.dependency_management.topics.lifecycle')
       ],
       completed: false
     },
     {
       id: 'business-continuity',
-      title: 'Business Continuity Planning',
-      description: 'Developing comprehensive continuity strategies',
-      duration: '2.5 hours',
-      level: 'Advanced',
+      title: t('training.modules.business_continuity.title'),
+      description: t('training.modules.business_continuity.description'),
+      duration: t('training.modules.business_continuity.duration'),
+      level: t('training.levels.advanced'),
       icon: <LifeBuoy className="h-8 w-8 text-success-500" />,
       topics: [
-        'Continuity Planning Framework',
-        'Emergency Response Procedures',
-        'Recovery Time Objectives',
-        'Testing and Validation'
+        t('training.modules.business_continuity.topics.framework'),
+        t('training.modules.business_continuity.topics.emergency'),
+        t('training.modules.business_continuity.topics.rto'),
+        t('training.modules.business_continuity.topics.testing')
       ],
       completed: false
     },
     {
       id: 'ransomware-protection',
-      title: 'Ransomware Protection Strategies',
-      description: 'Advanced cybersecurity for healthcare organizations',
-      duration: '3 hours',
-      level: 'Advanced',
+      title: t('training.modules.ransomware_protection.title'),
+      description: t('training.modules.ransomware_protection.description'),
+      duration: t('training.modules.ransomware_protection.duration'),
+      level: t('training.levels.advanced'),
       icon: <AlertTriangle className="h-8 w-8 text-accent-500" />,
       topics: [
-        'Ransomware Attack Vectors',
-        'Prevention Strategies',
-        'Incident Response Planning',
-        'Recovery Procedures'
+        t('training.modules.ransomware_protection.topics.attack_vectors'),
+        t('training.modules.ransomware_protection.topics.prevention'),
+        t('training.modules.ransomware_protection.topics.incident_response'),
+        t('training.modules.ransomware_protection.topics.recovery')
       ],
       completed: false
     }
@@ -86,21 +87,30 @@ const TrainingPage: React.FC = () => {
 
   const certifications = [
     {
-      name: 'HIPAA Compliance Specialist',
-      description: 'Certified healthcare compliance professional',
-      requirements: ['Complete HIPAA Fundamentals', 'Pass assessment with 80%+'],
+      name: t('training.certifications_list.hipaa_specialist.name'),
+      description: t('training.certifications_list.hipaa_specialist.description'),
+      requirements: [
+        t('training.certifications_list.hipaa_specialist.requirements.complete'),
+        t('training.certifications_list.hipaa_specialist.requirements.pass')
+      ],
       icon: <Award className="h-6 w-6 text-primary-500" />
     },
     {
-      name: 'Healthcare Technology Manager',
-      description: 'Expert in healthcare technology management',
-      requirements: ['Complete Dependency Management', 'Complete Business Continuity'],
+      name: t('training.certifications_list.tech_manager.name'),
+      description: t('training.certifications_list.tech_manager.description'),
+      requirements: [
+        t('training.certifications_list.tech_manager.requirements.dependency'),
+        t('training.certifications_list.tech_manager.requirements.continuity')
+      ],
       icon: <Award className="h-6 w-6 text-secondary-500" />
     },
     {
-      name: 'Cybersecurity Healthcare Professional',
-      description: 'Specialized in healthcare cybersecurity',
-      requirements: ['Complete Ransomware Protection', 'Pass security assessment'],
+      name: t('training.certifications_list.cybersecurity.name'),
+      description: t('training.certifications_list.cybersecurity.description'),
+      requirements: [
+        t('training.certifications_list.cybersecurity.requirements.ransomware'),
+        t('training.certifications_list.cybersecurity.requirements.security')
+      ],
       icon: <Award className="h-6 w-6 text-accent-500" />
     }
   ];
@@ -116,12 +126,11 @@ const TrainingPage: React.FC = () => {
             <div className="flex items-center space-x-3 mb-4">
               <BookOpen className="h-8 w-8 text-primary-500" />
               <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
-                Training Center
+                {t('training.page_title')}
               </h1>
             </div>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
-              Comprehensive training modules designed to enhance your healthcare compliance expertise. 
-              Learn at your own pace with interactive content and earn industry-recognized certifications.
+              {t('training.page_description')}
             </p>
           </div>
 
@@ -133,10 +142,10 @@ const TrainingPage: React.FC = () => {
                 <span className="text-2xl font-bold text-primary-600">4</span>
               </div>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                Available Modules
+                {t('training.available_modules')}
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300">
-                Comprehensive training programs
+                {t('training.comprehensive_programs')}
               </p>
             </Card>
 
@@ -146,10 +155,10 @@ const TrainingPage: React.FC = () => {
                 <span className="text-2xl font-bold text-secondary-600">9h</span>
               </div>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                Total Duration
+                {t('training.total_duration')}
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300">
-                Self-paced learning
+                {t('training.self_paced')}
               </p>
             </Card>
 
@@ -159,10 +168,10 @@ const TrainingPage: React.FC = () => {
                 <span className="text-2xl font-bold text-success-600">3</span>
               </div>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                Certifications
+                {t('training.certifications')}
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300">
-                Industry recognized
+                {t('training.industry_recognized')}
               </p>
             </Card>
           </div>
@@ -170,7 +179,7 @@ const TrainingPage: React.FC = () => {
           {/* Training Modules */}
           <div className="mb-8">
             <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              Training Modules
+              {t('training.training_modules')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {trainingModules.map((module) => (
@@ -205,7 +214,7 @@ const TrainingPage: React.FC = () => {
 
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                      Topics Covered:
+                      {t('training.topics_covered')}
                     </h4>
                     <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                       {module.topics.map((topic, index) => (
@@ -219,17 +228,16 @@ const TrainingPage: React.FC = () => {
 
                   <div className="flex items-center space-x-3">
                     <Button
-                      onClick={() => setSelectedModule(module.id)}
                       className="flex-1"
                       icon={<Play className="h-4 w-4" />}
                     >
-                      {module.completed ? 'Review' : 'Start Module'}
+                      {module.completed ? t('training.review') : t('training.start_module')}
                     </Button>
                     <Button
                       variant="outline"
                       icon={<Download className="h-4 w-4" />}
                     >
-                      Materials
+                      {t('training.materials')}
                     </Button>
                   </div>
                 </Card>
@@ -240,7 +248,7 @@ const TrainingPage: React.FC = () => {
           {/* Certifications */}
           <div className="mb-8">
             <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6">
-              Available Certifications
+              {t('training.available_certifications')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {certifications.map((cert, index) => (
@@ -256,7 +264,7 @@ const TrainingPage: React.FC = () => {
                   </p>
                   <div className="text-left">
                     <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                      Requirements:
+                      {t('training.requirements')}
                     </h4>
                     <ul className="text-xs text-gray-600 dark:text-gray-300 space-y-1">
                       {cert.requirements.map((req, reqIndex) => (
@@ -275,7 +283,7 @@ const TrainingPage: React.FC = () => {
           {/* Related Resources */}
           <Card className="p-6">
             <h2 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              Related Resources
+              {t('training.related_resources')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Link 
@@ -285,11 +293,11 @@ const TrainingPage: React.FC = () => {
                 <div className="flex items-center space-x-2 mb-2">
                   <Shield className="h-5 w-5 text-primary-500" />
                   <span className="font-medium text-gray-900 dark:text-white">
-                    HIPAA Assessment
+                    {t('training.related.hipaa_assessment.title')}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Test your compliance knowledge
+                  {t('training.related.hipaa_assessment.description')}
                 </p>
               </Link>
 
@@ -300,11 +308,11 @@ const TrainingPage: React.FC = () => {
                 <div className="flex items-center space-x-2 mb-2">
                   <Server className="h-5 w-5 text-secondary-500" />
                   <span className="font-medium text-gray-900 dark:text-white">
-                    Dependency Manager
+                    {t('training.related.dependency_manager.title')}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Apply your training knowledge
+                  {t('training.related.dependency_manager.description')}
                 </p>
               </Link>
 
@@ -315,11 +323,11 @@ const TrainingPage: React.FC = () => {
                 <div className="flex items-center space-x-2 mb-2">
                   <LifeBuoy className="h-5 w-5 text-success-500" />
                   <span className="font-medium text-gray-900 dark:text-white">
-                    Continuity Planning
+                    {t('training.related.continuity_planning.title')}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Practice continuity strategies
+                  {t('training.related.continuity_planning.description')}
                 </p>
               </Link>
 
@@ -330,11 +338,11 @@ const TrainingPage: React.FC = () => {
                 <div className="flex items-center space-x-2 mb-2">
                   <FileText className="h-5 w-5 text-accent-500" />
                   <span className="font-medium text-gray-900 dark:text-white">
-                    Resource Toolkit
+                    {t('training.related.resource_toolkit.title')}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Download templates and guides
+                  {t('training.related.resource_toolkit.description')}
                 </p>
               </Link>
             </div>

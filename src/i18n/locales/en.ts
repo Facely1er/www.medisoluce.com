@@ -154,7 +154,45 @@ const enTranslation = {
     "analysis_process": "Analysis Process",
     "ready_analyze": "Ready to analyze your business impact?",
     "ready_analyze_subtitle": "Start with our comprehensive business impact analysis tool and identify critical areas for protection.",
-    "begin_analysis": "Begin Analysis"
+    "begin_analysis": "Begin Analysis",
+    "impact_areas": {
+      "patient_care": {
+        "title": "Patient Care",
+        "description": "Direct impact on patient treatment and care delivery",
+        "metrics": {
+          "delays": "Treatment delays",
+          "safety": "Patient safety risks",
+          "quality": "Care quality impact"
+        }
+      },
+      "operations": {
+        "title": "Operations",
+        "description": "Effect on daily healthcare operations and workflow",
+        "metrics": {
+          "productivity": "Staff productivity",
+          "utilization": "Resource utilization",
+          "efficiency": "Process efficiency"
+        }
+      },
+      "financial": {
+        "title": "Financial",
+        "description": "Financial implications and revenue impact",
+        "metrics": {
+          "revenue_loss": "Revenue loss",
+          "recovery_costs": "Recovery costs",
+          "insurance": "Insurance claims"
+        }
+      },
+      "compliance": {
+        "title": "Compliance",
+        "description": "Regulatory compliance and reporting requirements",
+        "metrics": {
+          "violations": "HIPAA violations",
+          "delays": "Reporting delays",
+          "gaps": "Documentation gaps"
+        }
+      }
+    }
   },
   
   // Continuity page
@@ -166,6 +204,44 @@ const enTranslation = {
     "key_areas": "Key Continuity Areas",
     "planning_process": "Continuity Planning Process",
     "risk_assessment": "Risk Assessment",
+    "continuity_areas": {
+      "system_recovery": {
+        "title": "System Recovery",
+        "description": "Detailed procedures for restoring critical healthcare systems",
+        "features": {
+          "rto": "Recovery time objectives",
+          "prioritization": "System prioritization",
+          "restoration": "Data restoration"
+        }
+      },
+      "operational_procedures": {
+        "title": "Operational Procedures",
+        "description": "Alternative workflows during system downtime",
+        "features": {
+          "manual": "Manual processes",
+          "communication": "Communication protocols",
+          "allocation": "Resource allocation"
+        }
+      },
+      "staff_response": {
+        "title": "Staff Response",
+        "description": "Staff roles and responsibilities during incidents",
+        "features": {
+          "teams": "Response teams",
+          "training": "Training requirements",
+          "chains": "Communication chains"
+        }
+      },
+      "patient_safety": {
+        "title": "Patient Safety",
+        "description": "Maintaining patient care during disruptions",
+        "features": {
+          "continuity": "Critical care continuity",
+          "data_access": "Patient data access",
+          "protocols": "Treatment protocols"
+        }
+      }
+    },
     "impact_analysis": "Impact Analysis",
     "recovery_strategy": "Recovery Strategy",
     "testing_training": "Testing and Training",
@@ -332,6 +408,120 @@ const enTranslation = {
       "intermediate": "Making good progress", 
       "advanced": "Nearly there",
       "expert": "Compliance expert!"
+    },
+    "page_title": "Training Center",
+    "page_description": "Comprehensive training modules designed to enhance your healthcare compliance expertise. Learn at your own pace with interactive content and earn industry-recognized certifications.",
+    "available_modules": "Available Modules",
+    "comprehensive_programs": "Comprehensive training programs",
+    "total_duration": "Total Duration",
+    "self_paced": "Self-paced learning",
+    "certifications": "Certifications",
+    "industry_recognized": "Industry recognized",
+    "topics_covered": "Topics Covered:",
+    "start_module": "Start Module",
+    "review": "Review",
+    "materials": "Materials",
+    "available_certifications": "Available Certifications",
+    "requirements": "Requirements:",
+    "related_resources": "Related Resources",
+    "modules": {
+      "hipaa_basics": {
+        "title": "HIPAA Compliance Fundamentals",
+        "description": "Essential knowledge for healthcare compliance professionals",
+        "duration": "2 hours",
+        "level": "Beginner",
+        "topics": {
+          "privacy_rule": "HIPAA Privacy Rule Overview",
+          "security_rule": "Security Rule Requirements",
+          "breach_notification": "Breach Notification Procedures",
+          "patient_rights": "Patient Rights and Protections"
+        }
+      },
+      "dependency_management": {
+        "title": "Technology Dependency Management",
+        "description": "Managing and assessing technology dependencies in healthcare",
+        "duration": "1.5 hours",
+        "level": "Intermediate",
+        "topics": {
+          "mapping": "Dependency Mapping Techniques",
+          "risk_assessment": "Risk Assessment Methodologies",
+          "vendor_management": "Vendor Management Best Practices",
+          "lifecycle": "Technology Lifecycle Planning"
+        }
+      },
+      "business_continuity": {
+        "title": "Business Continuity Planning",
+        "description": "Developing comprehensive continuity strategies",
+        "duration": "2.5 hours",
+        "level": "Advanced",
+        "topics": {
+          "framework": "Continuity Planning Framework",
+          "emergency": "Emergency Response Procedures",
+          "rto": "Recovery Time Objectives",
+          "testing": "Testing and Validation"
+        }
+      },
+      "ransomware_protection": {
+        "title": "Ransomware Protection Strategies",
+        "description": "Advanced cybersecurity for healthcare organizations",
+        "duration": "3 hours",
+        "level": "Advanced",
+        "topics": {
+          "attack_vectors": "Ransomware Attack Vectors",
+          "prevention": "Prevention Strategies",
+          "incident_response": "Incident Response Planning",
+          "recovery": "Recovery Procedures"
+        }
+      }
+    },
+    "certifications_list": {
+      "hipaa_specialist": {
+        "name": "HIPAA Compliance Specialist",
+        "description": "Certified healthcare compliance professional",
+        "requirements": {
+          "complete": "Complete HIPAA Fundamentals",
+          "pass": "Pass assessment with 80%+"
+        }
+      },
+      "tech_manager": {
+        "name": "Healthcare Technology Manager",
+        "description": "Expert in healthcare technology management",
+        "requirements": {
+          "dependency": "Complete Dependency Management",
+          "continuity": "Complete Business Continuity"
+        }
+      },
+      "cybersecurity": {
+        "name": "Cybersecurity Healthcare Professional",
+        "description": "Specialized in healthcare cybersecurity",
+        "requirements": {
+          "ransomware": "Complete Ransomware Protection",
+          "security": "Pass security assessment"
+        }
+      }
+    },
+    "related": {
+      "hipaa_assessment": {
+        "title": "HIPAA Assessment",
+        "description": "Test your compliance knowledge"
+      },
+      "dependency_manager": {
+        "title": "Dependency Manager",
+        "description": "Apply your training knowledge"
+      },
+      "continuity_planning": {
+        "title": "Continuity Planning",
+        "description": "Practice continuity strategies"
+      },
+      "resource_toolkit": {
+        "title": "Resource Toolkit",
+        "description": "Download templates and guides"
+      }
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
     }
   },
   
@@ -367,7 +557,40 @@ const enTranslation = {
     "action": "Action",
     "run_assessment": "Run Assessment",
     "generate_report": "Generate Report",
-    "schedule_training": "Schedule Training"
+    "schedule_training": "Schedule Training",
+    "tasks": {
+      "risk_assessment": {
+        "title": "Complete Risk Assessment",
+        "type": "Assessment",
+        "priority_high": "High"
+      },
+      "access_controls": {
+        "title": "Review Access Controls",
+        "type": "Security",
+        "priority_medium": "Medium"
+      },
+      "privacy_policies": {
+        "title": "Update Privacy Policies",
+        "type": "Policy",
+        "priority_medium": "Medium"
+      },
+      "training_review": {
+        "title": "Staff Training Review",
+        "type": "Training",
+        "priority_low": "Low"
+      }
+    },
+    "priorities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "task_types": {
+      "assessment": "Assessment",
+      "security": "Security",
+      "policy": "Policy",
+      "training": "Training"
+    }
   },
   
   // Contact page

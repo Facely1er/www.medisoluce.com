@@ -131,9 +131,9 @@ const HomePage: React.FC = () => {
         title={t('home.title_subtitle')}
         titleSubtitle={t('home.title')}
         subtitle={[
-          "Ransomware is a patient-safety risk. MediSoluce unites HIPAA/HITECH readiness, ransomware playbooks, and continuity baselines so hospitals keep operating during cyber incidents.",
-          "Protect patient data with comprehensive compliance solutions designed specifically for healthcare organizations.",
-          "Transform your cybersecurity posture with integrated risk assessment and business continuity planning tools."
+          t('home.subtitle_carousel.main'),
+          t('home.subtitle_carousel.protection'),
+          t('home.subtitle_carousel.trusted')
         ]}
         ctaText={t('start_free_assessment')}
         ctaLink="/hipaa-check"

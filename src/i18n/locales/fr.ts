@@ -153,7 +153,45 @@ const frTranslation = {
     "analysis_process": "Processus d'Analyse",
     "ready_analyze": "Prêt à analyser votre impact opérationnel?",
     "ready_analyze_subtitle": "Commencez avec notre outil d'analyse d'impact complet et identifiez les domaines critiques à protéger.",
-    "begin_analysis": "Commencer l'Analyse"
+    "begin_analysis": "Commencer l'Analyse",
+    "impact_areas": {
+      "patient_care": {
+        "title": "Soins aux Patients",
+        "description": "Impact direct sur le traitement et la prestation de soins aux patients",
+        "metrics": {
+          "delays": "Retards de traitement",
+          "safety": "Risques pour la sécurité des patients",
+          "quality": "Impact sur la qualité des soins"
+        }
+      },
+      "operations": {
+        "title": "Opérations",
+        "description": "Effet sur les opérations quotidiennes de santé et les flux de travail",
+        "metrics": {
+          "productivity": "Productivité du personnel",
+          "utilization": "Utilisation des ressources",
+          "efficiency": "Efficacité des processus"
+        }
+      },
+      "financial": {
+        "title": "Financier",
+        "description": "Implications financières et impact sur les revenus",
+        "metrics": {
+          "revenue_loss": "Perte de revenus",
+          "recovery_costs": "Coûts de récupération",
+          "insurance": "Réclamations d'assurance"
+        }
+      },
+      "compliance": {
+        "title": "Conformité",
+        "description": "Conformité réglementaire et exigences de déclaration",
+        "metrics": {
+          "violations": "Violations HIPAA",
+          "delays": "Retards de déclaration",
+          "gaps": "Lacunes dans la documentation"
+        }
+      }
+    }
   },
   
   // Continuity page
@@ -331,6 +369,120 @@ const frTranslation = {
       "intermediate": "Bonne progression",
       "advanced": "Presque terminé",
       "expert": "Expert en conformité!"
+    },
+    "page_title": "Centre de Formation",
+    "page_description": "Modules de formation complets conçus pour améliorer votre expertise en conformité en santé. Apprenez à votre rythme avec du contenu interactif et obtenez des certifications reconnues par l'industrie.",
+    "available_modules": "Modules Disponibles",
+    "comprehensive_programs": "Programmes de formation complets",
+    "total_duration": "Durée Totale",
+    "self_paced": "Apprentissage à votre rythme",
+    "certifications": "Certifications",
+    "industry_recognized": "Reconnues par l'industrie",
+    "topics_covered": "Sujets Couverts:",
+    "start_module": "Commencer le Module",
+    "review": "Révision",
+    "materials": "Matériaux",
+    "available_certifications": "Certifications Disponibles",
+    "requirements": "Exigences:",
+    "related_resources": "Ressources Connexes",
+    "modules": {
+      "hipaa_basics": {
+        "title": "Fondamentaux de la Conformité HIPAA",
+        "description": "Connaissances essentielles pour les professionnels de la conformité en santé",
+        "duration": "2 heures",
+        "level": "Débutant",
+        "topics": {
+          "privacy_rule": "Aperçu de la Règle de Confidentialité HIPAA",
+          "security_rule": "Exigences de la Règle de Sécurité",
+          "breach_notification": "Procédures de Notification de Violation",
+          "patient_rights": "Droits et Protections des Patients"
+        }
+      },
+      "dependency_management": {
+        "title": "Gestion des Dépendances Technologiques",
+        "description": "Gérer et évaluer les dépendances technologiques en santé",
+        "duration": "1,5 heures",
+        "level": "Intermédiaire",
+        "topics": {
+          "mapping": "Techniques de Cartographie des Dépendances",
+          "risk_assessment": "Méthodologies d'Évaluation des Risques",
+          "vendor_management": "Meilleures Pratiques de Gestion des Fournisseurs",
+          "lifecycle": "Planification du Cycle de Vie Technologique"
+        }
+      },
+      "business_continuity": {
+        "title": "Planification de la Continuité des Activités",
+        "description": "Développer des stratégies de continuité complètes",
+        "duration": "2,5 heures",
+        "level": "Avancé",
+        "topics": {
+          "framework": "Cadre de Planification de la Continuité",
+          "emergency": "Procédures de Réponse d'Urgence",
+          "rto": "Objectifs de Temps de Récupération",
+          "testing": "Tests et Validation"
+        }
+      },
+      "ransomware_protection": {
+        "title": "Stratégies de Protection contre les Rançongiciels",
+        "description": "Cybersécurité avancée pour les organisations de santé",
+        "duration": "3 heures",
+        "level": "Avancé",
+        "topics": {
+          "attack_vectors": "Vecteurs d'Attaque des Rançongiciels",
+          "prevention": "Stratégies de Prévention",
+          "incident_response": "Planification de la Réponse aux Incidents",
+          "recovery": "Procédures de Récupération"
+        }
+      }
+    },
+    "certifications_list": {
+      "hipaa_specialist": {
+        "name": "Spécialiste en Conformité HIPAA",
+        "description": "Professionnel certifié en conformité en santé",
+        "requirements": {
+          "complete": "Terminer les Fondamentaux HIPAA",
+          "pass": "Réussir l'évaluation avec 80%+"
+        }
+      },
+      "tech_manager": {
+        "name": "Gestionnaire de Technologie en Santé",
+        "description": "Expert en gestion de la technologie en santé",
+        "requirements": {
+          "dependency": "Terminer la Gestion des Dépendances",
+          "continuity": "Terminer la Continuité des Activités"
+        }
+      },
+      "cybersecurity": {
+        "name": "Professionnel en Cybersécurité en Santé",
+        "description": "Spécialisé en cybersécurité en santé",
+        "requirements": {
+          "ransomware": "Terminer la Protection contre les Rançongiciels",
+          "security": "Réussir l'évaluation de sécurité"
+        }
+      }
+    },
+    "related": {
+      "hipaa_assessment": {
+        "title": "Évaluation HIPAA",
+        "description": "Testez vos connaissances en conformité"
+      },
+      "dependency_manager": {
+        "title": "Gestionnaire de Dépendances",
+        "description": "Appliquez vos connaissances de formation"
+      },
+      "continuity_planning": {
+        "title": "Planification de la Continuité",
+        "description": "Pratiquez les stratégies de continuité"
+      },
+      "resource_toolkit": {
+        "title": "Boîte à Outils de Ressources",
+        "description": "Téléchargez des modèles et guides"
+      }
+    },
+    "levels": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
     }
   },
   
@@ -366,7 +518,40 @@ const frTranslation = {
     "action": "Action",
     "run_assessment": "Lancer l'Évaluation",
     "generate_report": "Générer un Rapport",
-    "schedule_training": "Planifier une Formation"
+    "schedule_training": "Planifier une Formation",
+    "tasks": {
+      "risk_assessment": {
+        "title": "Compléter l'Évaluation des Risques",
+        "type": "Évaluation",
+        "priority_high": "Élevée"
+      },
+      "access_controls": {
+        "title": "Examiner les Contrôles d'Accès",
+        "type": "Sécurité",
+        "priority_medium": "Moyenne"
+      },
+      "privacy_policies": {
+        "title": "Mettre à Jour les Politiques de Confidentialité",
+        "type": "Politique",
+        "priority_medium": "Moyenne"
+      },
+      "training_review": {
+        "title": "Examen de la Formation du Personnel",
+        "type": "Formation",
+        "priority_low": "Faible"
+      }
+    },
+    "priorities": {
+      "high": "Élevée",
+      "medium": "Moyenne",
+      "low": "Faible"
+    },
+    "task_types": {
+      "assessment": "Évaluation",
+      "security": "Sécurité",
+      "policy": "Politique",
+      "training": "Formation"
+    }
   },
   
   // Contact page

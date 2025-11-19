@@ -23,6 +23,8 @@ interface ContinuityPlan {
   createdAt: string;
 }
 
+type ContinuityPlanFormData = Omit<ContinuityPlan, 'id' | 'createdAt'>;
+
 const ContinuityPage: React.FC = () => {
   const { t } = useTranslation();
   const [showPlanner, setShowPlanner] = useState(false);
@@ -31,47 +33,63 @@ const ContinuityPage: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContinuityPlanFormData>({
     planName: '',
     description: '',
     riskCategory: '',
-    impactLevel: 'Medium' as const,
+    impactLevel: 'Medium',
     recoveryTimeObjective: '',
     recoveryPointObjective: '',
     procedures: '',
     responsibleParty: '',
     testingSchedule: '',
     lastTested: '',
-    status: 'Draft' as const
+    status: 'Draft'
   });
 
   const continuityAreas = [
     {
-      title: 'System Recovery',
-      description: 'Detailed procedures for restoring critical healthcare systems',
+      title: t('continuity.continuity_areas.system_recovery.title'),
+      description: t('continuity.continuity_areas.system_recovery.description'),
       icon: <Server className="h-6 w-6 text-white" />,
-      features: ['Recovery time objectives', 'System prioritization', 'Data restoration'],
+      features: [
+        t('continuity.continuity_areas.system_recovery.features.rto'),
+        t('continuity.continuity_areas.system_recovery.features.prioritization'),
+        t('continuity.continuity_areas.system_recovery.features.restoration')
+      ],
       color: 'bg-primary-500',
     },
     {
-      title: 'Operational Procedures',
-      description: 'Alternative workflows during system downtime',
+      title: t('continuity.continuity_areas.operational_procedures.title'),
+      description: t('continuity.continuity_areas.operational_procedures.description'),
       icon: <FileCheck className="h-6 w-6 text-white" />,
-      features: ['Manual processes', 'Communication protocols', 'Resource allocation'],
+      features: [
+        t('continuity.continuity_areas.operational_procedures.features.manual'),
+        t('continuity.continuity_areas.operational_procedures.features.communication'),
+        t('continuity.continuity_areas.operational_procedures.features.allocation')
+      ],
       color: 'bg-secondary-500',
     },
     {
-      title: 'Staff Response',
-      description: 'Staff roles and responsibilities during incidents',
+      title: t('continuity.continuity_areas.staff_response.title'),
+      description: t('continuity.continuity_areas.staff_response.description'),
       icon: <Users className="h-6 w-6 text-white" />,
-      features: ['Response teams', 'Training requirements', 'Communication chains'],
+      features: [
+        t('continuity.continuity_areas.staff_response.features.teams'),
+        t('continuity.continuity_areas.staff_response.features.training'),
+        t('continuity.continuity_areas.staff_response.features.chains')
+      ],
       color: 'bg-accent-500',
     },
     {
-      title: 'Patient Safety',
-      description: 'Maintaining patient care during disruptions',
+      title: t('continuity.continuity_areas.patient_safety.title'),
+      description: t('continuity.continuity_areas.patient_safety.description'),
       icon: <Shield className="h-6 w-6 text-white" />,
-      features: ['Critical care continuity', 'Patient data access', 'Treatment protocols'],
+      features: [
+        t('continuity.continuity_areas.patient_safety.features.continuity'),
+        t('continuity.continuity_areas.patient_safety.features.data_access'),
+        t('continuity.continuity_areas.patient_safety.features.protocols')
+      ],
       color: 'bg-success-500',
     },
   ];
