@@ -14,60 +14,60 @@ const RansomwarePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [
-    'Prevention',
-    'Detection',
-    'Response',
-    'Recovery',
-    'Training'
+    t('ransomware.categories.prevention'),
+    t('ransomware.categories.detection'),
+    t('ransomware.categories.response'),
+    t('ransomware.categories.recovery'),
+    t('ransomware.categories.training')
   ];
 
   const protectionFramework = [
     {
       title: t('ransomware.prevention'),
-      description: 'Proactive measures to prevent ransomware attacks',
+      description: t('ransomware.prevention_desc'),
       icon: <Shield className="h-8 w-8 text-primary-500" />,
       features: [
-        'Email security and phishing protection',
-        'Endpoint protection and antivirus',
-        'Network segmentation',
-        'Access controls and authentication',
-        'Regular security updates and patches'
+        t('ransomware.prevention_features.email'),
+        t('ransomware.prevention_features.endpoint'),
+        t('ransomware.prevention_features.network'),
+        t('ransomware.prevention_features.access'),
+        t('ransomware.prevention_features.updates')
       ]
     },
     {
       title: t('ransomware.detection'),
-      description: 'Early detection of ransomware threats',
+      description: t('ransomware.detection_desc'),
       icon: <AlertTriangle className="h-8 w-8 text-accent-500" />,
       features: [
-        'Real-time threat monitoring',
-        'Anomaly detection systems',
-        'Security information and event management (SIEM)',
-        'Behavioral analysis',
-        'Threat intelligence integration'
+        t('ransomware.detection_features.monitoring'),
+        t('ransomware.detection_features.anomaly'),
+        t('ransomware.detection_features.siem'),
+        t('ransomware.detection_features.behavioral'),
+        t('ransomware.detection_features.intelligence')
       ]
     },
     {
       title: t('ransomware.response'),
-      description: 'Immediate response to ransomware incidents',
+      description: t('ransomware.response_desc'),
       icon: <Clock className="h-8 w-8 text-warning-500" />,
       features: [
-        'Incident response playbooks',
-        'Isolation and containment procedures',
-        'Communication protocols',
-        'Legal and regulatory notification',
-        'Forensic investigation'
+        t('ransomware.response_features.playbooks'),
+        t('ransomware.response_features.isolation'),
+        t('ransomware.response_features.communication'),
+        t('ransomware.response_features.legal'),
+        t('ransomware.response_features.forensic')
       ]
     },
     {
       title: t('ransomware.recovery'),
-      description: 'System recovery and business continuity',
+      description: t('ransomware.recovery_desc'),
       icon: <CheckCircle className="h-8 w-8 text-success-500" />,
       features: [
-        'Backup and restoration procedures',
-        'System recovery plans',
-        'Data recovery strategies',
-        'Business continuity planning',
-        'Post-incident review'
+        t('ransomware.recovery_features.backup'),
+        t('ransomware.recovery_features.recovery_plans'),
+        t('ransomware.recovery_features.data_recovery'),
+        t('ransomware.recovery_features.continuity'),
+        t('ransomware.recovery_features.review')
       ]
     }
   ];
@@ -75,42 +75,42 @@ const RansomwarePage: React.FC = () => {
   const incidentResponseSteps = [
     {
       phase: t('ransomware.initial_response'),
-      description: 'Immediate actions to contain the threat',
+      description: t('ransomware.initial_response_desc'),
       actions: [
-        'Isolate affected systems',
-        'Disconnect from network',
-        'Preserve evidence',
-        'Notify incident response team'
+        t('ransomware.initial_response_actions.isolate'),
+        t('ransomware.initial_response_actions.disconnect'),
+        t('ransomware.initial_response_actions.preserve'),
+        t('ransomware.initial_response_actions.notify')
       ]
     },
     {
       phase: t('ransomware.impact_assessment'),
-      description: 'Evaluate the scope and impact of the attack',
+      description: t('ransomware.impact_assessment_desc'),
       actions: [
-        'Identify affected systems and data',
-        'Assess patient care impact',
-        'Determine data exfiltration',
-        'Evaluate operational disruption'
+        t('ransomware.impact_assessment_actions.identify'),
+        t('ransomware.impact_assessment_actions.patient'),
+        t('ransomware.impact_assessment_actions.exfiltration'),
+        t('ransomware.impact_assessment_actions.disruption')
       ]
     },
     {
       phase: t('ransomware.recovery_operations'),
-      description: 'Restore systems and operations',
+      description: t('ransomware.recovery_operations_desc'),
       actions: [
-        'Restore from clean backups',
-        'Verify system integrity',
-        'Reconnect systems gradually',
-        'Monitor for reinfection'
+        t('ransomware.recovery_operations_actions.restore'),
+        t('ransomware.recovery_operations_actions.verify'),
+        t('ransomware.recovery_operations_actions.reconnect'),
+        t('ransomware.recovery_operations_actions.monitor')
       ]
     },
     {
       phase: t('ransomware.post_incident'),
-      description: 'Learn and improve from the incident',
+      description: t('ransomware.post_incident_desc'),
       actions: [
-        'Conduct post-mortem analysis',
-        'Update security controls',
-        'Enhance training programs',
-        'Document lessons learned'
+        t('ransomware.post_incident_actions.analysis'),
+        t('ransomware.post_incident_actions.update'),
+        t('ransomware.post_incident_actions.training'),
+        t('ransomware.post_incident_actions.document')
       ]
     }
   ];
@@ -164,7 +164,7 @@ const RansomwarePage: React.FC = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search ransomware resources..."
+                    placeholder={t('ransomware.search_placeholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
@@ -282,7 +282,7 @@ const RansomwarePage: React.FC = () => {
                 {t('ransomware.protect_organization')}
               </h2>
               <p className="text-lg mb-6 opacity-90">
-                Start your ransomware protection assessment today and identify vulnerabilities before attackers do.
+                {t('ransomware.cta_description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/ransomware-assessment">
