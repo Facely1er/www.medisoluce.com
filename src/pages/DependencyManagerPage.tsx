@@ -12,13 +12,23 @@ import {
   Edit,
   Trash2,
   BarChart2,
-  FileCheck
+  FileCheck,
+  Download,
+  Upload,
+  Network,
+  List,
+  HelpCircle,
+  RefreshCw
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import { relatedPages } from '../utils/linkingStrategy';
 import useLocalStorage from '../hooks/useLocalStorage';
+import OnboardingGuide from '../components/dependency/OnboardingGuide';
+import DependencyGraph from '../components/dependency/DependencyGraph';
+import DependencyHelpTooltip from '../components/dependency/DependencyHelpTooltip';
+import ExportManager from '../components/export/ExportManager';
 
 interface Dependency {
   id: string;
@@ -37,6 +47,9 @@ const DependencyManagerPage: React.FC = () => {
   const [dependencies, setDependencies] = useLocalStorage<Dependency[]>('system-dependencies', []);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'graph'>('list');
+  const [selectedDependencyId, setSelectedDependencyId] = useState<string | undefined>();
+  const [showOnboarding, setShowOnboarding] = useLocalStorage<boolean>('show-dependency-onboarding', true);
   const [formData, setFormData] = useState({
     name: '',
     category: '',
@@ -151,9 +164,70 @@ const DependencyManagerPage: React.FC = () => {
     }
   };
 
+  const handleExport = () => {
+    const data = dependencies.map(dep => ({
+      name: dep.name,
+      category: dep.category,
+      criticality: dep.criticality,
+      dependencies: dep.dependencies.join(', '),
+      riskLevel: dep.riskLevel,
+      downtime: dep.downtime,
+      backupProcedures: dep.backupProcedures
+    }));
+    return data;
+  };
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const imported = JSON.parse(content);
+        
+        if (Array.isArray(imported)) {
+          const formatted = imported.map((item, index) => ({
+            id: Date.now().toString() + index,
+            name: item.name || '',
+            category: item.category || '',
+            criticality: item.criticality || 'Medium',
+            dependencies: typeof item.dependencies === 'string' 
+              ? item.dependencies.split(',').map((d: string) => d.trim()).filter((d: string) => d)
+              : item.dependencies || [],
+            riskLevel: item.riskLevel || 'Medium',
+            backupProcedures: item.backupProcedures || '',
+            downtime: item.downtime || ''
+          }));
+          setDependencies(prev => [...prev, ...formatted]);
+        }
+      } catch (error) {
+        console.error('Error importing dependencies:', error);
+        alert('Error importing file. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleBusinessImpactIntegration = () => {
+    // Store selected dependencies for Business Impact Analysis
+    const criticalDependencies = dependencies.filter(d => 
+      d.criticality === 'Critical' || d.criticality === 'High'
+    );
+    localStorage.setItem('business-impact-dependencies', JSON.stringify(criticalDependencies));
+    window.location.href = '/business-impact';
+  };
+
   if (showMapper) {
     return (
       <div className="py-12">
+        {showOnboarding && (
+          <OnboardingGuide 
+            onComplete={() => setShowOnboarding(false)}
+            onSkip={() => setShowOnboarding(false)}
+          />
+        )}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="mb-8 flex items-center justify-between">
@@ -165,9 +239,76 @@ const DependencyManagerPage: React.FC = () => {
                   Map and manage your critical healthcare technology dependencies
                 </p>
               </div>
-              <Button variant="outline" onClick={() => setShowMapper(false)}>
-                Back to Overview
-              </Button>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowOnboarding(true)}
+                  icon={<HelpCircle className="h-4 w-4" />}
+                >
+                  Help
+                </Button>
+                <Button variant="outline" onClick={() => setShowMapper(false)}>
+                  Back to Overview
+                </Button>
+              </div>
+            </div>
+
+            {/* Action Bar */}
+            <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  icon={<List className="h-4 w-4" />}
+                >
+                  List View
+                </Button>
+                <Button
+                  variant={viewMode === 'graph' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('graph')}
+                  icon={<Network className="h-4 w-4" />}
+                >
+                  Graph View
+                </Button>
+              </div>
+              <div className="flex items-center space-x-2">
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImport}
+                    className="hidden"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    icon={<Upload className="h-4 w-4" />}
+                    as="span"
+                  >
+                    Import
+                  </Button>
+                </label>
+                {dependencies.length > 0 && (
+                  <ExportManager
+                    data={handleExport()}
+                    filename="dependency-map"
+                    title="Dependency Map"
+                  />
+                )}
+                {dependencies.length > 0 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleBusinessImpactIntegration}
+                    icon={<BarChart2 className="h-4 w-4" />}
+                  >
+                    Analyze Impact
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Add/Edit Form */}
@@ -177,7 +318,10 @@ const DependencyManagerPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      System Name
+                      <span className="flex items-center space-x-2">
+                        <span>System Name</span>
+                        <DependencyHelpTooltip field="name" />
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -191,7 +335,10 @@ const DependencyManagerPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Category
+                      <span className="flex items-center space-x-2">
+                        <span>Category</span>
+                        <DependencyHelpTooltip field="category" />
+                      </span>
                     </label>
                     <select
                       required
@@ -208,7 +355,10 @@ const DependencyManagerPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Criticality Level
+                      <span className="flex items-center space-x-2">
+                        <span>Criticality Level</span>
+                        <DependencyHelpTooltip field="criticality" />
+                      </span>
                     </label>
                     <select
                       value={formData.criticality}
@@ -224,7 +374,10 @@ const DependencyManagerPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Risk Level
+                      <span className="flex items-center space-x-2">
+                        <span>Risk Level</span>
+                        <DependencyHelpTooltip field="riskLevel" />
+                      </span>
                     </label>
                     <select
                       value={formData.riskLevel}
@@ -239,7 +392,10 @@ const DependencyManagerPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Maximum Downtime Tolerance
+                      <span className="flex items-center space-x-2">
+                        <span>Maximum Downtime Tolerance</span>
+                        <DependencyHelpTooltip field="downtime" />
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -252,7 +408,10 @@ const DependencyManagerPage: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Dependencies (comma-separated)
+                      <span className="flex items-center space-x-2">
+                        <span>Dependencies (comma-separated)</span>
+                        <DependencyHelpTooltip field="dependencies" />
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -266,7 +425,10 @@ const DependencyManagerPage: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Backup Procedures
+                    <span className="flex items-center space-x-2">
+                      <span>Backup Procedures</span>
+                      <DependencyHelpTooltip field="backupProcedures" />
+                    </span>
                   </label>
                   <textarea
                     value={formData.backupProcedures}
@@ -288,19 +450,35 @@ const DependencyManagerPage: React.FC = () => {
               </form>
             </Card>
 
-            {/* Dependencies List */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-medium">System Dependencies ({dependencies.length})</h2>
-              </div>
-
-              {dependencies.length === 0 ? (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  No dependencies mapped yet. Add your first system dependency above.
+            {/* Dependencies View */}
+            {viewMode === 'graph' ? (
+              <DependencyGraph
+                dependencies={dependencies}
+                selectedId={selectedDependencyId}
+                onSelect={setSelectedDependencyId}
+              />
+            ) : (
+              <Card className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-medium">System Dependencies ({dependencies.length})</h2>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {dependencies.map((dep) => (
+
+                {dependencies.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <Server className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No dependencies mapped yet. Add your first system dependency above.</p>
+                    <Button
+                      variant="outline"
+                      className="mt-4"
+                      onClick={() => setShowOnboarding(true)}
+                      icon={<HelpCircle className="h-4 w-4" />}
+                    >
+                      Show Tutorial
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {dependencies.map((dep) => (
                     <div key={dep.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-3">
@@ -358,10 +536,11 @@ const DependencyManagerPage: React.FC = () => {
                         </div>
                       )}
                     </div>
-                  ))}
-                </div>
-              )}
-            </Card>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            )}
           </div>
         </div>
       </div>

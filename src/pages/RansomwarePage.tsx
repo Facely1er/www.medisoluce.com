@@ -1,397 +1,307 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Search, X, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, X, AlertTriangle, Shield, Lock, FileText, Download, CheckCircle, Clock, Users } from 'lucide-react';
 import Button from '../components/ui/Button';
-import DownloadCard from '../components/toolkit/DownloadCard';
-import Modal from '../components/ui/Modal';
-import ReactMarkdown from 'react-markdown';
+import Card from '../components/ui/Card';
+import SEOHead from '../components/ui/SEOHead';
+import Breadcrumbs from '../components/navigation/Breadcrumbs';
 
-export interface DownloadResource {
-  id: string;
-  title: string;
-  description: string;
-  fileType: 'pdf' | 'docx' | 'xlsx' | 'zip';
-  downloadLink: string;
-  category: string;
-  // Add tags property to DownloadResource interface
-  tags: string[];
-  isPopular: boolean;
-  // Add onView property to DownloadResource interface
-  onView?: (resource: DownloadResource) => void;
-}
-
-const ToolkitPage: React.FC = () => {
+const RansomwarePage: React.FC = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [previewContent, setPreviewContent] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [isLoadingContent, setIsLoadingContent] = useState(false);
-  const [contentError, setContentError] = useState<string | null>(null);
-  
+
   const categories = [
-    'HIPAA Compliance',
-    'Technology Dependency',
-    'Business Impact',
-    'Continuity Planning',
-    'Ransomware',
-    'Training',
-  ];
-  
-  const resources: DownloadResource[] = [
-    {
-      id: '1',
-      title: 'HIPAA Privacy Policy Template',
-      description: 'Comprehensive template for creating a HIPAA-compliant privacy policy for your organization.',
-      fileType: 'md',
-      downloadLink: '/downloads/hipaa-privacy-policy-template.docx',
-      category: 'HIPAA Compliance',
-      tags: ['policy', 'hipaa', 'privacy'],
-      isPopular: true,
-    },
-    {
-      id: '2',
-      title: 'Breach Response Checklist',
-      description: 'Step-by-step checklist for responding to a data breach in compliance with HIPAA requirements.',
-      fileType: 'md',
-      downloadLink: '/downloads/breach-response-checklist.pdf',
-      category: 'HIPAA Compliance',
-      tags: ['breach', 'incident response', 'hipaa'],
-      isPopular: true,
-    },
-    {
-      id: '3',
-      title: 'Business Associate Agreement Template',
-      description: 'Standard BAA template for agreements with vendors who handle PHI on your behalf.',
-      fileType: 'md',
-      downloadLink: '/downloads/business-associate-agreement-template.docx',
-      category: 'HIPAA Compliance',
-      tags: ['baa', 'vendor', 'agreement'],
-      isPopular: false,
-    },
-    {
-      id: '4',
-      title: 'Staff Training Record Form',
-      description: 'Form to track HIPAA compliance training for employees and maintain training records.',
-      fileType: 'md',
-      downloadLink: '/downloads/staff-training-record-form.pdf',
-      category: 'Training',
-      tags: ['training', 'documentation', 'compliance'],
-      isPopular: false,
-    },
-    {
-      id: '5',
-      title: 'Technology Dependency Mapping Template',
-      description: 'Template for mapping and documenting critical technology dependencies in healthcare.',
-      fileType: 'xlsx',
-      downloadLink: '/downloads/technology-dependency-mapping-template.xlsx',
-      category: 'Technology Dependency',
-      tags: ['mapping', 'inventory', 'dependencies'],
-      isPopular: true,
-    },
-    {
-      id: '6',
-      title: 'BIA Worksheet for Healthcare',
-      description: 'Business Impact Analysis worksheet specifically designed for healthcare organizations.',
-      fileType: 'md',
-      downloadLink: '/downloads/bia-worksheet-healthcare.docx',
-      category: 'Business Impact',
-      tags: ['bia', 'impact', 'analysis'],
-      isPopular: false,
-    },
-    {
-      id: '7',
-      title: 'Continuity Plan Template for Healthcare',
-      description: 'Comprehensive business continuity plan template focused on healthcare operations.',
-      fileType: 'md',
-      downloadLink: '/downloads/continuity-plan-template-healthcare.docx',
-      category: 'Continuity Planning',
-      tags: ['continuity', 'plan', 'disaster recovery'],
-      isPopular: false,
-    },
-    {
-      id: '8',
-      title: 'Ransomware Response Playbook',
-      description: 'Detailed playbook for preparing for and responding to ransomware attacks in healthcare.',
-      fileType: 'md',
-      downloadLink: '/downloads/ransomware-response-playbook.pdf',
-      category: 'Ransomware',
-      tags: ['ransomware', 'incident response', 'security'],
-      isPopular: true,
-    },
-    {
-      id: '9',
-      title: 'HIPAA Security Risk Assessment Tool',
-      description: 'Interactive tool to conduct a HIPAA security risk assessment for your organization.',
-      fileType: 'xlsx',
-      downloadLink: '/downloads/hipaa-security-risk-assessment-tool.xlsx',
-      category: 'HIPAA Compliance',
-      tags: ['risk assessment', 'security', 'hipaa'],
-      isPopular: false,
-    },
-    {
-      id: '10',
-      title: 'Patient Data Backup Strategy Guide',
-      description: 'Guide to creating a robust backup strategy for patient data and critical systems.',
-      fileType: 'md',
-      downloadLink: '/downloads/patient-data-backup-strategy-guide.pdf',
-      category: 'Continuity Planning',
-      tags: ['backup', 'data protection', 'recovery'],
-      isPopular: false,
-    },
-    {
-      id: '11',
-      title: 'EHR Downtime Procedures',
-      description: 'Procedures for maintaining patient care operations during EHR system downtime.',
-      fileType: 'md',
-      downloadLink: '/downloads/ehr-downtime-procedures.docx',
-      category: 'Continuity Planning',
-      tags: ['downtime', 'ehr', 'procedures'],
-      isPopular: true,
-    },
-    {
-      id: '12',
-      title: 'Vendor Risk Assessment Template',
-      description: 'Template for assessing security and compliance risks of healthcare technology vendors.',
-      fileType: 'xlsx',
-      downloadLink: '/downloads/vendor-risk-assessment-template.xlsx',
-      category: 'HIPAA Compliance',
-      tags: ['vendor', 'risk assessment', 'compliance'],
-      isPopular: false,
-    },
+    'Prevention',
+    'Detection',
+    'Response',
+    'Recovery',
+    'Training'
   ];
 
-  const filteredResources = resources.filter((resource) => {
-    const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         resource.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesCategory = !selectedCategory || resource.category === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
-  });
-
-  // Helper function to convert download link to markdown file path
-  // This function handles all resources with .docx and .pdf extensions by converting them to .md
-  // Examples:
-  // - /downloads/bia-worksheet-healthcare.docx -> /downloads/bia-worksheet-healthcare.md
-  // - /downloads/continuity-plan-template-healthcare.docx -> /downloads/continuity-plan-template-healthcare.md
-  // - /downloads/ransomware-response-playbook.pdf -> /downloads/ransomware-response-playbook.md
-  // - /downloads/patient-data-backup-strategy-guide.pdf -> /downloads/patient-data-backup-strategy-guide.md
-  // - /downloads/ehr-downtime-procedures.docx -> /downloads/ehr-downtime-procedures.md
-  const getMarkdownPath = (downloadLink: string): string => {
-    // Convert .docx, .pdf to .md for markdown files
-    const basePath = downloadLink.replace(/\.(docx|pdf)$/, '.md');
-    // If it's already .md or doesn't have an extension, use as is
-    return basePath.endsWith('.md') ? basePath : `${basePath}.md`;
-  };
-
-  // Async function to load document content from file
-  const loadDocumentContent = async (downloadLink: string): Promise<string> => {
-    try {
-      // Convert download link to markdown file path
-      const markdownPath = getMarkdownPath(downloadLink);
-      
-      // Fetch the markdown file from public directory
-      const response = await fetch(markdownPath);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to load document: ${response.statusText}`);
-      }
-      
-      const content = await response.text();
-      return content;
-    } catch (error) {
-      console.error('Error loading document content:', error);
-      throw error;
+  const protectionFramework = [
+    {
+      title: t('ransomware.prevention'),
+      description: 'Proactive measures to prevent ransomware attacks',
+      icon: <Shield className="h-8 w-8 text-primary-500" />,
+      features: [
+        'Email security and phishing protection',
+        'Endpoint protection and antivirus',
+        'Network segmentation',
+        'Access controls and authentication',
+        'Regular security updates and patches'
+      ]
+    },
+    {
+      title: t('ransomware.detection'),
+      description: 'Early detection of ransomware threats',
+      icon: <AlertTriangle className="h-8 w-8 text-accent-500" />,
+      features: [
+        'Real-time threat monitoring',
+        'Anomaly detection systems',
+        'Security information and event management (SIEM)',
+        'Behavioral analysis',
+        'Threat intelligence integration'
+      ]
+    },
+    {
+      title: t('ransomware.response'),
+      description: 'Immediate response to ransomware incidents',
+      icon: <Clock className="h-8 w-8 text-warning-500" />,
+      features: [
+        'Incident response playbooks',
+        'Isolation and containment procedures',
+        'Communication protocols',
+        'Legal and regulatory notification',
+        'Forensic investigation'
+      ]
+    },
+    {
+      title: t('ransomware.recovery'),
+      description: 'System recovery and business continuity',
+      icon: <CheckCircle className="h-8 w-8 text-success-500" />,
+      features: [
+        'Backup and restoration procedures',
+        'System recovery plans',
+        'Data recovery strategies',
+        'Business continuity planning',
+        'Post-incident review'
+      ]
     }
-  };
+  ];
 
-  // Updated handleView to be async and load content dynamically
-  const handleView = async (resource: Omit<DownloadResource, 'onView'>) => {
-    setPreviewTitle(resource.title);
-    setShowPreviewModal(true);
-    setIsLoadingContent(true);
-    setContentError(null);
-    setPreviewContent('');
-
-    try {
-      const content = await loadDocumentContent(resource.downloadLink);
-      setPreviewContent(content);
-    } catch (error) {
-      setContentError(error instanceof Error ? error.message : 'Failed to load document content');
-      setPreviewContent(`# Error Loading Document
-
-Unable to load the document content. Please try downloading the file directly.
-
-Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    } finally {
-      setIsLoadingContent(false);
+  const incidentResponseSteps = [
+    {
+      phase: t('ransomware.initial_response'),
+      description: 'Immediate actions to contain the threat',
+      actions: [
+        'Isolate affected systems',
+        'Disconnect from network',
+        'Preserve evidence',
+        'Notify incident response team'
+      ]
+    },
+    {
+      phase: t('ransomware.impact_assessment'),
+      description: 'Evaluate the scope and impact of the attack',
+      actions: [
+        'Identify affected systems and data',
+        'Assess patient care impact',
+        'Determine data exfiltration',
+        'Evaluate operational disruption'
+      ]
+    },
+    {
+      phase: t('ransomware.recovery_operations'),
+      description: 'Restore systems and operations',
+      actions: [
+        'Restore from clean backups',
+        'Verify system integrity',
+        'Reconnect systems gradually',
+        'Monitor for reinfection'
+      ]
+    },
+    {
+      phase: t('ransomware.post_incident'),
+      description: 'Learn and improve from the incident',
+      actions: [
+        'Conduct post-mortem analysis',
+        'Update security controls',
+        'Enhance training programs',
+        'Document lessons learned'
+      ]
     }
-  };
-
-  // Legacy inline content removed - content is now loaded dynamically from files
+  ];
 
   return (
-    <div className="py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <Download className="h-16 w-16 text-primary-500 mx-auto mb-4" />
-          <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-            {t('toolkit.title')}
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t('toolkit.subtitle')}
-          </p>
-        </div>
-        
-        {/* Search and Filter */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-grow">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                className="block w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder={t('toolkit.search')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setSearchQuery('')}
-                >
-                  <X className="h-5 w-5 text-gray-400 hover:text-gray-500" />
-                </button>
-              )}
-            </div>
+    <div className="min-h-screen">
+      <SEOHead 
+        title={t('ransomware.title')}
+        description={t('ransomware.subtitle')}
+        keywords="healthcare ransomware, ransomware protection, HIPAA ransomware, healthcare cybersecurity, ransomware response"
+      />
+      
+      <div className="py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <Breadcrumbs />
             
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${
-                    selectedCategory === category
-                      ? 'bg-primary-500 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                  onClick={() => {
-                    setSelectedCategory(selectedCategory === category ? null : category);
-                  }}
-                >
-                  {category}
-                </button>
-              ))}
-              
-              {selectedCategory && (
-                <button
-                  className="px-4 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
-                  onClick={() => setSelectedCategory(null)}
-                >
-                  {t('toolkit.clear_filter')}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        {/* Resources Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredResources.length > 0 ? (
-            filteredResources.map((resource) => (
+            {/* Hero Section */}
+            <div className="text-center mb-12">
               <motion.div
-                key={resource.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.6 }}
               >
-                <DownloadCard
-                  title={resource.title}
-                  description={resource.description}
-                  fileType={resource.fileType}
-                  downloadLink={resource.downloadLink}
-                  category={resource.category}
-                  isPopular={resource.isPopular}
-                  tags={resource.tags} // Pass tags property
-                  onView={handleView}
-                />
+                <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+                <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                  {t('ransomware.title')}
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+                  {t('ransomware.subtitle')}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/ransomware-assessment">
+                    <Button size="lg" icon={<Shield className="h-5 w-5" />}>
+                      {t('ransomware.start_assessment')}
+                    </Button>
+                  </Link>
+                  <Link to="/toolkit">
+                    <Button variant="outline" size="lg" icon={<FileText className="h-5 w-5" />}>
+                      {t('ransomware.view_playbook')}
+                    </Button>
+                  </Link>
+                </div>
               </motion.div>
-            ))
-          ) : (
-            <div className="col-span-3 py-12 text-center">
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                {t('toolkit.no_resources')}
-              </p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCategory(null);
-                }}
-              >
-                {t('toolkit.clear_filters')}
-              </Button>
             </div>
-          )}
-        </div>
-        
-        {/* Custom Resource Request */}
-        <div className="mt-16 bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              {t('toolkit.custom_resource')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
-              {t('toolkit.custom_resource_desc')}
-            </p>
-            <Button onClick={() => window.location.href = '/contact'}>
-              {t('toolkit.request_custom')}
-            </Button>
+
+            {/* Search and Filter */}
+            <Card className="p-6 mb-8">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search ransomware resources..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                    >
+                      <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition ${
+                        selectedCategory === category
+                          ? 'bg-primary-500 text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </Card>
+
+            {/* Protection Framework */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-8 text-center">
+                {t('ransomware.protection_framework')}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {protectionFramework.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                  >
+                    <Card className="p-6 h-full">
+                      <div className="flex items-start space-x-4 mb-4">
+                        {item.icon}
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                      <ul className="space-y-2">
+                        {item.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
+                            <CheckCircle className="h-4 w-4 text-success-500 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Incident Response Process */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-8 text-center">
+                {t('ransomware.incident_response')}
+              </h2>
+              <div className="space-y-6">
+                {incidentResponseSteps.map((step, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                  >
+                    <Card className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="flex-shrink-0 w-10 h-10 bg-primary-500 text-white rounded-full flex items-center justify-center font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                            {step.phase}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            {step.description}
+                          </p>
+                          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {step.actions.map((action, idx) => (
+                              <li key={idx} className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
+                                <CheckCircle className="h-4 w-4 text-primary-500 flex-shrink-0" />
+                                <span>{action}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <Card className="p-8 bg-gradient-to-r from-primary-500 to-accent-500 text-white text-center">
+              <h2 className="text-2xl font-heading font-bold mb-4">
+                {t('ransomware.protect_organization')}
+              </h2>
+              <p className="text-lg mb-6 opacity-90">
+                Start your ransomware protection assessment today and identify vulnerabilities before attackers do.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/ransomware-assessment">
+                  <Button size="lg" variant="outline" className="bg-white text-primary-600 hover:bg-gray-100">
+                    {t('ransomware.start_assessment')}
+                  </Button>
+                </Link>
+                <Link to="/contact">
+                  <Button size="lg" variant="outline" className="bg-white text-primary-600 hover:bg-gray-100">
+                    Contact Security Experts
+                  </Button>
+                </Link>
+              </div>
+            </Card>
           </div>
         </div>
       </div>
-
-      <Modal
-        isOpen={showPreviewModal}
-        onClose={() => {
-          setShowPreviewModal(false);
-          setPreviewContent('');
-          setContentError(null);
-        }}
-        title={previewTitle}
-        size="lg"
-      >
-        {isLoadingContent ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-300">Loading document...</p>
-            </div>
-          </div>
-        ) : contentError ? (
-          <div className="py-8">
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-              <p className="text-red-800 dark:text-red-200 font-medium mb-2">Error Loading Document</p>
-              <p className="text-red-700 dark:text-red-300 text-sm">{contentError}</p>
-            </div>
-            <ReactMarkdown className="prose dark:prose-invert max-w-none">
-              {previewContent}
-            </ReactMarkdown>
-          </div>
-        ) : (
-          <ReactMarkdown className="prose dark:prose-invert max-w-none">
-            {previewContent}
-          </ReactMarkdown>
-        )}
-      </Modal>
     </div>
   );
 };
 
-export default ToolkitPage;
+export default RansomwarePage;
