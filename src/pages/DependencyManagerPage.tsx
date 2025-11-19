@@ -13,22 +13,17 @@ import {
   Trash2,
   BarChart2,
   FileCheck,
-  Download,
   Upload,
   Network,
   List,
   HelpCircle,
-  RefreshCw,
   Search,
   Filter,
   X,
   AlertTriangle,
-  CheckCircle,
   TrendingUp,
-  Users,
   Building2,
   Shield,
-  Copy,
   CheckSquare,
   Square
 } from 'lucide-react';
@@ -386,22 +381,6 @@ const DependencyManagerPage: React.FC = () => {
   const handleBulkDelete = () => {
     if (selectedDependencies.size > 0 && window.confirm(`Delete ${selectedDependencies.size} selected dependencies?`)) {
       setDependencies(deps => deps.filter(dep => !selectedDependencies.has(dep.id)));
-      setSelectedDependencies(new Set());
-    }
-  };
-
-  const handleBulkUpdate = (field: 'criticality' | 'riskLevel' | 'complianceStatus', value: string) => {
-    if (selectedDependencies.size > 0) {
-      setDependencies(deps => deps.map(dep => {
-        if (selectedDependencies.has(dep.id)) {
-          return {
-            ...dep,
-            [field]: value,
-            ...(field === 'complianceStatus' && value !== 'Not Assessed' ? { lastAssessed: new Date().toISOString().split('T')[0] } : {})
-          };
-        }
-        return dep;
-      }));
       setSelectedDependencies(new Set());
     }
   };

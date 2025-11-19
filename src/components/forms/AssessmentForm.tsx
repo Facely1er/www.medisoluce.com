@@ -17,6 +17,11 @@ export interface AssessmentFormData {
   notes: string;
 }
 
+interface AssessmentDraft extends AssessmentFormData {
+  id: string;
+  savedAt: string;
+}
+
 interface AssessmentFormProps {
   onSubmit: (data: AssessmentFormData) => void;
   initialData?: Partial<AssessmentFormData>;
@@ -40,11 +45,11 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
     }
   });
 
-  const [savedDrafts, setSavedDrafts] = useLocalStorage('assessment-drafts', []);
+  const [savedDrafts, setSavedDrafts] = useLocalStorage<AssessmentDraft[]>('assessment-drafts', []);
 
   const saveDraft = () => {
     const formData = watch();
-    const draft = {
+    const draft: AssessmentDraft = {
       id: Date.now().toString(),
       ...formData,
       savedAt: new Date().toISOString()
@@ -89,7 +94,7 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
       }
       
       // Log security event
-      securityUtils.logSecurityEvent('assessment_form_security_violation', {
+      securityUtils.logSecurityEvent('suspicious_input', {
         fieldErrors: Object.entries(validationResults).reduce((acc, [field, result]) => {
           if (!result.isValid) acc[field] = result.errors;
           return acc;
@@ -111,7 +116,7 @@ const AssessmentForm: React.FC<AssessmentFormProps> = ({
     };
     
     // Log successful form submission
-    securityUtils.logSecurityEvent('assessment_form_submitted', {
+    securityUtils.logSecurityEvent('data_access', {
       organizationName: sanitizedData.organizationName.substring(0, 50), // Log partial for audit
       assessmentType: sanitizedData.assessmentType
     }, 'low');
