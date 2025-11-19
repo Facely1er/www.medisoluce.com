@@ -27,9 +27,10 @@ interface OnboardingStep {
 interface OnboardingGuideProps {
   onComplete?: () => void;
   onSkip?: () => void;
+  forceShow?: boolean; // Allow parent to force-show onboarding even if previously completed
 }
 
-const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip }) => {
+const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip, forceShow = false }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useLocalStorage<boolean>(
@@ -38,11 +39,11 @@ const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ onComplete, onSkip })
   );
 
   useEffect(() => {
-    // Show onboarding if not completed
-    if (!hasCompletedOnboarding) {
+    // Show onboarding if not completed OR if parent forces it to show
+    if (!hasCompletedOnboarding || forceShow) {
       setIsVisible(true);
     }
-  }, [hasCompletedOnboarding]);
+  }, [hasCompletedOnboarding, forceShow]);
 
   const steps: OnboardingStep[] = [
     {

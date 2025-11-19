@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AssessmentEngine, { Question, AssessmentResult } from '../components/assessment/AssessmentEngine';
-import AssessmentForm from '../components/forms/AssessmentForm';
+import AssessmentForm, { AssessmentFormData } from '../components/forms/AssessmentForm';
 import RelatedLinks from '../components/ui/RelatedLinks';
 import ContextualCTA from '../components/ui/ContextualCTA';
 import { ShieldCheck, CheckCircle, FileText, AlertTriangle, Users, Lock, Eye, ArrowRight, BookOpen, Download, Server } from 'lucide-react';
@@ -13,30 +13,30 @@ const HIPAACheckPage: React.FC = () => {
   const { t } = useTranslation();
   const [showAssessment, setShowAssessment] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [assessmentInfo, setAssessmentInfo] = useState<Record<string, unknown> | null>(null);
+  const [assessmentInfo, setAssessmentInfo] = useState<AssessmentFormData | null>(null);
   
   const hipaaQuestions: Question[] = [
     {
       id: 'risk-assessment',
-      text: 'Has your organization conducted a comprehensive risk assessment within the last year?',
-      description: 'HIPAA requires covered entities to conduct regular risk assessments to identify potential vulnerabilities to PHI.',
+      text: t('hipaa_assessment.questions.risk_assessment.text'),
+      description: t('hipaa_assessment.questions.risk_assessment.description'),
       options: [
-        { id: 'risk-yes-comprehensive', text: 'Yes, we have conducted a comprehensive assessment that covers all systems and processes', value: 5 },
-        { id: 'risk-yes-partial', text: 'Yes, but it was limited in scope or did not cover all systems', value: 3 },
-        { id: 'risk-no-planned', text: 'No, but we have one planned', value: 1 },
-        { id: 'risk-no', text: 'No, we have not conducted a risk assessment', value: 0 },
+        { id: 'risk-yes-comprehensive', text: t('hipaa_assessment.questions.risk_assessment.options.yes_comprehensive'), value: 5 },
+        { id: 'risk-yes-partial', text: t('hipaa_assessment.questions.risk_assessment.options.yes_partial'), value: 3 },
+        { id: 'risk-no-planned', text: t('hipaa_assessment.questions.risk_assessment.options.no_planned'), value: 1 },
+        { id: 'risk-no', text: t('hipaa_assessment.questions.risk_assessment.options.no'), value: 0 },
       ],
       regulations: ['Security Rule §164.308(a)(1)', 'Security Rule §164.306(a)'],
       frameworks: ['HIPAA Security Rule']
     },
     {
       id: 'policies-procedures',
-      text: 'Does your organization have documented HIPAA policies and procedures?',
-      description: 'Written policies and procedures are required to demonstrate compliance with HIPAA regulations.',
+      text: t('hipaa_assessment.questions.policies_procedures.text'),
+      description: t('hipaa_assessment.questions.policies_procedures.description'),
       options: [
-        { id: 'policies-yes-comprehensive', text: 'Yes, comprehensive and regularly updated', value: 5 },
-        { id: 'policies-yes-outdated', text: 'Yes, but they need updating', value: 3 },
-        { id: 'policies-partial', text: 'We have some, but not all required policies', value: 2 },
+        { id: 'policies-yes-comprehensive', text: t('hipaa_assessment.questions.policies_procedures.options.yes_comprehensive'), value: 5 },
+        { id: 'policies-yes-outdated', text: t('hipaa_assessment.questions.policies_procedures.options.yes_outdated'), value: 3 },
+        { id: 'policies-partial', text: t('hipaa_assessment.questions.policies_procedures.options.partial'), value: 2 },
         { id: 'policies-no', text: t('hipaa_assessment.options.policies_no'), value: 0 },
       ],
       regulations: ['Security Rule §164.316(a)', 'Privacy Rule §164.530(i)'],
@@ -44,8 +44,8 @@ const HIPAACheckPage: React.FC = () => {
     },
     {
       id: 'employee-training',
-      text: 'How frequently does your organization conduct HIPAA training for employees?',
-      description: 'Regular training ensures staff understand their obligations for protecting patient information.',
+      text: t('hipaa_assessment.questions.employee_training.text'),
+      description: t('hipaa_assessment.questions.employee_training.description'),
       options: [
         { id: 'training-annual-plus', text: t('hipaa_assessment.options.training_annual_plus'), value: 5 },
         { id: 'training-annual', text: t('hipaa_assessment.options.training_annual'), value: 4 },
@@ -57,81 +57,81 @@ const HIPAACheckPage: React.FC = () => {
     },
     {
       id: 'encryption',
-      text: 'Is PHI encrypted at rest and in transit across your systems?',
-      description: 'Encryption is an addressable implementation specification under the HIPAA Security Rule.',
+      text: t('hipaa_assessment.questions.encryption.text'),
+      description: t('hipaa_assessment.questions.encryption.description'),
       options: [
-        { id: 'encryption-both', text: 'Yes, both at rest and in transit', value: 5 },
-        { id: 'encryption-transit', text: 'Only in transit', value: 3 },
-        { id: 'encryption-rest', text: 'Only at rest', value: 2 },
-        { id: 'encryption-none', text: 'No encryption in place', value: 0 },
+        { id: 'encryption-both', text: t('hipaa_assessment.questions.encryption.options.both'), value: 5 },
+        { id: 'encryption-transit', text: t('hipaa_assessment.options.encryption_transit'), value: 3 },
+        { id: 'encryption-rest', text: t('hipaa_assessment.options.encryption_rest'), value: 2 },
+        { id: 'encryption-none', text: t('hipaa_assessment.options.encryption_none'), value: 0 },
       ],
       regulations: ['Security Rule §164.312(a)(2)(iv)', 'Security Rule §164.312(e)(2)(ii)'],
       frameworks: ['HIPAA Security Rule']
     },
     {
       id: 'access-controls',
-      text: 'How do you manage access controls to systems containing PHI?',
-      description: 'Access controls ensure only authorized personnel can access protected health information.',
+      text: t('hipaa_assessment.questions.access_controls.text'),
+      description: t('hipaa_assessment.questions.access_controls.description'),
       options: [
-        { id: 'access-rbac-audit', text: 'Role-based access with regular auditing and certification', value: 5 },
-        { id: 'access-rbac', text: 'Role-based access controls without regular review', value: 3 },
-        { id: 'access-basic', text: 'Basic username/password controls', value: 2 },
-        { id: 'access-minimal', text: 'Minimal or no access controls', value: 0 },
+        { id: 'access-rbac-audit', text: t('hipaa_assessment.questions.access_controls.options.rbac_audit'), value: 5 },
+        { id: 'access-rbac', text: t('hipaa_assessment.questions.access_controls.options.rbac'), value: 3 },
+        { id: 'access-basic', text: t('hipaa_assessment.questions.access_controls.options.basic'), value: 2 },
+        { id: 'access-minimal', text: t('hipaa_assessment.options.access_minimal'), value: 0 },
       ],
     },
     {
       id: 'business-associates',
-      text: 'Do you have Business Associate Agreements (BAAs) with all vendors who access PHI?',
-      description: 'BAAs are required for all third parties that access, transmit, or store PHI on your behalf.',
+      text: t('hipaa_assessment.questions.business_associates.text'),
+      description: t('hipaa_assessment.questions.business_associates.description'),
       options: [
-        { id: 'baa-all-reviewed', text: 'Yes, with all vendors and regularly reviewed', value: 5 },
-        { id: 'baa-all', text: 'Yes, with all vendors', value: 4 },
-        { id: 'baa-some', text: 'With some but not all vendors', value: 2 },
-        { id: 'baa-none', text: 'No BAAs in place', value: 0 },
+        { id: 'baa-all-reviewed', text: t('hipaa_assessment.questions.business_associates.options.all_reviewed'), value: 5 },
+        { id: 'baa-all', text: t('hipaa_assessment.questions.business_associates.options.all'), value: 4 },
+        { id: 'baa-some', text: t('hipaa_assessment.options.baa_some'), value: 2 },
+        { id: 'baa-none', text: t('hipaa_assessment.options.baa_none'), value: 0 },
       ],
     },
     {
       id: 'incident-response',
-      text: 'Does your organization have a tested incident response plan for data breaches?',
-      description: 'A documented and tested plan is essential for proper response to security incidents.',
+      text: t('hipaa_assessment.questions.incident_response.text'),
+      description: t('hipaa_assessment.questions.incident_response.description'),
       options: [
-        { id: 'incident-tested', text: 'Yes, documented and regularly tested', value: 5 },
-        { id: 'incident-documented', text: 'Yes, documented but not tested', value: 3 },
-        { id: 'incident-informal', text: 'Informal or partial plans exist', value: 2 },
-        { id: 'incident-none', text: 'No incident response plan', value: 0 },
+        { id: 'incident-tested', text: t('hipaa_assessment.questions.incident_response.options.tested'), value: 5 },
+        { id: 'incident-documented', text: t('hipaa_assessment.questions.incident_response.options.documented'), value: 3 },
+        { id: 'incident-informal', text: t('hipaa_assessment.options.incident_informal'), value: 2 },
+        { id: 'incident-none', text: t('hipaa_assessment.options.incident_none'), value: 0 },
       ],
     },
     {
       id: 'audit-logs',
-      text: 'Are audit logs maintained for systems containing PHI?',
-      description: 'Audit logs help track who accessed PHI, when, and what actions were performed.',
+      text: t('hipaa_assessment.questions.audit_logs.text'),
+      description: t('hipaa_assessment.questions.audit_logs.description'),
       options: [
-        { id: 'logs-comprehensive-monitored', text: 'Yes, comprehensive logs with active monitoring', value: 5 },
-        { id: 'logs-comprehensive', text: 'Yes, comprehensive logs without active monitoring', value: 3 },
-        { id: 'logs-partial', text: 'Partial or inconsistent logging', value: 2 },
-        { id: 'logs-none', text: 'No audit logging in place', value: 0 },
+        { id: 'logs-comprehensive-monitored', text: t('hipaa_assessment.questions.audit_logs.options.comprehensive_monitored'), value: 5 },
+        { id: 'logs-comprehensive', text: t('hipaa_assessment.questions.audit_logs.options.comprehensive'), value: 3 },
+        { id: 'logs-partial', text: t('hipaa_assessment.options.logs_partial'), value: 2 },
+        { id: 'logs-none', text: t('hipaa_assessment.options.logs_none'), value: 0 },
       ],
     },
     {
       id: 'device-security',
-      text: 'How do you secure mobile devices and workstations that access PHI?',
-      description: 'Mobile device security is essential as healthcare becomes more mobile.',
+      text: t('hipaa_assessment.questions.device_security.text'),
+      description: t('hipaa_assessment.questions.device_security.description'),
       options: [
-        { id: 'devices-mdm-encryption', text: 'MDM solution with encryption, remote wipe, and device policies', value: 5 },
-        { id: 'devices-encryption-policies', text: 'Encryption and security policies without MDM', value: 3 },
-        { id: 'devices-basic', text: 'Basic security measures (passwords only)', value: 2 },
-        { id: 'devices-none', text: 'No specific mobile device security', value: 0 },
+        { id: 'devices-mdm-encryption', text: t('hipaa_assessment.questions.device_security.options.mdm_encryption'), value: 5 },
+        { id: 'devices-encryption-policies', text: t('hipaa_assessment.options.devices_encryption_policies'), value: 3 },
+        { id: 'devices-basic', text: t('hipaa_assessment.questions.device_security.options.basic'), value: 2 },
+        { id: 'devices-none', text: t('hipaa_assessment.options.devices_none'), value: 0 },
       ],
     },
     {
       id: 'emergency-access',
-      text: 'Do you have procedures for emergency access to PHI during system downtime?',
-      description: 'Emergency access procedures ensure continuity of patient care during system outages.',
+      text: t('hipaa_assessment.questions.emergency_access.text'),
+      description: t('hipaa_assessment.questions.emergency_access.description'),
       options: [
-        { id: 'emergency-documented-tested', text: 'Yes, documented and regularly tested', value: 5 },
-        { id: 'emergency-documented', text: 'Yes, documented but not tested', value: 3 },
-        { id: 'emergency-informal', text: 'Informal procedures exist', value: 2 },
-        { id: 'emergency-none', text: 'No emergency access procedures', value: 0 },
+        { id: 'emergency-documented-tested', text: t('hipaa_assessment.questions.emergency_access.options.documented_tested'), value: 5 },
+        { id: 'emergency-documented', text: t('hipaa_assessment.questions.emergency_access.options.documented'), value: 3 },
+        { id: 'emergency-informal', text: t('hipaa_assessment.options.emergency_informal'), value: 2 },
+        { id: 'emergency-none', text: t('hipaa_assessment.options.emergency_none'), value: 0 },
       ],
     },
   ];
@@ -301,7 +301,7 @@ const HIPAACheckPage: React.FC = () => {
     // Here you could save the result, show additional UI, etc.
   };
 
-  const handleFormSubmit = (data: Record<string, unknown>) => {
+  const handleFormSubmit = (data: AssessmentFormData) => {
     setAssessmentInfo(data);
     setShowForm(false);
     setShowAssessment(true);
@@ -525,9 +525,9 @@ const HIPAACheckPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-12">
           <RelatedLinks 
             links={[
-              { title: 'Dependency Manager', url: '/dependency-manager', description: 'Map your critical systems' },
-              { title: 'Business Impact Analysis', url: '/business-impact', description: 'Assess potential impacts' },
-              { title: 'Resource Toolkit', url: '/toolkit', description: 'Download templates and guides' }
+              { title: 'Dependency Manager', path: '/dependency-manager', description: 'Map your critical systems' },
+              { title: 'Business Impact Analysis', path: '/business-impact', description: 'Assess potential impacts' },
+              { title: 'Resource Toolkit', path: '/toolkit', description: 'Download templates and guides' }
             ]}
             title="Continue Your Compliance Journey"
             variant="inline"

@@ -8,7 +8,7 @@ import Card from '../ui/Card';
 import Tooltip from '../ui/Tooltip';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
-interface AssessmentFormData {
+export interface AssessmentFormData {
   organizationName: string;
   assessmentType: string;
   conductedBy: string;

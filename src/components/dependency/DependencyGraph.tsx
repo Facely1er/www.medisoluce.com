@@ -97,6 +97,41 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
     return positions;
   }, [dependencies]);
 
+  // Calculate positions for external dependencies
+  // External dependencies are placed to the right of their source node
+  const externalPositions = useMemo(() => {
+    const positions: Record<string, { x: number; y: number }> = {};
+    const externalDepsByFrom: Record<string, string[]> = {};
+    
+    // Group external dependencies by their source node
+    relationships.forEach(rel => {
+      if (!rel.toNode) {
+        if (!externalDepsByFrom[rel.from]) {
+          externalDepsByFrom[rel.from] = [];
+        }
+        if (!externalDepsByFrom[rel.from].includes(rel.to)) {
+          externalDepsByFrom[rel.from].push(rel.to);
+        }
+      }
+    });
+    
+    // Calculate positions for each external dependency
+    Object.entries(externalDepsByFrom).forEach(([fromId, externalNames]) => {
+      const fromPos = nodePositions[fromId];
+      if (fromPos) {
+        externalNames.forEach((extName, index) => {
+          // Place external dependencies to the right, with slight vertical offset
+          positions[extName] = {
+            x: fromPos.x + 250 + (index * 20), // Offset to the right, stack if multiple
+            y: fromPos.y + (index * 30) // Slight vertical offset for multiple external deps
+          };
+        });
+      }
+    });
+    
+    return positions;
+  }, [relationships, nodePositions]);
+
   if (dependencies.length === 0) {
     return (
       <Card className="p-8">
@@ -124,12 +159,21 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
           width="100%" 
           height="100%" 
           className="min-h-[400px]"
-          viewBox={`0 0 ${Math.max(600, Object.keys(nodePositions).length * 200)} ${Math.max(400, Math.ceil(dependencies.length / 3) * 150)}`}
+          viewBox={`0 0 ${Math.max(600, Math.max(
+            ...Object.values(nodePositions).map(p => p.x),
+            ...(Object.keys(externalPositions).length > 0 ? Object.values(externalPositions).map(p => p.x) : [0])
+          ) + 200)} ${Math.max(400, Math.max(
+            ...Object.values(nodePositions).map(p => p.y),
+            ...(Object.keys(externalPositions).length > 0 ? Object.values(externalPositions).map(p => p.y) : [0])
+          ) + 100)}`}
         >
           {/* Draw relationship lines */}
           {relationships.map((rel, index) => {
             const fromPos = nodePositions[rel.from];
-            const toPos = rel.toNode ? nodePositions[rel.to] : null;
+            // For internal dependencies, use nodePositions; for external, use externalPositions
+            const toPos = rel.toNode 
+              ? nodePositions[rel.to] 
+              : externalPositions[rel.to];
             
             if (!fromPos || !toPos) return null;
             
@@ -162,6 +206,34 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
               <polygon points="0 0, 10 3, 0 6" fill="#94a3b8" />
             </marker>
           </defs>
+
+          {/* Draw external dependency markers */}
+          {Object.entries(externalPositions).map(([extName, extPos]) => {
+            return (
+              <g key={`ext-${extName}`}>
+                {/* External dependency circle (smaller, dashed border) */}
+                <circle
+                  cx={extPos.x}
+                  cy={extPos.y}
+                  r={20}
+                  fill="none"
+                  stroke="#94a3b8"
+                  strokeWidth="2"
+                  strokeDasharray="5,5"
+                  className="opacity-60"
+                />
+                {/* External dependency label */}
+                <text
+                  x={extPos.x}
+                  y={extPos.y + 35}
+                  textAnchor="middle"
+                  className="text-xs font-medium fill-gray-500 dark:fill-gray-400 pointer-events-none"
+                >
+                  {extName.length > 12 ? extName.substring(0, 12) + '...' : extName}
+                </text>
+              </g>
+            );
+          })}
 
           {/* Draw nodes */}
           {dependencies.map((dep) => {

@@ -226,6 +226,7 @@ const DependencyManagerPage: React.FC = () => {
           <OnboardingGuide 
             onComplete={() => setShowOnboarding(false)}
             onSkip={() => setShowOnboarding(false)}
+            forceShow={showOnboarding}
           />
         )}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
