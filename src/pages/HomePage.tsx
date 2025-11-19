@@ -336,10 +336,8 @@ const HomePage: React.FC = () => {
             
             {/* Additional Strategic Links */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <a
-                href="https://toolkit.medisoluce.com/training"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/training"
                 className="group relative p-8 bg-gradient-to-br from-white to-primary-50/50 dark:from-gray-800 dark:to-primary-900/20 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-200/50 dark:border-gray-700/50 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-300 transform hover:-translate-y-2"
                 data-analytics="homepage-secondary-cta"
                 aria-label="Access comprehensive healthcare compliance training programs"
@@ -365,12 +363,10 @@ const HomePage: React.FC = () => {
                     <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-              </a>
-              
-              <a
-                href="https://toolkit.medisoluce.com"
-                target="_blank"
-                rel="noopener noreferrer"
+              </Link>
+
+              <Link
+                to="/toolkit"
                 className="group relative p-8 bg-gradient-to-br from-white to-secondary-50/50 dark:from-gray-800 dark:to-secondary-900/20 rounded-2xl shadow-lg hover:shadow-2xl border border-gray-200/50 dark:border-gray-700/50 hover:border-secondary-300 dark:hover:border-secondary-600 transition-all duration-300 transform hover:-translate-y-2"
                 data-analytics="homepage-toolkit-cta"
                 aria-label="Access comprehensive compliance resource toolkit"
@@ -396,7 +392,7 @@ const HomePage: React.FC = () => {
                     <Download className="h-4 w-4 ml-1 group-hover:translate-y-0.5 transition-transform" />
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
             </div>
             

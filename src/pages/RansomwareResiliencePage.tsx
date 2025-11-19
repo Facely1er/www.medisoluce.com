@@ -108,16 +108,16 @@ const RansomwareResiliencePage: React.FC = () => {
                   {t('ransomware_resilience.cta_run_calculator')}
                 </Button>
               </Link>
-              <a href="https://toolkit.medisoluce.com" target="_blank" rel="noopener noreferrer">
-                <Button 
-                  variant="outline" 
+              <Link to="/toolkit">
+                <Button
+                  variant="outline"
                   size="lg"
                   className="px-8 py-4 text-lg flex items-center gap-2 bg-white dark:bg-gray-800"
                 >
                   <Download size={20} />
                   {t('ransomware_resilience.cta_download_onepager')}
                 </Button>
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

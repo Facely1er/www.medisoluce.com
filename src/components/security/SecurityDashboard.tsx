@@ -98,7 +98,9 @@ const SecurityDashboard: React.FC = () => {
       _setThreatHistory(threatHistoryData as ThreatHistoryItem[]);
       setLastScan(new Date());
     } catch (error) {
-      console.error('Security scan failed:', error);
+      if (!import.meta.env.PROD) {
+        console.error('Security scan failed:', error);
+      }
     } finally {
       setIsScanning(false);
     }

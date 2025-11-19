@@ -544,14 +544,14 @@ const DashboardPage: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Plan your next staff compliance training session.
             </p>
-            <a href="https://toolkit.medisoluce.com" target="_blank" rel="noopener noreferrer">
-              <Button 
-              variant="outline" 
+            <Link to="/training">
+              <Button
+              variant="outline"
               fullWidth
             >
               {t('dashboard.schedule_training')}
             </Button>
-            </a>
+            </Link>
           </Card>
         </div>
       </div>
