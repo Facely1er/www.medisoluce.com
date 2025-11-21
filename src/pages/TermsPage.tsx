@@ -538,7 +538,7 @@ const TermsPage: React.FC = () => {
                   <ul className="text-gray-700 dark:text-gray-300 space-y-1">
                     <li><strong>ERMITS LLC</strong></li>
                     <li><strong>Email:</strong> <a href="mailto:contact@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">contact@ermits.com</a></li>
-                    <li><strong>Website:</strong> <a href="http://www.ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline" target="_blank" rel="noopener noreferrer">www.ermits.com</a></li>
+                    <li><strong>Website:</strong> <a href="https://www.ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline" target="_blank" rel="noopener noreferrer">www.ermits.com</a></li>
                     <li className="mt-2"><strong>For technical support inquiries:</strong> <a href="mailto:contact@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">contact@ermits.com</a></li>
                     <li><strong>For privacy inquiries:</strong> <a href="mailto:privacy@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">privacy@ermits.com</a></li>
                     <li><strong>For compliance and legal inquiries:</strong> <a href="mailto:legal@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">legal@ermits.com</a></li>

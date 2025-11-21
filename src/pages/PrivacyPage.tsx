@@ -355,7 +355,7 @@ const PrivacyPage: React.FC = () => {
                     <p className="text-blue-800 dark:text-blue-200 font-semibold mb-1">How to Exercise Your Rights:</p>
                     <p className="text-blue-700 dark:text-blue-300 text-sm">
                       Submit requests via email to <a href="mailto:privacy@ermits.com" className="underline">privacy@ermits.com</a>, 
-                      use the online form at <a href="http://www.ermits.com/privacy-request" className="underline" target="_blank" rel="noopener noreferrer">www.ermits.com/privacy-request</a>, 
+                      use the online form at <a href="https://www.ermits.com/privacy-request" className="underline" target="_blank" rel="noopener noreferrer">www.ermits.com/privacy-request</a>, 
                       or navigate to Account Settings → Privacy Rights in-app.
                     </p>
                   </div>
@@ -415,7 +415,7 @@ const PrivacyPage: React.FC = () => {
                     <li><strong>Data Protection Officer (EU/UK/Swiss):</strong> <a href="mailto:privacy@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">privacy@ermits.com</a></li>
                     <li><strong>California Privacy Requests (CCPA/CPRA):</strong> <a href="mailto:privacy@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">privacy@ermits.com</a></li>
                     <li><strong>HIPAA Privacy Officer (Healthcare):</strong> <a href="mailto:privacy@ermits.com" className="text-primary-600 dark:text-primary-400 hover:underline">privacy@ermits.com</a></li>
-                    <li><strong>Website:</strong> <a href="http://www.ermits.com/privacy" className="text-primary-600 dark:text-primary-400 hover:underline" target="_blank" rel="noopener noreferrer">www.ermits.com/privacy</a></li>
+                    <li><strong>Website:</strong> <a href="https://www.ermits.com/privacy" className="text-primary-600 dark:text-primary-400 hover:underline" target="_blank" rel="noopener noreferrer">www.ermits.com/privacy</a></li>
                   </ul>
                 </div>
               </section>
