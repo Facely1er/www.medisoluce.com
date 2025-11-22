@@ -15,6 +15,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
 import ECommercePolicyPage from './pages/ECommercePolicyPage';
+import TermsCombinedPage from './pages/TermsCombinedPage';
 import ProductionReadinessPage from './pages/ProductionReadinessPage';
 import DeploymentPage from './pages/DeploymentPage';
 import SecurityDashboard from './components/security/SecurityDashboard';
@@ -104,6 +105,7 @@ function AppContent() {
           <Route path="/demo" element={<DemoPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/terms-combined" element={<TermsCombinedPage />} />
           <Route path="/cookie-policy" element={<CookiePolicyPage />} />
           <Route path="/ecommerce-policy" element={<ECommercePolicyPage />} />
           <Route path="/health" element={<HealthDashboard />} />

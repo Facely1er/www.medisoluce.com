@@ -12,7 +12,8 @@ import {
   FileText,
   MessageSquare,
   Lock,
-  Cookie
+  Cookie,
+  CreditCard
 } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -45,6 +46,7 @@ const Footer: React.FC = () => {
         { name: t('contact.title'), url: '/contact', icon: <MessageSquare className="h-4 w-4" /> },
         { name: 'Privacy Policy', url: '/privacy', icon: <Lock className="h-4 w-4" /> },
         { name: 'Terms of Service', url: '/terms', icon: <FileText className="h-4 w-4" /> },
+        { name: 'E-Commerce Policy', url: '/ecommerce-policy', icon: <CreditCard className="h-4 w-4" /> },
         { name: 'Cookie Policy', url: '/cookie-policy', icon: <Cookie className="h-4 w-4" /> },
       ],
     },
