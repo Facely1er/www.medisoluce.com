@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { FileText, CheckCircle, ArrowRight, Server, Users, Clock, Shield, Activity, Calculator } from 'lucide-react';
+import { FileText, CheckCircle, ArrowRight, Server, Users, Clock, Shield, Activity, Calculator, Building2, Zap, Network, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
@@ -104,24 +104,28 @@ const ContinuityPricingPage: React.FC = () => {
 
   const scenarios = [
     {
-      icon: '🏥',
+      icon: Building2,
       title: 'EHR System Failure',
-      description: 'Continue patient care with manual documentation and paper charts'
+      description: 'Continue patient care with manual documentation and paper charts',
+      iconColor: 'text-purple-500'
     },
     {
-      icon: '⚡',
+      icon: Zap,
       title: 'Power Outage',
-      description: 'Emergency power procedures to maintain critical operations'
+      description: 'Emergency power procedures to maintain critical operations',
+      iconColor: 'text-yellow-500'
     },
     {
-      icon: '🌐',
+      icon: Network,
       title: 'Network Disruption',
-      description: 'Isolated network segmentation while maintaining patient access'
+      description: 'Isolated network segmentation while maintaining patient access',
+      iconColor: 'text-blue-500'
     },
     {
-      icon: '🔧',
+      icon: Wrench,
       title: 'Vendor System Down',
-      description: 'Alternative workflows when critical vendors are unavailable'
+      description: 'Alternative workflows when critical vendors are unavailable',
+      iconColor: 'text-orange-500'
     }
   ];
 
@@ -238,7 +242,11 @@ const ContinuityPricingPage: React.FC = () => {
               >
                 <Card hover className="p-6 h-full">
                   <div className="flex items-start">
-                    <div className="text-4xl mr-4">{scenario.icon}</div>
+                    <div className="flex-shrink-0 mr-4">
+                      <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        <scenario.icon className={`h-6 w-6 ${scenario.iconColor}`} />
+                      </div>
+                    </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         {scenario.title}

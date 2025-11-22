@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock, Calculator } from 'lucide-react';
+import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock, Calculator, FileText, Heart, Network, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
@@ -104,24 +104,28 @@ const RansomwarePricingPage: React.FC = () => {
 
   const threatScenarios = [
     {
-      icon: '🏥',
+      icon: FileText,
       title: 'EHR System Down',
-      description: 'Maintain patient care with manual procedures while systems recover'
+      description: 'Maintain patient care with manual procedures while systems recover',
+      iconColor: 'text-purple-500'
     },
     {
-      icon: '⚕️',
+      icon: Heart,
       title: 'Life Support Systems',
-      description: 'Protect critical medical devices and ensure continuous patient monitoring'
+      description: 'Protect critical medical devices and ensure continuous patient monitoring',
+      iconColor: 'text-blue-500'
     },
     {
-      icon: '🔒',
+      icon: Lock,
       title: 'Network Isolation',
-      description: 'Quickly isolate infections while preserving clinical operations'
+      description: 'Quickly isolate infections while preserving clinical operations',
+      iconColor: 'text-orange-500'
     },
     {
-      icon: '📞',
+      icon: Phone,
       title: 'Communication',
-      description: 'Coordinate response across IT, clinical, and administrative teams'
+      description: 'Coordinate response across IT, clinical, and administrative teams',
+      iconColor: 'text-pink-500'
     }
   ];
 
@@ -238,7 +242,11 @@ const RansomwarePricingPage: React.FC = () => {
               >
                 <Card hover className="p-6 h-full">
                   <div className="flex items-start">
-                    <div className="text-4xl mr-4">{scenario.icon}</div>
+                    <div className="flex-shrink-0 mr-4">
+                      <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        <scenario.icon className={`h-6 w-6 ${scenario.iconColor}`} />
+                      </div>
+                    </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         {scenario.title}

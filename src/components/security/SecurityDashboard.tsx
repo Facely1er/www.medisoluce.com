@@ -219,11 +219,21 @@ const SecurityDashboard: React.FC = () => {
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Security Status: {threatLevel.charAt(0).toUpperCase() + threatLevel.slice(1)}
                   </h2>
-                  <p className={`text-lg font-medium ${
+                  <div className={`flex items-center space-x-2 text-lg font-medium ${
                     overallScore >= 85 ? 'text-success-600 dark:text-success-400' : 'text-warning-600 dark:text-warning-400'
                   }`}>
-                    {overallScore >= 85 ? '🛡️ Security Excellent' : '⚠️ Security Needs Attention'}
-                  </p>
+                    {overallScore >= 85 ? (
+                      <>
+                        <Shield className="h-5 w-5" />
+                        <span>Security Excellent</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertTriangle className="h-5 w-5" />
+                        <span>Security Needs Attention</span>
+                      </>
+                    )}
+                  </div>
                 </>
               </Card>
             </div>
