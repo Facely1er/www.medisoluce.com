@@ -1249,13 +1249,16 @@ const frTranslation = {
   // Homepage content
   "homepage": {
     "stats": {
-      "hhs_breaches": "Violations de données de santé rapportées au HHS (2023)",
-      "data_breach_cost": "Coût moyen d'une violation de données de santé",
-      "ransomware_hit": "Organisations de santé touchées par des ransomwares",
-      "recovery_time": "Temps de récupération moyen après ransomware",
-      "source_hhs": "Département américain de la Santé et des Services sociaux (HHS)",
+      "hhs_breaches": "Violations de données de santé rapportées au HHS (2024)",
+      "data_breach_cost": "Coût moyen d'une violation de données de santé (2025)",
+      "ransomware_hit": "Organisations de santé touchées par des ransomwares (2024)",
+      "recovery_time": "Temps de récupération moyen après ransomware (2024)",
+      "source_hhs": "Portail OCR du Département américain de la Santé et des Services sociaux (HHS)",
       "source_ibm": "Rapport IBM sur le Coût des Violations de Données 2023",
-      "source_sophos": "État des Ransomwares dans la Santé Sophos 2023"
+      "source_sophos": "État des Ransomwares dans la Santé Sophos 2023",
+      "source_acsmi": "Rapport de Conformité en Santé ACSM International 2025",
+      "source_healthsec": "Rapport Annuel HealthSec 2025",
+      "source_dialoghealth": "Statistiques de Cybersécurité en Santé DialogHealth 2024"
     },
     "cta": {
       "start_hipaa_assessment": "Commencez par une évaluation de conformité HIPAA pour évaluer votre état actuel",

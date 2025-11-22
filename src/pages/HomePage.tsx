@@ -53,31 +53,31 @@ interface StatItem {
 const statsItems: StatItem[] = [
   { 
     labelKey: 'homepage.stats.hhs_breaches',
-    value: '133', 
+    value: '677', 
     suffix: '', 
     sourceKey: 'homepage.stats.source_hhs',
     sourceUrl: 'https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf'
   },
   { 
     labelKey: 'homepage.stats.data_breach_cost',
-    value: '$10.9M', 
+    value: '$11.3M', 
     suffix: '', 
-    sourceKey: 'homepage.stats.source_ibm',
-    sourceUrl: 'https://www.ibm.com/reports/data-breach'
+    sourceKey: 'homepage.stats.source_acsmi',
+    sourceUrl: 'https://acsmi.org/blogs/healthcare-compliance-report-original-data-on-cybersecurity-amp-hipaa-2025'
   },
   { 
     labelKey: 'homepage.stats.ransomware_hit',
-    value: '70', 
+    value: '67', 
     suffix: '%', 
-    sourceKey: 'homepage.stats.source_sophos',
-    sourceUrl: 'https://www.sophos.com/en-us/medialibrary/pdfs/whitepaper/sophos-state-of-ransomware-in-healthcare-2023-wp'
+    sourceKey: 'homepage.stats.source_healthsec',
+    sourceUrl: 'https://healthsec.cs4ca.com/wp-content/uploads/HealthSec-2025-Annual-Report.pdf'
   },
   { 
     labelKey: 'homepage.stats.recovery_time',
-    value: '22', 
+    value: '19', 
     suffix: ' days', 
-    sourceKey: 'homepage.stats.source_sophos',
-    sourceUrl: 'https://www.sophos.com/en-us/medialibrary/pdfs/whitepaper/sophos-state-of-ransomware-in-healthcare-2023-wp'
+    sourceKey: 'homepage.stats.source_dialoghealth',
+    sourceUrl: 'https://www.dialoghealth.com/post/healthcare-cybersecurity-statistics'
   },
 ];
 

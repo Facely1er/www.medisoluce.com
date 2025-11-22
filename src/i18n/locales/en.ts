@@ -1089,13 +1089,16 @@ const enTranslation = {
   // Homepage content
   "homepage": {
     "stats": {
-      "hhs_breaches": "Healthcare data breaches reported to HHS (2023)",
-      "data_breach_cost": "Average cost of a healthcare data breach",
-      "ransomware_hit": "Healthcare organizations hit by ransomware",
-      "recovery_time": "Average ransomware recovery time",
-      "source_hhs": "U.S. Department of Health and Human Services (HHS)",
+      "hhs_breaches": "Healthcare data breaches reported to HHS (2024)",
+      "data_breach_cost": "Average cost of a healthcare data breach (2025)",
+      "ransomware_hit": "Healthcare organizations hit by ransomware (2024)",
+      "recovery_time": "Average ransomware recovery time (2024)",
+      "source_hhs": "U.S. Department of Health and Human Services (HHS) OCR Portal",
       "source_ibm": "IBM Cost of a Data Breach Report 2023",
-      "source_sophos": "Sophos State of Ransomware in Healthcare 2023"
+      "source_sophos": "Sophos State of Ransomware in Healthcare 2023",
+      "source_acsmi": "ACSM International Healthcare Compliance Report 2025",
+      "source_healthsec": "HealthSec Annual Report 2025",
+      "source_dialoghealth": "DialogHealth Healthcare Cybersecurity Statistics 2024"
     },
     "cta": {
       "start_hipaa_assessment": "Start with HIPAA compliance assessment to evaluate your current state",
