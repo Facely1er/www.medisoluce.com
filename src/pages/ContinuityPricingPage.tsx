@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { FileText, CheckCircle, ArrowRight, Server, Users, Clock, Shield, Activity, Calculator, Building2, Zap, Network, Wrench } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
+import { useAuth } from '../context/AuthContext';
+import { useTrial } from '../hooks/useTrial';
+import TrialActivationModal from '../components/trial/TrialActivationModal';
+import TrialBanner from '../components/trial/TrialBanner';
+import { useToast } from '../components/ui/Toast';
 
 const ContinuityPricingPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { showToast } = useToast();
   const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
+  const [showTrialModal, setShowTrialModal] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<'essential' | 'professional' | 'enterprise' | null>(null);
+  
+  const userId = user?.id || '';
+  const userEmail = user?.email || '';
+  const { activeTrial, isEligible } = useTrial(userId, 'continuity');
 
   useEffect(() => {
     const factors = getPricingFactorsFromStorage();
@@ -330,6 +345,22 @@ const ContinuityPricingPage: React.FC = () => {
         </section>
       )}
 
+      {/* Trial Status Banner */}
+      {activeTrial && (
+        <section className="py-8 bg-gray-50 dark:bg-gray-900 border-b">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <TrialBanner
+                trial={activeTrial}
+                onDismiss={() => {
+                  localStorage.setItem(`trial-banner-dismissed-${activeTrial.productId}`, 'true');
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Pricing Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -343,60 +374,150 @@ const ContinuityPricingPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {tiers.map((tier, idx) => (
-              <motion.div
-                key={tier.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Card className={`h-full flex flex-col border-2 ${tier.popular ? 'border-success-500 dark:border-success-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
-                  {tier.popular && (
-                    <div className="bg-success-500 text-white text-center py-2">
-                      <span className="font-semibold">RECOMMENDED</span>
-                    </div>
-                  )}
-                  
-                  <div className="p-8 flex-grow">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                      {tier.name}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-6">
-                      {tier.description}
-                    </p>
-                    
-                    <div className="mb-6">
-                      <div className="flex items-baseline">
-                        <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                          ${tier.price}
-                        </span>
-                        <span className="text-gray-600 dark:text-gray-300 ml-2">
-                          /month
-                        </span>
+            {tiers.map((tier, idx) => {
+              const tierKey = tier.name.toLowerCase() as 'essential' | 'professional' | 'enterprise';
+              const hasActiveTrial = activeTrial?.tier === tierKey;
+              const canStartTrial = tier.cta === 'Start Free Trial' && isEligible('continuity') && !hasActiveTrial;
+              
+              return (
+                <motion.div
+                  key={tier.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className={`h-full flex flex-col border-2 ${tier.popular ? 'border-success-500 dark:border-success-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
+                    {tier.popular && (
+                      <div className="bg-success-500 text-white text-center py-2">
+                        <span className="font-semibold">RECOMMENDED</span>
                       </div>
+                    )}
+                    
+                    <div className="p-8 flex-grow">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        {tier.name}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        {tier.description}
+                      </p>
+                      
+                      <div className="mb-6">
+                        <div className="flex items-baseline">
+                          <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                            ${tier.price}
+                          </span>
+                          <span className="text-gray-600 dark:text-gray-300 ml-2">
+                            /month
+                          </span>
+                        </div>
+                        {tier.cta === 'Start Free Trial' && (
+                          <p className="text-sm text-success-600 dark:text-success-400 mt-2">
+                            {tierKey === 'professional' ? '30-day free trial' : '14-day free trial'}
+                          </p>
+                        )}
+                      </div>
+
+                      <ul className="space-y-3 mb-6">
+                        {tier.features.map((feature, fIdx) => (
+                          <li key={fIdx} className="flex items-start">
+                            <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {hasActiveTrial ? (
+                        <Button className="w-full" size="lg" variant="outline" disabled>
+                          Trial Active
+                        </Button>
+                      ) : canStartTrial ? (
+                        <Button 
+                          className="w-full" 
+                          size="lg" 
+                          variant={tier.popular ? 'default' : 'outline'}
+                          onClick={() => {
+                            if (user) {
+                              setSelectedTier(tierKey);
+                              setShowTrialModal(true);
+                            } else {
+                              showToast({
+                                type: 'info',
+                                title: 'Sign In Required',
+                                message: 'Please sign in or create an account to start your free trial.'
+                              });
+                              navigate('/login');
+                            }
+                          }}
+                        >
+                          {tier.cta}
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      ) : tier.cta === 'Start Free Trial' && !isEligible('continuity') ? (
+                        <Button 
+                          className="w-full" 
+                          size="lg" 
+                          variant="outline"
+                          onClick={() => {
+                            showToast({
+                              type: 'info',
+                              title: 'Trial Already Used',
+                              message: 'You have already used your free trial. Upgrade to continue.'
+                            });
+                          }}
+                        >
+                          Upgrade to Continue
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      ) : (
+                        <Button 
+                          className="w-full" 
+                          size="lg" 
+                          variant={tier.popular ? 'default' : 'outline'}
+                          onClick={() => {
+                            if (tier.cta === 'Get Started') {
+                              navigate('/continuity');
+                            } else if (tier.cta === 'Contact Sales') {
+                              navigate('/contact');
+                            }
+                          }}
+                        >
+                          {tier.cta}
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      )}
                     </div>
-
-                    <ul className="space-y-3 mb-6">
-                      {tier.features.map((feature, fIdx) => (
-                        <li key={fIdx} className="flex items-start">
-                          <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Button className="w-full" size="lg" variant={tier.popular ? 'default' : 'outline'}>
-                      {tier.cta}
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {/* Trial Activation Modal */}
+      {user && selectedTier && (
+        <TrialActivationModal
+          isOpen={showTrialModal}
+          onClose={() => {
+            setShowTrialModal(false);
+            setSelectedTier(null);
+          }}
+          productId="continuity"
+          productName="Business Continuity"
+          tier={selectedTier}
+          userId={userId}
+          userEmail={userEmail}
+          onTrialStarted={(trialId) => {
+            showToast({
+              type: 'success',
+              title: 'Trial Started!',
+              message: 'Your free trial has begun. Enjoy full access!'
+            });
+            navigate('/dashboard');
+          }}
+        />
+      )}
 
       {/* Key Benefits */}
       <section className="py-16 bg-white dark:bg-gray-800">
