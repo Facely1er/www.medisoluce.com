@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
-import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock, Calculator, FileText, Heart, Network, Phone } from 'lucide-react';
+import { Lock, CheckCircle, ArrowRight, AlertTriangle, Shield, Zap, Download, Clock, Calculator, FileText, Heart, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 import { useAuth } from '../context/AuthContext';
@@ -435,7 +435,7 @@ const RansomwarePricingPage: React.FC = () => {
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
                             if (user) {
                               setSelectedTier(tierKey);
@@ -473,7 +473,7 @@ const RansomwarePricingPage: React.FC = () => {
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
                             if (tier.cta === 'Get Started') {
                               navigate('/ransomware');
@@ -508,7 +508,7 @@ const RansomwarePricingPage: React.FC = () => {
           tier={selectedTier}
           userId={userId}
           userEmail={userEmail}
-          onTrialStarted={(trialId) => {
+          onTrialStarted={(_trialId) => {
             showToast({
               type: 'success',
               title: 'Trial Started!',
