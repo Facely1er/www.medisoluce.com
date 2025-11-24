@@ -7,6 +7,8 @@ import { projectHealthEnhancer } from './utils/healthEnhancer';
 import { robustErrorHandler } from './utils/robustErrorHandler';
 import { performanceEnhancer } from './utils/performanceEnhancer';
 import { logger } from './utils/logger';
+import { validateEnvironment } from './utils/envValidation';
+import { initializeCSPViolationReporting } from './utils/cspViolationReporter';
 
 interface UserInteraction {
   type: string;
@@ -141,6 +143,15 @@ const initializeHealthSystem = async () => {
     logger.error('Failed to initialize health system:', error);
   }
 };
+
+// Validate environment variables on startup
+const envValidation = validateEnvironment();
+if (!envValidation.valid) {
+  console.error('Environment validation failed. Some features may not work correctly.');
+}
+
+// Initialize CSP violation reporting
+initializeCSPViolationReporting();
 
 // Wait for i18n to initialize before rendering
 initPromise.then(() => {

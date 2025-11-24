@@ -682,4 +682,10 @@ class ErrorHandler {
   }
 }
 
-export const _errorHandler = new ErrorHandler();
+// Initialize ErrorHandler with Sentry DSN from environment
+export const _errorHandler = new ErrorHandler({
+  sentryDsn: import.meta.env.VITE_SENTRY_DSN
+});
+
+// Export as errorHandler for backward compatibility
+export const errorHandler = _errorHandler;
