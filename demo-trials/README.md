@@ -8,18 +8,26 @@ The demo includes standalone HTML pages that showcase the main features and pric
 - HIPAA Compliance Assessment
 - Ransomware Protection
 - Business Continuity Planning
-- Dependency Management
+- Technology Dependency Management
+- Business Impact Analysis
+- Training & Education
+- Compliance Toolkit
 
 ## Files Structure
 
 ```
 demo-trials/
-├── index.html              # Main landing page
-├── hipaa-pricing.html      # HIPAA compliance pricing page
-├── ransomware-pricing.html # Ransomware protection pricing page
-├── contact.html            # Contact form page
-├── styles.css              # Shared stylesheet
-└── README.md               # This file
+├── index.html                      # Main landing page
+├── hipaa-pricing.html              # HIPAA compliance pricing page
+├── ransomware-pricing.html         # Ransomware protection pricing page
+├── continuity-pricing.html         # Business continuity pricing page
+├── dependency-manager-trial.html   # Technology dependency manager trial
+├── business-impact-trial.html      # Business impact analysis trial
+├── training-trial.html             # Training & education trial
+├── toolkit-trial.html              # Compliance toolkit trial
+├── contact.html                    # Contact form page
+├── styles.css                      # Shared stylesheet
+└── README.md                       # This file
 ```
 
 ## Features
