@@ -64,15 +64,63 @@ You can deploy this demo folder to any static hosting service:
 ### Example Deployment Commands
 
 ```bash
+# Using Vercel CLI (Recommended)
+cd demo-trials
+vercel --prod
+
+# Or from project root
+cd demo-trials && vercel --prod
+
 # Using Netlify CLI
 netlify deploy --dir=demo-trials --prod
-
-# Using Vercel CLI
-vercel demo-trials --prod
 
 # Using GitHub Pages (if in a repo)
 git subtree push --prefix demo-trials origin gh-pages
 ```
+
+### Vercel Deployment
+
+The `vercel.json` file is already configured for optimal deployment:
+
+#### Important: Configure Project Settings in Vercel Dashboard
+
+**Before deploying, you MUST configure the project settings:**
+
+1. **Go to Vercel Dashboard → Your Project → Settings → General**
+2. **Set Root Directory to:** `demo-trials`
+3. **Set Framework Preset to:** Other
+4. **Set Build Command to:** (leave empty)
+5. **Set Output Directory to:** `.` (current directory)
+6. **Set Install Command to:** (leave empty)
+
+#### Deployment Steps:
+
+1. **Deploy from demo-trials folder:**
+   ```bash
+   cd demo-trials
+   vercel --prod
+   ```
+
+   **OR** deploy from root with root directory specified:
+   ```bash
+   vercel --prod --cwd demo-trials
+   ```
+
+2. **Configure custom domain:**
+   - Go to Vercel Dashboard → Your Project → Settings → Domains
+   - Add `www.demo.medisoluce.com`
+   - Follow DNS configuration instructions
+
+3. **Automatic deployments:**
+   - If connected to Git, Vercel will auto-deploy on push
+   - Make sure Root Directory is set to `demo-trials` in project settings
+
+#### Troubleshooting:
+
+If you see build errors about "dist" folder or npm build commands:
+- The project is using the wrong vercel.json (root instead of demo-trials)
+- Make sure Root Directory is set to `demo-trials` in Vercel project settings
+- Or deploy demo-trials as a completely separate Vercel project
 
 ## Customization
 
