@@ -147,27 +147,52 @@ export const envValidator = new EnvironmentValidator(medisoluceEnvConfig);
 /**
  * Validate environment on app startup
  * Call this early in the application lifecycle
+ * Never throws - always returns result for graceful degradation
  */
 export function validateEnvironment(): ValidationResult {
-  const result = envValidator.validate();
+  try {
+    const result = envValidator.validate();
 
-  if (result.errors.length > 0) {
-    console.error('❌ Environment validation failed:', result.errors);
-    if (envValidator.isProduction()) {
-      // In production, log to error tracking service
-      console.error('Critical environment variables are missing. Application may not function correctly.');
+    if (result.errors.length > 0) {
+      console.error('❌ Environment validation failed:', result.errors);
+      if (envValidator.isProduction()) {
+        // In production, log to error tracking service (with fallback)
+        console.error('Critical environment variables are missing. Application may not function correctly.');
+        
+        // Try to log to error tracking, but don't fail if it's not available
+        import('./errorHandler')
+          .then(({ errorHandler }) => {
+            errorHandler.logError({
+              type: 'validation',
+              message: 'Environment validation failed',
+              url: typeof window !== 'undefined' ? window.location.href : undefined
+            });
+          })
+          .catch(() => {
+            // Error handler not available - continue anyway
+          });
+      }
     }
-  }
 
-  if (result.warnings.length > 0 && envValidator.isProduction()) {
-    console.warn('⚠️ Environment validation warnings:', result.warnings);
-  }
+    if (result.warnings.length > 0 && envValidator.isProduction()) {
+      console.warn('⚠️ Environment validation warnings:', result.warnings);
+    }
 
-  if (result.valid && result.warnings.length === 0) {
-    console.log('✅ Environment validation passed');
-  }
+    if (result.valid && result.warnings.length === 0) {
+      console.log('✅ Environment validation passed');
+    }
 
-  return result;
+    return result;
+  } catch (error) {
+    // Never throw - always return a result
+    console.warn('Environment validation encountered an error:', error);
+    return {
+      valid: true, // Assume valid to allow app to continue
+      missing: [],
+      warnings: ['Environment validation check failed, but continuing'],
+      errors: []
+    };
+  }
 }
 
 /**

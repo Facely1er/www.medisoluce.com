@@ -55,8 +55,15 @@ const ProductionReadinessIndicator = React.lazy(() => import('./components/ui/Pr
 const HealthOptimizer = React.lazy(() => import('./components/health/HealthOptimizer'));
 const HealthEnhancementDashboard = React.lazy(() => import('./components/ui/HealthEnhancementDashboard'));
 
-// Initialize analytics
-analytics.init(import.meta.env.VITE_GA_TRACKING_ID);
+// Initialize analytics with fallback (never throw)
+try {
+  analytics.init(import.meta.env.VITE_GA_TRACKING_ID);
+} catch (error) {
+  // Silently fail - analytics is optional, app continues normally
+  if (!import.meta.env.PROD) {
+    console.warn('Analytics initialization failed, but app continues:', error);
+  }
+}
 
 // Global toast function for components that can't use React hooks
 interface ToastMessage {

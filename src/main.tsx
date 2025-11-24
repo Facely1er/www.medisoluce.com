@@ -144,14 +144,24 @@ const initializeHealthSystem = async () => {
   }
 };
 
-// Validate environment variables on startup
-const envValidation = validateEnvironment();
-if (!envValidation.valid) {
-  console.error('Environment validation failed. Some features may not work correctly.');
+// Validate environment variables on startup (with fallback)
+try {
+  const envValidation = validateEnvironment();
+  if (!envValidation.valid) {
+    console.error('Environment validation failed. Some features may not work correctly.');
+  }
+} catch (error) {
+  // Never fail app startup due to validation errors
+  console.warn('Environment validation check failed, but continuing:', error);
 }
 
-// Initialize CSP violation reporting
-initializeCSPViolationReporting();
+// Initialize CSP violation reporting (with fallback)
+try {
+  initializeCSPViolationReporting();
+} catch (error) {
+  // Never fail app startup due to CSP reporting initialization
+  console.warn('CSP violation reporting initialization failed, but continuing:', error);
+}
 
 // Wait for i18n to initialize before rendering
 initPromise.then(() => {

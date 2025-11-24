@@ -130,74 +130,172 @@ class Analytics {
     }
   }
 
-  // Initialize analytics (Google Analytics, etc.)
+  // Initialize analytics (Google Analytics, etc.) with fallback
   init(trackingId?: string) {
     if (!this.isEnabled || !trackingId) return;
 
-    try {
-      // Google Analytics 4 initialization
-      const script = document.createElement('script');
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-      script.async = true;
-      document.head.appendChild(script);
+    const initAnalytics = () => {
+      try {
+        // Google Analytics 4 initialization with timeout
+        const script = document.createElement('script');
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+        script.async = true;
+        
+        // Add error handler for script loading
+        script.onerror = () => {
+          this.handleAnalyticsFailure(new Error('Failed to load Google Analytics script'));
+        };
+        
+        // Add timeout for script loading
+        const timeoutId = setTimeout(() => {
+          if (!window.gtag) {
+            this.handleAnalyticsFailure(new Error('Google Analytics script load timeout'));
+          }
+        }, 10000); // 10 second timeout
 
-      window.dataLayer = window.dataLayer || [];
-      function gtag(...args: unknown[]) {
-        window.dataLayer.push(args);
+        script.onload = () => {
+          clearTimeout(timeoutId);
+        };
+
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(...args: unknown[]) {
+          try {
+            window.dataLayer.push(args);
+          } catch (error) {
+            // Silently fail - don't break app if dataLayer fails
+            if (!this.isProduction) {
+              console.warn('Analytics dataLayer error:', error);
+            }
+          }
+        }
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', trackingId, {
+          page_title: document.title,
+          page_location: window.location.href
+        });
+        
+        this.log('Analytics initialized with tracking ID:', trackingId);
+        
+        // Mark service as available
+        import('./serviceFallback')
+          .then(({ serviceFallback }) => {
+            serviceFallback.markServiceAvailable('analytics');
+          })
+          .catch(() => {
+            // Fallback manager not available - continue anyway
+          });
+      } catch (error) {
+        this.handleAnalyticsFailure(error as Error);
       }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', trackingId, {
-        page_title: document.title,
-        page_location: window.location.href
+    };
+
+    // Use service fallback
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(initAnalytics, undefined);
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        initAnalytics();
       });
-      
-      this.log('Analytics initialized with tracking ID:', trackingId);
-    } catch (error) {
-      console.error('Failed to initialize analytics:', error);
+  }
+
+  /**
+   * Handle analytics initialization failure gracefully
+   */
+  private handleAnalyticsFailure(error: Error): void {
+    // Mark service as unavailable
+    import('./serviceFallback')
+      .then(({ serviceFallback }) => {
+        serviceFallback.markServiceUnavailable('analytics', error);
+      })
+      .catch(() => {
+        // Fallback manager not available - continue anyway
+      });
+
+    // Log to console as fallback
+    if (!this.isProduction) {
+      console.warn('Failed to initialize analytics:', error);
+      console.info('Analytics will be disabled - app continues normally');
+    } else {
+      // In production, silently disable analytics
+      this.isEnabled = false;
     }
   }
 
-  // Track page views
+  // Track page views with fallback
   trackPageView(path: string, title?: string) {
     if (!this.isEnabled) return;
 
-    try {
-      if (window.gtag) {
-        window.gtag('event', 'page_view', {
-          page_path: path,
-          page_title: title || document.title,
-          page_location: window.location.href
-        });
+    const track = () => {
+      try {
+        if (window.gtag) {
+          window.gtag('event', 'page_view', {
+            page_path: path,
+            page_title: title || document.title,
+            page_location: window.location.href
+          });
+        }
+      } catch (error) {
+        // Silently fail - don't break app if analytics fails
+        if (!this.isProduction) {
+          this.log('Error tracking page view:', error);
+        }
       }
-    } catch (error) {
-      this.log('Error tracking page view:', error);
-    }
+    };
+
+    // Use service fallback
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(track, undefined);
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        track();
+      });
   }
 
-  // Track custom events
+  // Track custom events with fallback
   trackEvent({ event, category, action, label, value }: AnalyticsEvent) {
     if (!this.isEnabled) return;
 
-    try {
-      if (window.gtag) {
-        window.gtag('event', action, {
-          event_category: category,
-          event_label: label,
-          value: value,
-          custom_parameter_event: event
-        });
-      }
+    const track = () => {
+      try {
+        if (window.gtag) {
+          window.gtag('event', action, {
+            event_category: category,
+            event_label: label,
+            value: value,
+            custom_parameter_event: event
+          });
+        }
 
-      // Also log to console in development
-      if (!this.isProduction) {
-        if (!import.meta.env.PROD) {
-          console.log($1);
+        // Also log to console in development
+        if (!this.isProduction) {
+          if (!import.meta.env.PROD) {
+            console.log('Analytics event:', { event, category, action, label, value });
+          }
+        }
+      } catch (error) {
+        // Silently fail - don't break app if analytics fails
+        if (!this.isProduction) {
+          this.log('Error tracking event:', error);
+        }
       }
-      }
-    } catch (error) {
-      this.log('Error tracking event:', error);
-    }
+    };
+
+    // Use service fallback
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(track, undefined);
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        track();
+      });
   }
 
   // Track assessment completions

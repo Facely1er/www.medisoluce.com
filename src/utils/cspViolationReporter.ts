@@ -139,12 +139,12 @@ class CSPViolationReporter {
   }
 
   /**
-   * Report violation to endpoint
+   * Report violation to endpoint with fallback
    */
   private async reportToEndpoint(violation: ViolationLog, event: SecurityPolicyViolationEvent): Promise<void> {
     if (!this.reportEndpoint) return;
 
-    try {
+    const reportViolation = async () => {
       const report: CSPViolationReport = {
         'csp-report': {
           'document-uri': violation.documentUri,
@@ -162,26 +162,58 @@ class CSPViolationReporter {
         }
       };
 
-      await fetch(this.reportEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/csp-report'
-        },
-        body: JSON.stringify(report),
-        keepalive: true // Important for CSP reports
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
 
-      violation.reported = true;
-    } catch (error) {
-      console.error('Failed to report CSP violation:', error);
-    }
+      try {
+        await fetch(this.reportEndpoint!, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/csp-report'
+          },
+          body: JSON.stringify(report),
+          keepalive: true, // Important for CSP reports
+          signal: controller.signal
+        });
+
+        violation.reported = true;
+        
+        // Mark service as available
+        import('./serviceFallback')
+          .then(({ serviceFallback }) => {
+            serviceFallback.markServiceAvailable('csp-reporting');
+          })
+          .catch(() => {
+            // Fallback manager not available - continue anyway
+          });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    };
+
+    // Use service fallback with graceful degradation
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(reportViolation, undefined).catch(() => {
+          // Silently fail - violation is still logged locally
+          if (!import.meta.env.PROD) {
+            console.warn('CSP violation reporting failed, but violation is logged locally');
+          }
+        });
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        reportViolation().catch(() => {
+          // Silently fail - violation is still logged locally
+        });
+      });
   }
 
   /**
-   * Report critical violations to error tracking
+   * Report critical violations to error tracking with fallback
    */
   private async reportToErrorTracking(violation: ViolationLog): Promise<void> {
-    try {
+    const reportToErrorHandler = async () => {
       const { errorHandler } = await import('./errorHandler');
       errorHandler.handleSecurityEvent('csp_violation', {
         violatedDirective: violation.violatedDirective,
@@ -190,9 +222,24 @@ class CSPViolationReporter {
         lineNumber: violation.lineNumber,
         severity: violation.severity
       }, violation.severity);
-    } catch (error) {
-      console.error('Failed to report CSP violation to error tracking:', error);
-    }
+    };
+
+    // Use service fallback with graceful degradation
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(reportToErrorHandler, undefined).catch(() => {
+          // Silently fail - violation is still logged locally
+          if (!import.meta.env.PROD) {
+            console.warn('Failed to report CSP violation to error tracking, but violation is logged locally');
+          }
+        });
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        reportToErrorHandler().catch(() => {
+          // Silently fail - violation is still logged locally
+        });
+      });
   }
 
   /**

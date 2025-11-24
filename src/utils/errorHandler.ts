@@ -79,37 +79,81 @@ class ErrorHandler {
     // Initialize Sentry or other production error monitoring
     if (import.meta.env.PROD && this.config.sentryDsn) {
       // Dynamic import for Sentry to avoid bundling in development
-      import('@sentry/browser').then(({ init, configureScope }) => {
-        init({
-          dsn: this.config.sentryDsn,
-          environment: this.config.environment,
-          release: this.config.version,
-          sampleRate: this.config.sampleRate,
-          beforeSend: (event) => {
-            // Filter out known non-critical errors
-            if (event.message?.includes('Script error')) return null;
-            if (event.message?.includes('Non-Error promise rejection')) return null;
-            if (event.message?.includes('ResizeObserver loop limit exceeded')) return null;
-            if (event.message?.includes('Non-Error exception captured')) return null;
-            return event;
+      import('@sentry/browser')
+        .then(({ init, configureScope }) => {
+          try {
+            init({
+              dsn: this.config.sentryDsn,
+              environment: this.config.environment,
+              release: this.config.version,
+              sampleRate: this.config.sampleRate,
+              beforeSend: (event) => {
+                // Filter out known non-critical errors
+                if (event.message?.includes('Script error')) return null;
+                if (event.message?.includes('Non-Error promise rejection')) return null;
+                if (event.message?.includes('ResizeObserver loop limit exceeded')) return null;
+                if (event.message?.includes('Non-Error exception captured')) return null;
+                return event;
+              },
+              // Fallback configuration
+              transportOptions: {
+                // Don't block on network errors
+                fetch: (url, options) => {
+                  return fetch(url, options).catch(() => {
+                    // Silently fail - app continues without Sentry
+                    return new Response(null, { status: 200 });
+                  });
+                }
+              }
+            });
+            
+            configureScope((scope) => {
+              scope.setTag('component', 'medisoluce-frontend');
+              scope.setContext('application', {
+                name: 'MediSoluce',
+                version: this.config.version,
+                environment: this.config.environment
+              });
+            });
+            
+            this.log('External error monitoring initialized');
+            
+            // Mark service as available
+            import('./serviceFallback').then(({ serviceFallback }) => {
+              serviceFallback.markServiceAvailable('sentry');
+            }).catch(() => {
+              // Fallback manager not available - continue anyway
+            });
+          } catch (initError) {
+            this.handleSentryInitFailure(initError);
           }
+        })
+        .catch((error) => {
+          this.handleSentryInitFailure(error);
         });
-        
-        configureScope((scope) => {
-          scope.setTag('component', 'medisoluce-frontend');
-          scope.setContext('application', {
-            name: 'MediSoluce',
-            version: this.config.version,
-            environment: this.config.environment
-          });
-        });
-        
-        this.log('External error monitoring initialized');
-      }).catch((error) => {
-        if (!import.meta.env.PROD) {
-          console.warn('Failed to initialize external error monitoring:', error);
-        }
+    }
+  }
+
+  /**
+   * Handle Sentry initialization failure gracefully
+   */
+  private handleSentryInitFailure(error: unknown): void {
+    // Mark service as unavailable
+    import('./serviceFallback')
+      .then(({ serviceFallback }) => {
+        serviceFallback.markServiceUnavailable('sentry', error as Error);
+      })
+      .catch(() => {
+        // Fallback manager not available - continue anyway
       });
+
+    // Log to console as fallback
+    if (!import.meta.env.PROD) {
+      console.warn('Failed to initialize external error monitoring:', error);
+      console.info('Error tracking will continue using local logging');
+    } else {
+      // In production, silently fall back to local logging
+      console.info('Error tracking: Using local logging (Sentry unavailable)');
     }
   }
   
@@ -466,28 +510,52 @@ class ErrorHandler {
   }
 
   private sendToExternalMonitoring(errorLog: ErrorLog) {
-    // Send to external service (Sentry, LogRocket, etc.)
-    type WindowWithSentry = Window & { Sentry?: { addBreadcrumb: (breadcrumb: unknown) => void } };
-    const windowWithSentry = window as WindowWithSentry;
-    if (typeof window !== 'undefined' && windowWithSentry.Sentry) {
-      windowWithSentry.Sentry.addBreadcrumb({
-        message: errorLog.message,
-        category: errorLog.type,
-        level: errorLog.type === 'business' ? 'error' : 'info',
-        data: {
-          url: errorLog.url,
-          sessionId: errorLog.sessionId,
-          userId: errorLog.userId
+    // Send to external service (Sentry, LogRocket, etc.) with fallback
+    const sendToSentry = () => {
+      try {
+        type WindowWithSentry = Window & { Sentry?: { addBreadcrumb: (breadcrumb: unknown) => void; captureException: (error: Error, context?: Record<string, unknown>) => void } };
+        const windowWithSentry = window as WindowWithSentry;
+        if (typeof window !== 'undefined' && windowWithSentry.Sentry) {
+          windowWithSentry.Sentry.addBreadcrumb({
+            message: errorLog.message,
+            category: errorLog.type,
+            level: errorLog.type === 'business' ? 'error' : 'info',
+            data: {
+              url: errorLog.url,
+              sessionId: errorLog.sessionId,
+              userId: errorLog.userId
+            }
+          });
+          
+          windowWithSentry.Sentry.captureException(new Error(errorLog.message), {
+            tags: {
+              type: errorLog.type,
+              environment: errorLog.environment,
+              version: errorLog.version
+            },
+            extra: {
+              url: errorLog.url,
+              sessionId: errorLog.sessionId
+            }
+          });
         }
+      } catch (sentryError) {
+        // Silently fail - don't break app if Sentry fails
+        if (!import.meta.env.PROD) {
+          console.warn('Failed to send error to Sentry:', sentryError);
+        }
+      }
+    };
+
+    // Use service fallback manager if available
+    import('./serviceFallback')
+      .then(({ safeExecuteSilent }) => {
+        safeExecuteSilent(sendToSentry, undefined);
+      })
+      .catch(() => {
+        // Fallback manager not available - try direct call
+        sendToSentry();
       });
-      
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).Sentry?.captureException(new Error(errorLog.message), {
-        tags: {
-          type: errorLog.type,
-          environment: errorLog.environment,
-          version: errorLog.version
-        },
         extra: errorLog
       });
     }
