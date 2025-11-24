@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact MediSoluce - Get in touch about HIPAA compliance, ransomware protection, and business continuity">
+    <title>Contact Us - MediSoluce Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">
+                    <h1>MediSoluce</h1>
+                    <span class="badge">Demo</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="hipaa-pricing.html">HIPAA</a>
+                    <a href="ransomware-pricing.html">Ransomware</a>
+                    <a href="contact.html" class="active">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 3rem 0;">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Contact Us</h1>
+                    <p class="hero-subtitle">Get in touch to learn more about our healthcare compliance solutions</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="contact-form">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center; color: var(--gray-900);">Send us a message</h2>
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="organization">Organization</label>
+                            <input type="text" id="organization" name="organization">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <div style="text-align: center;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="formMessage" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; text-align: center;"></div>
+                </div>
+
+                <div style="margin-top: 4rem; text-align: center;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--gray-900);">Other Ways to Reach Us</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto;">
+                        <div style="padding: 1.5rem; background: var(--gray-50); border-radius: 0.5rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Email</h3>
+                            <p style="color: var(--gray-600);">info@medisoluce.com</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: var(--gray-50); border-radius: 0.5rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Support</h3>
+                            <p style="color: var(--gray-600);">support@medisoluce.com</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: var(--gray-50); border-radius: 0.5rem;">
+                            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-900);">Sales</h3>
+                            <p style="color: var(--gray-600);">sales@medisoluce.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MediSoluce</h4>
+                    <p>Healthcare compliance platform for HIPAA, ransomware protection, and business continuity.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="hipaa-pricing.html">HIPAA Assessment</a></li>
+                        <li><a href="ransomware-pricing.html">Ransomware Protection</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MediSoluce by ERMITS. All rights reserved. | Demo Version</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('contactForm');
+            const messageDiv = document.getElementById('formMessage');
+            
+            // Simulate form submission
+            messageDiv.style.display = 'block';
+            messageDiv.style.background = '#d1fae5';
+            messageDiv.style.color = '#065f46';
+            messageDiv.textContent = 'Thank you for your message! This is a demo version. In production, your message would be sent to our team.';
+            
+            // Reset form
+            form.reset();
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+
