@@ -1,9 +1,36 @@
-import React from 'react';
-import { AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, AlertCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
+import ReactMarkdown from 'react-markdown';
 
 const TermsPage: React.FC = () => {
+  const [content, setContent] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadTerms = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/policies/terms-of-service.md');
+        if (!response.ok) {
+          throw new Error('Failed to load terms of service');
+        }
+        const text = await response.text();
+        setContent(text);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load terms of service');
+        console.error('Error loading terms of service:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTerms();
+  }, []);
+
   return (
     <div className="py-12">
       <SEOHead 
@@ -15,32 +42,36 @@ const TermsPage: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
+            <FileText className="h-16 w-16 text-primary-500 mx-auto mb-4" />
             <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
               MASTER TERMS OF SERVICE
             </h1>
-            <p className="text-gray-600 dark:text-gray-300">
-              <strong>Effective Date:</strong> November 19, 2025<br />
-              <strong>Last Updated:</strong> October 31, 2025
-            </p>
           </div>
 
           <Card className="p-8">
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <div className="mb-8">
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  By accessing or using any ERMITS LLC ("ERMITS," "we," "our," or "us")
-                  products, platforms, or services (collectively, the "Services"), you
-                  ("User," "you," or "your") agree to be bound by these Master Terms of
-                  Service ("Terms"). If you do not agree to these Terms, do not use our
-                  Services.
+            {loading && (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+              </div>
+            )}
+            
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+                <p className="text-red-800 dark:text-red-200">
+                  Error loading terms of service: {error}
                 </p>
               </div>
+            )}
 
-              <hr className="my-8 border-gray-300 dark:border-gray-700" />
+            {!loading && !error && (
+              <div className="prose prose-gray dark:prose-invert max-w-none">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )}
 
-              <section className="mb-8">
+            <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                  1. Scope and Applicability
+                  1. Scope of Services
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                   These Terms govern your use of all ERMITS products, including but not
@@ -556,7 +587,6 @@ const TermsPage: React.FC = () => {
                   contact <a href="mailto:legal@ermits.com" className="underline">legal@ermits.com</a>.
                 </p>
               </div>
-            </div>
           </Card>
         </div>
       </div>
