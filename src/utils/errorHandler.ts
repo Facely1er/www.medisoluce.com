@@ -556,10 +556,8 @@ class ErrorHandler {
         // Fallback manager not available - try direct call
         sendToSentry();
       });
-        extra: errorLog
-      });
-    }
   }
+
   private getCurrentUserId(): string | undefined {
     try {
       const session = localStorage.getItem('user-session');
