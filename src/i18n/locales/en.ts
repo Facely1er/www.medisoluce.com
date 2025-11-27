@@ -1271,6 +1271,21 @@ const enTranslation = {
     }
   },
 
+  // Contact page (keeping for backward compatibility)
+  "contact_page": {
+    "validation": {
+      "message_failed": "Message validation failed",
+      "submission_limit": "Submission limit exceeded",
+      "name_required": "Name is required",
+      "email_required": "Email is required",
+      "invalid_email": "Invalid email address",
+      "message_required": "Message is required"
+    },
+    "form": {
+      "unknown_error": "Unknown error"
+    }
+  },
+
   // Common UI elements
   "ui": {
     "loading": "Loading...",
