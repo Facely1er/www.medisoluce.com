@@ -407,7 +407,7 @@ const ContinuityPricingPage: React.FC = () => {
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
                             if (user) {
                               setSelectedTier(tierKey);
@@ -445,7 +445,7 @@ const ContinuityPricingPage: React.FC = () => {
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
                             if (tier.cta === t('pricing.continuity.tiers.essential.cta')) {
                               navigate('/continuity');
