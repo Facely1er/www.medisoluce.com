@@ -80,7 +80,7 @@ const PricingOverviewPage: React.FC = () => {
       icon: <ShieldCheck className="h-8 w-8 text-primary-500" />,
       link: '/pricing/hipaa',
       color: 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800',
-      startingPrice: '$49/month'
+      startingPrice: t('pricing.overview.starting_price', { price: 49 })
     },
     {
       name: t('pricing.overview.suites.ransomware.name'),
@@ -88,7 +88,7 @@ const PricingOverviewPage: React.FC = () => {
       icon: <Lock className="h-8 w-8 text-accent-500" />,
       link: '/pricing/ransomware',
       color: 'bg-accent-50 dark:bg-accent-900/20 border-accent-200 dark:border-accent-800',
-      startingPrice: '$49/month'
+      startingPrice: t('pricing.overview.starting_price', { price: 49 })
     },
     {
       name: t('pricing.overview.suites.continuity.name'),
@@ -96,7 +96,7 @@ const PricingOverviewPage: React.FC = () => {
       icon: <FileText className="h-8 w-8 text-success-500" />,
       link: '/pricing/continuity',
       color: 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800',
-      startingPrice: '$49/month'
+      startingPrice: t('pricing.overview.starting_price', { price: 49 })
     }
   ];
 
@@ -203,7 +203,6 @@ const PricingOverviewPage: React.FC = () => {
                       <span className="text-3xl font-bold text-gray-900 dark:text-white">
                         {suite.startingPrice}
                       </span>
-                      <span className="text-gray-600 dark:text-gray-300 ml-2">{t('pricing.overview.starting')}</span>
                     </div>
                   </div>
 

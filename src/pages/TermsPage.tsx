@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
 import ReactMarkdown from 'react-markdown';
 
 const TermsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,13 +17,13 @@ const TermsPage: React.FC = () => {
         setLoading(true);
         const response = await fetch('/policies/terms-of-service.md');
         if (!response.ok) {
-          throw new Error('Failed to load terms of service');
+          throw new Error(t('terms.load_error'));
         }
         const text = await response.text();
         setContent(text);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load terms of service');
+        setError(err instanceof Error ? err.message : t('terms.load_error'));
         console.error('Error loading terms of service:', err);
       } finally {
         setLoading(false);
@@ -34,8 +36,8 @@ const TermsPage: React.FC = () => {
   return (
     <div className="py-12">
       <SEOHead 
-        title="Terms of Service - ERMITS"
-        description="Master Terms of Service for ERMITS LLC products and services"
+        title={t('terms.title')}
+        description={t('terms.subtitle')}
         noindex={true}
       />
       
@@ -44,7 +46,7 @@ const TermsPage: React.FC = () => {
           <div className="text-center mb-12">
             <FileText className="h-16 w-16 text-primary-500 mx-auto mb-4" />
             <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              MASTER TERMS OF SERVICE
+              {t('terms.title')}
             </h1>
           </div>
 
@@ -58,7 +60,7 @@ const TermsPage: React.FC = () => {
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
                 <p className="text-red-800 dark:text-red-200">
-                  Error loading terms of service: {error}
+                  {t('terms.error_message', { error })}
                 </p>
               </div>
             )}

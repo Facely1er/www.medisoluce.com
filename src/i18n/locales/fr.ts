@@ -646,7 +646,82 @@ const frTranslation = {
     "clear_filters": "Effacer les Filtres",
     "custom_resource": "Besoin d'une Ressource Personnalisée?",
     "custom_resource_desc": "Vous ne trouvez pas ce que vous cherchez? Nos experts en conformité de santé peuvent aider à créer des modèles et ressources personnalisés pour votre organisation.",
-    "request_custom": "Demander une Ressource Personnalisée"
+    "request_custom": "Demander une Ressource Personnalisée",
+    "resources_available": "{{count}} ressources disponibles",
+    "total_resources": "Ressources Totales",
+    "popular_resources": "Ressources Populaires",
+    "total_downloads": "Téléchargements Totaux",
+    "categories": "Catégories",
+    "all_categories": "Toutes les Catégories",
+    "resource_found": "ressource trouvée",
+    "resources_found": "ressources trouvées",
+    "download": "Télécharger",
+    "preview": "Aperçu",
+    "contact_support": "Contacter le Support",
+    "no_resources_title": "Aucune ressource trouvée",
+    "no_resources_desc": "Essayez d'ajuster vos critères de recherche ou de filtre pour trouver ce que vous cherchez.",
+    "categories_list": {
+      "hipaa_compliance": "Conformité HIPAA",
+      "technology_dependency": "Dépendance Technologique",
+      "business_impact": "Impact Opérationnel",
+      "continuity_planning": "Planification de Continuité",
+      "ransomware": "Rançongiciel",
+      "training": "Formation"
+    },
+    "resources": {
+      "hipaa_privacy_policy": {
+        "title": "Modèle de Politique de Confidentialité HIPAA",
+        "description": "Modèle complet pour créer une politique de confidentialité conforme à la HIPAA pour votre organisation."
+      },
+      "breach_response_checklist": {
+        "title": "Liste de Vérification de Réponse aux Violations",
+        "description": "Liste de vérification étape par étape pour répondre à une violation de données en conformité avec les exigences HIPAA."
+      },
+      "business_associate_agreement": {
+        "title": "Modèle de Contrat de Sous-traitant",
+        "description": "Modèle BAA standard pour les accords avec les fournisseurs qui gèrent les RPS en votre nom."
+      },
+      "staff_training_record": {
+        "title": "Formulaire d'Enregistrement de Formation du Personnel",
+        "description": "Formulaire pour suivre la formation de conformité HIPAA pour les employés et maintenir les dossiers de formation."
+      },
+      "technology_dependency_mapping": {
+        "title": "Modèle de Cartographie des Dépendances Technologiques",
+        "description": "Modèle pour cartographier et documenter les dépendances technologiques critiques dans les soins de santé."
+      },
+      "bia_worksheet": {
+        "title": "Feuille de Travail BIA pour la Santé",
+        "description": "Feuille de travail d'analyse d'impact opérationnel spécialement conçue pour les organisations de santé."
+      },
+      "continuity_plan_template": {
+        "title": "Modèle de Plan de Continuité pour la Santé",
+        "description": "Modèle de plan de continuité des activités complet axé sur les opérations de santé."
+      },
+      "ransomware_response_playbook": {
+        "title": "Guide de Réponse aux Rançongiciels",
+        "description": "Guide détaillé pour se préparer et répondre aux attaques de rançongiciels dans les soins de santé avec un accent sur la protection des données et la sécurité des RPS."
+      },
+      "hipaa_security_risk_assessment": {
+        "title": "Outil d'Évaluation des Risques de Sécurité HIPAA",
+        "description": "Outil complet pour effectuer des évaluations des risques de sécurité HIPAA."
+      },
+      "ehr_downtime_procedures": {
+        "title": "Procédures de Panne DSE",
+        "description": "Procédures étape par étape pour gérer les scénarios de panne DSE."
+      },
+      "patient_data_backup_strategy": {
+        "title": "Guide de Stratégie de Sauvegarde des Données des Patients",
+        "description": "Guide complet pour mettre en œuvre des stratégies de sauvegarde des données des patients."
+      },
+      "vendor_risk_assessment": {
+        "title": "Modèle d'Évaluation des Risques Fournisseurs",
+        "description": "Modèle pour évaluer les risques des fournisseurs dans les partenariats technologiques de santé."
+      }
+    },
+    "author": "Équipe MediSoluce",
+    "preview_error": "Erreur lors du chargement du contenu de l'aperçu.",
+    "preview_unavailable": "Aperçu non disponible pour les fichiers {{fileType}}. Veuillez télécharger pour voir le contenu.",
+    "preview_loading": "Impossible de charger le contenu de l'aperçu."
   },
   
   // Dashboard page
@@ -770,7 +845,9 @@ const frTranslation = {
     "use_license": "Licence d'Utilisation",
     "disclaimer": "Avis de Non-Responsabilité",
     "limitations": "Limitations",
-    "contact_info": "Informations de Contact"
+    "contact_info": "Informations de Contact",
+    "load_error": "Échec du chargement des conditions de service",
+    "error_message": "Erreur lors du chargement des conditions de service : {{error}}"
   },
   
   // Cookie Policy page
@@ -1351,6 +1428,7 @@ const frTranslation = {
       "individual_suites_title": "Suites Individuelles",
       "individual_suites_subtitle": "Concentrez-vous sur votre plus grande vulnérabilité d'abord",
       "starting": "à partir de",
+      "starting_price": "{{price}} $/mois",
       "view_pricing": "Voir les Tarifs {{name}}",
       "best_value": "Meilleure Valeur",
       "complete_bundle_title": "Forfait Complet",

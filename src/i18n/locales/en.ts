@@ -646,7 +646,82 @@ const enTranslation = {
     "clear_filters": "Clear Filters",
     "custom_resource": "Need a Custom Resource?",
     "custom_resource_desc": "Don't see what you're looking for? Our healthcare compliance experts can help create custom templates and resources for your organization.",
-    "request_custom": "Request Custom Resource"
+    "request_custom": "Request Custom Resource",
+    "resources_available": "{{count}} resources available",
+    "total_resources": "Total Resources",
+    "popular_resources": "Popular Resources",
+    "total_downloads": "Total Downloads",
+    "categories": "Categories",
+    "all_categories": "All Categories",
+    "resource_found": "resource found",
+    "resources_found": "resources found",
+    "download": "Download",
+    "preview": "Preview",
+    "contact_support": "Contact Support",
+    "no_resources_title": "No resources found",
+    "no_resources_desc": "Try adjusting your search or filter criteria to find what you're looking for.",
+    "categories_list": {
+      "hipaa_compliance": "HIPAA Compliance",
+      "technology_dependency": "Technology Dependency",
+      "business_impact": "Business Impact",
+      "continuity_planning": "Continuity Planning",
+      "ransomware": "Ransomware",
+      "training": "Training"
+    },
+    "resources": {
+      "hipaa_privacy_policy": {
+        "title": "HIPAA Privacy Policy Template",
+        "description": "Comprehensive template for creating a HIPAA-compliant privacy policy for your organization."
+      },
+      "breach_response_checklist": {
+        "title": "Breach Response Checklist",
+        "description": "Step-by-step checklist for responding to a data breach in compliance with HIPAA requirements."
+      },
+      "business_associate_agreement": {
+        "title": "Business Associate Agreement Template",
+        "description": "Standard BAA template for agreements with vendors who handle PHI on your behalf."
+      },
+      "staff_training_record": {
+        "title": "Staff Training Record Form",
+        "description": "Form to track HIPAA compliance training for employees and maintain training records."
+      },
+      "technology_dependency_mapping": {
+        "title": "Technology Dependency Mapping Template",
+        "description": "Template for mapping and documenting critical technology dependencies in healthcare."
+      },
+      "bia_worksheet": {
+        "title": "BIA Worksheet for Healthcare",
+        "description": "Business Impact Analysis worksheet specifically designed for healthcare organizations."
+      },
+      "continuity_plan_template": {
+        "title": "Continuity Plan Template for Healthcare",
+        "description": "Comprehensive business continuity plan template focused on healthcare operations."
+      },
+      "ransomware_response_playbook": {
+        "title": "Ransomware Response Playbook",
+        "description": "Detailed playbook for preparing for and responding to ransomware attacks in healthcare with emphasis on data protection and PHI security."
+      },
+      "hipaa_security_risk_assessment": {
+        "title": "HIPAA Security Risk Assessment Tool",
+        "description": "Comprehensive tool for conducting HIPAA security risk assessments."
+      },
+      "ehr_downtime_procedures": {
+        "title": "EHR Downtime Procedures",
+        "description": "Step-by-step procedures for managing EHR downtime scenarios."
+      },
+      "patient_data_backup_strategy": {
+        "title": "Patient Data Backup Strategy Guide",
+        "description": "Comprehensive guide for implementing patient data backup strategies."
+      },
+      "vendor_risk_assessment": {
+        "title": "Vendor Risk Assessment Template",
+        "description": "Template for assessing vendor risks in healthcare technology partnerships."
+      }
+    },
+    "author": "MediSoluce Team",
+    "preview_error": "Error loading preview content.",
+    "preview_unavailable": "Preview not available for {{fileType}} files. Please download to view the content.",
+    "preview_loading": "Unable to load preview content."
   },
   
   // Dashboard page
@@ -1075,15 +1150,17 @@ const enTranslation = {
 },
 
 // Terms page (missing from original en.ts)
-"terms": {
-  "title": "Terms of Service",
-  "subtitle": "Terms and conditions for using the MediSoluce platform",
-  "last_updated": "Last updated",
-  "acceptance": "Acceptance of Terms",
-  "use_license": "Use License",
-  "disclaimer": "Disclaimer",
-  "limitations": "Limitations",
-  "contact_info": "Contact Information"
+  "terms": {
+    "title": "Terms of Service",
+    "subtitle": "Terms and conditions for using the MediSoluce platform",
+    "last_updated": "Last updated",
+    "acceptance": "Acceptance of Terms",
+    "use_license": "Use License",
+    "disclaimer": "Disclaimer",
+    "limitations": "Limitations",
+    "contact_info": "Contact Information",
+    "load_error": "Failed to load terms of service",
+    "error_message": "Error loading terms of service: {{error}}"
   },
 
   // Homepage content
@@ -1351,6 +1428,7 @@ const enTranslation = {
       "individual_suites_title": "Individual Suites",
       "individual_suites_subtitle": "Focus on your biggest vulnerability first",
       "starting": "starting",
+      "starting_price": "${{price}}/month",
       "view_pricing": "View {{name}} Pricing",
       "best_value": "Best Value",
       "complete_bundle_title": "Complete Bundle",
