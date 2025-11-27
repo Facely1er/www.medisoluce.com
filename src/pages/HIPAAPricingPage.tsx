@@ -408,7 +408,7 @@ const HIPAAPricingPage: React.FC = () => {
           tier={selectedTier}
           userId={userId}
           userEmail={userEmail}
-          onTrialStarted={(trialId) => {
+          onTrialStarted={() => {
             showToast({
               type: 'success',
               title: t('pricing_common.trial_started_success'),
