@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -14,6 +15,7 @@ import TrialBanner from '../components/trial/TrialBanner';
 import { useToast } from '../components/ui/Toast';
 
 const HIPAAPricingPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -33,87 +35,57 @@ const HIPAAPricingPage: React.FC = () => {
 
   const tiers = [
     {
-      name: 'Essential',
+      name: t('pricing.hipaa.tiers.essential.name'),
       price: 49,
-      description: 'Perfect for small practices getting started with HIPAA compliance',
-      features: [
-        'Full 10-question HIPAA assessment',
-        'HIPAA Privacy Policy template',
-        'Breach Response Checklist',
-        'Business Associate Agreement (BAA)',
-        'Training Record Forms',
-        'Risk Assessment Tool',
-        'PDF export of reports',
-        'Email support',
-        'Basic compliance scoring'
-      ],
-      cta: 'Start Free Assessment',
+      description: t('pricing.hipaa.tiers.essential.description'),
+      features: t('pricing.hipaa.tiers.essential.features', { returnObjects: true }) as string[],
+      cta: t('pricing.hipaa.tiers.essential.cta'),
       popular: false
     },
     {
-      name: 'Professional',
+      name: t('pricing.hipaa.tiers.professional.name'),
       price: 149,
-      description: 'For growing practices that need team collaboration',
-      features: [
-        'Everything in Essential',
-        'Team collaboration (5 users)',
-        'Cloud sync with backup',
-        'Advanced risk assessment tools',
-        'Custom policy templates',
-        'Compliance certification tracking',
-        'Advanced reporting & analytics',
-        'Priority email + chat support',
-        'Quarterly compliance updates'
-      ],
-      cta: 'Start Free Trial',
+      description: t('pricing.hipaa.tiers.professional.description'),
+      features: t('pricing.hipaa.tiers.professional.features', { returnObjects: true }) as string[],
+      cta: t('pricing.hipaa.tiers.professional.cta'),
       popular: true
     },
     {
-      name: 'Enterprise',
+      name: t('pricing.hipaa.tiers.enterprise.name'),
       price: 499,
-      description: 'For large organizations requiring comprehensive HIPAA compliance',
-      features: [
-        'Everything in Professional',
-        'Unlimited users',
-        'White-label options',
-        'Dedicated HIPAA compliance consultant',
-        'Custom compliance audits',
-        'Quarterly compliance reviews',
-        'SLA: 99.9% uptime',
-        'Custom EHR integrations',
-        '24/7 phone support'
-      ],
-      cta: 'Contact Sales',
+      description: t('pricing.hipaa.tiers.enterprise.description'),
+      features: t('pricing.hipaa.tiers.enterprise.features', { returnObjects: true }) as string[],
+      cta: t('pricing.hipaa.tiers.enterprise.cta'),
       popular: false
     }
   ];
 
   const stats = [
-    { value: 'Up to $1.9M', label: 'Maximum Annual HIPAA Penalties', icon: AlertTriangle },
-    { value: 'Multiple', label: 'Required Safeguards for HIPAA Compliance', icon: ShieldCheck },
-    { value: 'Ongoing', label: 'Compliance & Training Required', icon: CheckCircle }
+    { value: t('pricing.hipaa.stats.max_penalties.value'), label: t('pricing.hipaa.stats.max_penalties.label'), icon: AlertTriangle },
+    { value: t('pricing.hipaa.stats.safeguards.value'), label: t('pricing.hipaa.stats.safeguards.label'), icon: ShieldCheck },
+    { value: t('pricing.hipaa.stats.training.value'), label: t('pricing.hipaa.stats.training.label'), icon: CheckCircle }
   ];
 
   const benefits = [
     {
       icon: FileText,
-      title: 'Comprehensive Assessment',
-      description: '10-question HIPAA compliance evaluation covering Privacy, Security, and Breach Notification Rules'
+      title: t('pricing.hipaa.benefits.assessment.title'),
+      description: t('pricing.hipaa.benefits.assessment.description')
     },
     {
       icon: Lock,
-      title: 'Protect Patient Data',
-      description: 'Reduce risk of breaches and HIPAA violations with proven security controls'
+      title: t('pricing.hipaa.benefits.protect_data.title'),
+      description: t('pricing.hipaa.benefits.protect_data.description')
     },
     {
       icon: Users,
-      title: 'Staff Training',
-      description: 'Ensure your team understands HIPAA requirements with built-in training modules'
+      title: t('pricing.hipaa.benefits.staff_training.title'),
+      description: t('pricing.hipaa.benefits.staff_training.description')
     },
     {
       icon: Download,
-      title: 'Ready-to-Use Templates',
-      description: 'Download HIPAA-compliant policies, procedures, and documentation templates'
+      title: t('pricing.hipaa.benefits.templates.title'),
+      description: t('pricing.hipaa.benefits.templates.description')
     }
   ];
 
@@ -144,7 +116,7 @@ const HIPAAPricingPage: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
             >
-              HIPAA Compliance Suite
+              {t('pricing.hipaa.title')}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -152,8 +124,7 @@ const HIPAAPricingPage: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-600 dark:text-gray-300 mb-8"
             >
-              Protect patient data with comprehensive compliance assessment, 
-              policy templates, and implementation guidance.
+              {t('pricing.hipaa.subtitle')}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -162,13 +133,13 @@ const HIPAAPricingPage: React.FC = () => {
             >
               <Link to="/hipaa-check">
                 <Button size="lg" className="mr-4 mb-4">
-                  Start Free Assessment
+                  {t('pricing.hipaa.start_free_assessment')}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/pricing">
                 <Button variant="outline" size="lg">
-                  View Pricing
+                  {t('pricing.hipaa.view_pricing')}
                 </Button>
               </Link>
             </motion.div>
@@ -212,10 +183,10 @@ const HIPAAPricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Everything You Need for HIPAA Compliance
+              {t('pricing.hipaa.everything_you_need_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Comprehensive tools to protect patient data and meet regulatory requirements
+              {t('pricing.hipaa.everything_you_need_subtitle')}
             </p>
           </div>
 
@@ -261,10 +232,10 @@ const HIPAAPricingPage: React.FC = () => {
                   <Calculator className="h-5 w-5 text-primary-500 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
-                      Personalized Pricing Available
+                      {t('pricing.hipaa.personalized_pricing_available')}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Our pricing has been customized based on your organization's risk profile and assessment results.
+                      {t('pricing.hipaa.personalized_pricing_description')}
                     </p>
                   </div>
                 </div>
@@ -295,10 +266,10 @@ const HIPAAPricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Choose Your HIPAA Compliance Plan
+              {t('pricing_common.choose_plan', { product: t('pricing.hipaa.title') })}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Start with the free assessment, then upgrade to the plan that fits your needs
+              {t('pricing_common.choose_plan_subtitle')}
             </p>
           </div>
 
@@ -319,7 +290,7 @@ const HIPAAPricingPage: React.FC = () => {
                   <Card className={`h-full flex flex-col border-2 ${tier.popular ? 'border-primary-500 dark:border-primary-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
                     {tier.popular && (
                       <div className="bg-primary-500 text-white text-center py-2">
-                        <span className="font-semibold">RECOMMENDED</span>
+                        <span className="font-semibold">{t('pricing_common.recommended')}</span>
                       </div>
                     )}
                     
@@ -337,12 +308,12 @@ const HIPAAPricingPage: React.FC = () => {
                             ${tier.price}
                           </span>
                           <span className="text-gray-600 dark:text-gray-300 ml-2">
-                            /month
+                            {t('pricing_common.per_month')}
                           </span>
                         </div>
-                        {tier.cta === 'Start Free Trial' && (
+                        {tier.cta === t('pricing.hipaa.tiers.professional.cta') && (
                           <p className="text-sm text-primary-600 dark:text-primary-400 mt-2">
-                            {tierKey === 'professional' ? '30-day free trial' : '14-day free trial'}
+                            {tierKey === 'professional' ? t('pricing_common.trial_30_days') : t('pricing_common.trial_14_days')}
                           </p>
                         )}
                       </div>
@@ -358,13 +329,13 @@ const HIPAAPricingPage: React.FC = () => {
 
                       {hasActiveTrial ? (
                         <Button className="w-full" size="lg" variant="outline" disabled>
-                          Trial Active
+                          {t('pricing_common.trial_active')}
                         </Button>
                       ) : canStartTrial ? (
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
                             if (user) {
                               setSelectedTier(tierKey);
@@ -372,8 +343,8 @@ const HIPAAPricingPage: React.FC = () => {
                             } else {
                               showToast({
                                 type: 'info',
-                                title: 'Sign In Required',
-                                message: 'Please sign in or create an account to start your free trial.'
+                                title: t('pricing_common.sign_in_required'),
+                                message: t('pricing_common.sign_in_required_message')
                               });
                               navigate('/login');
                             }
@@ -382,7 +353,7 @@ const HIPAAPricingPage: React.FC = () => {
                           {tier.cta}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
-                      ) : tier.cta === 'Start Free Trial' && !isEligible('hipaa') ? (
+                      ) : tier.cta === t('pricing.hipaa.tiers.professional.cta') && !isEligible('hipaa') ? (
                         <Button 
                           className="w-full" 
                           size="lg" 
@@ -390,23 +361,23 @@ const HIPAAPricingPage: React.FC = () => {
                           onClick={() => {
                             showToast({
                               type: 'info',
-                              title: 'Trial Already Used',
-                              message: 'You have already used your free trial. Upgrade to continue.'
+                              title: t('pricing_common.trial_already_used'),
+                              message: t('pricing_common.trial_already_used_message')
                             });
                           }}
                         >
-                          Upgrade to Continue
+                          {t('pricing_common.upgrade_to_continue')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant={tier.popular ? 'default' : 'outline'}
+                          variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
-                            if (tier.cta === 'Start Free Assessment') {
+                            if (tier.cta === t('pricing.hipaa.tiers.essential.cta')) {
                               navigate('/hipaa-check');
-                            } else if (tier.cta === 'Contact Sales') {
+                            } else if (tier.cta === t('pricing.hipaa.tiers.enterprise.cta')) {
                               navigate('/contact');
                             }
                           }}
@@ -440,8 +411,8 @@ const HIPAAPricingPage: React.FC = () => {
           onTrialStarted={(trialId) => {
             showToast({
               type: 'success',
-              title: 'Trial Started!',
-              message: 'Your free trial has begun. Enjoy full access!'
+              title: t('pricing_common.trial_started_success'),
+              message: t('pricing_common.trial_started_success_message')
             });
             navigate('/dashboard');
           }}
@@ -453,21 +424,21 @@ const HIPAAPricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Protect Patient Data?
+              {t('pricing_common.ready_to_protect')}
             </h2>
             <p className="text-xl text-primary-100 mb-8">
-              Start your free HIPAA assessment today. No credit card required.
+              {t('pricing_common.ready_to_protect_subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/hipaa-check">
                 <Button size="lg" className="!bg-white !text-primary-700 hover:!bg-gray-50">
-                  Start Free Assessment
+                  {t('pricing_common.start_free_assessment')}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/contact">
                 <Button variant="outline" size="lg" className="!bg-white/10 !border-white !text-white hover:!bg-white/20">
-                  Contact Sales
+                  {t('pricing_common.contact_sales')}
                 </Button>
               </Link>
             </div>

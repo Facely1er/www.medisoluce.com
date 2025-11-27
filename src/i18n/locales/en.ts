@@ -1323,6 +1323,510 @@ const enTranslation = {
     "loading_chunk_error": "Failed to load application resources",
     "network_error": "Network connection error",
     "unknown_error": "Unknown error occurred"
+  },
+
+  // Pricing pages
+  "pricing": {
+    "overview": {
+      "title": "Comprehensive Healthcare Protection",
+      "subtitle": "Choose individual suites or save with our Complete Bundle. Start free.",
+      "personalized_pricing_title": "Personalized Pricing Based on Your Assessment",
+      "show_personalized": "Show Personalized",
+      "show_standard": "Show Standard",
+      "individual_suites_title": "Individual Suites",
+      "individual_suites_subtitle": "Focus on your biggest vulnerability first",
+      "starting": "starting",
+      "view_pricing": "View {{name}} Pricing",
+      "best_value": "Best Value",
+      "complete_bundle_title": "Complete Bundle",
+      "complete_bundle_subtitle": "All three suites together. Comprehensive protection, maximum savings.",
+      "view_bundle_pricing": "View Bundle Pricing",
+      "find_plan_title": "Find Your Perfect Plan",
+      "find_plan_subtitle": "Get personalized recommendations based on your role",
+      "solves": "Solves: {{painPoint}}",
+      "more_features": "+{{count}} more",
+      "view_recommended_plan": "View Recommended Plan",
+      "ready_title": "Ready to Get Started?",
+      "ready_subtitle": "Start with our free assessment and see how much you can save",
+      "start_free_assessment": "Start Free Assessment",
+      "calculate_savings": "Calculate Your Savings",
+      "suites": {
+        "hipaa": {
+          "name": "HIPAA Compliance",
+          "description": "Protect patient data and avoid $100K-$1.6M HIPAA fines"
+        },
+        "ransomware": {
+          "name": "Ransomware Resilience",
+          "description": "Protect against $10.9M ransomware attacks with healthcare-specific defense"
+        },
+        "continuity": {
+          "name": "Business Continuity",
+          "description": "Ensure patient care continues with comprehensive operational resilience"
+        }
+      },
+      "role_recommendations": {
+        "executive": {
+          "title": "For C-Level Executives",
+          "subtitle": "Financial risk mitigation and business continuity",
+          "recommended": "Professional Bundle",
+          "price": "$299/month",
+          "savings": "Protect $10.9M in potential losses",
+          "pain_point": "Financial liability and operational disruption",
+          "features": ["ROI reporting", "Business impact analysis", "Board-ready compliance", "Financial risk mitigation"]
+        },
+        "compliance": {
+          "title": "For Compliance Officers",
+          "subtitle": "Audit readiness and regulatory compliance",
+          "recommended": "Professional HIPAA Suite",
+          "price": "$149/month",
+          "savings": "Audit-ready in 30 days",
+          "pain_point": "Regulatory requirements and audit readiness",
+          "features": ["HIPAA documentation", "Training tracking", "Audit trail", "Compliance reporting"]
+        },
+        "it": {
+          "title": "For IT Directors / CISOs",
+          "subtitle": "Security and technical resilience",
+          "recommended": "Enterprise Bundle",
+          "price": "$999/month",
+          "savings": "Enterprise-grade security",
+          "pain_point": "Technical infrastructure and security threats",
+          "features": ["99.9% uptime SLA", "SOC monitoring", "Incident response", "Custom integrations"]
+        },
+        "operations": {
+          "title": "For Operations Managers",
+          "subtitle": "Business continuity and patient safety",
+          "recommended": "Professional Continuity",
+          "price": "$149/month",
+          "savings": "Reduce downtime impact",
+          "pain_point": "Operational disruptions and patient care",
+          "features": ["Continuity plans", "Manual procedures", "Testing schedules", "Staff training"]
+        },
+        "practice": {
+          "title": "For Practice Managers",
+          "subtitle": "Affordable compliance solution",
+          "recommended": "Essential HIPAA",
+          "price": "$49/month",
+          "savings": "No expensive consultants needed",
+          "pain_point": "Budget constraints and resource limitations",
+          "features": ["Free assessment", "Easy-to-use templates", "Budget-friendly", "Quick implementation"]
+        }
+      }
+    },
+    "hipaa": {
+      "title": "HIPAA Compliance Suite",
+      "subtitle": "Protect patient data with comprehensive compliance assessment, policy templates, and implementation guidance.",
+      "start_free_assessment": "Start Free Assessment",
+      "view_pricing": "View Pricing",
+      "everything_you_need_title": "Everything You Need for HIPAA Compliance",
+      "everything_you_need_subtitle": "Comprehensive tools to protect patient data and meet regulatory requirements",
+      "personalized_pricing_available": "Personalized Pricing Available",
+      "personalized_pricing_description": "Our pricing has been customized based on your organization's risk profile and assessment results.",
+      "stats": {
+        "max_penalties": {
+          "value": "Up to $1.9M",
+          "label": "Maximum Annual HIPAA Penalties"
+        },
+        "safeguards": {
+          "value": "Multiple",
+          "label": "Required Safeguards for HIPAA Compliance"
+        },
+        "training": {
+          "value": "Ongoing",
+          "label": "Compliance & Training Required"
+        }
+      },
+      "benefits": {
+        "assessment": {
+          "title": "Comprehensive Assessment",
+          "description": "10-question HIPAA compliance evaluation covering Privacy, Security, and Breach Notification Rules"
+        },
+        "protect_data": {
+          "title": "Protect Patient Data",
+          "description": "Reduce risk of breaches and HIPAA violations with proven security controls"
+        },
+        "staff_training": {
+          "title": "Staff Training",
+          "description": "Ensure your team understands HIPAA requirements with built-in training modules"
+        },
+        "templates": {
+          "title": "Ready-to-Use Templates",
+          "description": "Download HIPAA-compliant policies, procedures, and documentation templates"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essential",
+          "description": "Perfect for small practices getting started with HIPAA compliance",
+          "price": "$49",
+          "cta": "Start Free Assessment",
+          "features": [
+            "Full 10-question HIPAA assessment",
+            "HIPAA Privacy Policy template",
+            "Breach Response Checklist",
+            "Business Associate Agreement (BAA)",
+            "Training Record Forms",
+            "Risk Assessment Tool",
+            "PDF export of reports",
+            "Email support",
+            "Basic compliance scoring"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "For growing practices that need team collaboration",
+          "price": "$149",
+          "cta": "Start Free Trial",
+          "features": [
+            "Everything in Essential",
+            "Team collaboration (5 users)",
+            "Cloud sync with backup",
+            "Advanced risk assessment tools",
+            "Custom policy templates",
+            "Compliance certification tracking",
+            "Advanced reporting & analytics",
+            "Priority email + chat support",
+            "Quarterly compliance updates"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "For large organizations requiring comprehensive HIPAA compliance",
+          "price": "$499",
+          "cta": "Contact Sales",
+          "features": [
+            "Everything in Professional",
+            "Unlimited users",
+            "White-label options",
+            "Dedicated HIPAA compliance consultant",
+            "Custom compliance audits",
+            "Quarterly compliance reviews",
+            "SLA: 99.9% uptime",
+            "Custom EHR integrations",
+            "24/7 phone support"
+          ]
+        }
+      }
+    },
+    "ransomware": {
+      "title": "Ransomware Resilience Suite",
+      "subtitle": "Protect patient care and operations from ransomware attacks with healthcare-specific defense, response, and recovery procedures.",
+      "start_calculator": "Start Impact Calculator",
+      "run_calculator": "Run Impact Calculator",
+      "view_pricing": "View Pricing",
+      "choose_plan_subtitle": "Start with free resources, upgrade as you need advanced protection",
+      "personalized_pricing_available": "Personalized Pricing Available",
+      "personalized_pricing_description": "Our pricing has been customized based on your organization's ransomware risk level.",
+      "defense_title": "Healthcare-Specific Ransomware Defense",
+      "defense_subtitle": "Prepared for the unique challenges of clinical environments",
+      "everything_you_need_title": "Everything You Need for Ransomware Defense",
+      "everything_you_need_subtitle": "Comprehensive tools to protect and recover from attacks",
+      "stats": {
+        "procedures": {
+          "value": "Proven",
+          "label": "Healthcare-Specific Response Procedures"
+        },
+        "containment": {
+          "value": "Multiple",
+          "label": "Threat Containment Methods Available"
+        },
+        "response": {
+          "value": "Rapid",
+          "label": "Threat Response Capabilities"
+        }
+      },
+      "benefits": {
+        "playbooks": {
+          "title": "Healthcare-Specific Playbooks",
+          "description": "Response procedures designed specifically for clinical environments and patient safety"
+        },
+        "containment": {
+          "title": "Immediate Threat Containment",
+          "description": "Isolate attacks quickly to minimize impact on patient care and operations"
+        },
+        "prevention": {
+          "title": "Prevention Controls",
+          "description": "Built-in security hardening checklists to reduce ransomware risk"
+        },
+        "recovery": {
+          "title": "Recovery Tools",
+          "description": "Calculators and templates to estimate recovery time and business impact"
+        }
+      },
+      "scenarios": {
+        "ehr_down": {
+          "title": "EHR System Down",
+          "description": "Maintain patient care with manual procedures while systems recover"
+        },
+        "life_support": {
+          "title": "Life Support Systems",
+          "description": "Protect critical medical devices and ensure continuous patient monitoring"
+        },
+        "isolation": {
+          "title": "Network Isolation",
+          "description": "Quickly isolate infections while preserving clinical operations"
+        },
+        "communication": {
+          "title": "Communication",
+          "description": "Coordinate response across IT, clinical, and administrative teams"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essential",
+          "description": "Healthcare ransomware defense and response fundamentals",
+          "price": "$49",
+          "cta": "Get Started",
+          "features": [
+            "Ransomware Response Playbook",
+            "Business Impact Calculator",
+            "Incident Response Procedures",
+            "Threat Containment Checklist",
+            "Manual Procedures Guide",
+            "Security Hardening Tools",
+            "Backup Verification Templates",
+            "Email support",
+            "PDF export of playbooks"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "Advanced threat protection for growing healthcare organizations",
+          "price": "$149",
+          "cta": "Start Free Trial",
+          "features": [
+            "Everything in Essential",
+            "Advanced Threat Hunting Tools",
+            "Forensic Analysis Templates",
+            "Custom Playbook Builder",
+            "Team Coordination Tools",
+            "24/7 Incident Response Hotline",
+            "Monthly Threat Intelligence Updates",
+            "Priority email + chat support",
+            "Advanced Recovery Calculators"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "Enterprise-grade ransomware resilience with dedicated support",
+          "price": "$499",
+          "cta": "Contact Sales",
+          "features": [
+            "Everything in Professional",
+            "24/7 SOC Monitoring Dashboard",
+            "Custom Incident Response Team",
+            "Forensic Analysis Services",
+            "Ransomware Simulation Testing",
+            "Annual Penetration Testing",
+            "Custom Security Hardening",
+            "Breach Notification Automation",
+            "Dedicated Security Consultant"
+          ]
+        }
+      }
+    },
+    "continuity": {
+      "title": "Business Continuity Suite",
+      "subtitle": "Ensure patient care continues during system failures, disasters, and disruptions with comprehensive continuity planning tools.",
+      "create_plan": "Create Continuity Plan",
+      "view_pricing": "View Pricing",
+      "prepared_title": "Prepared for Any Disruption",
+      "prepared_subtitle": "Continuity plans for the most common healthcare operational scenarios",
+      "everything_you_need_title": "Everything You Need for Continuity Planning",
+      "everything_you_need_subtitle": "Comprehensive tools to ensure operations continue during disruptions",
+      "stats": {
+        "ehr_availability": {
+          "value": "Critical",
+          "label": "EHR Availability Requirements"
+        },
+        "disruption": {
+          "value": "Significant",
+          "label": "Operational Disruption Impact"
+        },
+        "planning": {
+          "value": "Essential",
+          "label": "Continuity Planning for Patient Care"
+        }
+      },
+      "benefits": {
+        "mapping": {
+          "title": "Technology Dependency Mapping",
+          "description": "Map critical systems and their interdependencies to identify vulnerabilities"
+        },
+        "templates": {
+          "title": "Comprehensive Plan Templates",
+          "description": "Ready-to-use continuity plans for various scenarios and threats"
+        },
+        "training": {
+          "title": "Staff Training & Testing",
+          "description": "Ensure your team knows what to do when systems fail"
+        },
+        "patient_care": {
+          "title": "Patient Care Continuity",
+          "description": "Maintain patient safety during disruptions with manual procedures"
+        }
+      },
+      "scenarios": {
+        "ehr_failure": {
+          "title": "EHR System Failure",
+          "description": "Continue patient care with manual documentation and paper charts"
+        },
+        "power_outage": {
+          "title": "Power Outage",
+          "description": "Emergency power procedures to maintain critical operations"
+        },
+        "network_disruption": {
+          "title": "Network Disruption",
+          "description": "Isolated network segmentation while maintaining patient access"
+        },
+        "vendor_down": {
+          "title": "Vendor System Down",
+          "description": "Alternative workflows when critical vendors are unavailable"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essential",
+          "description": "Basic continuity planning for small practices",
+          "price": "$49",
+          "cta": "Get Started",
+          "features": [
+            "Continuity Plan Templates",
+            "Technology Dependency Mapping",
+            "EHR Downtime Procedures",
+            "Vendor Risk Assessment Template",
+            "Backup Strategy Guide",
+            "RTO/RPO Calculator",
+            "Basic Recovery Procedures",
+            "Email support",
+            "PDF export of plans"
+          ]
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "Advanced planning for growing healthcare organizations",
+          "price": "$149",
+          "cta": "Start Free Trial",
+          "features": [
+            "Everything in Essential",
+            "Advanced Dependency Mapping",
+            "Custom Continuity Plans",
+            "Automated Testing Schedules",
+            "Team Workflow Management",
+            "Custom Recovery Procedures",
+            "Advanced Impact Analysis",
+            "Priority email + chat support",
+            "Plan version control"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "Enterprise-grade continuity planning with dedicated support",
+          "price": "$499",
+          "cta": "Contact Sales",
+          "features": [
+            "Everything in Professional",
+            "Unlimited Plans & Locations",
+            "Custom Scenario Planning",
+            "Automated Plan Testing",
+            "Dedicated BC Consultant",
+            "Disaster Recovery SLA",
+            "Custom Integrations",
+            "24/7 support",
+            "Annual Tabletop Exercises"
+          ]
+        }
+      }
+    }
+  },
+
+  // Trial components
+  "trial": {
+    "banner": {
+      "expired": "Your trial has expired",
+      "expires_tomorrow": "Your trial expires tomorrow",
+      "expires_in_days": "Your trial expires in {{days}} days",
+      "days_remaining": "{{days}} days remaining in your trial",
+      "upgrade_now": "Upgrade Now",
+      "add_payment_method": "Add Payment Method",
+      "view_plans": "View Plans",
+      "payment_method_on_file": "Payment method on file",
+      "add_payment_description": "Add a payment method to automatically convert to a paid subscription when your trial ends.",
+      "tier_trial": "{{tier}} Trial"
+    },
+    "modal": {
+      "title": "Start Your Free Trial",
+      "subtitle": "Help us personalize your experience by answering a few quick questions.",
+      "step_role": "What's your primary role?",
+      "step_use_case": "What's your primary use case?",
+      "step_organization": "Organization Type (Optional)",
+      "select_organization": "Select organization type...",
+      "back": "Back",
+      "start_trial": "Start Free Trial",
+      "starting_trial": "Starting Trial...",
+      "missing_information": "Missing Information",
+      "missing_information_message": "Please complete all fields to start your tailored trial.",
+      "trial_not_available": "Trial Not Available",
+      "trial_not_available_message": "You have already used your free trial for this product.",
+      "trial_started": "Trial Started!",
+      "trial_started_message_essential": "Your {{productName}} trial has begun. Enjoy full access for 14 days.",
+      "trial_started_message": "Your {{productName}} trial has begun. Enjoy full access for 30 days.",
+      "failed_to_start": "Failed to Start Trial",
+      "terms_title": "Free Trial Terms:",
+      "terms_essential": "14 days of full access. Automatically converts to paid subscription unless cancelled. One trial per user per product.",
+      "terms_professional": "30 days of full access. Payment method required. Automatically converts to paid subscription unless cancelled. One trial per user per product.",
+      "roles": {
+        "compliance_officer": "Compliance Officer",
+        "it_director": "IT Director / CISO",
+        "operations_manager": "Operations Manager",
+        "practice_manager": "Practice Manager",
+        "executive": "C-Level Executive",
+        "other": "Other"
+      },
+      "use_cases": {
+        "audit_readiness": "Prepare for Compliance Audit",
+        "ransomware_protection": "Ransomware Protection & Response",
+        "hipaa_compliance": "HIPAA Compliance Management",
+        "business_continuity": "Business Continuity Planning",
+        "security_assessment": "Security Assessment",
+        "general_exploration": "General Platform Exploration"
+      },
+      "organization_types": {
+        "hospital": "Hospital",
+        "clinic": "Clinic",
+        "practice": "Private Practice",
+        "pharmacy": "Pharmacy",
+        "lab": "Laboratory",
+        "payer": "Insurance/Payer",
+        "vendor": "Healthcare Vendor",
+        "other": "Other"
+      }
+    }
+  },
+
+  // Pricing page common sections
+  "pricing_common": {
+    "choose_plan": "Choose Your {{product}} Plan",
+    "choose_plan_subtitle": "Start with the free assessment, then upgrade to the plan that fits your needs",
+    "recommended": "RECOMMENDED",
+    "per_month": "/month",
+    "trial_active": "Trial Active",
+    "upgrade_to_continue": "Upgrade to Continue",
+    "trial_14_days": "14-day free trial",
+    "trial_30_days": "30-day free trial",
+    "sign_in_required": "Sign In Required",
+    "sign_in_required_message": "Please sign in or create an account to start your free trial.",
+    "trial_already_used": "Trial Already Used",
+    "trial_already_used_message": "You have already used your free trial. Upgrade to continue.",
+    "ready_to_protect": "Ready to Protect Patient Data?",
+    "ready_to_protect_subtitle": "Start your free HIPAA assessment today. No credit card required.",
+    "ready_ransomware": "Ready to Defend Against Ransomware?",
+    "ready_ransomware_subtitle": "Start your free impact calculator today. No credit card required.",
+    "ready_continuity": "Ready to Ensure Business Continuity?",
+    "ready_continuity_subtitle": "Start creating your continuity plan today. No credit card required.",
+    "start_free_assessment": "Start Free Assessment",
+    "contact_sales": "Contact Sales",
+    "trial_started_success": "Trial Started!",
+    "trial_started_success_message": "Your free trial has begun. Enjoy full access!"
   }
 };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -14,6 +15,7 @@ import TrialBanner from '../components/trial/TrialBanner';
 import { useToast } from '../components/ui/Toast';
 
 const RansomwarePricingPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -33,113 +35,83 @@ const RansomwarePricingPage: React.FC = () => {
 
   const tiers = [
     {
-      name: 'Essential',
+      name: t('pricing.ransomware.tiers.essential.name'),
       price: 49,
-      description: 'Healthcare ransomware defense and response fundamentals',
-      features: [
-        'Ransomware Response Playbook',
-        'Business Impact Calculator',
-        'Incident Response Procedures',
-        'Threat Containment Checklist',
-        'Manual Procedures Guide',
-        'Security Hardening Tools',
-        'Backup Verification Templates',
-        'Email support',
-        'PDF export of playbooks'
-      ],
-      cta: 'Get Started',
+      description: t('pricing.ransomware.tiers.essential.description'),
+      features: t('pricing.ransomware.tiers.essential.features', { returnObjects: true }) as string[],
+      cta: t('pricing.ransomware.tiers.essential.cta'),
       popular: false
     },
     {
-      name: 'Professional',
+      name: t('pricing.ransomware.tiers.professional.name'),
       price: 149,
-      description: 'Advanced threat protection for growing healthcare organizations',
-      features: [
-        'Everything in Essential',
-        'Advanced Threat Hunting Tools',
-        'Forensic Analysis Templates',
-        'Custom Playbook Builder',
-        'Team Coordination Tools',
-        '24/7 Incident Response Hotline',
-        'Monthly Threat Intelligence Updates',
-        'Priority email + chat support',
-        'Advanced Recovery Calculators'
-      ],
-      cta: 'Start Free Trial',
+      description: t('pricing.ransomware.tiers.professional.description'),
+      features: t('pricing.ransomware.tiers.professional.features', { returnObjects: true }) as string[],
+      cta: t('pricing.ransomware.tiers.professional.cta'),
       popular: true
     },
     {
-      name: 'Enterprise',
+      name: t('pricing.ransomware.tiers.enterprise.name'),
       price: 499,
-      description: 'Enterprise-grade ransomware resilience with dedicated support',
-      features: [
-        'Everything in Professional',
-        '24/7 SOC Monitoring Dashboard',
-        'Custom Incident Response Team',
-        'Forensic Analysis Services',
-        'Ransomware Simulation Testing',
-        'Annual Penetration Testing',
-        'Custom Security Hardening',
-        'Breach Notification Automation',
-        'Dedicated Security Consultant'
-      ],
-      cta: 'Contact Sales',
+      description: t('pricing.ransomware.tiers.enterprise.description'),
+      features: t('pricing.ransomware.tiers.enterprise.features', { returnObjects: true }) as string[],
+      cta: t('pricing.ransomware.tiers.enterprise.cta'),
       popular: false
     }
   ];
 
   const stats = [
-    { value: 'Proven', label: 'Healthcare-Specific Response Procedures', icon: AlertTriangle },
-    { value: 'Multiple', label: 'Threat Containment Methods Available', icon: Shield },
-    { value: 'Rapid', label: 'Threat Response Capabilities', icon: Clock }
+    { value: t('pricing.ransomware.stats.procedures.value'), label: t('pricing.ransomware.stats.procedures.label'), icon: AlertTriangle },
+    { value: t('pricing.ransomware.stats.containment.value'), label: t('pricing.ransomware.stats.containment.label'), icon: Shield },
+    { value: t('pricing.ransomware.stats.response.value'), label: t('pricing.ransomware.stats.response.label'), icon: Clock }
   ];
 
   const benefits = [
     {
       icon: Lock,
-      title: 'Healthcare-Specific Playbooks',
-      description: 'Response procedures designed specifically for clinical environments and patient safety'
+      title: t('pricing.ransomware.benefits.playbooks.title'),
+      description: t('pricing.ransomware.benefits.playbooks.description')
     },
     {
       icon: Zap,
-      title: 'Immediate Threat Containment',
-      description: 'Isolate attacks quickly to minimize impact on patient care and operations'
+      title: t('pricing.ransomware.benefits.containment.title'),
+      description: t('pricing.ransomware.benefits.containment.description')
     },
     {
       icon: Shield,
-      title: 'Prevention Controls',
-      description: 'Built-in security hardening checklists to reduce ransomware risk'
+      title: t('pricing.ransomware.benefits.prevention.title'),
+      description: t('pricing.ransomware.benefits.prevention.description')
     },
     {
       icon: Download,
-      title: 'Recovery Tools',
-      description: 'Calculators and templates to estimate recovery time and business impact'
+      title: t('pricing.ransomware.benefits.recovery.title'),
+      description: t('pricing.ransomware.benefits.recovery.description')
     }
   ];
 
   const threatScenarios = [
     {
       icon: FileText,
-      title: 'EHR System Down',
-      description: 'Maintain patient care with manual procedures while systems recover',
+      title: t('pricing.ransomware.scenarios.ehr_down.title'),
+      description: t('pricing.ransomware.scenarios.ehr_down.description'),
       iconColor: 'text-purple-500'
     },
     {
       icon: Heart,
-      title: 'Life Support Systems',
-      description: 'Protect critical medical devices and ensure continuous patient monitoring',
+      title: t('pricing.ransomware.scenarios.life_support.title'),
+      description: t('pricing.ransomware.scenarios.life_support.description'),
       iconColor: 'text-blue-500'
     },
     {
       icon: Lock,
-      title: 'Network Isolation',
-      description: 'Quickly isolate infections while preserving clinical operations',
+      title: t('pricing.ransomware.scenarios.isolation.title'),
+      description: t('pricing.ransomware.scenarios.isolation.description'),
       iconColor: 'text-orange-500'
     },
     {
       icon: Phone,
-      title: 'Communication',
-      description: 'Coordinate response across IT, clinical, and administrative teams',
+      title: t('pricing.ransomware.scenarios.communication.title'),
+      description: t('pricing.ransomware.scenarios.communication.description'),
       iconColor: 'text-pink-500'
     }
   ];
@@ -171,7 +143,7 @@ const RansomwarePricingPage: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
             >
-              Ransomware Resilience Suite
+              {t('pricing.ransomware.title')}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -179,8 +151,7 @@ const RansomwarePricingPage: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-600 dark:text-gray-300 mb-8"
             >
-              Protect patient care and operations from ransomware attacks with 
-              healthcare-specific defense, response, and recovery procedures.
+              {t('pricing.ransomware.subtitle')}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -189,13 +160,13 @@ const RansomwarePricingPage: React.FC = () => {
             >
               <Link to="/business-impact">
                 <Button size="lg" className="mr-4 mb-4">
-                  Start Impact Calculator
+                  {t('pricing.ransomware.start_calculator')}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/pricing">
                 <Button variant="outline" size="lg">
-                  View Pricing
+                  {t('pricing.ransomware.view_pricing')}
                 </Button>
               </Link>
             </motion.div>
@@ -239,10 +210,10 @@ const RansomwarePricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Healthcare-Specific Ransomware Defense
+              {t('pricing.ransomware.defense_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Prepared for the unique challenges of clinical environments
+              {t('pricing.ransomware.defense_subtitle')}
             </p>
           </div>
 
@@ -283,10 +254,10 @@ const RansomwarePricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Everything You Need for Ransomware Defense
+              {t('pricing.ransomware.everything_you_need_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Comprehensive tools to protect and recover from attacks
+              {t('pricing.ransomware.everything_you_need_subtitle')}
             </p>
           </div>
 
@@ -332,10 +303,10 @@ const RansomwarePricingPage: React.FC = () => {
                   <Calculator className="h-5 w-5 text-accent-500 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
-                      Personalized Pricing Available
+                      {t('pricing.ransomware.personalized_pricing_available')}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      Our pricing has been customized based on your organization's ransomware risk level.
+                      {t('pricing.ransomware.personalized_pricing_description')}
                     </p>
                   </div>
                 </div>
@@ -366,10 +337,10 @@ const RansomwarePricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Choose Your Ransomware Defense Plan
+              {t('pricing_common.choose_plan', { product: t('pricing.ransomware.title') })}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Start with free resources, upgrade as you need advanced protection
+              {t('pricing.ransomware.choose_plan_subtitle')}
             </p>
           </div>
 
@@ -390,7 +361,7 @@ const RansomwarePricingPage: React.FC = () => {
                   <Card className={`h-full flex flex-col border-2 ${tier.popular ? 'border-accent-500 dark:border-accent-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
                     {tier.popular && (
                       <div className="bg-accent-500 text-white text-center py-2">
-                        <span className="font-semibold">RECOMMENDED</span>
+                        <span className="font-semibold">{t('pricing_common.recommended')}</span>
                       </div>
                     )}
                     
@@ -408,12 +379,12 @@ const RansomwarePricingPage: React.FC = () => {
                             ${tier.price}
                           </span>
                           <span className="text-gray-600 dark:text-gray-300 ml-2">
-                            /month
+                            {t('pricing_common.per_month')}
                           </span>
                         </div>
-                        {tier.cta === 'Start Free Trial' && (
+                        {tier.cta === t('pricing.ransomware.tiers.professional.cta') && (
                           <p className="text-sm text-accent-600 dark:text-accent-400 mt-2">
-                            {tierKey === 'professional' ? '30-day free trial' : '14-day free trial'}
+                            {tierKey === 'professional' ? t('pricing_common.trial_30_days') : t('pricing_common.trial_14_days')}
                           </p>
                         )}
                       </div>
@@ -429,7 +400,7 @@ const RansomwarePricingPage: React.FC = () => {
 
                       {hasActiveTrial ? (
                         <Button className="w-full" size="lg" variant="outline" disabled>
-                          Trial Active
+                          {t('pricing_common.trial_active')}
                         </Button>
                       ) : canStartTrial ? (
                         <Button 
@@ -443,8 +414,8 @@ const RansomwarePricingPage: React.FC = () => {
                             } else {
                               showToast({
                                 type: 'info',
-                                title: 'Sign In Required',
-                                message: 'Please sign in or create an account to start your free trial.'
+                                title: t('pricing_common.sign_in_required'),
+                                message: t('pricing_common.sign_in_required_message')
                               });
                               navigate('/login');
                             }
@@ -453,7 +424,7 @@ const RansomwarePricingPage: React.FC = () => {
                           {tier.cta}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
-                      ) : tier.cta === 'Start Free Trial' && !isEligible('ransomware') ? (
+                      ) : tier.cta === t('pricing.ransomware.tiers.professional.cta') && !isEligible('ransomware') ? (
                         <Button 
                           className="w-full" 
                           size="lg" 
@@ -461,12 +432,12 @@ const RansomwarePricingPage: React.FC = () => {
                           onClick={() => {
                             showToast({
                               type: 'info',
-                              title: 'Trial Already Used',
-                              message: 'You have already used your free trial. Upgrade to continue.'
+                              title: t('pricing_common.trial_already_used'),
+                              message: t('pricing_common.trial_already_used_message')
                             });
                           }}
                         >
-                          Upgrade to Continue
+                          {t('pricing_common.upgrade_to_continue')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (
@@ -475,9 +446,9 @@ const RansomwarePricingPage: React.FC = () => {
                           size="lg" 
                           variant={tier.popular ? 'primary' : 'outline'}
                           onClick={() => {
-                            if (tier.cta === 'Get Started') {
+                            if (tier.cta === t('pricing.ransomware.tiers.essential.cta')) {
                               navigate('/ransomware');
-                            } else if (tier.cta === 'Contact Sales') {
+                            } else if (tier.cta === t('pricing.ransomware.tiers.enterprise.cta')) {
                               navigate('/contact');
                             }
                           }}
@@ -511,8 +482,8 @@ const RansomwarePricingPage: React.FC = () => {
           onTrialStarted={(_trialId) => {
             showToast({
               type: 'success',
-              title: 'Trial Started!',
-              message: 'Your free trial has begun. Enjoy full access!'
+              title: t('pricing_common.trial_started_success'),
+              message: t('pricing_common.trial_started_success_message')
             });
             navigate('/dashboard');
           }}
@@ -563,21 +534,21 @@ const RansomwarePricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Defend Against Ransomware?
+              {t('pricing_common.ready_ransomware')}
             </h2>
             <p className="text-xl text-accent-100 mb-8">
-              Start with our free business impact calculator. See what an attack would cost your organization.
+              {t('pricing_common.ready_ransomware_subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/business-impact">
                 <Button size="lg" className="!bg-white !text-accent-700 hover:!bg-gray-50">
-                  Run Impact Calculator
+                  {t('pricing.ransomware.run_calculator')}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/contact">
                 <Button variant="outline" size="lg" className="!bg-white/10 !border-white !text-white hover:!bg-white/20">
-                  Contact Sales
+                  {t('pricing_common.contact_sales')}
                 </Button>
               </Link>
             </div>

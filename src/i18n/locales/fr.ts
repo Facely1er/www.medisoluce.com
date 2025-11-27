@@ -109,7 +109,8 @@ const frTranslation = {
     "title": "Évaluation de la Conformité HIPAA",
     "subtitle": "Évaluez la conformité de votre organisation aux exigences HIPAA et obtenez des recommandations personnalisées.",
     "self_assessment": "Auto-évaluation HIPAA",
-    "description": "Répondez aux questions suivantes pour évaluer votre niveau actuel de conformité HIPAA."
+    "description": "Répondez aux questions suivantes pour évaluer votre niveau actuel de conformité HIPAA.",
+    "english_only_notice": "Note: Le contenu de l'évaluation est en anglais uniquement."
   },
   
   // Dependency Manager page
@@ -1337,6 +1338,510 @@ const frTranslation = {
     "loading_chunk_error": "Échec du chargement des ressources de l'application",
     "network_error": "Erreur de connexion réseau",
     "unknown_error": "Erreur inconnue survenue"
+  },
+
+  // Pricing pages
+  "pricing": {
+    "overview": {
+      "title": "Protection Complète de la Santé",
+      "subtitle": "Choisissez des suites individuelles ou économisez avec notre Forfait Complet. Commencez gratuitement.",
+      "personalized_pricing_title": "Tarification Personnalisée Basée sur Votre Évaluation",
+      "show_personalized": "Afficher Personnalisé",
+      "show_standard": "Afficher Standard",
+      "individual_suites_title": "Suites Individuelles",
+      "individual_suites_subtitle": "Concentrez-vous sur votre plus grande vulnérabilité d'abord",
+      "starting": "à partir de",
+      "view_pricing": "Voir les Tarifs {{name}}",
+      "best_value": "Meilleure Valeur",
+      "complete_bundle_title": "Forfait Complet",
+      "complete_bundle_subtitle": "Les trois suites ensemble. Protection complète, économies maximales.",
+      "view_bundle_pricing": "Voir les Tarifs du Forfait",
+      "find_plan_title": "Trouvez Votre Plan Parfait",
+      "find_plan_subtitle": "Obtenez des recommandations personnalisées basées sur votre rôle",
+      "solves": "Résout: {{painPoint}}",
+      "more_features": "+{{count}} de plus",
+      "view_recommended_plan": "Voir le Plan Recommandé",
+      "ready_title": "Prêt à Commencer?",
+      "ready_subtitle": "Commencez avec notre évaluation gratuite et voyez combien vous pouvez économiser",
+      "start_free_assessment": "Démarrer l'Évaluation Gratuite",
+      "calculate_savings": "Calculer Vos Économies",
+      "suites": {
+        "hipaa": {
+          "name": "Conformité HIPAA",
+          "description": "Protégez les données des patients et évitez les amendes HIPAA de 100K$ à 1,6M$"
+        },
+        "ransomware": {
+          "name": "Résilience aux Rançongiciels",
+          "description": "Protégez-vous contre les attaques de rançongiciels de 10,9M$ avec une défense spécifique à la santé"
+        },
+        "continuity": {
+          "name": "Continuité Opérationnelle",
+          "description": "Assurez la continuité des soins aux patients avec une résilience opérationnelle complète"
+        }
+      },
+      "role_recommendations": {
+        "executive": {
+          "title": "Pour les Cadres Dirigeants",
+          "subtitle": "Atténuation des risques financiers et continuité des activités",
+          "recommended": "Forfait Professionnel",
+          "price": "299 $/mois",
+          "savings": "Protégez 10,9M$ de pertes potentielles",
+          "pain_point": "Responsabilité financière et perturbation opérationnelle",
+          "features": ["Rapports ROI", "Analyse d'impact commercial", "Conformité prête pour le conseil", "Atténuation des risques financiers"]
+        },
+        "compliance": {
+          "title": "Pour les Responsables de Conformité",
+          "subtitle": "Préparation aux audits et conformité réglementaire",
+          "recommended": "Suite HIPAA Professionnelle",
+          "price": "149 $/mois",
+          "savings": "Prêt pour l'audit en 30 jours",
+          "pain_point": "Exigences réglementaires et préparation aux audits",
+          "features": ["Documentation HIPAA", "Suivi de formation", "Piste d'audit", "Rapports de conformité"]
+        },
+        "it": {
+          "title": "Pour les Directeurs TI / CISOs",
+          "subtitle": "Sécurité et résilience technique",
+          "recommended": "Forfait Entreprise",
+          "price": "999 $/mois",
+          "savings": "Sécurité de niveau entreprise",
+          "pain_point": "Infrastructure technique et menaces de sécurité",
+          "features": ["SLA de disponibilité 99,9%", "Surveillance SOC", "Réponse aux incidents", "Intégrations personnalisées"]
+        },
+        "operations": {
+          "title": "Pour les Gestionnaires d'Opérations",
+          "subtitle": "Continuité des activités et sécurité des patients",
+          "recommended": "Continuité Professionnelle",
+          "price": "149 $/mois",
+          "savings": "Réduire l'impact des pannes",
+          "pain_point": "Perturbations opérationnelles et soins aux patients",
+          "features": ["Plans de continuité", "Procédures manuelles", "Calendriers de tests", "Formation du personnel"]
+        },
+        "practice": {
+          "title": "Pour les Gestionnaires de Cabinet",
+          "subtitle": "Solution de conformité abordable",
+          "recommended": "HIPAA Essentiel",
+          "price": "49 $/mois",
+          "savings": "Pas besoin de consultants coûteux",
+          "pain_point": "Contraintes budgétaires et limitations de ressources",
+          "features": ["Évaluation gratuite", "Modèles faciles à utiliser", "Abordable", "Mise en œuvre rapide"]
+        }
+      }
+    },
+    "hipaa": {
+      "title": "Suite de Conformité HIPAA",
+      "subtitle": "Protégez les données des patients avec une évaluation de conformité complète, des modèles de politiques et des conseils d'implémentation.",
+      "start_free_assessment": "Démarrer l'Évaluation Gratuite",
+      "view_pricing": "Voir les Tarifs",
+      "everything_you_need_title": "Tout Ce Dont Vous Avez Besoin pour la Conformité HIPAA",
+      "everything_you_need_subtitle": "Outils complets pour protéger les données des patients et répondre aux exigences réglementaires",
+      "personalized_pricing_available": "Tarification Personnalisée Disponible",
+      "personalized_pricing_description": "Notre tarification a été personnalisée en fonction du profil de risque et des résultats d'évaluation de votre organisation.",
+      "stats": {
+        "max_penalties": {
+          "value": "Jusqu'à 1,9M$",
+          "label": "Amendes HIPAA Annuelles Maximales"
+        },
+        "safeguards": {
+          "value": "Multiples",
+          "label": "Safeguards Requis pour la Conformité HIPAA"
+        },
+        "training": {
+          "value": "Continue",
+          "label": "Conformité et Formation Requises"
+        }
+      },
+      "benefits": {
+        "assessment": {
+          "title": "Évaluation Complète",
+          "description": "Évaluation de conformité HIPAA en 10 questions couvrant les Règles de Confidentialité, de Sécurité et de Notification de Violation"
+        },
+        "protect_data": {
+          "title": "Protéger les Données des Patients",
+          "description": "Réduire le risque de violations et d'infractions HIPAA avec des contrôles de sécurité éprouvés"
+        },
+        "staff_training": {
+          "title": "Formation du Personnel",
+          "description": "Assurez-vous que votre équipe comprend les exigences HIPAA avec des modules de formation intégrés"
+        },
+        "templates": {
+          "title": "Modèles Prêts à l'Emploi",
+          "description": "Téléchargez des modèles de politiques, procédures et documentation conformes à la HIPAA"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essentiel",
+          "description": "Parfait pour les petits cabinets qui commencent avec la conformité HIPAA",
+          "price": "49 $",
+          "cta": "Démarrer l'Évaluation Gratuite",
+          "features": [
+            "Évaluation HIPAA complète en 10 questions",
+            "Modèle de Politique de Confidentialité HIPAA",
+            "Liste de Vérification de Réponse aux Violations",
+            "Contrat de Sous-traitant (BAA)",
+            "Formulaires d'Enregistrement de Formation",
+            "Outil d'Évaluation des Risques",
+            "Export PDF des rapports",
+            "Support par e-mail",
+            "Notation de conformité de base"
+          ]
+        },
+        "professional": {
+          "name": "Professionnel",
+          "description": "Pour les cabinets en croissance qui ont besoin de collaboration d'équipe",
+          "price": "149 $",
+          "cta": "Commencer l'Essai Gratuit",
+          "features": [
+            "Tout dans Essentiel",
+            "Collaboration d'équipe (5 utilisateurs)",
+            "Synchronisation cloud avec sauvegarde",
+            "Outils d'évaluation des risques avancés",
+            "Modèles de politiques personnalisés",
+            "Suivi de certification de conformité",
+            "Rapports et analyses avancés",
+            "Support prioritaire e-mail + chat",
+            "Mises à jour de conformité trimestrielles"
+          ]
+        },
+        "enterprise": {
+          "name": "Entreprise",
+          "description": "Pour les grandes organisations nécessitant une conformité HIPAA complète",
+          "price": "499 $",
+          "cta": "Contacter les Ventes",
+          "features": [
+            "Tout dans Professionnel",
+            "Utilisateurs illimités",
+            "Options de marque blanche",
+            "Consultant en conformité HIPAA dédié",
+            "Audits de conformité personnalisés",
+            "Révisions de conformité trimestrielles",
+            "SLA: 99,9% de disponibilité",
+            "Intégrations DSE personnalisées",
+            "Support téléphonique 24/7"
+          ]
+        }
+      }
+    },
+    "ransomware": {
+      "title": "Suite de Résilience aux Rançongiciels",
+      "subtitle": "Protégez les soins aux patients et les opérations contre les attaques de rançongiciels avec une défense, des procédures de réponse et de récupération spécifiques à la santé.",
+      "start_calculator": "Démarrer le Calculateur d'Impact",
+      "run_calculator": "Lancer le Calculateur d'Impact",
+      "view_pricing": "Voir les Tarifs",
+      "choose_plan_subtitle": "Commencez par des ressources gratuites, passez à un niveau supérieur selon vos besoins de protection avancée",
+      "personalized_pricing_available": "Tarification Personnalisée Disponible",
+      "personalized_pricing_description": "Notre tarification a été personnalisée en fonction du niveau de risque de rançongiciel de votre organisation.",
+      "defense_title": "Défense contre les Rançongiciels Spécifique à la Santé",
+      "defense_subtitle": "Préparé pour les défis uniques des environnements cliniques",
+      "everything_you_need_title": "Tout Ce Dont Vous Avez Besoin pour la Défense contre les Rançongiciels",
+      "everything_you_need_subtitle": "Outils complets pour protéger et récupérer des attaques",
+      "stats": {
+        "procedures": {
+          "value": "Éprouvé",
+          "label": "Procédures de Réponse Spécifiques à la Santé"
+        },
+        "containment": {
+          "value": "Multiples",
+          "label": "Méthodes de Confinement des Menaces Disponibles"
+        },
+        "response": {
+          "value": "Rapide",
+          "label": "Capacités de Réponse aux Menaces"
+        }
+      },
+      "benefits": {
+        "playbooks": {
+          "title": "Guides Spécifiques à la Santé",
+          "description": "Procédures de réponse conçues spécifiquement pour les environnements cliniques et la sécurité des patients"
+        },
+        "containment": {
+          "title": "Confinement Immédiat des Menaces",
+          "description": "Isolez les attaques rapidement pour minimiser l'impact sur les soins aux patients et les opérations"
+        },
+        "prevention": {
+          "title": "Contrôles de Prévention",
+          "description": "Listes de vérification de durcissement de sécurité intégrées pour réduire le risque de rançongiciels"
+        },
+        "recovery": {
+          "title": "Outils de Récupération",
+          "description": "Calculateurs et modèles pour estimer le temps de récupération et l'impact commercial"
+        }
+      },
+      "scenarios": {
+        "ehr_down": {
+          "title": "Système DSE Hors Service",
+          "description": "Maintenir les soins aux patients avec des procédures manuelles pendant la récupération des systèmes"
+        },
+        "life_support": {
+          "title": "Systèmes de Support Vital",
+          "description": "Protéger les dispositifs médicaux critiques et assurer la surveillance continue des patients"
+        },
+        "isolation": {
+          "title": "Isolement du Réseau",
+          "description": "Isolez rapidement les infections tout en préservant les opérations cliniques"
+        },
+        "communication": {
+          "title": "Communication",
+          "description": "Coordonner la réponse entre les équipes TI, cliniques et administratives"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essentiel",
+          "description": "Défense et réponse aux rançongiciels en santé - fondamentaux",
+          "price": "49 $",
+          "cta": "Commencer",
+          "features": [
+            "Guide de Réponse aux Rançongiciels",
+            "Calculateur d'Impact Commercial",
+            "Procédures de Réponse aux Incidents",
+            "Liste de Vérification de Confinement des Menaces",
+            "Guide des Procédures Manuelles",
+            "Outils de Durcissement de Sécurité",
+            "Modèles de Vérification de Sauvegarde",
+            "Support par e-mail",
+            "Export PDF des guides"
+          ]
+        },
+        "professional": {
+          "name": "Professionnel",
+          "description": "Protection avancée contre les menaces pour les organisations de santé en croissance",
+          "price": "149 $",
+          "cta": "Commencer l'Essai Gratuit",
+          "features": [
+            "Tout dans Essentiel",
+            "Outils Avancés de Chasse aux Menaces",
+            "Modèles d'Analyse Médico-légale",
+            "Constructeur de Guides Personnalisés",
+            "Outils de Coordination d'Équipe",
+            "Ligne d'Assistance Réponse aux Incidents 24/7",
+            "Mises à Jour Mensuelles du Renseignement sur les Menaces",
+            "Support prioritaire e-mail + chat",
+            "Calculateurs de Récupération Avancés"
+          ]
+        },
+        "enterprise": {
+          "name": "Entreprise",
+          "description": "Résilience aux rançongiciels de niveau entreprise avec support dédié",
+          "price": "499 $",
+          "cta": "Contacter les Ventes",
+          "features": [
+            "Tout dans Professionnel",
+            "Tableau de Bord de Surveillance SOC 24/7",
+            "Équipe de Réponse aux Incidents Personnalisée",
+            "Services d'Analyse Médico-légale",
+            "Tests de Simulation de Rançongiciels",
+            "Tests de Pénétration Annuels",
+            "Durcissement de Sécurité Personnalisé",
+            "Automatisation de Notification de Violation",
+            "Consultant en Sécurité Dédié"
+          ]
+        }
+      }
+    },
+    "continuity": {
+      "title": "Suite de Continuité Opérationnelle",
+      "subtitle": "Assurez la continuité des soins aux patients pendant les pannes système, catastrophes et perturbations avec des outils de planification de continuité complets.",
+      "create_plan": "Créer un Plan de Continuité",
+      "view_pricing": "Voir les Tarifs",
+      "prepared_title": "Préparé pour Toute Perturbation",
+      "prepared_subtitle": "Plans de continuité pour les scénarios opérationnels de santé les plus courants",
+      "everything_you_need_title": "Tout Ce Dont Vous Avez Besoin pour la Planification de Continuité",
+      "everything_you_need_subtitle": "Outils complets pour assurer la continuité des opérations pendant les perturbations",
+      "stats": {
+        "ehr_availability": {
+          "value": "Critique",
+          "label": "Exigences de Disponibilité DSE"
+        },
+        "disruption": {
+          "value": "Significatif",
+          "label": "Impact de Perturbation Opérationnelle"
+        },
+        "planning": {
+          "value": "Essentiel",
+          "label": "Planification de Continuité pour les Soins aux Patients"
+        }
+      },
+      "benefits": {
+        "mapping": {
+          "title": "Cartographie des Dépendances Technologiques",
+          "description": "Cartographiez les systèmes critiques et leurs interdépendances pour identifier les vulnérabilités"
+        },
+        "templates": {
+          "title": "Modèles de Plans Complets",
+          "description": "Plans de continuité prêts à l'emploi pour divers scénarios et menaces"
+        },
+        "training": {
+          "title": "Formation et Tests du Personnel",
+          "description": "Assurez-vous que votre équipe sait quoi faire lorsque les systèmes échouent"
+        },
+        "patient_care": {
+          "title": "Continuité des Soins aux Patients",
+          "description": "Maintenir la sécurité des patients pendant les perturbations avec des procédures manuelles"
+        }
+      },
+      "scenarios": {
+        "ehr_failure": {
+          "title": "Panne du Système DSE",
+          "description": "Continuer les soins aux patients avec documentation manuelle et dossiers papier"
+        },
+        "power_outage": {
+          "title": "Panne d'Électricité",
+          "description": "Procédures d'alimentation d'urgence pour maintenir les opérations critiques"
+        },
+        "network_disruption": {
+          "title": "Perturbation du Réseau",
+          "description": "Segmentation réseau isolée tout en maintenant l'accès aux patients"
+        },
+        "vendor_down": {
+          "title": "Système Fournisseur Hors Service",
+          "description": "Flux de travail alternatifs lorsque les fournisseurs critiques ne sont pas disponibles"
+        }
+      },
+      "tiers": {
+        "essential": {
+          "name": "Essentiel",
+          "description": "Planification de continuité de base pour les petits cabinets",
+          "price": "49 $",
+          "cta": "Commencer",
+          "features": [
+            "Modèles de Plans de Continuité",
+            "Cartographie des Dépendances Technologiques",
+            "Procédures de Panne DSE",
+            "Modèle d'Évaluation des Risques Fournisseurs",
+            "Guide de Stratégie de Sauvegarde",
+            "Calculateur RTO/RPO",
+            "Procédures de Récupération de Base",
+            "Support par e-mail",
+            "Export PDF des plans"
+          ]
+        },
+        "professional": {
+          "name": "Professionnel",
+          "description": "Planification avancée pour les organisations de santé en croissance",
+          "price": "149 $",
+          "cta": "Commencer l'Essai Gratuit",
+          "features": [
+            "Tout dans Essentiel",
+            "Cartographie Avancée des Dépendances",
+            "Plans de Continuité Personnalisés",
+            "Calendriers de Tests Automatisés",
+            "Gestion des Flux de Travail d'Équipe",
+            "Procédures de Récupération Personnalisées",
+            "Analyse d'Impact Avancée",
+            "Support prioritaire e-mail + chat",
+            "Contrôle de version des plans"
+          ]
+        },
+        "enterprise": {
+          "name": "Entreprise",
+          "description": "Planification de continuité de niveau entreprise avec support dédié",
+          "price": "499 $",
+          "cta": "Contacter les Ventes",
+          "features": [
+            "Tout dans Professionnel",
+            "Plans et Emplacements Illimités",
+            "Planification de Scénarios Personnalisés",
+            "Tests Automatisés de Plans",
+            "Consultant BC Dédié",
+            "SLA de Récupération après Sinistre",
+            "Intégrations Personnalisées",
+            "Support 24/7",
+            "Exercices de Table Ronde Annuels"
+          ]
+        }
+      }
+    }
+  },
+
+  // Trial components
+  "trial": {
+    "banner": {
+      "expired": "Votre essai a expiré",
+      "expires_tomorrow": "Votre essai expire demain",
+      "expires_in_days": "Votre essai expire dans {{days}} jours",
+      "days_remaining": "{{days}} jours restants dans votre essai",
+      "upgrade_now": "Mettre à Niveau Maintenant",
+      "add_payment_method": "Ajouter un Moyen de Paiement",
+      "view_plans": "Voir les Plans",
+      "payment_method_on_file": "Moyen de paiement enregistré",
+      "add_payment_description": "Ajoutez un moyen de paiement pour convertir automatiquement en abonnement payant à la fin de votre essai.",
+      "tier_trial": "Essai {{tier}}"
+    },
+    "modal": {
+      "title": "Commencer Votre Essai Gratuit",
+      "subtitle": "Aidez-nous à personnaliser votre expérience en répondant à quelques questions rapides.",
+      "step_role": "Quel est votre rôle principal?",
+      "step_use_case": "Quel est votre cas d'utilisation principal?",
+      "step_organization": "Type d'Organisation (Optionnel)",
+      "select_organization": "Sélectionner le type d'organisation...",
+      "back": "Retour",
+      "start_trial": "Commencer l'Essai Gratuit",
+      "starting_trial": "Démarrage de l'Essai...",
+      "missing_information": "Informations Manquantes",
+      "missing_information_message": "Veuillez remplir tous les champs pour démarrer votre essai personnalisé.",
+      "trial_not_available": "Essai Non Disponible",
+      "trial_not_available_message": "Vous avez déjà utilisé votre essai gratuit pour ce produit.",
+      "trial_started": "Essai Démarré!",
+      "trial_started_message_essential": "Votre essai {{productName}} a commencé. Profitez d'un accès complet pendant 14 jours.",
+      "trial_started_message": "Votre essai {{productName}} a commencé. Profitez d'un accès complet pendant 30 jours.",
+      "failed_to_start": "Échec du Démarrage de l'Essai",
+      "terms_title": "Conditions d'Essai Gratuit:",
+      "terms_essential": "14 jours d'accès complet. Se convertit automatiquement en abonnement payant sauf annulation. Un essai par utilisateur par produit.",
+      "terms_professional": "30 jours d'accès complet. Moyen de paiement requis. Se convertit automatiquement en abonnement payant sauf annulation. Un essai par utilisateur par produit.",
+      "roles": {
+        "compliance_officer": "Responsable de Conformité",
+        "it_director": "Directeur TI / CISO",
+        "operations_manager": "Gestionnaire d'Opérations",
+        "practice_manager": "Gestionnaire de Cabinet",
+        "executive": "Cadre Dirigeant",
+        "other": "Autre"
+      },
+      "use_cases": {
+        "audit_readiness": "Préparer un Audit de Conformité",
+        "ransomware_protection": "Protection et Réponse aux Rançongiciels",
+        "hipaa_compliance": "Gestion de la Conformité HIPAA",
+        "business_continuity": "Planification de la Continuité des Activités",
+        "security_assessment": "Évaluation de Sécurité",
+        "general_exploration": "Exploration Générale de la Plateforme"
+      },
+      "organization_types": {
+        "hospital": "Hôpital",
+        "clinic": "Clinique",
+        "practice": "Cabinet Privé",
+        "pharmacy": "Pharmacie",
+        "lab": "Laboratoire",
+        "payer": "Assureur/Payeur",
+        "vendor": "Fournisseur de Santé",
+        "other": "Autre"
+      }
+    }
+  },
+
+  // Pricing page common sections
+  "pricing_common": {
+    "choose_plan": "Choisissez Votre Plan {{product}}",
+    "choose_plan_subtitle": "Commencez par l'évaluation gratuite, puis passez au plan qui correspond à vos besoins",
+    "recommended": "RECOMMANDÉ",
+    "per_month": "/mois",
+    "trial_active": "Essai Actif",
+    "upgrade_to_continue": "Mettre à Niveau pour Continuer",
+    "trial_14_days": "Essai gratuit de 14 jours",
+    "trial_30_days": "Essai gratuit de 30 jours",
+    "sign_in_required": "Connexion Requise",
+    "sign_in_required_message": "Veuillez vous connecter ou créer un compte pour démarrer votre essai gratuit.",
+    "trial_already_used": "Essai Déjà Utilisé",
+    "trial_already_used_message": "Vous avez déjà utilisé votre essai gratuit. Mettez à niveau pour continuer.",
+    "ready_to_protect": "Prêt à Protéger les Données des Patients?",
+    "ready_to_protect_subtitle": "Commencez votre évaluation HIPAA gratuite aujourd'hui. Aucune carte de crédit requise.",
+    "ready_ransomware": "Prêt à Défendre contre les Rançongiciels?",
+    "ready_ransomware_subtitle": "Commencez votre calculateur d'impact gratuit aujourd'hui. Aucune carte de crédit requise.",
+    "ready_continuity": "Prêt à Assurer la Continuité des Activités?",
+    "ready_continuity_subtitle": "Commencez à créer votre plan de continuité aujourd'hui. Aucune carte de crédit requise.",
+    "start_free_assessment": "Démarrer l'Évaluation Gratuite",
+    "contact_sales": "Contacter les Ventes",
+    "trial_started_success": "Essai Démarré!",
+    "trial_started_success_message": "Votre essai gratuit a commencé. Profitez d'un accès complet!"
   }
 };
 

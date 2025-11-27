@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -14,6 +15,7 @@ import TrialBanner from '../components/trial/TrialBanner';
 import { useToast } from '../components/ui/Toast';
 
 const ContinuityPricingPage: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -33,113 +35,83 @@ const ContinuityPricingPage: React.FC = () => {
 
   const tiers = [
     {
-      name: 'Essential',
+      name: t('pricing.continuity.tiers.essential.name'),
       price: 49,
-      description: 'Basic continuity planning for small practices',
-      features: [
-        'Continuity Plan Templates',
-        'Technology Dependency Mapping',
-        'EHR Downtime Procedures',
-        'Vendor Risk Assessment Template',
-        'Backup Strategy Guide',
-        'RTO/RPO Calculator',
-        'Basic Recovery Procedures',
-        'Email support',
-        'PDF export of plans'
-      ],
-      cta: 'Get Started',
+      description: t('pricing.continuity.tiers.essential.description'),
+      features: t('pricing.continuity.tiers.essential.features', { returnObjects: true }) as string[],
+      cta: t('pricing.continuity.tiers.essential.cta'),
       popular: false
     },
     {
-      name: 'Professional',
+      name: t('pricing.continuity.tiers.professional.name'),
       price: 149,
-      description: 'Advanced planning for growing healthcare organizations',
-      features: [
-        'Everything in Essential',
-        'Advanced Dependency Mapping',
-        'Custom Continuity Plans',
-        'Automated Testing Schedules',
-        'Team Workflow Management',
-        'Custom Recovery Procedures',
-        'Advanced Impact Analysis',
-        'Priority email + chat support',
-        'Plan version control'
-      ],
-      cta: 'Start Free Trial',
+      description: t('pricing.continuity.tiers.professional.description'),
+      features: t('pricing.continuity.tiers.professional.features', { returnObjects: true }) as string[],
+      cta: t('pricing.continuity.tiers.professional.cta'),
       popular: true
     },
     {
-      name: 'Enterprise',
+      name: t('pricing.continuity.tiers.enterprise.name'),
       price: 499,
-      description: 'Enterprise-grade continuity planning with dedicated support',
-      features: [
-        'Everything in Professional',
-        'Unlimited Plans & Locations',
-        'Custom Scenario Planning',
-        'Automated Plan Testing',
-        'Dedicated BC Consultant',
-        'Disaster Recovery SLA',
-        'Custom Integrations',
-        '24/7 support',
-        'Annual Tabletop Exercises'
-      ],
-      cta: 'Contact Sales',
+      description: t('pricing.continuity.tiers.enterprise.description'),
+      features: t('pricing.continuity.tiers.enterprise.features', { returnObjects: true }) as string[],
+      cta: t('pricing.continuity.tiers.enterprise.cta'),
       popular: false
     }
   ];
 
   const stats = [
-    { value: 'Critical', label: 'EHR Availability Requirements', icon: Clock },
-    { value: 'Significant', label: 'Operational Disruption Impact', icon: Activity },
-    { value: 'Essential', label: 'Continuity Planning for Patient Care', icon: Shield }
+    { value: t('pricing.continuity.stats.ehr_availability.value'), label: t('pricing.continuity.stats.ehr_availability.label'), icon: Clock },
+    { value: t('pricing.continuity.stats.disruption.value'), label: t('pricing.continuity.stats.disruption.label'), icon: Activity },
+    { value: t('pricing.continuity.stats.planning.value'), label: t('pricing.continuity.stats.planning.label'), icon: Shield }
   ];
 
   const benefits = [
     {
       icon: Server,
-      title: 'Technology Dependency Mapping',
-      description: 'Map critical systems and their interdependencies to identify vulnerabilities'
+      title: t('pricing.continuity.benefits.mapping.title'),
+      description: t('pricing.continuity.benefits.mapping.description')
     },
     {
       icon: FileText,
-      title: 'Comprehensive Plan Templates',
-      description: 'Ready-to-use continuity plans for various scenarios and threats'
+      title: t('pricing.continuity.benefits.templates.title'),
+      description: t('pricing.continuity.benefits.templates.description')
     },
     {
       icon: Users,
-      title: 'Staff Training & Testing',
-      description: 'Ensure your team knows what to do when systems fail'
+      title: t('pricing.continuity.benefits.training.title'),
+      description: t('pricing.continuity.benefits.training.description')
     },
     {
       icon: Shield,
-      title: 'Patient Care Continuity',
-      description: 'Maintain patient safety during disruptions with manual procedures'
+      title: t('pricing.continuity.benefits.patient_care.title'),
+      description: t('pricing.continuity.benefits.patient_care.description')
     }
   ];
 
   const scenarios = [
     {
       icon: Building2,
-      title: 'EHR System Failure',
-      description: 'Continue patient care with manual documentation and paper charts',
+      title: t('pricing.continuity.scenarios.ehr_failure.title'),
+      description: t('pricing.continuity.scenarios.ehr_failure.description'),
       iconColor: 'text-purple-500'
     },
     {
       icon: Zap,
-      title: 'Power Outage',
-      description: 'Emergency power procedures to maintain critical operations',
+      title: t('pricing.continuity.scenarios.power_outage.title'),
+      description: t('pricing.continuity.scenarios.power_outage.description'),
       iconColor: 'text-yellow-500'
     },
     {
       icon: Network,
-      title: 'Network Disruption',
-      description: 'Isolated network segmentation while maintaining patient access',
+      title: t('pricing.continuity.scenarios.network_disruption.title'),
+      description: t('pricing.continuity.scenarios.network_disruption.description'),
       iconColor: 'text-blue-500'
     },
     {
       icon: Wrench,
-      title: 'Vendor System Down',
-      description: 'Alternative workflows when critical vendors are unavailable',
+      title: t('pricing.continuity.scenarios.vendor_down.title'),
+      description: t('pricing.continuity.scenarios.vendor_down.description'),
       iconColor: 'text-orange-500'
     }
   ];
@@ -366,10 +338,10 @@ const ContinuityPricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Choose Your Continuity Plan
+              {t('pricing_common.choose_plan', { product: t('pricing.continuity.title') })}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              From basic templates to enterprise-grade planning
+              {t('pricing.continuity.choose_plan_subtitle')}
             </p>
           </div>
 
@@ -390,7 +362,7 @@ const ContinuityPricingPage: React.FC = () => {
                   <Card className={`h-full flex flex-col border-2 ${tier.popular ? 'border-success-500 dark:border-success-600 shadow-lg' : 'border-gray-200 dark:border-gray-700'}`}>
                     {tier.popular && (
                       <div className="bg-success-500 text-white text-center py-2">
-                        <span className="font-semibold">RECOMMENDED</span>
+                        <span className="font-semibold">{t('pricing_common.recommended')}</span>
                       </div>
                     )}
                     
@@ -408,12 +380,12 @@ const ContinuityPricingPage: React.FC = () => {
                             ${tier.price}
                           </span>
                           <span className="text-gray-600 dark:text-gray-300 ml-2">
-                            /month
+                            {t('pricing_common.per_month')}
                           </span>
                         </div>
-                        {tier.cta === 'Start Free Trial' && (
+                        {tier.cta === t('pricing.continuity.tiers.professional.cta') && (
                           <p className="text-sm text-success-600 dark:text-success-400 mt-2">
-                            {tierKey === 'professional' ? '30-day free trial' : '14-day free trial'}
+                            {tierKey === 'professional' ? t('pricing_common.trial_30_days') : t('pricing_common.trial_14_days')}
                           </p>
                         )}
                       </div>
@@ -429,7 +401,7 @@ const ContinuityPricingPage: React.FC = () => {
 
                       {hasActiveTrial ? (
                         <Button className="w-full" size="lg" variant="outline" disabled>
-                          Trial Active
+                          {t('pricing_common.trial_active')}
                         </Button>
                       ) : canStartTrial ? (
                         <Button 
@@ -443,8 +415,8 @@ const ContinuityPricingPage: React.FC = () => {
                             } else {
                               showToast({
                                 type: 'info',
-                                title: 'Sign In Required',
-                                message: 'Please sign in or create an account to start your free trial.'
+                                title: t('pricing_common.sign_in_required'),
+                                message: t('pricing_common.sign_in_required_message')
                               });
                               navigate('/login');
                             }
@@ -453,7 +425,7 @@ const ContinuityPricingPage: React.FC = () => {
                           {tier.cta}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
-                      ) : tier.cta === 'Start Free Trial' && !isEligible('continuity') ? (
+                      ) : tier.cta === t('pricing.continuity.tiers.professional.cta') && !isEligible('continuity') ? (
                         <Button 
                           className="w-full" 
                           size="lg" 
@@ -461,12 +433,12 @@ const ContinuityPricingPage: React.FC = () => {
                           onClick={() => {
                             showToast({
                               type: 'info',
-                              title: 'Trial Already Used',
-                              message: 'You have already used your free trial. Upgrade to continue.'
+                              title: t('pricing_common.trial_already_used'),
+                              message: t('pricing_common.trial_already_used_message')
                             });
                           }}
                         >
-                          Upgrade to Continue
+                          {t('pricing_common.upgrade_to_continue')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (
@@ -475,9 +447,9 @@ const ContinuityPricingPage: React.FC = () => {
                           size="lg" 
                           variant={tier.popular ? 'default' : 'outline'}
                           onClick={() => {
-                            if (tier.cta === 'Get Started') {
+                            if (tier.cta === t('pricing.continuity.tiers.essential.cta')) {
                               navigate('/continuity');
-                            } else if (tier.cta === 'Contact Sales') {
+                            } else if (tier.cta === t('pricing.continuity.tiers.enterprise.cta')) {
                               navigate('/contact');
                             }
                           }}
@@ -511,8 +483,8 @@ const ContinuityPricingPage: React.FC = () => {
           onTrialStarted={(trialId) => {
             showToast({
               type: 'success',
-              title: 'Trial Started!',
-              message: 'Your free trial has begun. Enjoy full access!'
+              title: t('pricing_common.trial_started_success'),
+              message: t('pricing_common.trial_started_success_message')
             });
             navigate('/dashboard');
           }}
@@ -563,21 +535,21 @@ const ContinuityPricingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Ensure Business Continuity?
+              {t('pricing_common.ready_continuity')}
             </h2>
             <p className="text-xl text-success-100 mb-8">
-              Start building your continuity plans today. Start with a free template.
+              {t('pricing_common.ready_continuity_subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/continuity">
                 <Button size="lg" className="!bg-white !text-success-700 hover:!bg-gray-50">
-                  Create Continuity Plan
+                  {t('pricing.continuity.create_plan')}
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
               <Link to="/contact">
                 <Button variant="outline" size="lg" className="!bg-white/10 !border-white !text-white hover:!bg-white/20">
-                  Contact Sales
+                  {t('pricing_common.contact_sales')}
                 </Button>
               </Link>
             </div>

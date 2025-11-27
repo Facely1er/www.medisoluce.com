@@ -6,6 +6,7 @@
 import React from 'react';
 import { AlertTriangle, Clock, CreditCard, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
 import { trialService, type TrialStatus } from '../../services/trialService';
 
@@ -15,6 +16,8 @@ interface TrialBannerProps {
 }
 
 const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
+  const { t } = useTranslation();
+  
   const getStatusColor = () => {
     if (trial.daysRemaining <= 1) return 'accent';
     if (trial.daysRemaining <= 3) return 'warning';
@@ -23,22 +26,22 @@ const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
 
   const getStatusMessage = () => {
     if (trial.daysRemaining <= 0) {
-      return 'Your trial has expired';
+      return t('trial.banner.expired');
     }
     if (trial.daysRemaining === 1) {
-      return 'Your trial expires tomorrow';
+      return t('trial.banner.expires_tomorrow');
     }
     if (trial.daysRemaining <= 3) {
-      return `Your trial expires in ${trial.daysRemaining} days`;
+      return t('trial.banner.expires_in_days', { days: trial.daysRemaining });
     }
-    return `${trial.daysRemaining} days remaining in your trial`;
+    return t('trial.banner.days_remaining', { days: trial.daysRemaining });
   };
 
   const getActionButton = () => {
     if (trial.daysRemaining <= 0) {
       return (
         <Button as={Link} to={`/pricing/${trial.productId}`}>
-          Upgrade Now
+          {t('trial.banner.upgrade_now')}
         </Button>
       );
     }
@@ -46,14 +49,14 @@ const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
     if (!trial.paymentMethodOnFile && trial.paymentMethodRequired) {
       return (
         <Button as={Link} to={`/pricing/${trial.productId}?add-payment=true`}>
-          Add Payment Method
+          {t('trial.banner.add_payment_method')}
         </Button>
       );
     }
 
     return (
       <Button variant="outline" as={Link} to={`/pricing/${trial.productId}`}>
-        View Plans
+        {t('trial.banner.view_plans')}
       </Button>
     );
   };
@@ -82,7 +85,7 @@ const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
           
           <div className="flex-1">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
-              {trial.productName} - {trial.tier.charAt(0).toUpperCase() + trial.tier.slice(1)} Trial
+              {trial.productName} - {t('trial.banner.tier_trial', { tier: trial.tier.charAt(0).toUpperCase() + trial.tier.slice(1) })}
             </h3>
             <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
               {getStatusMessage()}
@@ -90,7 +93,7 @@ const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
             
             {trial.paymentMethodRequired && !trial.paymentMethodOnFile && trial.daysRemaining > 0 && (
               <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
-                Add a payment method to automatically convert to a paid subscription when your trial ends.
+                {t('trial.banner.add_payment_description')}
               </p>
             )}
 
@@ -100,7 +103,7 @@ const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
                 {trial.paymentMethodOnFile && (
                   <div className="flex items-center space-x-1 text-success-600 dark:text-success-400">
                     <CheckCircle className="h-4 w-4" />
-                    <span className="text-sm">Payment method on file</span>
+                    <span className="text-sm">{t('trial.banner.payment_method_on_file')}</span>
                   </div>
                 )}
               </div>

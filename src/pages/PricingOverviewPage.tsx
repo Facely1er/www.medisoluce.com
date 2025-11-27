@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEOHead from '../components/ui/SEOHead';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -8,6 +9,7 @@ import { ShieldCheck, Lock, FileText, CheckCircle, Star, ArrowRight, Users, Brie
 import { calculateDynamicPricing, getPricingFactorsFromStorage, type CalculatedPricing } from '../utils/pricingCalculator';
 
 const PricingOverviewPage: React.FC = () => {
+  const { t } = useTranslation();
   const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
   const [showStandardPricing, setShowStandardPricing] = useState(false);
 
@@ -20,77 +22,77 @@ const PricingOverviewPage: React.FC = () => {
 
   const roleBasedRecommendations = {
     executive: {
-      title: 'For C-Level Executives',
-      subtitle: 'Financial risk mitigation and business continuity',
-      recommended: 'Professional Bundle',
-      price: '$299/month',
-      savings: 'Protect $10.9M in potential losses',
-      features: ['ROI reporting', 'Business impact analysis', 'Board-ready compliance', 'Financial risk mitigation'],
-      painPoint: 'Financial liability and operational disruption',
+      title: t('pricing.overview.role_recommendations.executive.title'),
+      subtitle: t('pricing.overview.role_recommendations.executive.subtitle'),
+      recommended: t('pricing.overview.role_recommendations.executive.recommended'),
+      price: t('pricing.overview.role_recommendations.executive.price'),
+      savings: t('pricing.overview.role_recommendations.executive.savings'),
+      features: t('pricing.overview.role_recommendations.executive.features', { returnObjects: true }) as string[],
+      painPoint: t('pricing.overview.role_recommendations.executive.pain_point'),
       icon: <Briefcase className="h-12 w-12" />
     },
     compliance: {
-      title: 'For Compliance Officers',
-      subtitle: 'Audit readiness and regulatory compliance',
-      recommended: 'Professional HIPAA Suite',
-      price: '$149/month',
-      savings: 'Audit-ready in 30 days',
-      features: ['HIPAA documentation', 'Training tracking', 'Audit trail', 'Compliance reporting'],
-      painPoint: 'Regulatory requirements and audit readiness',
+      title: t('pricing.overview.role_recommendations.compliance.title'),
+      subtitle: t('pricing.overview.role_recommendations.compliance.subtitle'),
+      recommended: t('pricing.overview.role_recommendations.compliance.recommended'),
+      price: t('pricing.overview.role_recommendations.compliance.price'),
+      savings: t('pricing.overview.role_recommendations.compliance.savings'),
+      features: t('pricing.overview.role_recommendations.compliance.features', { returnObjects: true }) as string[],
+      painPoint: t('pricing.overview.role_recommendations.compliance.pain_point'),
       icon: <Shield className="h-12 w-12" />
     },
     it: {
-      title: 'For IT Directors / CISOs',
-      subtitle: 'Security and technical resilience',
-      recommended: 'Enterprise Bundle',
-      price: '$999/month',
-      savings: 'Enterprise-grade security',
-      features: ['99.9% uptime SLA', 'SOC monitoring', 'Incident response', 'Custom integrations'],
-      painPoint: 'Technical infrastructure and security threats',
+      title: t('pricing.overview.role_recommendations.it.title'),
+      subtitle: t('pricing.overview.role_recommendations.it.subtitle'),
+      recommended: t('pricing.overview.role_recommendations.it.recommended'),
+      price: t('pricing.overview.role_recommendations.it.price'),
+      savings: t('pricing.overview.role_recommendations.it.savings'),
+      features: t('pricing.overview.role_recommendations.it.features', { returnObjects: true }) as string[],
+      painPoint: t('pricing.overview.role_recommendations.it.pain_point'),
       icon: <Wrench className="h-12 w-12" />
     },
     operations: {
-      title: 'For Operations Managers',
-      subtitle: 'Business continuity and patient safety',
-      recommended: 'Professional Continuity',
-      price: '$149/month',
-      savings: 'Reduce downtime impact',
-      features: ['Continuity plans', 'Manual procedures', 'Testing schedules', 'Staff training'],
-      painPoint: 'Operational disruptions and patient care',
+      title: t('pricing.overview.role_recommendations.operations.title'),
+      subtitle: t('pricing.overview.role_recommendations.operations.subtitle'),
+      recommended: t('pricing.overview.role_recommendations.operations.recommended'),
+      price: t('pricing.overview.role_recommendations.operations.price'),
+      savings: t('pricing.overview.role_recommendations.operations.savings'),
+      features: t('pricing.overview.role_recommendations.operations.features', { returnObjects: true }) as string[],
+      painPoint: t('pricing.overview.role_recommendations.operations.pain_point'),
       icon: <FileText className="h-12 w-12" />
     },
     practice: {
-      title: 'For Practice Managers',
-      subtitle: 'Affordable compliance solution',
-      recommended: 'Essential HIPAA',
-      price: '$49/month',
-      savings: 'No expensive consultants needed',
-      features: ['Free assessment', 'Easy-to-use templates', 'Budget-friendly', 'Quick implementation'],
-      painPoint: 'Budget constraints and resource limitations',
+      title: t('pricing.overview.role_recommendations.practice.title'),
+      subtitle: t('pricing.overview.role_recommendations.practice.subtitle'),
+      recommended: t('pricing.overview.role_recommendations.practice.recommended'),
+      price: t('pricing.overview.role_recommendations.practice.price'),
+      savings: t('pricing.overview.role_recommendations.practice.savings'),
+      features: t('pricing.overview.role_recommendations.practice.features', { returnObjects: true }) as string[],
+      painPoint: t('pricing.overview.role_recommendations.practice.pain_point'),
       icon: <Users className="h-12 w-12" />
     }
   };
 
   const suites = [
     {
-      name: 'HIPAA Compliance',
-      description: 'Protect patient data and avoid $100K-$1.6M HIPAA fines',
+      name: t('pricing.overview.suites.hipaa.name'),
+      description: t('pricing.overview.suites.hipaa.description'),
       icon: <ShieldCheck className="h-8 w-8 text-primary-500" />,
       link: '/pricing/hipaa',
       color: 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800',
       startingPrice: '$49/month'
     },
     {
-      name: 'Ransomware Resilience',
-      description: 'Protect against $10.9M ransomware attacks with healthcare-specific defense',
+      name: t('pricing.overview.suites.ransomware.name'),
+      description: t('pricing.overview.suites.ransomware.description'),
       icon: <Lock className="h-8 w-8 text-accent-500" />,
       link: '/pricing/ransomware',
       color: 'bg-accent-50 dark:bg-accent-900/20 border-accent-200 dark:border-accent-800',
       startingPrice: '$49/month'
     },
     {
-      name: 'Business Continuity',
-      description: 'Ensure patient care continues with comprehensive operational resilience',
+      name: t('pricing.overview.suites.continuity.name'),
+      description: t('pricing.overview.suites.continuity.description'),
       icon: <FileText className="h-8 w-8 text-success-500" />,
       link: '/pricing/continuity',
       color: 'bg-success-50 dark:bg-success-900/20 border-success-200 dark:border-success-800',
@@ -115,7 +117,7 @@ const PricingOverviewPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6"
             >
-              Comprehensive Healthcare Protection
+              {t('pricing.overview.title')}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -123,7 +125,7 @@ const PricingOverviewPage: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="text-xl text-gray-600 dark:text-gray-300 mb-8"
             >
-              Choose individual suites or save with our Complete Bundle. Start free.
+              {t('pricing.overview.subtitle')}
             </motion.p>
           </div>
         </div>
@@ -144,13 +146,13 @@ const PricingOverviewPage: React.FC = () => {
                   <div className="flex-grow">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                        Personalized Pricing Based on Your Assessment
+                        {t('pricing.overview.personalized_pricing_title')}
                       </h3>
                       <button
                         onClick={() => setShowStandardPricing(!showStandardPricing)}
                         className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
                       >
-                        {showStandardPricing ? 'Show Personalized' : 'Show Standard'}
+                        {showStandardPricing ? t('pricing.overview.show_personalized') : t('pricing.overview.show_standard')}
                       </button>
                     </div>
                     <p className="text-gray-600 dark:text-gray-300 mb-4">
@@ -177,10 +179,10 @@ const PricingOverviewPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Individual Suites
+              {t('pricing.overview.individual_suites_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Focus on your biggest vulnerability first
+              {t('pricing.overview.individual_suites_subtitle')}
             </p>
           </div>
 
@@ -201,13 +203,13 @@ const PricingOverviewPage: React.FC = () => {
                       <span className="text-3xl font-bold text-gray-900 dark:text-white">
                         {suite.startingPrice}
                       </span>
-                      <span className="text-gray-600 dark:text-gray-300 ml-2">starting</span>
+                      <span className="text-gray-600 dark:text-gray-300 ml-2">{t('pricing.overview.starting')}</span>
                     </div>
                   </div>
 
                   <Link to={suite.link} className="mt-auto">
                     <Button className="w-full" size="lg">
-                      View {suite.name} Pricing
+                      {t('pricing.overview.view_pricing', { name: suite.name })}
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                   </Link>
@@ -224,17 +226,17 @@ const PricingOverviewPage: React.FC = () => {
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 mb-4">
               <Star className="h-4 w-4 mr-2" />
-              <span className="font-semibold">Best Value</span>
+              <span className="font-semibold">{t('pricing.overview.best_value')}</span>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Complete Bundle
+              {t('pricing.overview.complete_bundle_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-              All three suites together. Comprehensive protection, maximum savings.
+              {t('pricing.overview.complete_bundle_subtitle')}
             </p>
             <Link to="/pricing/bundles">
               <Button size="lg">
-                View Bundle Pricing
+                {t('pricing.overview.view_bundle_pricing')}
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -247,10 +249,10 @@ const PricingOverviewPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Find Your Perfect Plan
+              {t('pricing.overview.find_plan_title')}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300">
-              Get personalized recommendations based on your role
+              {t('pricing.overview.find_plan_subtitle')}
             </p>
           </div>
 
@@ -282,7 +284,7 @@ const PricingOverviewPage: React.FC = () => {
 
                 <div className="mb-4">
                   <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Solves: {rec.painPoint}
+                    {t('pricing.overview.solves', { painPoint: rec.painPoint })}
                   </p>
                   <div className="flex items-center gap-2 text-success-600 dark:text-success-400">
                     <CheckCircle className="h-4 w-4" />
@@ -298,14 +300,14 @@ const PricingOverviewPage: React.FC = () => {
                   ))}
                   {rec.features.length > 2 && (
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                      +{rec.features.length - 2} more
+                      {t('pricing.overview.more_features', { count: rec.features.length - 2 })}
                     </span>
                   )}
                 </div>
 
                 <Link to="/pricing/bundles">
                   <Button variant="outline" size="sm" className="w-full">
-                    View Recommended Plan
+                    {t('pricing.overview.view_recommended_plan')}
                   </Button>
                 </Link>
               </Card>
@@ -319,22 +321,22 @@ const PricingOverviewPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Get Started?
+              {t('pricing.overview.ready_title')}
             </h2>
             <p className="text-xl text-primary-100 mb-8">
-              Start with our free assessment and see how much you can save
+              {t('pricing.overview.ready_subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/hipaa-check">
                 <Button variant="outline" size="lg" className="!bg-white !text-primary-700 hover:!bg-gray-50">
-                  Start Free Assessment
+                  {t('pricing.overview.start_free_assessment')}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
               <Link to="/pricing/calculator">
                 <Button variant="outline" size="lg" className="!bg-transparent !text-white !border-white hover:!bg-white hover:!text-primary-700">
-                  Calculate Your Savings
+                  {t('pricing.overview.calculate_savings')}
                   <Calculator className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
