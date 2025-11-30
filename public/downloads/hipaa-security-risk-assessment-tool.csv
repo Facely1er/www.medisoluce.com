@@ -1,0 +1,80 @@
+Risk Category,Risk Item,Current Controls,Control Effectiveness (1-5),Likelihood (1-5),Impact (1-5),Risk Score,Mitigation Required,Responsible Party,Due Date,Notes
+Administrative Safeguards,Assigned Security Responsibility,CISO designated,4,2,4,8,Medium,CISO,2024-06-01,Review annually
+Administrative Safeguards,Information Access Management,Role-based access controls,3,3,4,12,High,IT Security,2024-05-01,Need automated provisioning
+Administrative Safeguards,Workforce Training,Annual HIPAA training,3,3,3,9,Medium,HR,2024-07-01,Add security awareness training
+Administrative Safeguards,Information Access Management Review,Quarterly access reviews,2,4,4,16,Critical,IT Security,2024-04-01,Need monthly reviews
+Administrative Safeguards,Security Awareness Training,Basic training only,2,4,3,12,High,HR,2024-05-15,Implement comprehensive program
+Administrative Safeguards,Contingency Plan,Basic BCP exists,3,3,5,15,Critical,Operations,2024-04-15,Test and update plan
+Administrative Safeguards,Evaluation Procedures,Annual assessments,3,2,3,6,Low,Compliance,2024-12-01,Adequate current process
+Physical Safeguards,Facility Access Controls,Badge system + guards,4,2,3,6,Low,Facilities,2024-08-01,Consider biometric access
+Physical Safeguards,Workstation Use Restrictions,Basic screen locks,2,4,3,12,High,IT Security,2024-05-01,Implement endpoint controls
+Physical Safeguards,Device and Media Controls,Basic inventory,2,4,4,16,Critical,IT Security,2024-04-01,Need comprehensive MDM
+Physical Safeguards,Workstation Physical Security,Shared workstations,2,3,4,12,High,Facilities,2024-06-01,Implement dedicated stations
+Physical Safeguards,Disposal of Media,Basic wiping procedures,3,3,3,9,Medium,IT Security,2024-07-01,Need certified destruction
+Physical Safeguards,Data Backup Storage,Offsite tape backup,3,2,5,10,High,IT Operations,2024-05-01,Add cloud backup
+Technical Safeguards,Access Control Systems,Basic AD authentication,3,3,4,12,High,IT Security,2024-05-01,Implement MFA
+Technical Safeguards,Audit Controls,Basic logging enabled,2,3,4,12,High,IT Security,2024-04-15,Need SIEM implementation
+Technical Safeguards,Data Integrity Controls,Basic checksums,2,3,5,15,Critical,IT Security,2024-04-01,Implement file integrity monitoring
+Technical Safeguards,Person Authentication,Password only,2,4,4,16,Critical,IT Security,2024-03-15,Implement multi-factor authentication
+Technical Safeguards,Transmission Security,Basic encryption,3,3,4,12,High,Network Admin,2024-05-01,Upgrade to TLS 1.3
+Technical Safeguards,Automatic Logoff,30-minute timeout,3,3,2,6,Low,IT Security,2024-08-01,Consider reducing to 15 minutes
+Technical Safeguards,Encryption and Decryption,Partial encryption,2,4,5,20,Critical,IT Security,2024-03-01,Implement full disk encryption
+Network Security,Firewall Configuration,Basic firewall rules,3,3,4,12,High,Network Admin,2024-05-01,Review and update rules
+Network Security,Intrusion Detection,Basic IDS,2,4,4,16,Critical,IT Security,2024-04-01,Upgrade to IPS with AI detection
+Network Security,Network Segmentation,Flat network,1,4,5,20,Critical,Network Admin,2024-03-15,Implement VLAN segmentation
+Network Security,Wireless Security,WPA2 encryption,3,3,3,9,Medium,Network Admin,2024-06-01,Upgrade to WPA3
+Network Security,Remote Access Controls,Basic VPN,2,4,4,16,Critical,IT Security,2024-04-01,Implement zero-trust access
+Network Security,DDoS Protection,ISP basic protection,2,3,3,9,Medium,Network Admin,2024-07-01,Consider cloud-based protection
+Endpoint Security,Antivirus/Anti-malware,Signature-based AV,2,4,4,16,Critical,IT Security,2024-03-15,Deploy next-gen endpoint protection
+Endpoint Security,Patch Management,Manual patching,2,4,5,20,Critical,IT Operations,2024-03-01,Implement automated patching
+Endpoint Security,Application Control,No application restrictions,1,4,4,16,Critical,IT Security,2024-04-01,Implement application whitelisting
+Endpoint Security,USB/Removable Media Control,No restrictions,1,4,4,16,Critical,IT Security,2024-04-01,Block or encrypt removable media
+Endpoint Security,Mobile Device Management,Basic email access,2,4,3,12,High,IT Security,2024-05-01,Implement full MDM solution
+Endpoint Security,Data Loss Prevention,Email attachment scanning,2,4,5,20,Critical,IT Security,2024-03-15,Implement comprehensive DLP
+Data Protection,Data Classification,Informal classification,2,3,4,12,High,Compliance,2024-05-15,Implement formal data classification
+Data Protection,Data Retention Policies,Basic policies exist,3,2,3,6,Low,Compliance,2024-08-01,Review and update policies
+Data Protection,Secure Data Destruction,Basic file deletion,2,3,4,12,High,IT Security,2024-06-01,Implement secure wipe procedures
+Data Protection,Database Security,Basic access controls,2,4,5,20,Critical,Database Admin,2024-03-01,Implement database encryption
+Data Protection,Backup Integrity Testing,Quarterly tests,3,3,5,15,Critical,IT Operations,2024-04-15,Increase to monthly testing
+Data Protection,Data Anonymization,No procedures,1,3,3,9,Medium,Compliance,2024-07-01,Develop anonymization procedures
+Business Associate Management,BAA Inventory,Spreadsheet tracking,2,3,4,12,High,Compliance,2024-05-01,Implement BA management system
+Business Associate Management,BA Risk Assessment,Annual assessments,3,3,3,9,Medium,Compliance,2024-06-01,Add ongoing monitoring
+Business Associate Management,BA Security Requirements,Standard contract language,3,2,3,6,Low,Legal,2024-08-01,Update contract templates
+Business Associate Management,BA Incident Response,Basic notification requirements,2,4,4,16,Critical,Compliance,2024-04-01,Develop BA incident procedures
+Business Associate Management,BA Access Reviews,Annual reviews,2,3,3,9,Medium,Compliance,2024-06-01,Implement quarterly reviews
+Medical Device Security,Device Inventory,Manual inventory,2,3,4,12,High,Biomedical,2024-05-01,Implement automated discovery
+Medical Device Security,Device Network Segmentation,Shared clinical network,1,4,5,20,Critical,Network Admin,2024-03-15,Implement IoMT VLAN
+Medical Device Security,Device Patch Management,Vendor-dependent,2,4,4,16,Critical,Biomedical,2024-04-01,Develop coordinated patching
+Medical Device Security,Device Access Controls,Default passwords common,1,4,4,16,Critical,Biomedical,2024-03-15,Implement password policy
+Medical Device Security,Device Monitoring,No monitoring,1,4,4,16,Critical,IT Security,2024-04-01,Deploy IoMT monitoring solution
+Incident Response,Incident Response Plan,Basic plan exists,3,3,4,12,High,IT Security,2024-05-01,Test and update plan regularly
+Incident Response,Incident Response Team,Team designated,4,2,3,6,Low,IT Security,2024-08-01,Provide regular training
+Incident Response,Incident Detection Capabilities,Basic log review,2,4,4,16,Critical,IT Security,2024-03-15,Implement 24/7 SOC
+Incident Response,Incident Communication Plan,Email notifications,2,3,3,9,Medium,Communications,2024-06-01,Develop comprehensive comm plan
+Incident Response,Forensic Capabilities,No in-house capability,1,3,4,12,High,IT Security,2024-05-15,Contract forensic services
+Incident Response,Recovery Procedures,Basic restore procedures,2,3,5,15,Critical,IT Operations,2024-04-01,Document detailed recovery steps
+Risk Management,Risk Assessment Process,Annual assessments,3,2,3,6,Low,Compliance,2024-08-01,Consider semi-annual assessments
+Risk Management,Risk Register Maintenance,Static document,2,3,3,9,Medium,Compliance,2024-06-01,Implement dynamic risk register
+Risk Management,Risk Treatment Planning,Basic mitigation plans,2,3,4,12,High,Compliance,2024-05-01,Develop comprehensive treatment plans
+Risk Management,Risk Monitoring,Annual review,2,3,3,9,Medium,Compliance,2024-06-01,Implement continuous monitoring
+Risk Management,Third-Party Risk Assessment,Vendor questionnaires,2,3,4,12,High,Procurement,2024-05-01,Implement comprehensive assessments
+Compliance and Audit,Compliance Monitoring,Annual audits,3,2,3,6,Low,Compliance,2024-08-01,Consider continuous compliance monitoring
+Compliance and Audit,Internal Audit Program,Basic IT audits,3,2,3,6,Low,Internal Audit,2024-08-01,Expand security audit scope
+Compliance and Audit,Regulatory Change Tracking,Manual process,2,3,3,9,Medium,Legal,2024-06-01,Implement automated tracking
+Compliance and Audit,Policy Management,Static documents,2,3,3,9,Medium,Compliance,2024-06-01,Implement policy management system
+Compliance and Audit,Control Testing,Annual testing,2,3,3,9,Medium,Compliance,2024-06-01,Increase testing frequency
+Business Continuity,Business Continuity Plan,Basic plan exists,3,3,5,15,Critical,Operations,2024-04-15,Test and update regularly
+Business Continuity,Disaster Recovery Plan,IT-focused DR plan,3,3,5,15,Critical,IT Operations,2024-04-15,Integrate with BCP
+Business Continuity,Recovery Time Objectives,Informal RTOs,2,3,4,12,High,Operations,2024-05-01,Document formal RTOs
+Business Continuity,Recovery Testing,Annual tests,2,3,5,15,Critical,Operations,2024-04-01,Increase testing frequency
+Business Continuity,Alternative Site Arrangements,No hot site,1,3,5,15,Critical,Operations,2024-04-01,Establish alternative processing site
+Cloud Security,Cloud Service Assessment,Basic vendor review,2,3,4,12,High,IT Security,2024-05-01,Implement comprehensive cloud assessment
+Cloud Security,Cloud Data Protection,Basic encryption,3,3,4,12,High,IT Security,2024-05-01,Implement advanced cloud security
+Cloud Security,Cloud Access Management,Basic SSO,3,3,3,9,Medium,IT Security,2024-06-01,Implement cloud IAM
+Cloud Security,Cloud Monitoring,Basic logging,2,3,3,9,Medium,IT Security,2024-06-01,Implement cloud security monitoring
+Cloud Security,Cloud Backup and Recovery,Cloud-native backup,4,2,4,8,Medium,IT Operations,2024-07-01,Test recovery procedures
+Privacy Controls,Privacy Impact Assessment,No formal PIA process,1,3,4,12,High,Privacy Officer,2024-05-01,Develop PIA procedures
+Privacy Controls,Data Minimization,No formal procedures,2,3,3,9,Medium,Privacy Officer,2024-06-01,Implement data minimization policies
+Privacy Controls,Consent Management,Paper-based consent,2,3,3,9,Medium,Privacy Officer,2024-06-01,Consider digital consent management
+Privacy Controls,Privacy Training,Basic HIPAA training,3,3,3,9,Medium,HR,2024-06-01,Expand privacy-specific training
+Privacy Controls,Individual Rights Management,Manual process,2,3,3,9,Medium,Privacy Officer,2024-06-01,Implement automated rights management
