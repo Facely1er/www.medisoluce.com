@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   BookOpen, 
@@ -21,6 +21,7 @@ import Breadcrumbs from '../components/navigation/Breadcrumbs';
 
 const TrainingPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const trainingModules = [
     {
@@ -150,13 +151,13 @@ const TrainingPage: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <BookOpen className="h-8 w-8 text-primary-500" />
-                <span className="text-2xl font-bold text-primary-600">4</span>
+                <span className="text-2xl font-bold text-primary-600">1/4</span>
               </div>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 {t('training.available_modules')}
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300">
-                {t('training.comprehensive_programs')}
+                HIPAA module live, 3 more coming Q1 2026
               </p>
             </Card>
 
@@ -194,14 +195,21 @@ const TrainingPage: React.FC = () => {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {trainingModules.map((module) => (
-                <Card key={module.id} className="p-6 hover:shadow-lg transition-shadow">
+                <Card key={module.id} className={`p-6 hover:shadow-lg transition-shadow ${!module.available ? 'opacity-75' : ''}`}>
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-3 flex-1">
                       {module.icon}
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          {module.title}
-                        </h3>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            {module.title}
+                          </h3>
+                          {module.comingSoon && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-warning-100 dark:bg-warning-900/30 text-warning-700 dark:text-warning-400">
+                              Coming Soon
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-gray-600 dark:text-gray-300">
                           {module.description}
                         </p>
@@ -221,6 +229,13 @@ const TrainingPage: React.FC = () => {
                       <Users className="h-4 w-4" />
                       <span>{module.level}</span>
                     </div>
+                    {module.launchDate && (
+                      <div className="flex items-center space-x-1">
+                        <span className="text-warning-600 dark:text-warning-400 font-medium">
+                          {module.launchDate}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mb-4">
@@ -237,19 +252,51 @@ const TrainingPage: React.FC = () => {
                     </ul>
                   </div>
 
+                  {module.comingSoon && (
+                    <div className="mb-4 p-3 bg-warning-50 dark:bg-warning-900/20 rounded-lg border border-warning-200 dark:border-warning-800">
+                      <p className="text-sm text-warning-800 dark:text-warning-300">
+                        📅 This module is currently in development. Get notified when it launches!
+                      </p>
+                    </div>
+                  )}
+
                   <div className="flex items-center space-x-3">
-                    <Button
-                      className="flex-1"
-                      icon={<Play className="h-4 w-4" />}
-                    >
-                      {module.completed ? t('training.review') : t('training.start_module')}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      icon={<Download className="h-4 w-4" />}
-                    >
-                      {t('training.materials')}
-                    </Button>
+                    {module.available ? (
+                      <>
+                        <Link to={`/training/${module.id}/0`} className="flex-1">
+                          <Button
+                            className="w-full"
+                            icon={<Play className="h-4 w-4" />}
+                          >
+                            {module.completed ? t('training.review') : t('training.start_module')}
+                          </Button>
+                        </Link>
+                        <Link to="/toolkit">
+                          <Button
+                            variant="outline"
+                            icon={<Download className="h-4 w-4" />}
+                          >
+                            {t('training.materials')}
+                          </Button>
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          className="flex-1"
+                          variant="outline"
+                          disabled
+                        >
+                          Coming {module.launchDate}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => navigate('/contact')}
+                        >
+                          Notify Me
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </Card>
               ))}

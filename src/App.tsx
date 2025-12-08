@@ -28,6 +28,8 @@ import RansomwareResiliencePage from './pages/RansomwareResiliencePage';
 import RansomwareThreatDashboardPage from './pages/RansomwareThreatDashboardPage';
 import HealthDashboardPage from './pages/HealthDashboardPage';
 import TrainingPage from './pages/TrainingPage';
+import HIPAABasicsModule from './pages/training/HIPAABasicsModule';
+import Certificate from './components/training/Certificate';
 import ToolkitPage from './pages/ToolkitPage';
 import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
 import RansomwareAssessment from './components/assessment/RansomwareAssessment';
@@ -122,6 +124,8 @@ function AppContent() {
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
           <Route path="/ransomware-threat-dashboard" element={<RansomwareThreatDashboardPage />} />
           <Route path="/training" element={<TrainingPage />} />
+          <Route path="/training/:moduleId/:lessonId" element={<HIPAABasicsModule />} />
+          <Route path="/training/:moduleId/certificate" element={<Certificate />} />
           <Route path="/toolkit" element={<ToolkitPage />} />
           <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />
           <Route path="/security" element={<SecurityDashboard />} />
