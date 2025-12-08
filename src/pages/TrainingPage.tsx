@@ -36,7 +36,9 @@ const TrainingPage: React.FC = () => {
         t('training.modules.hipaa_basics.topics.breach_notification'),
         t('training.modules.hipaa_basics.topics.patient_rights')
       ],
-      completed: false
+      completed: false,
+      available: true,
+      comingSoon: false
     },
     {
       id: 'dependency-management',
@@ -51,7 +53,10 @@ const TrainingPage: React.FC = () => {
         t('training.modules.dependency_management.topics.vendor_management'),
         t('training.modules.dependency_management.topics.lifecycle')
       ],
-      completed: false
+      completed: false,
+      available: false,
+      comingSoon: true,
+      launchDate: 'Q1 2026'
     },
     {
       id: 'business-continuity',
@@ -66,7 +71,10 @@ const TrainingPage: React.FC = () => {
         t('training.modules.business_continuity.topics.rto'),
         t('training.modules.business_continuity.topics.testing')
       ],
-      completed: false
+      completed: false,
+      available: false,
+      comingSoon: true,
+      launchDate: 'Q1 2026'
     },
     {
       id: 'ransomware-protection',
@@ -81,7 +89,10 @@ const TrainingPage: React.FC = () => {
         t('training.modules.ransomware_protection.topics.incident_response'),
         t('training.modules.ransomware_protection.topics.recovery')
       ],
-      completed: false
+      completed: false,
+      available: false,
+      comingSoon: true,
+      launchDate: 'Q1 2026'
     }
   ];
 
