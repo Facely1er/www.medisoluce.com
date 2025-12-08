@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import TrainingLesson from '../components/training/TrainingLesson';
-import TrainingQuiz from '../components/training/TrainingQuiz';
-import { hipaaBasicsLessons, hipaaBasicsQuiz } from '../data/training/hipaaBasicsContent';
-import Breadcrumbs from '../components/navigation/Breadcrumbs';
+import TrainingLesson from '../../components/training/TrainingLesson';
+import TrainingQuiz from '../../components/training/TrainingQuiz';
+import { hipaaBasicsLessons, hipaaBasicsQuiz } from '../../data/training/hipaaBasicsContent';
+import Breadcrumbs from '../../components/navigation/Breadcrumbs';
 
 const HIPAABasicsModule: React.FC = () => {
   const { t } = useTranslation();
