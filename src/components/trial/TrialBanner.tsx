@@ -8,7 +8,7 @@ import { AlertTriangle, Clock, CreditCard, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
-import { trialService, type TrialStatus } from '../../services/trialService';
+import { type TrialStatus } from '../../services/trialService';
 
 interface TrialBannerProps {
   trial: TrialStatus;
@@ -17,12 +17,6 @@ interface TrialBannerProps {
 
 const TrialBanner: React.FC<TrialBannerProps> = ({ trial, onDismiss }) => {
   const { t } = useTranslation();
-  
-  const getStatusColor = () => {
-    if (trial.daysRemaining <= 1) return 'accent';
-    if (trial.daysRemaining <= 3) return 'warning';
-    return 'primary';
-  };
 
   const getStatusMessage = () => {
     if (trial.daysRemaining <= 0) {

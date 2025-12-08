@@ -23,7 +23,7 @@ const HIPAAPricingPageWithTrial: React.FC = () => {
   const userEmail = 'user@example.com'; // Replace with actual email
   
   // Get trial status for HIPAA product
-  const { activeTrial, isEligible, startTrial } = useTrial(userId, 'hipaa');
+  const { activeTrial, isEligible, startTrial: _startTrial } = useTrial(userId, 'hipaa');
   
   const [showTrialModal, setShowTrialModal] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);

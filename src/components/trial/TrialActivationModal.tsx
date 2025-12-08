@@ -53,7 +53,7 @@ const TrialActivationModal: React.FC<TrialActivationModalProps> = ({
   onTrialStarted
 }) => {
   const { t } = useTranslation();
-  const { startTrial, isEligible } = useTrial(userId);
+  const { startTrial: _startTrial, isEligible } = useTrial(userId);
   const { showToast } = useToast();
   const [step, setStep] = useState<'role' | 'use-case' | 'preferences'>('role');
   const [role, setRole] = useState<string>('');
@@ -87,7 +87,7 @@ const TrialActivationModal: React.FC<TrialActivationModalProps> = ({
     setLoading(true);
 
     try {
-      const trial = await startTrial({
+      const _trial = await _startTrial({
         email: userEmail,
         productId,
         productName,

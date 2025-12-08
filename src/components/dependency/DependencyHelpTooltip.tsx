@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, Info, AlertCircle, CheckCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import Tooltip from '../ui/Tooltip';
 
 interface HelpTooltipProps {
@@ -63,14 +63,6 @@ const helpContent: Record<string, { title: string; content: string; variant?: 'i
 const DependencyHelpTooltip: React.FC<HelpTooltipProps> = ({ field, variant }) => {
   const help = helpContent[field];
   if (!help) return null;
-
-  const iconMap = {
-    info: <Info className="h-4 w-4 text-blue-600" />,
-    warning: <AlertCircle className="h-4 w-4 text-yellow-600" />,
-    success: <CheckCircle className="h-4 w-4 text-green-600" />
-  };
-
-  const icon = iconMap[variant || help.variant || 'info'];
 
   return (
     <Tooltip

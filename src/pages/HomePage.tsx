@@ -138,11 +138,79 @@ const HomePage: React.FC = () => {
         ctaText={t('start_free_assessment')}
         ctaLink="/hipaa-check"
       />
+      
+      {/* Journey Preview - Above the fold */}
+      <div className="relative -mt-12 z-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8 max-w-5xl mx-auto"
+          >
+            <div className="text-center mb-6">
+              <p className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide mb-2">
+                Your Compliance Journey
+              </p>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                4 Steps to Complete Healthcare Compliance
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { step: 1, title: 'Assess', time: '10 min', icon: <ShieldCheck className="h-5 w-5" />, color: 'primary' },
+                { step: 2, title: 'Map Systems', time: '15 min', icon: <Server className="h-5 w-5" />, color: 'secondary' },
+                { step: 3, title: 'Analyze Impact', time: '12 min', icon: <BarChart className="h-5 w-5" />, color: 'accent' },
+                { step: 4, title: 'Plan Recovery', time: '20 min', icon: <FileText className="h-5 w-5" />, color: 'success' },
+              ].map((item, idx) => (
+                <div key={item.step} className="relative">
+                  <div className="flex flex-col items-center text-center">
+                    <div className={`w-12 h-12 rounded-full bg-${item.color}-100 dark:bg-${item.color}-900/30 flex items-center justify-center text-${item.color}-600 dark:text-${item.color}-400 mb-2`}>
+                      {item.icon}
+                    </div>
+                    <div className="font-semibold text-sm text-gray-900 dark:text-white">
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      ~{item.time}
+                    </div>
+                  </div>
+                  {idx < 3 && (
+                    <div className="hidden lg:block absolute top-6 left-full w-full">
+                      <div className="h-0.5 bg-gradient-to-r from-gray-300 to-transparent dark:from-gray-600 dark:to-transparent"></div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-success-500" />
+                  <span>No credit card required</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-success-500" />
+                  <span>Progress auto-saved</span>
+                </div>
+              </div>
+              <Link to="/hipaa-check">
+                <Button size="sm" className="whitespace-nowrap">
+                  Start Now
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
    
 
       {/* Stats Section */}
-      <section className="py-20 bg-white dark:bg-gray-800">
+      <section className="py-20 bg-white dark:bg-gray-800 mt-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
@@ -150,6 +218,9 @@ const HomePage: React.FC = () => {
             </h2>
             <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {t('home.stats_subtitle')}
+            </p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              All statistics sourced from verified healthcare industry reports (2024-2025)
             </p>
           </div>
 
@@ -226,8 +297,11 @@ const HomePage: React.FC = () => {
             <h3 className="text-3xl font-medium text-gray-900 dark:text-white mb-8">
               {t('home.compliance_journey')}
             </h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-3">
               Follow our proven 4-step methodology to achieve comprehensive healthcare compliance
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+              Each step builds on the previous, creating a complete compliance framework
             </p>
             
             {/* Journey Steps */}
@@ -428,6 +502,49 @@ const HomePage: React.FC = () => {
               </p>
             </div>
 
+            {/* What to Expect Section */}
+            <div className="mb-12 p-6 bg-primary-50 dark:bg-primary-900/20 rounded-xl border border-primary-200 dark:border-primary-800">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                <CheckCircle className="h-5 w-5 text-primary-600 dark:text-primary-400 mr-2" />
+                What to Expect When You Start
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-bold mt-0.5">1</div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Immediate Access</div>
+                    <div className="text-gray-600 dark:text-gray-400">Start assessment instantly, no registration required</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-bold mt-0.5">2</div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Progress Auto-Saved</div>
+                    <div className="text-gray-600 dark:text-gray-400">Resume anytime with local browser storage</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-bold mt-0.5">3</div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Instant Results</div>
+                    <div className="text-gray-600 dark:text-gray-400">Get scored compliance report immediately</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-xs font-bold mt-0.5">4</div>
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Actionable Guidance</div>
+                    <div className="text-gray-600 dark:text-gray-400">Prioritized recommendations with regulatory mapping</div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-primary-200 dark:border-primary-800 text-center">
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <strong>Privacy First:</strong> All data stored locally in your browser. No personal information collected.
+                </p>
+              </div>
+            </div>
+
             <div className="space-y-8">
               {[
                 {
@@ -477,7 +594,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-   {/* Quick Search Section */}
+      {/* Quick Search Section */}
       <section className="py-12 bg-gray-100 dark:bg-gray-700">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
@@ -491,6 +608,70 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+      
+      {/* Common Questions - Journey Clarity */}
+      <section className="py-16 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                Common Questions About Getting Started
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Clear answers to help you begin with confidence
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-start gap-2">
+                  <span className="text-primary-600 dark:text-primary-400 flex-shrink-0">Q:</span>
+                  <span>Do I need to complete all steps at once?</span>
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 ml-6">
+                  No. Each tool saves your progress automatically. Complete steps at your own pace over days or weeks.
+                </p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-start gap-2">
+                  <span className="text-primary-600 dark:text-primary-400 flex-shrink-0">Q:</span>
+                  <span>What if I'm not sure which tool to use first?</span>
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 ml-6">
+                  Start with the HIPAA Assessment. It identifies gaps and recommends which other tools you need.
+                </p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-start gap-2">
+                  <span className="text-primary-600 dark:text-primary-400 flex-shrink-0">Q:</span>
+                  <span>Will I get actionable results or just scores?</span>
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 ml-6">
+                  Every assessment provides prioritized recommendations, regulatory references, and downloadable reports.
+                </p>
+              </div>
+              
+              <div className="p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-start gap-2">
+                  <span className="text-primary-600 dark:text-primary-400 flex-shrink-0">Q:</span>
+                  <span>Is my data secure and private?</span>
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 ml-6">
+                  Yes. All data is stored locally in your browser. We don't collect personal information or store data on servers.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <Link to="/contact" className="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium">
+                Have more questions? Contact our team →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Persona-Based Quick Links */}
       <section className="py-16 bg-white dark:bg-gray-800">
@@ -500,8 +681,11 @@ const HomePage: React.FC = () => {
               <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
                 Find Your Starting Point
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300">
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-3">
                 Quick access based on your role and priorities
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Each path leads to tools designed for your specific needs
               </p>
             </div>
 
@@ -602,7 +786,27 @@ const HomePage: React.FC = () => {
               <p className="mt-2 text-primary-100">
                 {t('home.ready_strengthen_subtitle')}
               </p>
+              <p className="mt-3 text-sm text-primary-200">
+                Join healthcare organizations using MediSoluce for compliance management
+              </p>
             </div>
+            
+            {/* Trust Indicators */}
+            <div className="mb-8 flex flex-wrap justify-center gap-6 text-primary-100">
+              <div className="flex items-center gap-2">
+                <Shield className="h-5 w-5" />
+                <span className="text-sm">HIPAA-Aligned Tools</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                <span className="text-sm">Privacy-First Design</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                <span className="text-sm">Instant Reports</span>
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center">
               <Link to="/hipaa-check">
                 <Button 
@@ -631,6 +835,10 @@ const HomePage: React.FC = () => {
                   Access Toolkit
                 </Button>
               </Link>
+            </div>
+            
+            <div className="mt-6 text-xs text-primary-200">
+              All tools available immediately • No credit card required • Cancel anytime
             </div>
           </div>
         </div>

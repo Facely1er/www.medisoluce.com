@@ -13,8 +13,7 @@ import {
   Server, 
   Target,
   Zap,
-  X,
-  ChevronRight
+  X
 } from 'lucide-react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
@@ -47,11 +46,11 @@ const TrialOnboarding: React.FC<TrialOnboardingProps> = ({
   const [completedSteps, setCompletedSteps] = useState<string[]>(
     trial.tailoredOnboarding?.completedSteps || []
   );
-  const [recommendations, setRecommendations] = useState(
+  const [_recommendations] = useState(
     trialService.getTailoredRecommendations(trial)
   );
 
-  const getStepsForRecommendation = (rec: typeof recommendations[0]): OnboardingStep[] => {
+  const getStepsForRecommendation = (rec: ReturnType<typeof trialService.getTailoredRecommendations>[0]): OnboardingStep[] => {
     const stepMap: Record<string, OnboardingStep> = {
       'hipaa-assessment': {
         id: 'hipaa-assessment',
@@ -180,28 +179,17 @@ const TrialOnboarding: React.FC<TrialOnboardingProps> = ({
       .filter(Boolean) as OnboardingStep[];
   };
 
-  const allSteps: OnboardingStep[] = recommendations
+  const allSteps: OnboardingStep[] = _recommendations
     .flatMap(rec => getStepsForRecommendation(rec))
     .filter((step, index, self) => 
       index === self.findIndex(s => s.id === step.id)
     );
-
-  const highPrioritySteps = allSteps.filter(s => s.priority === 'high');
-  const remainingSteps = allSteps.filter(s => s.priority !== 'high');
 
   const handleStepComplete = (stepId: string) => {
     if (!completedSteps.includes(stepId)) {
       const newCompleted = [...completedSteps, stepId];
       setCompletedSteps(newCompleted);
       trialService.updateOnboardingProgress(trial.userId, trial.productId, stepId);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentStep < allSteps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      onComplete?.();
     }
   };
 

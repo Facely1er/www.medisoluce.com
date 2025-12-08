@@ -31,7 +31,7 @@ const TermsPage: React.FC = () => {
     };
 
     loadTerms();
-  }, []);
+  }, [t]);
 
   return (
     <div className="py-12">

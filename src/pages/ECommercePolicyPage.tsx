@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreditCard, RefreshCw, AlertCircle } from 'lucide-react';
+import { CreditCard, AlertCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import SEOHead from '../components/ui/SEOHead';
 

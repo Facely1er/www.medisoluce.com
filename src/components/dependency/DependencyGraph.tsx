@@ -184,9 +184,6 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
               if (!toPos) {
                 // Calculate a default position for external dependencies that weren't in the memo
                 // Place them to the right of the source node
-                const externalCount = relationships.filter(
-                  r => r.from === rel.from && !r.toNode
-                ).length;
                 const externalIndex = relationships
                   .filter(r => r.from === rel.from && !r.toNode)
                   .findIndex(r => r.to === rel.to);
@@ -245,9 +242,6 @@ const DependencyGraph: React.FC<DependencyGraphProps> = ({
                     const fromPos = nodePositions[rel.from];
                     if (fromPos) {
                       // Calculate position to the right of source node
-                      const externalCount = relationships.filter(
-                        r => r.from === rel.from && !r.toNode
-                      ).length;
                       const externalIndex = relationships
                         .filter(r => r.from === rel.from && !r.toNode)
                         .findIndex(r => r.to === rel.to);
