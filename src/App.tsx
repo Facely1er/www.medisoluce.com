@@ -37,6 +37,8 @@ import PricingOverviewPage from './pages/PricingOverviewPage';
 import HIPAAPricingPage from './pages/HIPAAPricingPage';
 import RansomwarePricingPage from './pages/RansomwarePricingPage';
 import ContinuityPricingPage from './pages/ContinuityPricingPage';
+import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
+import CheckoutCancelPage from './pages/CheckoutCancelPage';
 import SegmentAnalysisPage from './pages/SegmentAnalysisPage';
 import FAQPage from './pages/FAQPage';
 import { ThemeProvider } from './context/ThemeContext';
@@ -68,25 +70,31 @@ try {
 }
 
 // Global toast function for components that can't use React hooks
+type ToastType = 'success' | 'error' | 'warning' | 'info';
+
 interface ToastMessage {
   title: string;
-  description?: string;
-  type?: 'success' | 'error' | 'warning' | 'info';
+  message?: string;
+  type: ToastType;
+  duration?: number;
 }
 
-interface GlobalWindow extends Window {
-  setGlobalToast: (fn: (toast: ToastMessage) => void) => void;
-  showToast: (toast: ToastMessage) => void;
+// Extend the global Window interface using declaration merging
+declare global {
+  interface Window {
+    setGlobalToast: (fn: (toast: Omit<ToastMessage, 'id'>) => void) => void;
+    showToast: (toast: ToastMessage) => void;
+  }
 }
 
 function setupGlobalToast() {
-  let toastFunction: ((toast: ToastMessage) => void) | null = null;
+  let toastFunction: ((toast: Omit<ToastMessage, 'id'>) => void) | null = null;
   
-  (window as GlobalWindow).setGlobalToast = (fn: (toast: ToastMessage) => void) => {
+  window.setGlobalToast = (fn: (toast: Omit<ToastMessage, 'id'>) => void) => {
     toastFunction = fn;
   };
   
-  (window as GlobalWindow).showToast = (toast: ToastMessage) => {
+  window.showToast = (toast: ToastMessage) => {
     if (toastFunction) {
       toastFunction(toast);
     }
@@ -136,6 +144,8 @@ function AppContent() {
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
           <Route path="/pricing/ransomware" element={<RansomwarePricingPage />} />
           <Route path="/pricing/continuity" element={<ContinuityPricingPage />} />
+          <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+          <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
           <Route path="/segments" element={<SegmentAnalysisPage />} />
           <Route path="/faq" element={<FAQPage />} />
         </Routes>
@@ -148,7 +158,7 @@ function ToastInitializer() {
   const { showToast } = useToast();
   
   useEffect(() => {
-    (window as GlobalWindow).setGlobalToast(showToast);
+    window.setGlobalToast(showToast);
   }, [showToast]);
   
   return null;

@@ -16,6 +16,7 @@ export interface CheckoutSessionParams {
   customerId?: string;
   metadata?: Record<string, string>;
   allowPromotionCodes?: boolean;
+  mode?: 'subscription' | 'payment'; // 'subscription' for recurring, 'payment' for one-time
   subscriptionData?: {
     trialPeriodDays?: number;
   };
@@ -41,9 +42,12 @@ export async function createCheckoutSession(
   const policyUrls = getAllPolicyUrls();
   const termsConfig = getStripeTermsConfig();
 
+  // Get API URL - supports both Vercel and Netlify deployments
+  const apiUrl = import.meta.env.VITE_API_URL || '/api';
+  const endpoint = `${apiUrl}/create-checkout-session`;
+
   // Call your backend API endpoint
-  // Replace '/api/create-checkout-session' with your actual endpoint
-  const response = await fetch('/api/create-checkout-session', {
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -62,16 +66,8 @@ export async function createCheckoutSession(
         ecommerce_policy_url: policyUrls.ecommerce,
       },
       allow_promotion_codes: params.allowPromotionCodes ?? true,
+      mode: params.mode || 'subscription',
       subscription_data: params.subscriptionData,
-      // Stripe Checkout will display these policies
-      // The 'terms' parameter can be set to show terms acceptance
-      // For multiple policies, you can use custom fields or metadata
-      payment_method_types: ['card'],
-      // Note: Stripe's terms parameter accepts a single URL
-      // For multiple policies, you'll need to:
-      // 1. Create a combined terms page, OR
-      // 2. Use Stripe's custom fields, OR
-      // 3. Display policies in your checkout UI before redirecting
     }),
   });
 
@@ -120,5 +116,39 @@ export function getStripePublicKey(): string {
  */
 export function isStripeConfigured(): boolean {
   return !!import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+}
+
+/**
+ * Create a Customer Portal session for managing subscriptions
+ * 
+ * @param customerId Stripe customer ID
+ * @param returnUrl URL to return to after portal session
+ * @returns Portal session URL
+ */
+export async function createPortalSession(
+  customerId: string,
+  returnUrl?: string
+): Promise<string> {
+  const apiUrl = import.meta.env.VITE_API_URL || '/api';
+  const endpoint = `${apiUrl}/create-portal-session`;
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      customer_id: customerId,
+      return_url: returnUrl || window.location.origin,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Failed to create portal session' }));
+    throw new Error(error.message || 'Failed to create portal session');
+  }
+
+  const data = await response.json();
+  return data.url;
 }
 

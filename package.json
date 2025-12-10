@@ -48,6 +48,7 @@
   "dependencies": {
     "@sentry/browser": "^10.5.0",
     "@supabase/supabase-js": "^2.39.7",
+    "@vercel/analytics": "^1.6.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.0.8",
     "i18next": "^23.7.19",
@@ -62,6 +63,7 @@
     "react-pdf": "^10.1.0",
     "react-router-dom": "^6.22.3",
     "recharts": "^2.12.2",
+    "stripe": "^20.0.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
