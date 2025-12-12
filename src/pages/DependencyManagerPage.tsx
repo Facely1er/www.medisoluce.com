@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { 
@@ -25,11 +25,14 @@ import {
   Building2,
   Shield,
   CheckSquare,
-  Square
+  Square,
+  CheckCircle
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import RelatedLinks from '../components/ui/RelatedLinks';
+import JourneyProgress from '../components/journey/JourneyProgress';
+import ContextualCTA from '../components/ui/ContextualCTA';
 import { relatedPages } from '../utils/linkingStrategy';
 import useLocalStorage from '../hooks/useLocalStorage';
 import OnboardingGuide from '../components/dependency/OnboardingGuide';
@@ -57,6 +60,14 @@ const DependencyManagerPage: React.FC = () => {
   const { t } = useTranslation();
   const [showMapper, setShowMapper] = useState(false);
   const [dependencies, setDependencies] = useLocalStorage<Dependency[]>('system-dependencies', []);
+  const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
+
+  // Mark Step 2 as completed when dependencies are added
+  useEffect(() => {
+    if (dependencies.length > 0 && !completedSteps.includes(2)) {
+      setCompletedSteps([...completedSteps, 2]);
+    }
+  }, [dependencies.length, completedSteps, setCompletedSteps]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'graph'>('list');
@@ -1079,6 +1090,17 @@ const DependencyManagerPage: React.FC = () => {
 
   return (
     <div>
+      {/* Journey Progress */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-4xl mx-auto">
+          <JourneyProgress 
+            currentStep={2} 
+            completedSteps={completedSteps as (1 | 2 | 3 | 4)[]}
+            variant="full"
+          />
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1086,8 +1108,11 @@ const DependencyManagerPage: React.FC = () => {
             <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
               {t('dependency.title')}
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
               {t('dependency.subtitle')}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+              Step 2 of 4: Map your critical technology systems and dependencies
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" onClick={() => setShowMapper(true)}>
@@ -1120,6 +1145,70 @@ const DependencyManagerPage: React.FC = () => {
               </div>
             )}
             
+            {/* Bridge Content to Step 3 */}
+            {dependencies.length > 0 && (
+              <div className="mt-12 max-w-4xl mx-auto">
+                <Card className="p-6 bg-gradient-to-br from-secondary-50 to-accent-50 dark:from-secondary-900/20 dark:to-accent-900/20 border-2 border-secondary-200 dark:border-secondary-800">
+                  <div className="text-center mb-6">
+                    <CheckCircle className="h-12 w-12 text-success-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      Step 2 Complete! 🎉
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      You've mapped <strong className="text-secondary-600 dark:text-secondary-400">{dependencies.length}</strong> system{dependencies.length !== 1 ? 's' : ''}
+                      {dependencies.filter(d => d.criticality === 'Critical').length > 0 && (
+                        <>, including <strong>{dependencies.filter(d => d.criticality === 'Critical').length} critical</strong> system{dependencies.filter(d => d.criticality === 'Critical').length !== 1 ? 's' : ''}</>
+                      )}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6">
+                    <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+                      Recommended Next Step:
+                    </h4>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">
+                      Now that you've identified your critical systems, analyze the <strong>business impact</strong> of potential failures. 
+                      This will help you prioritize which systems need continuity plans first.
+                    </p>
+                    
+                    <Link to="/business-impact">
+                      <Button 
+                        size="lg" 
+                        className="w-full sm:w-auto"
+                        icon={<ArrowRight className="h-5 w-5" />}
+                        iconPosition="right"
+                      >
+                        Continue to Step 3: Analyze Impact
+                      </Button>
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <ContextualCTA
+                      title="View System Details"
+                      description="Review your mapped systems and dependencies"
+                      primaryAction={{
+                        text: "View All Systems",
+                        href: "#systems-list",
+                        trackingLabel: "view-systems"
+                      }}
+                      variant="minimal"
+                    />
+                    <ContextualCTA
+                      title="Export Data"
+                      description="Download your dependency map for documentation"
+                      primaryAction={{
+                        text: "Export Map",
+                        href: "#export",
+                        trackingLabel: "export-dependencies"
+                      }}
+                      variant="minimal"
+                    />
+                  </div>
+                </Card>
+              </div>
+            )}
+
             {/* Strategic Next Steps */}
             <div className="mt-12">
               <h3 className="text-xl font-medium text-gray-900 dark:text-white text-center mb-6">
@@ -1136,7 +1225,7 @@ const DependencyManagerPage: React.FC = () => {
                   <div className="flex items-center space-x-3 mb-2">
                     <BarChart2 className="h-5 w-5 text-accent-500" />
                     <span className="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
-                      Business Impact Analysis
+                      Step 3: Business Impact Analysis
                     </span>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -1154,7 +1243,7 @@ const DependencyManagerPage: React.FC = () => {
                   <div className="flex items-center space-x-3 mb-2">
                     <FileCheck className="h-5 w-5 text-success-500" />
                     <span className="font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
-                      Continuity Planning
+                      Step 4: Continuity Planning
                     </span>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-300">

@@ -159,10 +159,10 @@ const HomePage: React.FC = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { step: 1, title: 'Assess', time: '10 min', icon: <ShieldCheck className="h-5 w-5" />, color: 'primary' },
-                { step: 2, title: 'Map Systems', time: '15 min', icon: <Server className="h-5 w-5" />, color: 'secondary' },
-                { step: 3, title: 'Analyze Impact', time: '12 min', icon: <BarChart className="h-5 w-5" />, color: 'accent' },
-                { step: 4, title: 'Plan Recovery', time: '20 min', icon: <FileText className="h-5 w-5" />, color: 'success' },
+                { step: 1, title: 'Assess', time: '~10 min', icon: <ShieldCheck className="h-5 w-5" />, color: 'primary' },
+                { step: 2, title: 'Map Systems', time: '~15 min', icon: <Server className="h-5 w-5" />, color: 'secondary' },
+                { step: 3, title: 'Analyze Impact', time: '~12 min', icon: <BarChart className="h-5 w-5" />, color: 'accent' },
+                { step: 4, title: 'Plan Recovery', time: '~20 min', icon: <FileText className="h-5 w-5" />, color: 'success' },
               ].map((item, idx) => (
                 <div key={item.step} className="relative">
                   <div className="flex flex-col items-center text-center">

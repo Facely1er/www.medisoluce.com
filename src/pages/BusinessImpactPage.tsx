@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { BarChart2, Clock, Activity, FileText, ArrowRight, Plus } from 'lucide-react';
+import { BarChart2, Clock, Activity, FileText, ArrowRight, Plus, CheckCircle } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import JourneyProgress from '../components/journey/JourneyProgress';
+import ContextualCTA from '../components/ui/ContextualCTA';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 interface ImpactAssessment {
@@ -24,6 +27,15 @@ const BusinessImpactPage: React.FC = () => {
   const { t } = useTranslation();
   const [showAnalyzer, setShowAnalyzer] = useState(false);
   const [assessments, setAssessments] = useLocalStorage<ImpactAssessment[]>('business-impact-assessments', []);
+  const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
+  const [dependencies] = useLocalStorage<any[]>('system-dependencies', []);
+
+  // Mark Step 3 as completed when assessments are added
+  useEffect(() => {
+    if (assessments.length > 0 && !completedSteps.includes(3)) {
+      setCompletedSteps([...completedSteps, 3]);
+    }
+  }, [assessments.length, completedSteps, setCompletedSteps]);
   const [formData, setFormData] = useState({
     systemName: '',
     patientImpact: 3,
@@ -220,6 +232,15 @@ For a customized analysis of your organization, start your assessment at: ${wind
     return (
       <div className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Journey Progress */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <JourneyProgress 
+              currentStep={3} 
+              completedSteps={completedSteps as (1 | 2 | 3 | 4)[]}
+              variant="compact"
+            />
+          </div>
+
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 flex items-center justify-between">
               <div>
@@ -227,13 +248,25 @@ For a customized analysis of your organization, start your assessment at: ${wind
                   Business Impact Analyzer
                 </h1>
                 <p className="text-gray-600 dark:text-gray-300 mt-2">
-                  Assess the business impact of system disruptions on your organization
+                  Step 3 of 4: Assess the business impact of system disruptions on your organization
                 </p>
               </div>
               <Button variant="outline" onClick={() => setShowAnalyzer(false)}>
                 Back to Overview
               </Button>
             </div>
+
+            {/* Bridge Content from Step 2 */}
+            {dependencies.length > 0 && (
+              <Card className="p-4 bg-secondary-50 dark:bg-secondary-900/20 border border-secondary-200 dark:border-secondary-800 mb-6">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <strong>Tip:</strong> You've mapped <strong>{dependencies.length}</strong> system{dependencies.length !== 1 ? 's' : ''}. 
+                  {dependencies.filter((d: any) => d.criticality === 'Critical').length > 0 && (
+                    <> Start with your <strong>{dependencies.filter((d: any) => d.criticality === 'Critical').length} critical</strong> system{dependencies.filter((d: any) => d.criticality === 'Critical').length !== 1 ? 's' : ''} for the highest impact analysis.</>
+                  )}
+                </p>
+              </Card>
+            )}
 
             {/* Assessment Form */}
             <Card className="p-6 mb-8">
@@ -243,14 +276,33 @@ For a customized analysis of your organization, start your assessment at: ${wind
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     System Name
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.systemName}
-                    onChange={(e) => setFormData({...formData, systemName: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
-                    placeholder="e.g., Electronic Health Record System"
-                  />
+                  {dependencies.length > 0 ? (
+                    <select
+                      required
+                      value={formData.systemName}
+                      onChange={(e) => setFormData({...formData, systemName: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                    >
+                      <option value="">Select a system from your dependency map...</option>
+                      {dependencies
+                        .filter((d: any) => d.criticality === 'Critical' || d.criticality === 'High')
+                        .map((dep: any) => (
+                          <option key={dep.id} value={dep.name}>
+                            {dep.name} {dep.criticality === 'Critical' ? '(Critical)' : ''}
+                          </option>
+                        ))}
+                      <option value="other">Other System (enter manually)</option>
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      required
+                      value={formData.systemName}
+                      onChange={(e) => setFormData({...formData, systemName: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                      placeholder="e.g., Electronic Health Record System"
+                    />
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -472,6 +524,17 @@ For a customized analysis of your organization, start your assessment at: ${wind
 
   return (
     <div>
+      {/* Journey Progress */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-4xl mx-auto">
+          <JourneyProgress 
+            currentStep={3} 
+            completedSteps={completedSteps as (1 | 2 | 3 | 4)[]}
+            variant="full"
+          />
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -479,8 +542,11 @@ For a customized analysis of your organization, start your assessment at: ${wind
             <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
               {t('impact.title')}
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
               {t('impact.subtitle')}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+              Step 3 of 4: Analyze the business impact of potential system failures
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" onClick={() => setShowAnalyzer(true)}>
@@ -493,24 +559,88 @@ For a customized analysis of your organization, start your assessment at: ${wind
 
             {/* Stats */}
             {assessments.length > 0 && (
-              <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Card className="p-4">
-                  <div className="text-2xl font-bold text-primary-600">{assessments.length}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Systems Assessed</div>
-                </Card>
-                <Card className="p-4">
-                  <div className="text-2xl font-bold text-accent-600">
-                    {assessments.filter(a => calculateOverallRisk(a) >= 4).length}
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">High Risk Systems</div>
-                </Card>
-                <Card className="p-4">
-                  <div className="text-2xl font-bold text-success-600">
-                    ${assessments.reduce((sum, a) => sum + a.revenueAtRisk, 0).toLocaleString()}
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Daily Revenue at Risk</div>
-                </Card>
-              </div>
+              <>
+                <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Card className="p-4">
+                    <div className="text-2xl font-bold text-primary-600">{assessments.length}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Systems Assessed</div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-2xl font-bold text-accent-600">
+                      {assessments.filter(a => calculateOverallRisk(a) >= 4).length}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">High Risk Systems</div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-2xl font-bold text-success-600">
+                      ${assessments.reduce((sum, a) => sum + a.revenueAtRisk, 0).toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Daily Revenue at Risk</div>
+                  </Card>
+                </div>
+
+                {/* Bridge Content to Step 4 */}
+                <div className="mt-12 max-w-4xl mx-auto">
+                  <Card className="p-6 bg-gradient-to-br from-accent-50 to-success-50 dark:from-accent-900/20 dark:to-success-900/20 border-2 border-accent-200 dark:border-accent-800">
+                    <div className="text-center mb-6">
+                      <CheckCircle className="h-12 w-12 text-success-500 mx-auto mb-4" />
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        Step 3 Complete! 🎉
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        You've analyzed the impact of <strong className="text-accent-600 dark:text-accent-400">{assessments.length}</strong> system{assessments.length !== 1 ? 's' : ''}
+                        {assessments.filter(a => calculateOverallRisk(a) >= 4).length > 0 && (
+                          <>, identifying <strong>{assessments.filter(a => calculateOverallRisk(a) >= 4).length} high-impact</strong> system{assessments.filter(a => calculateOverallRisk(a) >= 4).length !== 1 ? 's' : ''} that need continuity plans</>
+                        )}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6">
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+                        Recommended Next Step:
+                      </h4>
+                      <p className="text-gray-700 dark:text-gray-300 mb-4">
+                        Now create <strong>business continuity plans</strong> for your high-impact systems. 
+                        These plans will define recovery procedures, RTO/RPO targets, and ensure patient care continues during outages.
+                      </p>
+                      
+                      <Link to="/continuity">
+                        <Button 
+                          size="lg" 
+                          className="w-full sm:w-auto"
+                          icon={<ArrowRight className="h-5 w-5" />}
+                          iconPosition="right"
+                        >
+                          Continue to Step 4: Plan Recovery
+                        </Button>
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <ContextualCTA
+                        title="Review Impact Analysis"
+                        description="View detailed impact assessments"
+                        primaryAction={{
+                          text: "View All Assessments",
+                          href: "#assessments",
+                          trackingLabel: "view-assessments"
+                        }}
+                        variant="minimal"
+                      />
+                      <ContextualCTA
+                        title="Export Report"
+                        description="Download your impact analysis"
+                        primaryAction={{
+                          text: "Download Report",
+                          href: "#export",
+                          trackingLabel: "export-impact"
+                        }}
+                        variant="minimal"
+                      />
+                    </div>
+                  </Card>
+                </div>
+              </>
             )}
           </div>
         </div>

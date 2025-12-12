@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Shield, FileCheck, AlertTriangle, Server, Users, Plus, Edit, Trash2, Download } from 'lucide-react';
+import { Shield, FileCheck, AlertTriangle, Server, Users, Plus, Edit, Trash2, Download, CheckCircle, Trophy, ArrowRight } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
+import JourneyProgress from '../components/journey/JourneyProgress';
+import ContextualCTA from '../components/ui/ContextualCTA';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 interface ContinuityPlan {
@@ -29,6 +32,20 @@ const ContinuityPage: React.FC = () => {
   const { t } = useTranslation();
   const [showPlanner, setShowPlanner] = useState(false);
   const [plans, setPlans] = useLocalStorage<ContinuityPlan[]>('continuity-plans', []);
+  const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
+  const [impactAssessments] = useLocalStorage<any[]>('business-impact-assessments', []);
+  const [showCompletion, setShowCompletion] = useState(false);
+
+  // Mark Step 4 as completed when plans are created
+  useEffect(() => {
+    if (plans.length > 0 && !completedSteps.includes(4)) {
+      setCompletedSteps([...completedSteps, 4]);
+      // Show completion celebration if all 4 steps are done
+      if (completedSteps.length >= 3) {
+        setShowCompletion(true);
+      }
+    }
+  }, [plans.length, completedSteps, setCompletedSteps]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -552,6 +569,70 @@ ${t('continuity.template.generated_by')}
 
   return (
     <div>
+      {/* Journey Progress */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-4xl mx-auto">
+          <JourneyProgress 
+            currentStep={4} 
+            completedSteps={completedSteps as (1 | 2 | 3 | 4)[]}
+            variant="full"
+          />
+        </div>
+      </div>
+
+      {/* Journey Completion Celebration */}
+      {showCompletion && completedSteps.length === 4 && (
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8 bg-gradient-to-br from-success-50 via-primary-50 to-secondary-50 dark:from-success-900/20 dark:via-primary-900/20 dark:to-secondary-900/20 border-2 border-success-300 dark:border-success-700">
+              <div className="text-center">
+                <Trophy className="h-16 w-16 text-success-500 mx-auto mb-4" />
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  🎉 Journey Complete! 🎉
+                </h2>
+                <p className="text-xl text-gray-700 dark:text-gray-300 mb-6">
+                  Congratulations! You've completed all 4 steps of your compliance journey.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+                    <CheckCircle className="h-8 w-8 text-success-500 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">Step 1</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Assessment</div>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+                    <CheckCircle className="h-8 w-8 text-success-500 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">Step 2</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">System Mapping</div>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+                    <CheckCircle className="h-8 w-8 text-success-500 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">Step 3</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Impact Analysis</div>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
+                    <CheckCircle className="h-8 w-8 text-success-500 mx-auto mb-2" />
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">Step 4</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Continuity Plans</div>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/dashboard">
+                    <Button size="lg" icon={<ArrowRight className="h-5 w-5" />} iconPosition="right">
+                      View Your Dashboard
+                    </Button>
+                  </Link>
+                  <Link to="/toolkit">
+                    <Button size="lg" variant="outline">
+                      Download Resources
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -559,8 +640,11 @@ ${t('continuity.template.generated_by')}
             <h1 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 dark:text-white mb-6">
               {t('continuity.title')}
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
               {t('continuity.subtitle')}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+              Step 4 of 4: Develop recovery procedures for critical systems
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" onClick={() => setShowPlanner(true)}>{t('continuity.create_plan')}</Button>
@@ -569,17 +653,33 @@ ${t('continuity.template.generated_by')}
               </Button>
             </div>
 
+            {/* Bridge Content from Step 3 */}
+            {impactAssessments.length > 0 && plans.length === 0 && (
+              <div className="mt-12 max-w-4xl mx-auto">
+                <Card className="p-6 bg-accent-50 dark:bg-accent-900/20 border border-accent-200 dark:border-accent-800">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    <strong>Tip:</strong> You've analyzed <strong>{impactAssessments.length}</strong> system{impactAssessments.length !== 1 ? 's' : ''}. 
+                    Create continuity plans for your high-impact systems first. 
+                    {impactAssessments.filter((a: any) => a.patientImpact >= 4 || a.operationalImpact >= 4).length > 0 && (
+                      <> Start with the <strong>{impactAssessments.filter((a: any) => a.patientImpact >= 4 || a.operationalImpact >= 4).length} system{impactAssessments.filter((a: any) => a.patientImpact >= 4 || a.operationalImpact >= 4).length !== 1 ? 's' : ''}</strong> that have high patient or operational impact.</>
+                    )}
+                  </p>
+                </Card>
+              </div>
+            )}
+
             {/* Stats */}
             {plans.length > 0 && (
-              <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Card className="p-4">
-                  <div className="text-2xl font-bold text-primary-600">{plans.length}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Plans Created</div>
-                </Card>
-                <Card className="p-4">
-                  <div className="text-2xl font-bold text-accent-600">
-                    {plans.filter(p => p.impactLevel === 'Critical').length}
-                  </div>
+              <>
+                <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Card className="p-4">
+                    <div className="text-2xl font-bold text-primary-600">{plans.length}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Plans Created</div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-2xl font-bold text-accent-600">
+                      {plans.filter(p => p.impactLevel === 'Critical').length}
+                    </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">Critical Plans</div>
                 </Card>
                 <Card className="p-4">
@@ -587,6 +687,91 @@ ${t('continuity.template.generated_by')}
                     {plans.filter(p => p.status === t('continuity.status.active') || p.status === 'Active').length}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{t('planning.active_plans')}</div>
+                </Card>
+              </div>
+
+              {/* Step 4 Completion Content */}
+              <div className="mt-12 max-w-4xl mx-auto">
+                <Card className="p-6 bg-gradient-to-br from-success-50 to-primary-50 dark:from-success-900/20 dark:to-primary-900/20 border-2 border-success-200 dark:border-success-800">
+                  <div className="text-center mb-6">
+                    <CheckCircle className="h-12 w-12 text-success-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                      Step 4 Complete! 🎉
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      You've created <strong className="text-success-600 dark:text-success-400">{plans.length}</strong> continuity plan{plans.length !== 1 ? 's' : ''}
+                      {plans.filter(p => p.impactLevel === 'Critical').length > 0 && (
+                        <>, including <strong>{plans.filter(p => p.impactLevel === 'Critical').length} critical</strong> plan{plans.filter(p => p.impactLevel === 'Critical').length !== 1 ? 's' : ''}</>
+                      )}
+                    </p>
+                  </div>
+                  
+                  {completedSteps.length === 4 && (
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6">
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3 text-center">
+                        🎊 Journey Complete! 🎊
+                      </h4>
+                      <p className="text-gray-700 dark:text-gray-300 mb-4 text-center">
+                        Congratulations! You've completed all 4 steps of your compliance journey. 
+                        You now have a comprehensive compliance framework with assessments, system mapping, impact analysis, and continuity plans.
+                      </p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <Link to="/dashboard">
+                          <Button 
+                            size="lg" 
+                            className="w-full"
+                            icon={<ArrowRight className="h-5 w-5" />}
+                            iconPosition="right"
+                          >
+                            View Complete Dashboard
+                          </Button>
+                        </Link>
+                        <Link to="/toolkit">
+                          <Button 
+                            size="lg" 
+                            variant="outline"
+                            className="w-full"
+                          >
+                            Download All Resources
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <ContextualCTA
+                      title="Review Plans"
+                      description="View and manage your continuity plans"
+                      primaryAction={{
+                        text: "View Plans",
+                        href: "#plans",
+                        trackingLabel: "view-plans"
+                      }}
+                      variant="minimal"
+                    />
+                    <ContextualCTA
+                      title="Train Staff"
+                      description="Access training resources"
+                      primaryAction={{
+                        text: "Go to Training",
+                        href: "/training",
+                        trackingLabel: "go-to-training"
+                      }}
+                      variant="minimal"
+                    />
+                    <ContextualCTA
+                      title="Get Support"
+                      description="Need implementation help?"
+                      primaryAction={{
+                        text: "Contact Us",
+                        href: "/contact",
+                        trackingLabel: "contact-support"
+                      }}
+                      variant="minimal"
+                    />
+                  </div>
                 </Card>
               </div>
             )}
