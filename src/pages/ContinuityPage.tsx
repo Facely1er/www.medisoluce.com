@@ -774,6 +774,7 @@ ${t('continuity.template.generated_by')}
                   </div>
                 </Card>
               </div>
+              </>
             )}
           </div>
         </div>
