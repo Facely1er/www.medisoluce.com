@@ -58,11 +58,6 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       const health = await comprehensiveHealthManager.getHealthReport();
       setHealthData(health);
       setLastUpdate(new Date());
-      
-      // Auto-optimize if enabled and health is below threshold
-      if (enableAutoOptimization && health.overall.score < healthThreshold && !isOptimizing) {
-        await optimize();
-      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       setError(errorMessage);
@@ -70,7 +65,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
     } finally {
       setIsLoading(false);
     }
-  }, [enableAutoOptimization, healthThreshold, isOptimizing, optimize]);
+  }, []);
 
   const optimize = useCallback(async () => {
     setIsOptimizing(true);
@@ -171,6 +166,13 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
       return () => clearInterval(interval);
     }
   }, [autoRefresh, refreshInterval, refresh]);
+
+  // Auto-optimization effect
+  useEffect(() => {
+    if (enableAutoOptimization && healthData && healthData.overall.score < healthThreshold && !isOptimizing && !isLoading) {
+      optimize();
+    }
+  }, [enableAutoOptimization, healthData, healthThreshold, isOptimizing, isLoading, optimize]);
 
   // Health monitoring alerts
   useEffect(() => {
