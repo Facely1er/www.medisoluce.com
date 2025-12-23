@@ -35,6 +35,9 @@ class PerformanceEnhancer {
   private config: PerformanceEnhancementConfig;
   private metrics: PerformanceMetrics | null = null;
   private optimizations: string[] = [];
+  private lastNotificationTime: number = 0;
+  private lastOptimizationCount: number = 0;
+  private readonly NOTIFICATION_COOLDOWN = 10000; // 10 seconds between notifications
   private observers: IntersectionObserver[] = [];
 
   constructor(config: Partial<PerformanceEnhancementConfig> = {}) {
@@ -66,6 +69,10 @@ class PerformanceEnhancer {
     
     const before = this.captureMetrics();
     
+    // Clear previous optimizations to get accurate count
+    const previousOptimizations = [...this.optimizations];
+    this.optimizations = [];
+    
     await this.runOptimizations();
     
     // Wait for optimizations to take effect
@@ -85,7 +92,19 @@ class PerformanceEnhancer {
     if (!import.meta.env.PROD) {
       console.log('✅ Performance enhancement completed:', improvement);
     }
-    this.notifyPerformanceImprovement(improvement);
+    
+    // Only notify if there are new optimizations and cooldown has passed
+    const newOptimizationsCount = this.optimizations.length;
+    const now = Date.now();
+    const timeSinceLastNotification = now - this.lastNotificationTime;
+    const hasNewOptimizations = newOptimizationsCount > 0 && 
+                                newOptimizationsCount !== this.lastOptimizationCount;
+    
+    if (hasNewOptimizations && timeSinceLastNotification >= this.NOTIFICATION_COOLDOWN) {
+      this.notifyPerformanceImprovement();
+      this.lastNotificationTime = now;
+      this.lastOptimizationCount = newOptimizationsCount;
+    }
     
     return this.metrics;
   }
@@ -104,7 +123,10 @@ class PerformanceEnhancer {
       if (optimization.enabled) {
         try {
           await optimization.fn();
-          this.optimizations.push(optimization.name);
+          // Only add if not already in the list (prevent duplicates)
+          if (!this.optimizations.includes(optimization.name)) {
+            this.optimizations.push(optimization.name);
+          }
           if (!import.meta.env.PROD) {
             console.log(`✅ ${optimization.name} completed`);
           }
@@ -112,6 +134,11 @@ class PerformanceEnhancer {
           console.error(`❌ ${optimization.name} failed:`, error);
         }
       }
+    }
+    
+    // Limit optimizations array size to prevent unbounded growth
+    if (this.optimizations.length > 20) {
+      this.optimizations = this.optimizations.slice(-20);
     }
   }
 
@@ -445,11 +472,11 @@ class PerformanceEnhancer {
   }
 
   private notifyPerformanceImprovement(): void {
-    if (typeof window !== 'undefined' && 'showToast' in window) {
+    if (typeof window !== 'undefined' && 'showToast' in window && this.optimizations.length > 0) {
       (window as Window & { showToast: (options: { type: string; title: string; message: string; duration: number }) => void }).showToast({
         type: 'success',
         title: 'Performance Enhanced',
-        message: `Applied ${this.optimizations.length} optimizations`,
+        message: `Applied ${this.optimizations.length} optimization${this.optimizations.length !== 1 ? 's' : ''}`,
         duration: 5000
       });
     }

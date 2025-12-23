@@ -74,9 +74,9 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-transparent'}`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center py-4">
+    <header className={`sticky top-0 z-50 transition-all duration-300 w-full overflow-hidden ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-transparent'}`}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+        <div className="flex items-center py-4 min-w-0">
           <Link to="/" className="flex items-center space-x-2">
             <img 
               src="/medisoluce.png" 
@@ -94,8 +94,8 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center justify-center flex-1 px-4">
-            <div className="hidden lg:flex items-center justify-center gap-1">
+          <nav className="hidden md:flex items-center justify-center flex-1 px-4 min-w-0 overflow-hidden">
+            <div className="hidden lg:flex items-center justify-center gap-1 flex-wrap max-w-full">
               {primaryNavItems.map((item) => (
                 <Link
                   key={item.path}

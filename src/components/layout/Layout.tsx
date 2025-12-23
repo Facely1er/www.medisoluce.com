@@ -126,10 +126,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
   }, [location.pathname]);
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 overflow-x-hidden max-w-full">
       <Header />
       <motion.main 
-        className="flex-grow"
+        className="flex-grow overflow-x-hidden max-w-full"
         initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}

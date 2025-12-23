@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Activity, Zap, Shield, CheckCircle, AlertTriangle, XCircle, Play, Pause, Download, RefreshCw, Wrench, Clock, Eye, Bug } from 'lucide-react';
 import Card from './Card';
 import Button from './Button';
@@ -32,6 +32,8 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     performance: unknown;
     timestamp: Date;
   }>>([]);
+  const lastAutoEnhancementRef = useRef<number>(0);
+  const ENHANCEMENT_COOLDOWN = 30000; // 30 seconds between auto-enhancements
 
   const shouldShow = !import.meta.env.PROD || showInProduction;
 
@@ -120,14 +122,23 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     }
   }, [loadHealthStatus]);
 
-  // Auto-enhancement effect
+  // Auto-enhancement effect with cooldown
   useEffect(() => {
     if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) {
       return;
     }
 
+    const now = Date.now();
+    const timeSinceLastEnhancement = now - lastAutoEnhancementRef.current;
+    
+    // Only auto-enhance if cooldown has passed
+    if (timeSinceLastEnhancement < ENHANCEMENT_COOLDOWN) {
+      return;
+    }
+
     const criticalIssues = healthStatus.issues?.filter((issue) => issue.severity === 'critical') || [];
     if (criticalIssues.length > 0) {
+      lastAutoEnhancementRef.current = now;
       performEnhancement();
     }
   }, [shouldShow, autoEnhance, isEnhancing, healthStatus, performEnhancement]);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, AlertCircle, XCircle, Info, X } from 'lucide-react';
 
@@ -81,23 +81,55 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onClose }) => {
 
 export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const timeoutRefs = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   const hideToast = useCallback((id: string) => {
+    // Clear timeout if it exists
+    const timeoutId = timeoutRefs.current.get(id);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutRefs.current.delete(id);
+    }
+    
     setToasts(prev => prev.filter(toast => toast.id !== id));
   }, []);
 
   const showToast = useCallback((toast: Omit<Toast, 'id'>) => {
-    const id = Date.now().toString();
-    const newToast = { ...toast, id };
-    
-    setToasts(prev => [...prev, newToast]);
-
-    // Auto remove after duration (default 5 seconds)
-    const duration = toast.duration || 5000;
-    setTimeout(() => {
-      hideToast(id);
-    }, duration);
+    setToasts(prev => {
+      // Prevent duplicate toasts with same title and message
+      const isDuplicate = prev.some(
+        t => t.title === toast.title && t.message === toast.message
+      );
+      if (isDuplicate) {
+        return prev;
+      }
+      
+      // Use a more unique ID to prevent collisions
+      const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const newToast = { ...toast, id };
+      
+      // Auto remove after duration (default 5 seconds)
+      const duration = toast.duration || 5000;
+      const timeoutId = setTimeout(() => {
+        hideToast(id);
+      }, duration);
+      
+      // Store timeout ID for cleanup
+      timeoutRefs.current.set(id, timeoutId);
+      
+      return [...prev, newToast];
+    });
   }, [hideToast]);
+
+  // Cleanup all timeouts on unmount
+  useEffect(() => {
+    return () => {
+      timeoutRefs.current.forEach((timeoutId) => {
+        clearTimeout(timeoutId);
+      });
+      timeoutRefs.current.clear();
+    };
+  }, []);
 
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
