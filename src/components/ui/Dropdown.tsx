@@ -41,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, icon, items, groups }) => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative overflow-visible" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
@@ -58,7 +58,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, icon, items, groups }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+        <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-[60] overflow-visible">
           {groups ? (
             groups.map((group, groupIndex) => (
               <div key={group.title}>

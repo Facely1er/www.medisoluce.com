@@ -73,10 +73,10 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full overflow-visible">
-        <div className="flex items-center py-4 min-w-0 overflow-visible">
-          <Link to="/" className="flex items-center space-x-2">
+        <div className="flex items-center gap-4 lg:gap-6 py-4 min-w-0 overflow-visible">
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
             <img 
               src="/medisoluce.png" 
               alt="MediSoluce Logo" 
@@ -93,8 +93,8 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center flex-1 px-6 lg:px-8 min-w-0 overflow-visible">
-            <div className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap overflow-visible">
+          <nav className="hidden md:flex items-center flex-1 min-w-0 overflow-hidden">
+            <div className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap min-w-0">
               {primaryNavItems.map((item) => (
                 <Link
                   key={item.path}
@@ -134,8 +134,8 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 flex-shrink-0 ml-4 lg:ml-6">
-              <LanguageSelector className="mr-2" />
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 flex-shrink-0">
+              <LanguageSelector />
               <NotificationCenter />
               
               {user && (
@@ -205,9 +205,9 @@ const Header: React.FC = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`md:hidden ${
+        className={`md:hidden fixed top-[80px] left-0 right-0 z-40 max-h-[calc(100vh-80px)] overflow-y-auto ${
           isMenuOpen ? 'block' : 'hidden'
-        } bg-white dark:bg-gray-800 shadow-lg`}
+        } bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700`}
       >
         <div className="px-4 py-3 space-y-1">
           {allNavigationItems.map((item) => (
