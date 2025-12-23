@@ -164,37 +164,59 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customItems, className = '' }
   }
 
   return (
-    <nav aria-label="Breadcrumb" className={`${className}`}>
-      <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-        {breadcrumbs.map((item, index) => {
-          const isLast = index === breadcrumbs.length - 1;
-          
-          return (
-            <li key={item.path} className="flex items-center">
-              {index > 0 && (
-                <ChevronRight className="h-4 w-4 mx-2 text-gray-400" />
-              )}
-              {isLast ? (
-                <span className="font-medium text-gray-900 dark:text-white flex items-center">
-                  {item.icon && <span className="mr-1">{item.icon}</span>}
-                  {item.label}
-                </span>
-              ) : (
-                <Link
-                  to={item.path}
-                  className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center"
-                  aria-label={`Navigate to ${item.label}`}
-                  data-analytics="breadcrumb-link"
-                  data-link-destination={item.path}
-                >
-                  {item.icon && <span className="mr-1">{item.icon}</span>}
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ol>
+    <nav 
+      aria-label="Breadcrumb" 
+      className={`mb-6 ${className}`}
+    >
+      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4 py-3 border border-gray-200 dark:border-gray-700">
+        <ol className="flex items-center flex-wrap gap-1 sm:gap-2 text-sm text-gray-600 dark:text-gray-300">
+          {breadcrumbs.map((item, index) => {
+            const isLast = index === breadcrumbs.length - 1;
+            
+            return (
+              <li 
+                key={`${item.path}-${index}`} 
+                className="flex items-center min-w-0"
+              >
+                {index > 0 && (
+                  <ChevronRight 
+                    className="h-3.5 w-3.5 sm:h-4 sm:w-4 mx-1 sm:mx-2 text-gray-400 dark:text-gray-500 flex-shrink-0" 
+                    aria-hidden="true"
+                  />
+                )}
+                {isLast ? (
+                  <span 
+                    className="font-medium text-gray-900 dark:text-white flex items-center gap-1.5 truncate"
+                    aria-current="page"
+                  >
+                    {item.icon && (
+                      <span className="flex-shrink-0 text-primary-600 dark:text-primary-400">
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="truncate">{item.label}</span>
+                  </span>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5 truncate max-w-[200px] sm:max-w-none"
+                    aria-label={`Navigate to ${item.label}`}
+                    data-analytics="breadcrumb-link"
+                    data-link-destination={item.path}
+                  >
+                    {item.icon && (
+                      <span className="flex-shrink-0 text-gray-500 dark:text-gray-400">
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </nav>
   );
 };
