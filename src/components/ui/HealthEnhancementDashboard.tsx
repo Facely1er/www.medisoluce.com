@@ -53,13 +53,20 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     }
   }, []);
 
+  // Load health status effect - always runs, but conditionally loads data
   useEffect(() => {
-    if (!shouldShow) return;
+    if (!shouldShow) {
+      return;
+    }
 
     loadHealthStatus();
 
     if (isMonitoring) {
-      const interval = setInterval(loadHealthStatus, 60000); // Every minute
+      const interval = setInterval(() => {
+        if (shouldShow) {
+          loadHealthStatus();
+        }
+      }, 60000); // Every minute
       return () => clearInterval(interval);
     }
   }, [shouldShow, isMonitoring, loadHealthStatus]);
@@ -115,7 +122,9 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
 
   // Auto-enhancement effect
   useEffect(() => {
-    if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) return;
+    if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) {
+      return;
+    }
 
     const criticalIssues = healthStatus.issues?.filter((issue) => issue.severity === 'critical') || [];
     if (criticalIssues.length > 0) {

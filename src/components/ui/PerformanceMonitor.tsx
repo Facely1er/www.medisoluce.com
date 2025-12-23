@@ -47,6 +47,8 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       setIsVisible(true);
     }
 
+    const observers: PerformanceObserver[] = [];
+
     const collectMetrics = () => {
       if ('performance' in window) {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -69,17 +71,19 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
             }
 
             // LCP
-            new PerformanceObserver((list) => {
+            const lcpObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
               const lastEntry = entries[entries.length - 1];
               if (lastEntry) {
                 newMetrics.largestContentfulPaint = lastEntry.startTime;
                 setMetrics(prev => ({ ...prev, largestContentfulPaint: lastEntry.startTime }));
               }
-            }).observe({ entryTypes: ['largest-contentful-paint'] });
+            });
+            lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+            observers.push(lcpObserver);
 
             // FID
-            new PerformanceObserver((list) => {
+            const fidObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
               entries.forEach((entry: PerformanceEntry) => {
                 if (entry.entryType === 'first-input') {
@@ -88,11 +92,13 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
                   setMetrics(prev => ({ ...prev, firstInputDelay: fid }));
                 }
               });
-            }).observe({ entryTypes: ['first-input'] });
+            });
+            fidObserver.observe({ entryTypes: ['first-input'] });
+            observers.push(fidObserver);
 
             // CLS
             let clsScore = 0;
-            new PerformanceObserver((list) => {
+            const clsObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
               entries.forEach((entry: PerformanceEntry) => {
                 if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
@@ -101,7 +107,9 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
                   setMetrics(prev => ({ ...prev, cumulativeLayoutShift: clsScore }));
                 }
               });
-            }).observe({ entryTypes: ['layout-shift'] });
+            });
+            clsObserver.observe({ entryTypes: ['layout-shift'] });
+            observers.push(clsObserver);
 
           } catch (error) {
             if (!import.meta.env.PROD) {
@@ -127,6 +135,14 @@ const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
 
     return () => {
       window.removeEventListener('load', collectMetrics);
+      // Cleanup PerformanceObservers
+      observers.forEach(observer => {
+        try {
+          observer.disconnect();
+        } catch (error) {
+          // Ignore errors during cleanup
+        }
+      });
     };
   }, [onMetricsUpdate, showDebugInfo]);
 

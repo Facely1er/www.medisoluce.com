@@ -10,10 +10,15 @@ interface UseHealthMonitoringOptions {
 
 interface HealthMonitoringResult {
   healthData: {
-    status: string;
-    score: number;
+    overall: {
+      score: number;
+      status: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
+      trend: 'improving' | 'stable' | 'declining';
+      confidence: number;
+      timestamp: string;
+    };
+    categories: Record<string, unknown>;
     metrics: Record<string, number>;
-    issues: Array<{ id: string; severity: string; message: string }>;
     recommendations: Array<{ id: string; title: string; priority: string }>;
   } | null;
   isLoading: boolean;
@@ -39,10 +44,15 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
   } = options;
 
   const [healthData, setHealthData] = useState<{
-    status: string;
-    score: number;
+    overall: {
+      score: number;
+      status: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
+      trend: 'improving' | 'stable' | 'declining';
+      confidence: number;
+      timestamp: string;
+    };
+    categories: Record<string, unknown>;
     metrics: Record<string, number>;
-    issues: Array<{ id: string; severity: string; message: string }>;
     recommendations: Array<{ id: string; title: string; priority: string }>;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -159,24 +169,42 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
 
   // Auto-refresh effect
   useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+
+    // Initial refresh
     refresh();
 
     if (autoRefresh) {
-      const interval = setInterval(refresh, refreshInterval);
-      return () => clearInterval(interval);
+      intervalId = setInterval(() => {
+        refresh();
+      }, refreshInterval);
     }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [autoRefresh, refreshInterval, refresh]);
 
   // Auto-optimization effect
   useEffect(() => {
-    if (enableAutoOptimization && healthData && healthData.overall.score < healthThreshold && !isOptimizing && !isLoading) {
+    if (!enableAutoOptimization || !healthData || isOptimizing || isLoading) {
+      return;
+    }
+
+    if (healthData.overall.score < healthThreshold) {
       optimize();
     }
   }, [enableAutoOptimization, healthData, healthThreshold, isOptimizing, isLoading, optimize]);
 
   // Health monitoring alerts
   useEffect(() => {
-    if (healthData && healthData.overall.status === 'critical') {
+    if (!healthData) {
+      return;
+    }
+
+    if (healthData.overall.status === 'critical') {
       if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
         (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'error',
@@ -185,7 +213,7 @@ export const useHealthMonitoring = (options: UseHealthMonitoringOptions = {}): H
           duration: 10000
         });
       }
-    } else if (healthData && healthData.overall.status === 'poor') {
+    } else if (healthData.overall.status === 'poor') {
       if (typeof window !== 'undefined' && (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast) {
         (window as Window & { showToast?: (toast: { type: string; title: string; message: string }) => void }).showToast({
           type: 'warning',
