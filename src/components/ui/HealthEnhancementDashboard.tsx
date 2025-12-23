@@ -64,16 +64,6 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
     }
   }, [shouldShow, isMonitoring, loadHealthStatus]);
 
-  // Auto-enhancement effect
-  useEffect(() => {
-    if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) return;
-
-    const criticalIssues = healthStatus.issues?.filter((issue) => issue.severity === 'critical') || [];
-    if (criticalIssues.length > 0) {
-      performEnhancement();
-    }
-  }, [shouldShow, autoEnhance, isEnhancing, healthStatus, performEnhancement]);
-
   const performEnhancement = useCallback(async () => {
     setIsEnhancing(true);
     try {
@@ -122,6 +112,16 @@ const HealthEnhancementDashboard: React.FC<HealthEnhancementDashboardProps> = ({
       setIsEnhancing(false);
     }
   }, [loadHealthStatus]);
+
+  // Auto-enhancement effect
+  useEffect(() => {
+    if (!shouldShow || !autoEnhance || isEnhancing || !healthStatus) return;
+
+    const criticalIssues = healthStatus.issues?.filter((issue) => issue.severity === 'critical') || [];
+    if (criticalIssues.length > 0) {
+      performEnhancement();
+    }
+  }, [shouldShow, autoEnhance, isEnhancing, healthStatus, performEnhancement]);
 
   const exportHealthReport = () => {
     const report = `
