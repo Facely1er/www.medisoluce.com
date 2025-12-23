@@ -44,6 +44,7 @@ const Footer: React.FC = () => {
       title: t('footer.company'),
       links: [
         { name: t('contact.title'), url: '/contact', icon: <MessageSquare className="h-4 w-4" /> },
+        { name: 'FAQ', url: '/faq', icon: <LifeBuoy className="h-4 w-4" /> },
         { name: 'Privacy Policy', url: '/privacy', icon: <Lock className="h-4 w-4" /> },
         { name: 'Terms of Service', url: '/terms', icon: <FileText className="h-4 w-4" /> },
         { name: 'E-Commerce Policy', url: '/ecommerce-policy', icon: <CreditCard className="h-4 w-4" /> },

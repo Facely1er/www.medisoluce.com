@@ -44,7 +44,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, icon, items, groups }) => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center space-x-1 px-3 py-2 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+        className={`flex items-center justify-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
           isActive
             ? 'text-primary-600 dark:text-primary-400'
             : 'text-gray-600 dark:text-gray-300'
@@ -54,7 +54,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, icon, items, groups }) => {
       >
         {icon}
         <span>{label}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (

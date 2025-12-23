@@ -18,11 +18,10 @@ const Header: React.FC = () => {
 
   // Simplified navigation - direct links for better UX
   const primaryNavItems = [
-    { name: t('nav.home'), path: '/', icon: <Home className="w-5 h-5" /> },
-    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-5 h-5" /> },
-    { name: t('nav.dashboard'), path: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { name: 'Pricing', path: '/pricing', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: 'FAQ', path: '/faq', icon: <LifeBuoy className="w-5 h-5" /> },
+    { name: t('nav.home'), path: '/', icon: <Home className="w-4 h-4" /> },
+    { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-4 h-4" /> },
+    { name: t('nav.dashboard'), path: '/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { name: 'Pricing', path: '/pricing', icon: <ShieldCheck className="w-4 h-4" /> },
   ];
 
   // Organized dropdown groups
@@ -94,13 +93,13 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center justify-center flex-1 px-4 min-w-0 overflow-hidden">
-            <div className="hidden lg:flex items-center justify-center gap-1 flex-wrap max-w-full">
+          <nav className="hidden md:flex items-center flex-1 px-6 lg:px-8 min-w-0">
+            <div className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap">
               {primaryNavItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center justify-center space-x-1 px-3 py-2 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                  className={`flex items-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                     location.pathname === item.path
                       ? 'text-primary-600 dark:text-primary-400'
                       : 'text-gray-600 dark:text-gray-300'
@@ -116,26 +115,26 @@ const Header: React.FC = () => {
               
               <Dropdown 
                 label="Privacy Compliance" 
-                icon={<Lock className="w-5 h-5" />}
+                icon={<Lock className="w-4 h-4" />}
                 items={privacyComplianceItems}
               />
               
               <Dropdown 
                 label="Risk & Resilience" 
-                icon={<Shield className="w-5 h-5" />}
+                icon={<Shield className="w-4 h-4" />}
                 items={riskResilienceItems}
               />
               
               <Dropdown 
                 label="Continuity & Recovery" 
-                icon={<RefreshCw className="w-5 h-5" />}
+                icon={<RefreshCw className="w-4 h-4" />}
                 items={continuityRecoveryItems}
               />
             </div>
           </nav>
 
           {/* Action Buttons */}
-          <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 flex-shrink-0 ml-4 lg:ml-6">
               <LanguageSelector className="mr-2" />
               <NotificationCenter />
               
