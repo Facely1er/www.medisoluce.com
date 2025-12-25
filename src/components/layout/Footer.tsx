@@ -55,8 +55,8 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
               <img 
@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
                 </span>
               </div>
             </Link>
-            <p className="mt-3 text-xs text-gray-600 dark:text-gray-300 max-w-sm leading-snug">
+            <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-300 max-w-sm leading-relaxed">
               {t('footer.description')}
             </p>
 
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
 
           {footerLinks.map((section, sectionIndex) => (
             <div key={sectionIndex}>
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1.5">
                 {section.title}
               </h3>
               <ul className="space-y-0.5">
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
             &copy; {currentYear} ERMITS LLC. {t('footer.copyright')}
           </p>
