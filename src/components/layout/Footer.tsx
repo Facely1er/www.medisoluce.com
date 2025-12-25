@@ -55,8 +55,8 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
               <img 
@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
                 </span>
               </div>
             </Link>
-            <p className="mt-2 text-xs text-gray-600 dark:text-gray-300 max-w-sm leading-relaxed">
+            <p className="mt-3 text-xs text-gray-600 dark:text-gray-300 max-w-sm leading-snug">
               {t('footer.description')}
             </p>
 
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
                 {section.title}
               </h3>
-              <ul className="space-y-1">
+              <ul className="space-y-0.5">
                 {section.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     {link.url.startsWith('http') ? (
@@ -92,7 +92,7 @@ const Footer: React.FC = () => {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center text-xs text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors py-1"
+                        className="flex items-center text-xs text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors py-0.5"
                       >
                         <span className="mr-1.5 text-primary-500 flex-shrink-0">{link.icon}</span>
                         {link.name}
@@ -100,7 +100,7 @@ const Footer: React.FC = () => {
                     ) : (
                       <Link
                         to={link.url}
-                        className="flex items-center text-xs text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors py-1"
+                        className="flex items-center text-xs text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors py-0.5"
                       >
                         <span className="mr-1.5 text-primary-500 flex-shrink-0">{link.icon}</span>
                         {link.name}
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
             &copy; {currentYear} ERMITS LLC. {t('footer.copyright')}
           </p>
