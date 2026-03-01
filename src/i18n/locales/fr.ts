@@ -19,12 +19,14 @@ const frTranslation = {
     "resources": "Ressources",
     "company": "Entreprise",
     "copyright": "Tous droits réservés.",
-    "description": "La plateforme complète de conformité en santé qui combine sécurité, confidentialité et gestion des dépendances technologiques pour protéger les données des patients et assurer la continuité des activités."
+    "description": "Plateforme de conformité santé axée sur la confidentialité : collecte minimale de données, vos données restent dans votre navigateur par défaut. HIPAA, dépendances et continuité.",
+    "privacy_first": "Conçu pour la confidentialité. Nous évitons la collecte de données autant que possible."
   },
   
   // Header navigation
   "nav": {
     "home": "Accueil",
+    "solutions": "Solutions",
     "demo": "Démo", 
     "hipaa_assessment": "Évaluation HIPAA",
     "system_dependencies": "Dépendances Système",
@@ -633,6 +635,47 @@ const frTranslation = {
       "beginner": "Débutant",
       "intermediate": "Intermédiaire",
       "advanced": "Avancé"
+    },
+    "lesson": "Leçon",
+    "of": "sur",
+    "complete": "Terminé",
+    "lesson_completed": "Leçon Terminée",
+    "key_takeaways": "Points Clés",
+    "example": "Exemple",
+    "practical_application": "Application Pratique",
+    "previous_lesson": "Leçon Précédente",
+    "back_to_modules": "Retour aux Modules",
+    "take_assessment": "Passer l'Évaluation",
+    "next_lesson": "Leçon Suivante",
+    "mark_complete_continue": "Marquer Terminé et Continuer",
+    "additional_resources": "Ressources Supplémentaires",
+    "download_templates": "Télécharger les Modèles",
+    "study_materials": "Matériaux d'Étude",
+    "quiz": {
+      "assessment": "Évaluation",
+      "question": "Question",
+      "answered": "répondues",
+      "select_answer": "Sélectionnez une réponse pour continuer",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "submit": "Soumettre l'Évaluation",
+      "passed": "Évaluation Réussie !",
+      "not_passed": "Pas Encore",
+      "passing_score": "Score de passage",
+      "congratulations": "Félicitations ! Vous avez réussi.",
+      "certificate_available": "Votre certificat est prêt à être téléchargé.",
+      "keep_trying": "Continuez à étudier — vous êtes presque là.",
+      "review_retake": "Révisez le module et recommencez quand vous êtes prêt.",
+      "answer_review": "Révision des Réponses",
+      "explanation": "Explication",
+      "retake": "Repasser l'Évaluation",
+      "download_certificate": "Télécharger le Certificat"
+    },
+    "certificate": {
+      "congratulations": "Félicitations !",
+      "earned": "Vous avez obtenu votre",
+      "share": "Partager",
+      "download": "Télécharger le Certificat"
     }
   },
   
@@ -1508,6 +1551,47 @@ const frTranslation = {
     "hipaa": {
       "title": "Suite de Conformité HIPAA",
       "subtitle": "Protégez les données des patients avec une évaluation de conformité complète, des modèles de politiques et des conseils d'implémentation.",
+      "limits_disclaimer": "Gratuit et Essentiel utilisent uniquement le stockage local du navigateur. Les limites s'appliquent par forfait ; synchronisation cloud et sauvegarde dans Professionnel et au-delà.",
+      "tier_limits": {
+        "free": {
+          "name": "Gratuit",
+          "subtitle": "Utilisation locale uniquement, aucun compte requis",
+          "limits": [
+            "Jusqu'à 3 évaluations HIPAA enregistrées",
+            "Jusqu'à 10 dépendances système",
+            "1 appareil, pas de synchronisation cloud",
+            "Export PDF : les 3 derniers rapports",
+            "Données stockées dans le navigateur uniquement (5 Mo)"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Jusqu'à 10 évaluations HIPAA enregistrées",
+            "Jusqu'à 25 dépendances système",
+            "Évaluation complète en 10 questions",
+            "Export PDF : 10 rapports par mois",
+            "Support par e-mail"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Jusqu'à 50 évaluations enregistrées",
+            "Jusqu'à 100 dépendances système",
+            "5 utilisateurs, synchronisation cloud avec sauvegarde",
+            "50 exports PDF par mois",
+            "Support prioritaire e-mail + chat"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Évaluations et dépendances illimitées",
+            "Utilisateurs illimités",
+            "Synchronisation cloud, sauvegarde et audit",
+            "Exports illimités",
+            "Consultant dédié et SLA"
+          ]
+        }
+      },
       "start_free_assessment": "Démarrer l'Évaluation Gratuite",
       "view_pricing": "Voir les Tarifs",
       "everything_you_need_title": "Tout Ce Dont Vous Avez Besoin pour la Conformité HIPAA",
@@ -1549,10 +1633,11 @@ const frTranslation = {
       "tiers": {
         "essential": {
           "name": "Essentiel",
-          "description": "Parfait pour les petits cabinets qui commencent avec la conformité HIPAA",
+          "description": "Parfait pour les petits cabinets qui commencent avec la conformité HIPAA. Jusqu'à 10 évaluations, 25 dépendances.",
           "price": "49 $",
           "cta": "Démarrer l'Évaluation Gratuite",
           "features": [
+            "Jusqu'à 10 évaluations HIPAA enregistrées",
             "Évaluation HIPAA complète en 10 questions",
             "Modèle de Politique de Confidentialité HIPAA",
             "Liste de Vérification de Réponse aux Violations",
@@ -1566,11 +1651,12 @@ const frTranslation = {
         },
         "professional": {
           "name": "Professionnel",
-          "description": "Pour les cabinets en croissance qui ont besoin de collaboration d'équipe",
+          "description": "Pour les cabinets en croissance qui ont besoin de collaboration d'équipe. Jusqu'à 50 évaluations, 100 dépendances, 5 utilisateurs.",
           "price": "149 $",
           "cta": "Commencer l'Essai Gratuit",
           "features": [
             "Tout dans Essentiel",
+            "Jusqu'à 50 évaluations, 100 dépendances",
             "Collaboration d'équipe (5 utilisateurs)",
             "Synchronisation cloud avec sauvegarde",
             "Outils d'évaluation des risques avancés",
@@ -1603,6 +1689,44 @@ const frTranslation = {
     "ransomware": {
       "title": "Suite de Résilience aux Rançongiciels",
       "subtitle": "Protégez les soins aux patients et les opérations contre les attaques de rançongiciels avec une défense, des procédures de réponse et de récupération spécifiques à la santé.",
+      "limits_disclaimer": "Forfait gratuit : utilisation locale uniquement. Les limites s'appliquent par forfait ; passez à un forfait supérieur pour plus d'éléments enregistrés et la sauvegarde cloud.",
+      "tier_limits": {
+        "free": {
+          "name": "Gratuit",
+          "subtitle": "Utilisation locale uniquement",
+          "limits": [
+            "1 calcul d'impact enregistré",
+            "Accès au guide de réponse",
+            "Export PDF : les 3 derniers",
+            "Stockage navigateur uniquement"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Jusqu'à 5 calculs et guides enregistrés",
+            "Calculateur d'impact commercial",
+            "10 exports PDF par mois",
+            "Support par e-mail"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Jusqu'à 20 éléments enregistrés",
+            "Générateur de guides personnalisés",
+            "50 exports PDF par mois",
+            "5 utilisateurs, synchronisation cloud",
+            "Support prioritaire"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Éléments enregistrés illimités",
+            "SOC 24/7 et IR dédié",
+            "Exports illimités",
+            "Utilisateurs illimités"
+          ]
+        }
+      },
       "start_calculator": "Démarrer le Calculateur d'Impact",
       "run_calculator": "Lancer le Calculateur d'Impact",
       "view_pricing": "Voir les Tarifs",
@@ -1666,10 +1790,11 @@ const frTranslation = {
       "tiers": {
         "essential": {
           "name": "Essentiel",
-          "description": "Défense et réponse aux rançongiciels en santé - fondamentaux",
+          "description": "Défense et réponse aux rançongiciels en santé - fondamentaux. Jusqu'à 5 calculs enregistrés.",
           "price": "49 $",
           "cta": "Commencer",
           "features": [
+            "Jusqu'à 5 calculs d'impact enregistrés",
             "Guide de Réponse aux Rançongiciels",
             "Calculateur d'Impact Commercial",
             "Procédures de Réponse aux Incidents",
@@ -1683,11 +1808,12 @@ const frTranslation = {
         },
         "professional": {
           "name": "Professionnel",
-          "description": "Protection avancée contre les menaces pour les organisations de santé en croissance",
+          "description": "Protection avancée contre les menaces pour les organisations de santé en croissance. Jusqu'à 20 éléments enregistrés, 5 utilisateurs.",
           "price": "149 $",
           "cta": "Commencer l'Essai Gratuit",
           "features": [
             "Tout dans Essentiel",
+            "Jusqu'à 20 calculs et guides enregistrés",
             "Outils Avancés de Chasse aux Menaces",
             "Modèles d'Analyse Médico-légale",
             "Constructeur de Guides Personnalisés",
@@ -1720,8 +1846,51 @@ const frTranslation = {
     "continuity": {
       "title": "Suite de Continuité Opérationnelle",
       "subtitle": "Assurez la continuité des soins aux patients pendant les pannes système, catastrophes et perturbations avec des outils de planification de continuité complets.",
+      "limits_disclaimer": "Gratuit et Essentiel utilisent le stockage local. Les limites de plans et dépendances s'appliquent ; synchronisation cloud dans Professionnel et au-delà.",
+      "tier_limits": {
+        "free": {
+          "name": "Gratuit",
+          "subtitle": "Utilisation locale uniquement",
+          "limits": [
+            "Jusqu'à 2 plans de continuité",
+            "Jusqu'à 10 dépendances système",
+            "Jusqu'à 5 évaluations d'impact",
+            "Export PDF : les 3 derniers",
+            "Stockage navigateur uniquement"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Jusqu'à 5 plans de continuité",
+            "Jusqu'à 25 dépendances système",
+            "Jusqu'à 15 évaluations d'impact",
+            "10 exports PDF par mois",
+            "Support par e-mail"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Jusqu'à 20 plans de continuité",
+            "Jusqu'à 100 dépendances",
+            "Jusqu'à 50 évaluations d'impact",
+            "5 utilisateurs, synchronisation cloud",
+            "Contrôle de version des plans",
+            "Support prioritaire"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Plans et emplacements illimités",
+            "Dépendances illimitées",
+            "Utilisateurs illimités",
+            "Synchronisation cloud et consultant BC dédié",
+            "SLA et exercices annuels"
+          ]
+        }
+      },
       "create_plan": "Créer un Plan de Continuité",
       "view_pricing": "Voir les Tarifs",
+      "choose_plan_subtitle": "Commencez par l'évaluation gratuite, puis passez au plan qui correspond à vos besoins",
       "prepared_title": "Préparé pour Toute Perturbation",
       "prepared_subtitle": "Plans de continuité pour les scénarios opérationnels de santé les plus courants",
       "everything_you_need_title": "Tout Ce Dont Vous Avez Besoin pour la Planification de Continuité",
@@ -1779,10 +1948,11 @@ const frTranslation = {
       "tiers": {
         "essential": {
           "name": "Essentiel",
-          "description": "Planification de continuité de base pour les petits cabinets",
+          "description": "Planification de continuité de base pour les petits cabinets. Jusqu'à 5 plans, 25 dépendances.",
           "price": "49 $",
           "cta": "Commencer",
           "features": [
+            "Jusqu'à 5 plans de continuité",
             "Modèles de Plans de Continuité",
             "Cartographie des Dépendances Technologiques",
             "Procédures de Panne DSE",
@@ -1796,11 +1966,12 @@ const frTranslation = {
         },
         "professional": {
           "name": "Professionnel",
-          "description": "Planification avancée pour les organisations de santé en croissance",
+          "description": "Planification avancée pour les organisations de santé en croissance. Jusqu'à 20 plans, 100 dépendances, 5 utilisateurs.",
           "price": "149 $",
           "cta": "Commencer l'Essai Gratuit",
           "features": [
             "Tout dans Essentiel",
+            "Jusqu'à 20 plans, 100 dépendances",
             "Cartographie Avancée des Dépendances",
             "Plans de Continuité Personnalisés",
             "Calendriers de Tests Automatisés",
@@ -1900,6 +2071,12 @@ const frTranslation = {
   "pricing_common": {
     "choose_plan": "Choisissez Votre Plan {{product}}",
     "choose_plan_subtitle": "Commencez par l'évaluation gratuite, puis passez au plan qui correspond à vos besoins",
+    "limits_disclaimer": "Les limites s'appliquent par forfait. Gratuit et Essentiel stockent les données dans votre navigateur uniquement ; synchronisation cloud et sauvegarde disponibles dans Professionnel et au-delà.",
+    "limit_reached_assessments": "Vous avez atteint la limite du forfait gratuit ({{limit}} évaluations enregistrées). Passez à un forfait supérieur pour en enregistrer plus.",
+    "limit_reached_dependencies": "Vous avez atteint la limite du forfait gratuit ({{limit}} dépendances système). Passez à un forfait supérieur pour en ajouter plus.",
+    "limit_reached_plans": "Vous avez atteint la limite du forfait gratuit ({{limit}} plans de continuité). Passez à un forfait supérieur pour en créer plus.",
+    "limit_reached_impact": "Vous avez atteint la limite du forfait gratuit ({{limit}} évaluations d'impact). Passez à un forfait supérieur.",
+    "upgrade_cta": "Mettre à niveau",
     "recommended": "RECOMMANDÉ",
     "per_month": "/mois",
     "trial_active": "Essai Actif",

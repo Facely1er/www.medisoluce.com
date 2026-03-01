@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench, Lock, Shield, RefreshCw } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench, Lock, ChevronDown } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import Dropdown from '../ui/Dropdown';
@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  // Simplified navigation - direct links for better UX
+  // Top nav: 5 items — Home, Solutions (dropdown), Demo, Dashboard, Pricing
   const primaryNavItems = [
     { name: t('nav.home'), path: '/', icon: <Home className="w-4 h-4" /> },
     { name: t('nav.demo'), path: '/demo', icon: <FileText className="w-4 h-4" /> },
@@ -24,36 +24,34 @@ const Header: React.FC = () => {
     { name: 'Pricing', path: '/pricing', icon: <ShieldCheck className="w-4 h-4" /> },
   ];
 
-  // Organized dropdown groups
-  const privacyComplianceItems = [
-    { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
-    { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
+  // Single Solutions dropdown — grouped for clarity
+  const solutionsGroups = [
+    {
+      title: 'Privacy & Compliance',
+      items: [
+        { name: 'HIPAA Assessment', path: '/hipaa-check', icon: <ShieldCheck className="w-5 h-5" /> },
+        { name: 'Comprehensive Assessment', path: '/comprehensive-assessment', icon: <ShieldCheck className="w-5 h-5" /> },
+        { name: 'Security Dashboard', path: '/security', icon: <ShieldCheck className="w-5 h-5" /> },
+      ],
+    },
+    {
+      title: 'Risk & Resilience',
+      items: [
+        { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
+        { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
+        { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
+      ],
+    },
+    {
+      title: 'Continuity & Recovery',
+      items: [
+        { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
+        { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
+      ],
+    },
   ];
-
-  const riskResilienceItems = [
-    { name: 'System Dependencies', path: '/dependency-manager', icon: <Server className="w-5 h-5" /> },
-    { name: 'Business Impact', path: '/business-impact', icon: <FileText className="w-5 h-5" /> },
-    { name: 'Ransomware Assessment', path: '/ransomware-assessment', icon: <AlertTriangle className="w-5 h-5" /> },
-  ];
-
-  const continuityRecoveryItems = [
-    { name: t('nav.business_continuity'), path: '/continuity', icon: <LifeBuoy className="w-5 h-5" /> },
-    { name: t('nav.resource_toolkit'), path: '/toolkit', icon: <Wrench className="w-5 h-5" /> },
-  ];
-
-  // For mobile navigation - all items combined
-  const allDropdownItems = [
-    ...privacyComplianceItems,
-    ...riskResilienceItems,
-    ...continuityRecoveryItems,
-  ];
-
-  // Mobile navigation - all items combined
-  const allNavigationItems = [
-    ...primaryNavItems,
-    ...allDropdownItems,
-  ];
+  // Mobile: primary links + Solutions as expandable section
+  const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +64,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     setIsMenuOpen(false);
+    setMobileSolutionsOpen(false);
   }, [location]);
 
   const toggleMenu = () => {
@@ -92,10 +91,30 @@ const Header: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — 5 items: Home, Solutions, Demo, Dashboard, Pricing */}
           <nav className="hidden md:flex items-center flex-1 min-w-0 overflow-hidden">
             <div className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap min-w-0">
-              {primaryNavItems.map((item) => (
+              <Link
+                key={primaryNavItems[0].path}
+                to={primaryNavItems[0].path}
+                className={`flex items-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                  location.pathname === primaryNavItems[0].path
+                    ? 'text-primary-600 dark:text-primary-400'
+                    : 'text-gray-600 dark:text-gray-300'
+                }`}
+                data-analytics="main-navigation"
+                data-nav-item={primaryNavItems[0].name}
+                aria-label={`Navigate to ${primaryNavItems[0].name}`}
+              >
+                {primaryNavItems[0].icon}
+                <span>{primaryNavItems[0].name}</span>
+              </Link>
+              <Dropdown
+                label={t('nav.solutions')}
+                icon={<Lock className="w-4 h-4" />}
+                groups={solutionsGroups}
+              />
+              {primaryNavItems.slice(1).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -112,24 +131,6 @@ const Header: React.FC = () => {
                   <span>{item.name}</span>
                 </Link>
               ))}
-              
-              <Dropdown 
-                label="Privacy Compliance" 
-                icon={<Lock className="w-4 h-4" />}
-                items={privacyComplianceItems}
-              />
-              
-              <Dropdown 
-                label="Risk & Resilience" 
-                icon={<Shield className="w-4 h-4" />}
-                items={riskResilienceItems}
-              />
-              
-              <Dropdown 
-                label="Continuity & Recovery" 
-                icon={<RefreshCw className="w-4 h-4" />}
-                items={continuityRecoveryItems}
-              />
             </div>
           </nav>
 
@@ -203,14 +204,14 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation — primary links + Solutions dropdown */}
       <div
         className={`md:hidden fixed top-[80px] left-0 right-0 z-40 max-h-[calc(100vh-80px)] overflow-y-auto ${
           isMenuOpen ? 'block' : 'hidden'
         } bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700`}
       >
         <div className="px-4 py-3 space-y-1">
-          {allNavigationItems.map((item) => (
+          {primaryNavItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
@@ -224,6 +225,45 @@ const Header: React.FC = () => {
               <span>{item.name}</span>
             </Link>
           ))}
+          <div>
+            <button
+              type="button"
+              onClick={() => setMobileSolutionsOpen(!mobileSolutionsOpen)}
+              className="flex items-center justify-between w-full space-x-3 px-4 py-3 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300"
+              aria-expanded={mobileSolutionsOpen}
+            >
+              <span className="flex items-center space-x-3">
+                <Lock className="w-5 h-5" />
+                <span>{t('nav.solutions')}</span>
+              </span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${mobileSolutionsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {mobileSolutionsOpen && (
+              <div className="pl-4 pb-2 space-y-0.5 border-l-2 border-gray-200 dark:border-gray-600 ml-4">
+                {solutionsGroups.map((group) => (
+                  <div key={group.title} className="pt-2">
+                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-2 pb-1">
+                      {group.title}
+                    </p>
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`flex items-center space-x-3 px-3 py-2 rounded-md transition ${
+                          location.pathname === item.path
+                            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                        }`}
+                      >
+                        {item.icon}
+                        <span className="text-sm">{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           
           {user && (
             <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">

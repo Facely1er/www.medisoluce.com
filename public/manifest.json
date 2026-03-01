@@ -1,23 +1,17 @@
 {
   "name": "MediSoluce - Healthcare Compliance Platform",
   "short_name": "MediSoluce",
-  "description": "La plateforme complète de conformité en santé qui combine sécurité, confidentialité et gestion des dépendances technologiques pour protéger les données des patients et assurer la continuité des activités.",
-  "start_url": "/",
+  "description": "Privacy-first healthcare compliance platform. HIPAA assessments, dependency mapping, and business continuity—minimal data collection; your data stays in your browser by default.",
+  "start_url": "/app",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "/app",
   "lang": "en",
   "dir": "ltr",
   "categories": ["health", "productivity", "business"],
   "icons": [
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
     {
       "src": "/favicon.png",
       "sizes": "32x32",
@@ -78,10 +72,10 @@
       "name": "HIPAA Assessment",
       "short_name": "HIPAA",
       "description": "Start HIPAA compliance assessment",
-      "url": "/hipaa-assessment",
+      "url": "/app/hipaa-check",
       "icons": [
         {
-          "src": "/icons/hipaa-96x96.png",
+          "src": "/icons/icon-96x96.png",
           "sizes": "96x96"
         }
       ]
@@ -90,10 +84,10 @@
       "name": "System Dependencies",
       "short_name": "Dependencies",
       "description": "Map critical system dependencies",
-      "url": "/dependencies",
+      "url": "/app/dependency-manager",
       "icons": [
         {
-          "src": "/icons/dependencies-96x96.png",
+          "src": "/icons/icon-96x96.png",
           "sizes": "96x96"
         }
       ]
@@ -102,29 +96,13 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "View compliance dashboard",
-      "url": "/dashboard",
+      "url": "/app/dashboard",
       "icons": [
         {
-          "src": "/icons/dashboard-96x96.png",
+          "src": "/icons/icon-96x96.png",
           "sizes": "96x96"
         }
       ]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop-home.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "MediSoluce Homepage"
-    },
-    {
-      "src": "/screenshots/mobile-dashboard.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Mobile Dashboard"
     }
   ],
   "related_applications": [],

@@ -25,6 +25,8 @@ const Footer: React.FC = () => {
       title: t('footer.product'),
       links: [
         { name: t('hipaa.title'), url: '/hipaa-check', icon: <ShieldCheck className="h-4 w-4" /> },
+        { name: 'Comprehensive Assessment', url: '/comprehensive-assessment', icon: <ShieldCheck className="h-4 w-4" /> },
+        { name: 'Security Dashboard', url: '/security', icon: <Lock className="h-4 w-4" /> },
         { name: t('dependency.title'), url: '/dependency-manager', icon: <Server className="h-4 w-4" /> },
         { name: t('impact.title'), url: '/business-impact', icon: <BarChart className="h-4 w-4" /> },
         { name: t('continuity.title'), url: '/continuity', icon: <LifeBuoy className="h-4 w-4" /> },
@@ -60,7 +62,7 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/medisoluce.png" 
+                src="/icons/icon-192x192.png" 
                 alt="MediSoluce Logo" 
                 className="h-12 w-12"
               />
@@ -75,6 +77,9 @@ const Footer: React.FC = () => {
             </Link>
             <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-300 max-w-sm leading-relaxed">
               {t('footer.description')}
+            </p>
+            <p className="mt-0.5 text-xs text-primary-600 dark:text-primary-400 font-medium">
+              {t('footer.privacy_first')}
             </p>
 
           </div>

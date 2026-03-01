@@ -8,6 +8,7 @@ import Button from '../components/ui/Button';
 import JourneyProgress from '../components/journey/JourneyProgress';
 import ContextualCTA from '../components/ui/ContextualCTA';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { useTierLimit } from '../hooks/useTierLimit';
 
 interface ImpactAssessment {
   id: string;
@@ -29,6 +30,11 @@ const BusinessImpactPage: React.FC = () => {
   const [assessments, setAssessments] = useLocalStorage<ImpactAssessment[]>('business-impact-assessments', []);
   const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
   const [dependencies] = useLocalStorage<any[]>('system-dependencies', []);
+  const { canSave: canSaveImpact, atLimit: atLimitImpact, limit: limitImpact } = useTierLimit({
+    productId: 'continuity',
+    limitKey: 'businessImpactAssessments',
+    currentCount: assessments.length
+  });
 
   // Mark Step 3 as completed when assessments are added
   useEffect(() => {
@@ -104,8 +110,18 @@ const BusinessImpactPage: React.FC = () => {
       timestamp: new Date().toISOString()
     };
 
+    if (!canSaveImpact && atLimitImpact && limitImpact !== null) {
+      if (typeof window !== 'undefined' && window.showToast) {
+        window.showToast({
+          type: 'warning',
+          title: t('pricing_common.upgrade_cta'),
+          message: t('pricing_common.limit_reached_impact', { limit: limitImpact })
+        });
+      }
+      return;
+    }
     setAssessments(prev => [...prev, newAssessment]);
-    
+
     // Reset form
     setFormData({
       systemName: '',

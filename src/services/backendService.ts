@@ -12,32 +12,33 @@ import { createClient } from '@supabase/supabase-js';
 // =============================================
 
 /**
- * Validates required environment variables
- * Throws error in production if missing
+ * Validates environment variables. Does not throw: backend is optional.
+ * When URL/key are missing, app runs in local-only mode (localStorage).
  */
 function validateEnvVars() {
-  const isProduction = import.meta.env.PROD;
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const url = import.meta.env.VITE_SUPABASE_URL || '';
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+  const hasConfig = !!(url && anonKey);
 
-  if (isProduction) {
-    if (!url || !anonKey) {
-      throw new Error(
-        'Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be set in production'
-      );
-    }
-  } else {
-    // In development, warn but don't throw
-    if (!url || !anonKey) {
+  if (!hasConfig) {
+    if (import.meta.env.PROD) {
       console.warn(
-        '⚠️ Missing Supabase environment variables. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file'
+        '[MediSoluce] Supabase env not set. Running in local-only mode. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY for cloud sync.'
+      );
+    } else {
+      console.warn(
+        '⚠️ Missing Supabase environment variables. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY for backend features.'
       );
     }
   }
 }
 
-// Validate environment variables on module load
 validateEnvVars();
+
+/** True when Supabase URL and anon key are set; use to guard backend calls. */
+export function isBackendConfigured(): boolean {
+  return !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
+}
 
 const SUPABASE_CONFIG = {
   url: import.meta.env.VITE_SUPABASE_URL || '',
@@ -48,12 +49,20 @@ const SUPABASE_CONFIG = {
 // =============================================
 // SUPABASE CLIENTS
 // =============================================
-
-// Client for user operations (uses anon key)
-export const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-
-// Admin client for service operations (uses service role key)
-export const supabaseAdmin = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.serviceRoleKey);
+// When config is missing, createClient may throw; use placeholder so app loads in local-only mode.
+function createSupabaseClients() {
+  const { url, anonKey, serviceRoleKey } = SUPABASE_CONFIG;
+  try {
+    const client = url && anonKey ? createClient(url, anonKey) : createClient('https://local-only.supabase.co', 'local-only-key');
+    const admin = url && serviceRoleKey ? createClient(url, serviceRoleKey) : client;
+    return { client, admin };
+  } catch {
+    const fallback = createClient('https://local-only.supabase.co', 'local-only-key');
+    return { client: fallback, admin: fallback };
+  }
+}
+const { client: supabase, admin: supabaseAdmin } = createSupabaseClients();
+export { supabase, supabaseAdmin };
 
 // =============================================
 // AUTHENTICATION SERVICE

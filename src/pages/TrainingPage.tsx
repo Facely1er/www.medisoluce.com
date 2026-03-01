@@ -55,9 +55,8 @@ const TrainingPage: React.FC = () => {
         t('training.modules.dependency_management.topics.lifecycle')
       ],
       completed: false,
-      available: false,
-      comingSoon: true,
-      launchDate: 'Q1 2026'
+      available: true,
+      comingSoon: false
     },
     {
       id: 'business-continuity',
@@ -73,9 +72,8 @@ const TrainingPage: React.FC = () => {
         t('training.modules.business_continuity.topics.testing')
       ],
       completed: false,
-      available: false,
-      comingSoon: true,
-      launchDate: 'Q1 2026'
+      available: true,
+      comingSoon: false
     },
     {
       id: 'ransomware-protection',
@@ -91,9 +89,8 @@ const TrainingPage: React.FC = () => {
         t('training.modules.ransomware_protection.topics.recovery')
       ],
       completed: false,
-      available: false,
-      comingSoon: true,
-      launchDate: 'Q1 2026'
+      available: true,
+      comingSoon: false
     }
   ];
 
@@ -128,9 +125,9 @@ const TrainingPage: React.FC = () => {
   ];
 
   return (
-    <div className="py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+    <div className="py-8 min-w-0">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+        <div className="max-w-6xl mx-auto min-w-0">
           <Breadcrumbs />
           
           {/* Header */}
@@ -151,13 +148,15 @@ const TrainingPage: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <BookOpen className="h-8 w-8 text-primary-500" />
-                <span className="text-2xl font-bold text-primary-600">1/4</span>
+                <span className="text-2xl font-bold text-primary-600">
+                  {trainingModules.filter(m => m.available).length}/{trainingModules.length}
+                </span>
               </div>
               <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                 {t('training.available_modules')}
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300">
-                HIPAA module live, 3 more coming Q1 2026
+                {t('training.comprehensive_programs')}
               </p>
             </Card>
 
@@ -339,63 +338,63 @@ const TrainingPage: React.FC = () => {
           </div>
 
           {/* Related Resources */}
-          <Card className="p-6">
+          <Card className="p-6 min-w-0 overflow-hidden">
             <h2 className="text-xl font-heading font-bold text-gray-900 dark:text-white mb-4">
               {t('training.related_resources')}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 min-w-0">
               <Link 
                 to="/hipaa-check"
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
+                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-colors min-w-0"
               >
-                <div className="flex items-center space-x-2 mb-2">
-                  <Shield className="h-5 w-5 text-primary-500" />
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center space-x-2 mb-2 min-w-0">
+                  <Shield className="h-5 w-5 text-primary-500 flex-shrink-0" />
+                  <span className="font-medium text-gray-900 dark:text-white break-words min-w-0">
                     {t('training.related.hipaa_assessment.title')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 break-words">
                   {t('training.related.hipaa_assessment.description')}
                 </p>
               </Link>
 
               <Link 
                 to="/dependency-manager"
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-secondary-300 dark:hover:border-secondary-600 transition-colors"
+                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-secondary-300 dark:hover:border-secondary-600 transition-colors min-w-0"
               >
-                <div className="flex items-center space-x-2 mb-2">
-                  <Server className="h-5 w-5 text-secondary-500" />
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center space-x-2 mb-2 min-w-0">
+                  <Server className="h-5 w-5 text-secondary-500 flex-shrink-0" />
+                  <span className="font-medium text-gray-900 dark:text-white break-words min-w-0">
                     {t('training.related.dependency_manager.title')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 break-words">
                   {t('training.related.dependency_manager.description')}
                 </p>
               </Link>
 
               <Link 
                 to="/continuity"
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-success-300 dark:hover:border-success-600 transition-colors"
+                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-success-300 dark:hover:border-success-600 transition-colors min-w-0"
               >
-                <div className="flex items-center space-x-2 mb-2">
-                  <LifeBuoy className="h-5 w-5 text-success-500" />
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center space-x-2 mb-2 min-w-0">
+                  <LifeBuoy className="h-5 w-5 text-success-500 flex-shrink-0" />
+                  <span className="font-medium text-gray-900 dark:text-white break-words min-w-0">
                     {t('training.related.continuity_planning.title')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 break-words">
                   {t('training.related.continuity_planning.description')}
                 </p>
               </Link>
 
               <Link 
                 to="/toolkit"
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-accent-300 dark:hover:border-accent-600 transition-colors"
+                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-accent-300 dark:hover:border-accent-600 transition-colors min-w-0"
               >
-                <div className="flex items-center space-x-2 mb-2">
-                  <FileText className="h-5 w-5 text-accent-500" />
-                  <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex items-center space-x-2 mb-2 min-w-0">
+                  <FileText className="h-5 w-5 text-accent-500 flex-shrink-0" />
+                  <span className="font-medium text-gray-900 dark:text-white break-words min-w-0">
                     {t('training.related.resource_toolkit.title')}
                   </span>
                 </div>
@@ -414,7 +413,7 @@ const TrainingPage: React.FC = () => {
                     {t('training.related.ransomware_protection.title')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 break-words">
                   {t('training.related.ransomware_protection.description')}
                 </p>
               </Link>

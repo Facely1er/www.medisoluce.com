@@ -1,5 +1,5 @@
-import { LessonContent } from '../components/training/TrainingLesson';
-import { QuizQuestion } from '../components/training/TrainingQuiz';
+import { LessonContent } from '../../components/training/TrainingLesson';
+import { QuizQuestion } from '../../components/training/TrainingQuiz';
 
 export const hipaaBasicsLessons: LessonContent[] = [
   {

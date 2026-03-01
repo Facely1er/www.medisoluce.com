@@ -44,8 +44,11 @@ const PrivacyPage: React.FC = () => {
           <div className="text-center mb-12">
             <Shield className="h-16 w-16 text-primary-500 mx-auto mb-4" />
             <h1 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-              MASTER PRIVACY POLICY
+              Privacy Policy
             </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              MediSoluce is <strong>privacy-first by design</strong>: we avoid data collection wherever possible. Your assessments and data stay in your browser unless you opt in to cloud sync. No tracking; no selling of your data.
+            </p>
           </div>
 
           <Card className="p-8">

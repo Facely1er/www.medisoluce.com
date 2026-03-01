@@ -342,6 +342,9 @@ const RansomwarePricingPage: React.FC = () => {
             <p className="text-xl text-gray-600 dark:text-gray-300">
               {t('pricing.ransomware.choose_plan_subtitle')}
             </p>
+            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+              {t('pricing.ransomware.limits_disclaimer')}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

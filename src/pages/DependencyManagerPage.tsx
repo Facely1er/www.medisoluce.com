@@ -35,6 +35,7 @@ import JourneyProgress from '../components/journey/JourneyProgress';
 import ContextualCTA from '../components/ui/ContextualCTA';
 import { relatedPages } from '../utils/linkingStrategy';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { useTierLimit } from '../hooks/useTierLimit';
 import OnboardingGuide from '../components/dependency/OnboardingGuide';
 import DependencyGraph from '../components/dependency/DependencyGraph';
 import DependencyHelpTooltip from '../components/dependency/DependencyHelpTooltip';
@@ -61,6 +62,11 @@ const DependencyManagerPage: React.FC = () => {
   const [showMapper, setShowMapper] = useState(false);
   const [dependencies, setDependencies] = useLocalStorage<Dependency[]>('system-dependencies', []);
   const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
+  const { canSave: canSaveDependency, atLimit: atLimitDependency, limit: limitDependencies } = useTierLimit({
+    productId: 'hipaa',
+    limitKey: 'systemDependencies',
+    currentCount: dependencies.length
+  });
 
   // Mark Step 2 as completed when dependencies are added
   useEffect(() => {
@@ -331,6 +337,16 @@ const DependencyManagerPage: React.FC = () => {
     if (editingId) {
       setDependencies(deps => deps.map(dep => dep.id === editingId ? newDependency : dep));
     } else {
+      if (!canSaveDependency && atLimitDependency && limitDependencies !== null) {
+        if (typeof window !== 'undefined' && window.showToast) {
+          window.showToast({
+            type: 'warning',
+            title: t('pricing_common.upgrade_cta'),
+            message: t('pricing_common.limit_reached_dependencies', { limit: limitDependencies })
+          });
+        }
+        return;
+      }
       setDependencies(deps => [...deps, newDependency]);
     }
 

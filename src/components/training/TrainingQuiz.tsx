@@ -80,10 +80,10 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
 
   if (showResults) {
     return (
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto min-w-0 w-full">
         {/* Results Summary */}
-        <Card className={`mb-6 p-8 border-l-4 ${passed ? 'border-success-500 bg-success-50 dark:bg-success-900/20' : 'border-warning-500 bg-warning-50 dark:bg-warning-900/20'}`}>
-          <div className="flex items-start justify-between mb-6">
+        <Card className={`mb-6 p-6 sm:p-8 border-l-4 ${passed ? 'border-success-500 bg-success-50 dark:bg-success-900/20' : 'border-warning-500 bg-warning-50 dark:bg-warning-900/20'}`}>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 min-w-0">
             <div>
               <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-2">
                 {passed ? t('training.quiz.passed') : t('training.quiz.not_passed')}
@@ -92,7 +92,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
                 {moduleName} {t('training.quiz.assessment')}
               </p>
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right flex-shrink-0">
               <div className={`text-5xl font-bold ${passed ? 'text-success-600 dark:text-success-400' : 'text-warning-600 dark:text-warning-400'}`}>
                 {score}%
               </div>
@@ -130,25 +130,25 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
         </Card>
 
         {/* Question Review */}
-        <Card className="mb-6 p-8">
+        <Card className="mb-6 p-6 sm:p-8 min-w-0 overflow-hidden">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
             {t('training.quiz.answer_review')}
           </h3>
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             {questions.map((question, index) => {
               const userAnswer = selectedAnswers[index];
               const isCorrect = userAnswer === question.correctAnswer;
               
               return (
-                <div key={index} className={`p-6 rounded-lg border-2 ${isCorrect ? 'border-success-300 bg-success-50 dark:bg-success-900/10' : 'border-error-300 bg-error-50 dark:bg-error-900/10'}`}>
-                  <div className="flex items-start gap-3 mb-4">
+                <div key={index} className={`p-4 sm:p-6 rounded-lg border-2 min-w-0 overflow-hidden ${isCorrect ? 'border-success-300 bg-success-50 dark:bg-success-900/10' : 'border-error-300 bg-error-50 dark:bg-error-900/10'}`}>
+                  <div className="flex items-start gap-3 mb-4 min-w-0">
                     {isCorrect ? (
                       <CheckCircle className="h-6 w-6 text-success-600 dark:text-success-400 flex-shrink-0 mt-1" />
                     ) : (
                       <XCircle className="h-6 w-6 text-error-600 dark:text-error-400 flex-shrink-0 mt-1" />
                     )}
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900 dark:text-white mb-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 dark:text-white mb-3 break-words">
                         {index + 1}. {question.question}
                       </p>
                       <div className="space-y-2 mb-4">
@@ -195,7 +195,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
 
         {/* Actions */}
         <Card className="p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <Button
               variant="outline"
               onClick={() => navigate('/training')}
@@ -203,7 +203,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
               {t('training.back_to_modules')}
             </Button>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {!passed && (
                 <Button
                   variant="outline"
@@ -235,7 +235,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
   const answeredCount = selectedAnswers.filter(a => a !== -1).length;
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto min-w-0 w-full">
       {/* Progress */}
       <Card className="mb-6 p-4">
         <div className="flex items-center justify-between mb-2">
@@ -267,23 +267,23 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 font-bold text-lg mb-4">
             {currentQuestion + 1}
           </div>
-          <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4 break-words">
             {currentQ.question}
           </h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 min-w-0">
           {currentQ.options.map((option, index) => (
             <button
               key={index}
               onClick={() => handleSelectAnswer(index)}
-              className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
+              className={`w-full p-4 text-left rounded-lg border-2 transition-all min-w-0 ${
                 selectedAnswers[currentQuestion] === index
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/30'
                   : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 bg-white dark:bg-gray-800'
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <div className={`flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                   selectedAnswers[currentQuestion] === index
                     ? 'border-primary-500 bg-primary-500'
@@ -293,7 +293,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
                     <CheckCircle className="h-4 w-4 text-white" />
                   )}
                 </div>
-                <span className="text-gray-900 dark:text-white">{option}</span>
+                <span className="text-gray-900 dark:text-white break-words min-w-0">{option}</span>
               </div>
             </button>
           ))}
@@ -302,7 +302,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
 
       {/* Navigation */}
       <Card className="p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <Button
             variant="outline"
             onClick={handlePrevious}
@@ -311,7 +311,7 @@ const TrainingQuiz: React.FC<TrainingQuizProps> = ({
             {t('training.quiz.previous')}
           </Button>
 
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-gray-500 dark:text-gray-400 order-last w-full sm:order-none sm:w-auto text-center sm:text-left">
             {selectedAnswers[currentQuestion] === -1 && (
               <span>{t('training.quiz.select_answer')}</span>
             )}

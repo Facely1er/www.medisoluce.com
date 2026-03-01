@@ -1,14 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from '../../../context/AuthContext';
 import AssessmentEngine from '../AssessmentEngine';
 
-// Mock the i18n hook
-vi.mock('../../i18n/useI18n', () => ({
-  useI18n: () => ({
-    t: (key: string) => key,
-    language: 'en',
-  }),
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key, i18n: {} }),
+}));
+
+vi.mock('../../../utils/analytics', () => ({
+  analytics: {
+    track: vi.fn(),
+    trackAssessmentComplete: vi.fn(),
+    trackDownload: vi.fn(),
+    init: vi.fn(),
+  },
 }));
 
 // Mock the assessment data
@@ -53,9 +59,11 @@ const mockCalculateResults = (answers: Record<string, string>) => {
 };
 
 const AssessmentEngineWrapper = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-    {children}
-  </BrowserRouter>
+  <AuthProvider>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      {children}
+    </BrowserRouter>
+  </AuthProvider>
 );
 
 describe('AssessmentEngine', () => {

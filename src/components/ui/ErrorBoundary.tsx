@@ -28,7 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
     analytics.trackError('React Error Boundary', error.message);
     
     // Log additional context in development
-    if (process.env.NODE_ENV === 'development') {
+    if (!import.meta.env.PROD) {
       console.error('Error Info:', errorInfo);
       console.error('Component Stack:', errorInfo.componentStack);
     }
@@ -63,7 +63,7 @@ class ErrorBoundary extends Component<Props, State> {
                   Go to Homepage
                 </Button>
               </div>
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {!import.meta.env.PROD && this.state.error && (
                 <details className="mt-6 text-left">
                   <summary className="cursor-pointer text-sm text-gray-500">
                     Error Details (Development Only)

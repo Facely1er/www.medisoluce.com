@@ -9,6 +9,7 @@ import Modal from '../components/ui/Modal';
 import JourneyProgress from '../components/journey/JourneyProgress';
 import ContextualCTA from '../components/ui/ContextualCTA';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { useTierLimit } from '../hooks/useTierLimit';
 
 interface ContinuityPlan {
   id: string;
@@ -34,6 +35,11 @@ const ContinuityPage: React.FC = () => {
   const [plans, setPlans] = useLocalStorage<ContinuityPlan[]>('continuity-plans', []);
   const [completedSteps, setCompletedSteps] = useLocalStorage<number[]>('journey-completed-steps', []);
   const [impactAssessments] = useLocalStorage<any[]>('business-impact-assessments', []);
+  const { canSave: canSavePlan, atLimit: atLimitPlan, limit: limitPlans } = useTierLimit({
+    productId: 'continuity',
+    limitKey: 'continuityPlans',
+    currentCount: plans.length
+  });
   const [showCompletion, setShowCompletion] = useState(false);
 
   // Mark Step 4 as completed when plans are created
@@ -134,6 +140,16 @@ const ContinuityPage: React.FC = () => {
     if (editingId) {
       setPlans(prevPlans => prevPlans.map(plan => plan.id === editingId ? newPlan : plan));
     } else {
+      if (!canSavePlan && atLimitPlan && limitPlans !== null) {
+        if (typeof window !== 'undefined' && window.showToast) {
+          window.showToast({
+            type: 'warning',
+            title: t('pricing_common.upgrade_cta'),
+            message: t('pricing_common.limit_reached_plans', { limit: limitPlans })
+          });
+        }
+        return;
+      }
       setPlans(prevPlans => [...prevPlans, newPlan]);
     }
 

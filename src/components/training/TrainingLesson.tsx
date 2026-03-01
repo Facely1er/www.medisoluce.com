@@ -65,10 +65,10 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
   const progress = Math.round(((lessonIndex + 1) / totalLessons) * 100);
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto min-w-0 w-full">
       {/* Progress Bar */}
       <Card className="mb-6 p-4">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
           <div>
             <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {moduleName}
@@ -109,7 +109,7 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
         </div>
 
         {/* Main Content */}
-        <div className="prose dark:prose-invert max-w-none mb-8">
+        <div className="prose dark:prose-invert max-w-none mb-8 min-w-0 overflow-x-auto break-words [&_table]:block [&_table]:overflow-x-auto [&_pre]:overflow-x-auto [&_pre]:max-w-full">
           <ReactMarkdown>{lesson.content}</ReactMarkdown>
         </div>
 
@@ -122,11 +122,11 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
             </h3>
             <ul className="space-y-2">
               {lesson.keyPoints.map((point, index) => (
-                <li key={index} className="flex items-start gap-3">
+                <li key={index} className="flex items-start gap-3 min-w-0">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 text-sm font-bold mt-0.5">
                     {index + 1}
                   </span>
-                  <span className="text-gray-700 dark:text-gray-300">{point}</span>
+                  <span className="text-gray-700 dark:text-gray-300 break-words min-w-0">{point}</span>
                 </li>
               ))}
             </ul>
@@ -135,11 +135,11 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
 
         {/* Example */}
         {lesson.example && (
-          <div className="mb-8 p-6 bg-secondary-50 dark:bg-secondary-900/20 rounded-lg border-l-4 border-secondary-500">
+          <div className="mb-8 p-6 bg-secondary-50 dark:bg-secondary-900/20 rounded-lg border-l-4 border-secondary-500 min-w-0 overflow-x-auto">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               📋 {t('training.example')}
             </h3>
-            <div className="prose dark:prose-invert max-w-none">
+            <div className="prose dark:prose-invert max-w-none break-words [&_table]:block [&_table]:overflow-x-auto [&_pre]:overflow-x-auto [&_pre]:max-w-full">
               <ReactMarkdown>{lesson.example}</ReactMarkdown>
             </div>
           </div>
@@ -147,11 +147,11 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
 
         {/* Practical Application */}
         {lesson.practicalApplication && (
-          <div className="mb-8 p-6 bg-success-50 dark:bg-success-900/20 rounded-lg border-l-4 border-success-500">
+          <div className="mb-8 p-6 bg-success-50 dark:bg-success-900/20 rounded-lg border-l-4 border-success-500 min-w-0 overflow-x-auto">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               🎯 {t('training.practical_application')}
             </h3>
-            <div className="prose dark:prose-invert max-w-none">
+            <div className="prose dark:prose-invert max-w-none break-words [&_table]:block [&_table]:overflow-x-auto [&_pre]:overflow-x-auto [&_pre]:max-w-full">
               <ReactMarkdown>{lesson.practicalApplication}</ReactMarkdown>
             </div>
           </div>
@@ -160,8 +160,8 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
 
       {/* Navigation */}
       <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
             {onPrevious && (
               <Button
                 variant="outline"
@@ -173,7 +173,7 @@ const TrainingLesson: React.FC<TrainingLessonProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 min-w-0">
             <Button
               variant="outline"
               onClick={() => navigate('/training')}

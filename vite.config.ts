@@ -44,27 +44,24 @@ export default defineConfig({
           }
         ]
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'medisoluce.png'],
+      includeAssets: ['favicon.png', 'favicon.ico', 'icons/icon-192x192.png', 'icons/icon-512x512.png'],
       manifest: {
         name: 'MediSoluce - Healthcare Compliance Platform',
         short_name: 'MediSoluce',
-        description: 'Comprehensive healthcare compliance platform combining HIPAA compliance, technology dependency management, and business continuity planning.',
-        theme_color: '#0073e6',
+        description: 'Privacy-first healthcare compliance platform. HIPAA assessments, dependency mapping, and business continuity—minimal data collection; your data stays in your browser by default.',
+        theme_color: '#3b82f6',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        start_url: '/app',
+        scope: '/app',
         icons: [
-          {
-            src: 'medisoluce.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'medisoluce.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
+          { src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ],
+        shortcuts: [
+          { name: 'HIPAA Assessment', short_name: 'HIPAA', description: 'Start HIPAA compliance assessment', url: '/app/hipaa-check', icons: [{ src: '/icons/icon-96x96.png', sizes: '96x96' }] },
+          { name: 'System Dependencies', short_name: 'Dependencies', description: 'Map critical system dependencies', url: '/app/dependency-manager', icons: [{ src: '/icons/icon-96x96.png', sizes: '96x96' }] },
+          { name: 'Dashboard', short_name: 'Dashboard', description: 'View compliance dashboard', url: '/app/dashboard', icons: [{ src: '/icons/icon-96x96.png', sizes: '96x96' }] }
         ]
       }
     })

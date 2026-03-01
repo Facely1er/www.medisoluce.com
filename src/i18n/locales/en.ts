@@ -19,12 +19,14 @@ const enTranslation = {
     "resources": "Resources",
     "company": "Company",
     "copyright": "All rights reserved.",
-    "description": "The comprehensive healthcare compliance platform that combines security, privacy, and technology dependency management to protect patient data and ensure business continuity."
+    "description": "Privacy-first healthcare compliance platform: minimal data collection, your data stays in your browser by default. HIPAA, dependencies, and business continuity.",
+    "privacy_first": "Privacy-first by design. We avoid data collection wherever possible."
   },
   
   // Header navigation
   "nav": {
     "home": "Home",
+    "solutions": "Solutions",
     "demo": "Demo",
     "hipaa_assessment": "HIPAA Assessment", 
     "system_dependencies": "System Dependencies",
@@ -633,6 +635,47 @@ const enTranslation = {
       "beginner": "Beginner",
       "intermediate": "Intermediate",
       "advanced": "Advanced"
+    },
+    "lesson": "Lesson",
+    "of": "of",
+    "complete": "Complete",
+    "lesson_completed": "Lesson Completed",
+    "key_takeaways": "Key Takeaways",
+    "example": "Example",
+    "practical_application": "Practical Application",
+    "previous_lesson": "Previous Lesson",
+    "back_to_modules": "Back to Modules",
+    "take_assessment": "Take Assessment",
+    "next_lesson": "Next Lesson",
+    "mark_complete_continue": "Mark Complete & Continue",
+    "additional_resources": "Additional Resources",
+    "download_templates": "Download Templates",
+    "study_materials": "Study Materials",
+    "quiz": {
+      "assessment": "Assessment",
+      "question": "Question",
+      "answered": "answered",
+      "select_answer": "Select an answer to continue",
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Assessment",
+      "passed": "Assessment Passed!",
+      "not_passed": "Not Quite There Yet",
+      "passing_score": "Passing score",
+      "congratulations": "Congratulations! You've passed.",
+      "certificate_available": "Your certificate is ready to download.",
+      "keep_trying": "Keep studying — you're almost there.",
+      "review_retake": "Review the module and retake when ready.",
+      "answer_review": "Answer Review",
+      "explanation": "Explanation",
+      "retake": "Retake Assessment",
+      "download_certificate": "Download Certificate"
+    },
+    "certificate": {
+      "congratulations": "Congratulations!",
+      "earned": "You've earned your",
+      "share": "Share",
+      "download": "Download Certificate"
     }
   },
   
@@ -1508,6 +1551,47 @@ const enTranslation = {
     "hipaa": {
       "title": "HIPAA Compliance Suite",
       "subtitle": "Protect patient data with comprehensive compliance assessment, policy templates, and implementation guidance.",
+      "limits_disclaimer": "Free and Essential use local browser storage only. Limits apply per plan; cloud sync and backup in Professional and above.",
+      "tier_limits": {
+        "free": {
+          "name": "Free",
+          "subtitle": "Local use only, no account required",
+          "limits": [
+            "Up to 3 saved HIPAA assessments",
+            "Up to 10 system dependencies",
+            "1 device, no cloud sync",
+            "PDF export: last 3 reports",
+            "Data stored in browser only (5 MB)"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Up to 10 saved HIPAA assessments",
+            "Up to 25 system dependencies",
+            "Full 10-question assessment",
+            "PDF export: 10 reports per month",
+            "Email support"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Up to 50 saved assessments",
+            "Up to 100 system dependencies",
+            "5 users, cloud sync with backup",
+            "50 PDF exports per month",
+            "Priority email + chat support"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Unlimited assessments & dependencies",
+            "Unlimited users",
+            "Cloud sync, backup & audit",
+            "Unlimited exports",
+            "Dedicated consultant & SLA"
+          ]
+        }
+      },
       "start_free_assessment": "Start Free Assessment",
       "view_pricing": "View Pricing",
       "everything_you_need_title": "Everything You Need for HIPAA Compliance",
@@ -1549,10 +1633,11 @@ const enTranslation = {
       "tiers": {
         "essential": {
           "name": "Essential",
-          "description": "Perfect for small practices getting started with HIPAA compliance",
+          "description": "Perfect for small practices getting started with HIPAA compliance. Up to 10 assessments, 25 dependencies.",
           "price": "$49",
           "cta": "Start Free Assessment",
           "features": [
+            "Up to 10 saved HIPAA assessments",
             "Full 10-question HIPAA assessment",
             "HIPAA Privacy Policy template",
             "Breach Response Checklist",
@@ -1566,11 +1651,12 @@ const enTranslation = {
         },
         "professional": {
           "name": "Professional",
-          "description": "For growing practices that need team collaboration",
+          "description": "For growing practices that need team collaboration. Up to 50 assessments, 100 dependencies, 5 users.",
           "price": "$149",
           "cta": "Start Free Trial",
           "features": [
             "Everything in Essential",
+            "Up to 50 assessments, 100 dependencies",
             "Team collaboration (5 users)",
             "Cloud sync with backup",
             "Advanced risk assessment tools",
@@ -1663,13 +1749,52 @@ const enTranslation = {
           "description": "Coordinate response across IT, clinical, and administrative teams"
         }
       },
+      "limits_disclaimer": "Free tier: local use only. Limits apply per plan; upgrade for more saved items and cloud backup.",
+      "tier_limits": {
+        "free": {
+          "name": "Free",
+          "subtitle": "Local use only",
+          "limits": [
+            "1 saved impact calculation",
+            "Response playbook access",
+            "PDF export: last 3",
+            "Browser storage only"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Up to 5 saved calculations & playbooks",
+            "Business Impact Calculator",
+            "10 PDF exports per month",
+            "Email support"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Up to 20 saved items",
+            "Custom Playbook Builder",
+            "50 PDF exports per month",
+            "5 users, cloud sync",
+            "Priority support"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Unlimited saved items",
+            "24/7 SOC & dedicated IR",
+            "Unlimited exports",
+            "Unlimited users"
+          ]
+        }
+      },
       "tiers": {
         "essential": {
           "name": "Essential",
-          "description": "Healthcare ransomware defense and response fundamentals",
+          "description": "Healthcare ransomware defense and response fundamentals. Up to 5 saved calculations.",
           "price": "$49",
           "cta": "Get Started",
           "features": [
+            "Up to 5 saved impact calculations",
             "Ransomware Response Playbook",
             "Business Impact Calculator",
             "Incident Response Procedures",
@@ -1683,11 +1808,12 @@ const enTranslation = {
         },
         "professional": {
           "name": "Professional",
-          "description": "Advanced threat protection for growing healthcare organizations",
+          "description": "Advanced threat protection for growing healthcare organizations. Up to 20 saved items, 5 users.",
           "price": "$149",
           "cta": "Start Free Trial",
           "features": [
             "Everything in Essential",
+            "Up to 20 saved calculations & playbooks",
             "Advanced Threat Hunting Tools",
             "Forensic Analysis Templates",
             "Custom Playbook Builder",
@@ -1720,8 +1846,51 @@ const enTranslation = {
     "continuity": {
       "title": "Business Continuity Suite",
       "subtitle": "Ensure patient care continues during system failures, disasters, and disruptions with comprehensive continuity planning tools.",
+      "limits_disclaimer": "Free and Essential use local storage. Plan and dependency limits apply; cloud sync in Professional and above.",
+      "tier_limits": {
+        "free": {
+          "name": "Free",
+          "subtitle": "Local use only",
+          "limits": [
+            "Up to 2 continuity plans",
+            "Up to 10 system dependencies",
+            "Up to 5 impact assessments",
+            "PDF export: last 3",
+            "Browser storage only"
+          ]
+        },
+        "essential": {
+          "limits": [
+            "Up to 5 continuity plans",
+            "Up to 25 system dependencies",
+            "Up to 15 impact assessments",
+            "10 PDF exports per month",
+            "Email support"
+          ]
+        },
+        "professional": {
+          "limits": [
+            "Up to 20 continuity plans",
+            "Up to 100 dependencies",
+            "Up to 50 impact assessments",
+            "5 users, cloud sync",
+            "Plan version control",
+            "Priority support"
+          ]
+        },
+        "enterprise": {
+          "limits": [
+            "Unlimited plans & locations",
+            "Unlimited dependencies",
+            "Unlimited users",
+            "Cloud sync & dedicated BC consultant",
+            "SLA & annual exercises"
+          ]
+        }
+      },
       "create_plan": "Create Continuity Plan",
       "view_pricing": "View Pricing",
+      "choose_plan_subtitle": "Start with the free assessment, then upgrade to the plan that fits your needs",
       "prepared_title": "Prepared for Any Disruption",
       "prepared_subtitle": "Continuity plans for the most common healthcare operational scenarios",
       "everything_you_need_title": "Everything You Need for Continuity Planning",
@@ -1779,10 +1948,11 @@ const enTranslation = {
       "tiers": {
         "essential": {
           "name": "Essential",
-          "description": "Basic continuity planning for small practices",
+          "description": "Basic continuity planning for small practices. Up to 5 plans, 25 dependencies.",
           "price": "$49",
           "cta": "Get Started",
           "features": [
+            "Up to 5 continuity plans",
             "Continuity Plan Templates",
             "Technology Dependency Mapping",
             "EHR Downtime Procedures",
@@ -1796,11 +1966,12 @@ const enTranslation = {
         },
         "professional": {
           "name": "Professional",
-          "description": "Advanced planning for growing healthcare organizations",
+          "description": "Advanced planning for growing healthcare organizations. Up to 20 plans, 100 dependencies, 5 users.",
           "price": "$149",
           "cta": "Start Free Trial",
           "features": [
             "Everything in Essential",
+            "Up to 20 plans, 100 dependencies",
             "Advanced Dependency Mapping",
             "Custom Continuity Plans",
             "Automated Testing Schedules",
@@ -1900,6 +2071,12 @@ const enTranslation = {
   "pricing_common": {
     "choose_plan": "Choose Your {{product}} Plan",
     "choose_plan_subtitle": "Start with the free assessment, then upgrade to the plan that fits your needs",
+    "limits_disclaimer": "Limits apply per plan. Free and Essential store data in your browser only; cloud sync and backup available in Professional and above.",
+    "limit_reached_assessments": "You've reached the free plan limit ({{limit}} saved assessments). Upgrade to save more and get cloud backup.",
+    "limit_reached_dependencies": "You've reached the free plan limit ({{limit}} system dependencies). Upgrade to map more systems.",
+    "limit_reached_plans": "You've reached the free plan limit ({{limit}} continuity plans). Upgrade to create more plans.",
+    "limit_reached_impact": "You've reached the free plan limit ({{limit}} impact assessments). Upgrade for more.",
+    "upgrade_cta": "Upgrade",
     "recommended": "RECOMMENDED",
     "per_month": "/month",
     "trial_active": "Trial Active",

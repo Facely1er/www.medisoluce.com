@@ -24,7 +24,7 @@ class Analytics {
   private isProduction: boolean = false;
 
   constructor() {
-    this.isProduction = process.env.NODE_ENV === 'production';
+    this.isProduction = import.meta.env.PROD;
     this.isEnabled = this.isProduction && typeof window !== 'undefined';
     
     // Enhanced error tracking for production

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
@@ -28,7 +28,8 @@ import RansomwareResiliencePage from './pages/RansomwareResiliencePage';
 import RansomwareThreatDashboardPage from './pages/RansomwareThreatDashboardPage';
 import HealthDashboardPage from './pages/HealthDashboardPage';
 import TrainingPage from './pages/TrainingPage';
-import HIPAABasicsModule from './pages/training/HIPAABasicsModule';
+import TrainingModulePage from './pages/training/TrainingModulePage';
+import TrainingMaterialsPage from './pages/training/TrainingMaterialsPage';
 import Certificate from './components/training/Certificate';
 import ToolkitPage from './pages/ToolkitPage';
 import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
@@ -108,6 +109,11 @@ function AppContent() {
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Layout>
         <Routes>
+          {/* PWA app scope: redirect /app* to current routes until Phase 2 moves app under /app */}
+          <Route path="/app" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/app/hipaa-check" element={<Navigate to="/hipaa-check" replace />} />
+          <Route path="/app/dependency-manager" element={<Navigate to="/dependency-manager" replace />} />
+          <Route path="/app/dashboard" element={<Navigate to="/dashboard" replace />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -132,8 +138,9 @@ function AppContent() {
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
           <Route path="/ransomware-threat-dashboard" element={<RansomwareThreatDashboardPage />} />
           <Route path="/training" element={<TrainingPage />} />
-          <Route path="/training/:moduleId/:lessonId" element={<HIPAABasicsModule />} />
           <Route path="/training/:moduleId/certificate" element={<Certificate />} />
+          <Route path="/training/:moduleId/materials" element={<TrainingMaterialsPage />} />
+          <Route path="/training/:moduleId/:lessonId" element={<TrainingModulePage />} />
           <Route path="/toolkit" element={<ToolkitPage />} />
           <Route path="/comprehensive-assessment" element={<EnhancedAssessmentEngine />} />
           <Route path="/security" element={<SecurityDashboard />} />

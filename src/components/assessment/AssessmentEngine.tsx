@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useTierLimit } from '../../hooks/useTierLimit';
 import { analytics } from '../../utils/analytics';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
@@ -57,6 +59,12 @@ const AssessmentEngine: React.FC<AssessmentEngineProps> = ({
   
   // Privacy-by-design: Store assessment results locally
   const [savedAssessments, setSavedAssessments] = useLocalStorage('hipaa-assessments', []);
+  const { t } = useTranslation();
+  const { canSave, atLimit, limit } = useTierLimit({
+    productId: 'hipaa',
+    limitKey: 'hipaaAssessments',
+    currentCount: savedAssessments.length
+  });
 
   const handleAnswer = (questionId: string, optionId: string) => {
     setAnswers((prev) => ({
@@ -83,8 +91,8 @@ const AssessmentEngine: React.FC<AssessmentEngineProps> = ({
     const assessmentResult = calculateResults(answers);
     setResult(assessmentResult);
     setIsCompleted(true);
-    
-    // Save assessment result locally (privacy-by-design)
+
+    // Save assessment result locally when under tier limit (privacy-by-design)
     const assessmentData = {
       id: Date.now().toString(),
       title,
@@ -92,12 +100,19 @@ const AssessmentEngine: React.FC<AssessmentEngineProps> = ({
       answers,
       result: assessmentResult,
     };
-    
-    setSavedAssessments([...savedAssessments, assessmentData]);
-    
-    // Track assessment completion
+
+    if (canSave) {
+      setSavedAssessments([...savedAssessments, assessmentData]);
+    } else if (atLimit && limit !== null && typeof window !== 'undefined' && window.showToast) {
+      window.showToast({
+        type: 'warning',
+        title: t('pricing_common.upgrade_cta'),
+        message: t('pricing_common.limit_reached_assessments', { limit })
+      });
+    }
+
     analytics.trackAssessmentComplete(title, assessmentResult.percentage);
-    
+
     if (onComplete) {
       onComplete(assessmentResult);
     }
