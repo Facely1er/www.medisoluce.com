@@ -42,6 +42,7 @@ import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
 import CheckoutCancelPage from './pages/CheckoutCancelPage';
 import SegmentAnalysisPage from './pages/SegmentAnalysisPage';
 import FAQPage from './pages/FAQPage';
+import NotFoundPage from './pages/NotFoundPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -155,6 +156,7 @@ function AppContent() {
           <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
           <Route path="/segments" element={<SegmentAnalysisPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
     </Router>
