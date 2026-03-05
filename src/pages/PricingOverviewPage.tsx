@@ -233,7 +233,7 @@ const PricingOverviewPage: React.FC = () => {
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
               {t('pricing.overview.complete_bundle_subtitle')}
             </p>
-            <Link to="/pricing/bundles">
+            <Link to="/contact">
               <Button size="lg">
                 {t('pricing.overview.view_bundle_pricing')}
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -304,7 +304,7 @@ const PricingOverviewPage: React.FC = () => {
                   )}
                 </div>
 
-                <Link to="/pricing/bundles">
+                <Link to="/contact">
                   <Button variant="outline" size="sm" className="w-full">
                     {t('pricing.overview.view_recommended_plan')}
                   </Button>
@@ -333,7 +333,7 @@ const PricingOverviewPage: React.FC = () => {
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
-              <Link to="/pricing/calculator">
+              <Link to="/contact">
                 <Button variant="outline" size="lg" className="!bg-transparent !text-white !border-white hover:!bg-white hover:!text-primary-700">
                   {t('pricing.overview.calculate_savings')}
                   <Calculator className="h-4 w-4 ml-2" />

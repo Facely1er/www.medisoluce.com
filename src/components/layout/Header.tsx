@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
-import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench, Lock, ChevronDown } from 'lucide-react';
+import { Menu, X, Sun, Moon, ShieldCheck, Server, FileText, LifeBuoy, User, AlertTriangle, Home, LayoutDashboard, Wrench, Lock, ChevronDown, LogIn } from 'lucide-react';
 import LanguageSelector from '../language/LanguageSelector';
 import NotificationCenter from '../notifications/NotificationCenter';
 import Dropdown from '../ui/Dropdown';
@@ -139,9 +139,9 @@ const Header: React.FC = () => {
               <LanguageSelector />
               <NotificationCenter />
               
-              {user && (
+              {user ? (
                 <div className="flex items-center space-x-3">
-                  <Link 
+                  <Link
                     to="/profile"
                     className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 flex items-center"
                   >
@@ -157,6 +157,24 @@ const Header: React.FC = () => {
                   >
                     Sign Out
                   </button>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Link
+                    to="/login"
+                    className="flex items-center space-x-1 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded transition"
+                    aria-label="Sign in to your account"
+                  >
+                    <LogIn className="w-3.5 h-3.5" />
+                    <span>Sign In</span>
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center px-3 py-1.5 text-xs font-semibold bg-primary-600 text-white rounded hover:bg-primary-700 transition whitespace-nowrap"
+                    aria-label="Create a free account"
+                  >
+                    Get Started
+                  </Link>
                 </div>
               )}
               
@@ -265,9 +283,9 @@ const Header: React.FC = () => {
             )}
           </div>
           
-          {user && (
+          {user ? (
             <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
-              <Link 
+              <Link
                 to="/profile"
                 className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md mb-2"
               >
@@ -283,6 +301,22 @@ const Header: React.FC = () => {
               >
                 Sign Out
               </button>
+            </div>
+          ) : (
+            <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
+              <Link
+                to="/register"
+                className="flex items-center justify-center px-4 py-2.5 text-sm font-semibold bg-primary-600 text-white rounded-md hover:bg-primary-700 transition"
+              >
+                Get Started — Free
+              </Link>
+              <Link
+                to="/login"
+                className="flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign In
+              </Link>
             </div>
           )}
         </div>
