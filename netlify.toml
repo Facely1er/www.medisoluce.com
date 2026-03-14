@@ -2,6 +2,7 @@
 publish = "dist"
 command = "npx vite build"
 
+# Node 20 required: global `crypto` (used by serialize-javascript / @rollup/plugin-terser) is not defined in Node 18.
 [build.environment]
 NODE_VERSION = "20"
 
