@@ -1,0 +1,14 @@
+# This directory will contain actual downloadable resources for production
+# Files should be added here during deployment:
+# - hipaa-privacy-policy-template.docx
+# - breach-response-checklist.pdf  
+# - business-associate-agreement-template.docx
+# - staff-training-record-form.pdf
+# - technology-dependency-mapping-template.xlsx
+# - bia-worksheet-healthcare.docx
+# - continuity-plan-template-healthcare.docx
+# - ransomware-response-playbook.pdf
+# - hipaa-security-risk-assessment-tool.xlsx
+# - patient-data-backup-strategy-guide.pdf
+# - ehr-downtime-procedures.docx
+# - vendor-risk-assessment-template.xlsx

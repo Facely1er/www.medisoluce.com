@@ -1,0 +1,224 @@
+# MediSoluce Database Configuration
+# This file contains configuration settings for the MediSoluce database schema
+
+[project]
+name = "medisoluce-healthcare-compliance"
+version = "1.0.0"
+description = "Healthcare compliance platform with isolated database schema"
+schema_prefix = "medisoluce"
+
+[database]
+# Schema configuration
+schema_name = "medisoluce"
+enable_rls = true
+enable_encryption = true
+backup_retention_days = 30
+
+# Performance settings
+max_connections = 100
+shared_buffers = "256MB"
+effective_cache_size = "1GB"
+work_mem = "4MB"
+
+[security]
+# Row Level Security settings
+enable_rls_policies = true
+enable_audit_logging = true
+encrypt_sensitive_fields = true
+
+# Sensitive fields that should be encrypted
+sensitive_fields = [
+    "phone_number",
+    "certifications", 
+    "personal_identification",
+    "medical_records"
+]
+
+# Security event types
+security_event_types = [
+    "authentication",
+    "data_access", 
+    "suspicious_input",
+    "failed_auth",
+    "csp_violation",
+    "privacy_violation",
+    "malware_detected",
+    "injection_attempt"
+]
+
+[monitoring]
+# Performance monitoring
+enable_performance_tracking = true
+performance_metrics_retention_days = 90
+
+# Health checks
+health_check_interval = "5m"
+health_check_timeout = "30s"
+
+# Audit logging
+audit_log_retention_days = 2555  # 7 years for compliance
+audit_log_rotation = "daily"
+
+[tables]
+# User management tables
+user_profiles = { 
+    name = "user_profiles",
+    description = "User profile information",
+    sensitive_fields = ["phone_number", "certifications"]
+}
+
+user_preferences = {
+    name = "user_preferences", 
+    description = "User preferences and settings",
+    sensitive_fields = []
+}
+
+# Compliance assessment tables
+hipaa_assessments = {
+    name = "hipaa_assessments",
+    description = "HIPAA compliance assessments",
+    sensitive_fields = []
+}
+
+assessment_responses = {
+    name = "assessment_responses",
+    description = "Individual assessment responses", 
+    sensitive_fields = []
+}
+
+compliance_findings = {
+    name = "compliance_findings",
+    description = "Compliance findings and recommendations",
+    sensitive_fields = []
+}
+
+# Security tables
+security_events = {
+    name = "security_events",
+    description = "Security event logging",
+    sensitive_fields = ["ip_address", "user_agent"]
+}
+
+security_threats = {
+    name = "security_threats",
+    description = "Security threat tracking",
+    sensitive_fields = []
+}
+
+# Health monitoring tables
+health_checks = {
+    name = "health_checks",
+    description = "System health check results",
+    sensitive_fields = []
+}
+
+performance_metrics = {
+    name = "performance_metrics", 
+    description = "Performance metrics and measurements",
+    sensitive_fields = []
+}
+
+# Training tables
+training_modules = {
+    name = "training_modules",
+    description = "Training modules and content",
+    sensitive_fields = []
+}
+
+user_training_progress = {
+    name = "user_training_progress",
+    description = "User training progress tracking",
+    sensitive_fields = []
+}
+
+# Audit tables
+audit_logs = {
+    name = "audit_logs",
+    description = "Comprehensive audit trail",
+    sensitive_fields = ["ip_address", "user_agent"]
+}
+
+compliance_reports = {
+    name = "compliance_reports",
+    description = "Generated compliance reports",
+    sensitive_fields = []
+}
+
+[views]
+# Dashboard views
+user_dashboard = {
+    name = "user_dashboard",
+    description = "Aggregated user dashboard data",
+    query = "SELECT up.*, COUNT(ha.id) as total_assessments FROM user_profiles up LEFT JOIN hipaa_assessments ha ON up.user_id = ha.user_id GROUP BY up.id"
+}
+
+compliance_summary = {
+    name = "compliance_summary", 
+    description = "Organization-level compliance summary",
+    query = "SELECT organization, COUNT(*) as total_assessments FROM user_profiles GROUP BY organization"
+}
+
+[functions]
+# Utility functions
+update_updated_at = {
+    name = "update_updated_at_column",
+    description = "Updates the updated_at timestamp",
+    language = "plpgsql"
+}
+
+[migrations]
+# Migration settings
+migration_table = "medisoluce.migrations"
+auto_migrate = true
+migration_timeout = "300s"
+
+# Migration files
+initial_schema = "001_initial_schema_setup.sql"
+rename_tables = "002_rename_existing_tables.sql"
+
+[backup]
+# Backup configuration
+enabled = true
+schedule = "0 2 * * *"  # Daily at 2 AM
+retention_days = 30
+compression = true
+encryption = true
+
+# Backup locations
+local_path = "./backups"
+remote_path = "s3://medisoluce-backups/database"
+
+[compliance]
+# HIPAA compliance settings
+hipaa_compliant = true
+data_retention_years = 7
+audit_trail_required = true
+encryption_required = true
+
+# Data classification
+sensitive_data_types = [
+    "personal_health_information",
+    "authentication_data", 
+    "audit_logs",
+    "security_events"
+]
+
+# Access controls
+admin_roles = ["super_admin", "compliance_officer"]
+user_roles = ["healthcare_provider", "compliance_analyst", "auditor"]
+readonly_roles = ["auditor", "compliance_analyst"]
+
+[notifications]
+# Alert configuration
+enable_alerts = true
+alert_channels = ["email", "slack", "webhook"]
+
+# Alert thresholds
+security_threat_threshold = "high"
+performance_degradation_threshold = 80
+compliance_violation_threshold = 1
+
+# Notification templates
+security_alert_template = "Security threat detected: {threat_type} - {severity}"
+performance_alert_template = "Performance degradation: {metric} is {value}% above threshold"
+compliance_alert_template = "Compliance violation: {finding_type} - {severity}"

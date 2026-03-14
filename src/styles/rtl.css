@@ -1,0 +1,156 @@
+/* RTL-specific styles and utilities */
+
+/* Logical properties for better RTL support */
+.ms-1 { margin-inline-start: 0.25rem; }
+.ms-2 { margin-inline-start: 0.5rem; }
+.ms-3 { margin-inline-start: 0.75rem; }
+.ms-4 { margin-inline-start: 1rem; }
+.ms-6 { margin-inline-start: 1.5rem; }
+.ms-8 { margin-inline-start: 2rem; }
+
+.me-1 { margin-inline-end: 0.25rem; }
+.me-2 { margin-inline-end: 0.5rem; }
+.me-3 { margin-inline-end: 0.75rem; }
+.me-4 { margin-inline-end: 1rem; }
+.me-6 { margin-inline-end: 1.5rem; }
+.me-8 { margin-inline-end: 2rem; }
+
+.ps-1 { padding-inline-start: 0.25rem; }
+.ps-2 { padding-inline-start: 0.5rem; }
+.ps-3 { padding-inline-start: 0.75rem; }
+.ps-4 { padding-inline-start: 1rem; }
+.ps-6 { padding-inline-start: 1.5rem; }
+.ps-8 { padding-inline-start: 2rem; }
+
+.pe-1 { padding-inline-end: 0.25rem; }
+.pe-2 { padding-inline-end: 0.5rem; }
+.pe-3 { padding-inline-end: 0.75rem; }
+.pe-4 { padding-inline-end: 1rem; }
+.pe-6 { padding-inline-end: 1.5rem; }
+.pe-8 { padding-inline-end: 2rem; }
+
+/* RTL-specific component adjustments */
+[dir="rtl"] .chevron-right {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .arrow-right {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .breadcrumb-separator {
+  transform: scaleX(-1);
+}
+
+/* Form field alignment for RTL */
+[dir="rtl"] .form-field {
+  text-align: right;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+/* Navigation adjustments for RTL */
+[dir="rtl"] .nav-item {
+  text-align: right;
+}
+
+[dir="rtl"] .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+/* Table adjustments for RTL */
+[dir="rtl"] .table {
+  text-align: right;
+}
+
+[dir="rtl"] .table th:first-child {
+  text-align: right;
+}
+
+/* Card and content adjustments */
+[dir="rtl"] .card-header {
+  text-align: right;
+}
+
+[dir="rtl"] .toast {
+  right: auto;
+  left: 1rem;
+}
+
+/* Animation adjustments for RTL */
+[dir="rtl"] .slide-in-right {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+[dir="rtl"] .slide-in-left {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+/* Custom animations for RTL */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Focus styles for RTL */
+[dir="rtl"] .focus-ring {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Utility classes for conditional RTL styling */
+.rtl-hidden {
+  display: block;
+}
+
+[dir="rtl"] .rtl-hidden {
+  display: none;
+}
+
+.ltr-hidden {
+  display: none;
+}
+
+[dir="rtl"] .ltr-hidden {
+  display: block;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  [dir="rtl"] .mobile-nav {
+    right: 0;
+    left: auto;
+  }
+  
+  [dir="rtl"] .mobile-menu-button {
+    margin-right: auto;
+    margin-left: 0;
+  }
+}
+
+/* Print styles for RTL */
+@media print {
+  [dir="rtl"] .print-content {
+    text-align: right;
+    direction: rtl;
+  }
+}
