@@ -129,7 +129,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 overflow-x-hidden max-w-full">
       <Header />
       <motion.main 
-        className="flex-grow overflow-x-hidden max-w-full pt-16 md:pt-20"
+        className="flex-grow overflow-x-hidden max-w-full pt-14 md:pt-16"
         initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}

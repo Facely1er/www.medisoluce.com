@@ -88,30 +88,25 @@ const Header: React.FC = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${isScrolled ? 'bg-white dark:bg-gray-800 shadow-md' : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full overflow-visible">
-        <div className="flex items-center gap-4 lg:gap-6 py-4 min-w-0 overflow-visible">
-          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
+        <div className="flex items-center gap-2 lg:gap-3 py-2 min-w-0 overflow-visible">
+          <Link to="/" className="flex items-center gap-1.5 flex-shrink-0">
             <img 
               src="/medisoluce.png" 
               alt="MediSoluce Logo" 
-              className="h-12 w-auto flex-shrink-0"
+              className="h-8 w-auto flex-shrink-0"
             />
-            <div className="flex flex-col leading-tight">
-              <span className="text-lg font-heading font-bold text-primary-600 dark:text-primary-400">
-                MediSoluce™
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                by ERMITS
-              </span>
-            </div>
+            <span className="text-sm font-heading font-bold text-primary-600 dark:text-primary-400 whitespace-nowrap">
+              MediSoluce™
+            </span>
           </Link>
 
-          {/* Desktop Navigation — 5 items: Home, Solutions, Demo, Dashboard, Pricing */}
-          <nav className="hidden md:flex items-center flex-1 min-w-0 overflow-visible">
-            <div className="hidden lg:flex items-center gap-0.5 flex-nowrap whitespace-nowrap min-w-0 overflow-visible">
+          {/* Desktop Navigation — compact, text-only */}
+          <nav className="hidden md:flex items-center flex-1 min-w-0 overflow-visible" aria-label="Main navigation">
+            <div className="hidden lg:flex items-center gap-0.5 flex-nowrap min-w-0 overflow-visible">
               <Link
                 key={primaryNavItems[0].path}
                 to={primaryNavItems[0].path}
-                className={`flex items-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                className={`px-2 py-1 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                   location.pathname === primaryNavItems[0].path
                     ? 'text-primary-600 dark:text-primary-400'
                     : 'text-gray-600 dark:text-gray-300'
@@ -120,19 +115,18 @@ const Header: React.FC = () => {
                 data-nav-item={primaryNavItems[0].name}
                 aria-label={`Navigate to ${primaryNavItems[0].name}`}
               >
-                {primaryNavItems[0].icon}
-                <span>{primaryNavItems[0].name}</span>
+                {primaryNavItems[0].name}
               </Link>
               <Dropdown
                 label={t('nav.solutions')}
-                icon={<Lock className="w-4 h-4" />}
+                icon={<Lock className="w-3.5 h-3.5" />}
                 groups={solutionsGroups}
               />
               {primaryNavItems.slice(1).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-1 px-2.5 py-1.5 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                  className={`px-2 py-1 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                     location.pathname === item.path
                       ? 'text-primary-600 dark:text-primary-400'
                       : 'text-gray-600 dark:text-gray-300'
@@ -141,48 +135,35 @@ const Header: React.FC = () => {
                   data-nav-item={item.name}
                   aria-label={`Navigate to ${item.name}`}
                 >
-                  {item.icon}
-                  <span>{item.name}</span>
+                  {item.name}
                 </Link>
               ))}
             </div>
           </nav>
 
-          {/* Action Buttons */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-3 flex-shrink-0">
+          {/* Action area — compact: lang, notifications, theme, user */}
+          <div className="hidden md:flex items-center gap-1 flex-shrink-0">
               <LanguageSelector />
               <NotificationCenter />
-              
               {user && (
-                <div className="flex items-center space-x-3">
-                  <Link 
-                    to="/profile"
-                    className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 flex items-center"
-                  >
-                    <User className="h-4 w-4 mr-1" />
-                    Profile
+                <>
+                  <Link to="/profile" className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300" aria-label="Profile">
+                    <User className="h-4 w-4" />
                   </Link>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">
-                    {user.email}
-                  </span>
-                  <button
-                    onClick={signOut}
-                    className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
-                  >
-                    Sign Out
+                  <button onClick={signOut} className="text-xs px-1.5 py-1 rounded text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400" aria-label="Sign out">
+                    Sign out
                   </button>
-                </div>
+                </>
               )}
-              
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                 aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
               >
                 {theme === 'light' ? (
-                  <Moon className="h-5 w-5 text-gray-600" />
+                  <Moon className="h-4 w-4 text-gray-600" />
                 ) : (
-                  <Sun className="h-5 w-5 text-gray-300" />
+                  <Sun className="h-4 w-4 text-gray-300" />
                 )}
               </button>
           </div>
@@ -221,7 +202,7 @@ const Header: React.FC = () => {
 
       {/* Mobile Navigation — primary links + Solutions dropdown */}
       <div
-        className={`md:hidden fixed top-[80px] left-0 right-0 z-40 max-h-[calc(100vh-80px)] overflow-y-auto ${
+        className={`md:hidden fixed top-[52px] left-0 right-0 z-40 max-h-[calc(100vh-52px)] overflow-y-auto ${
           isMenuOpen ? 'block' : 'hidden'
         } bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700`}
       >
