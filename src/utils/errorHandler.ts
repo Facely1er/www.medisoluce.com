@@ -403,7 +403,7 @@ class ErrorHandler {
     // Store security event separately for analysis
     const securityEvents = JSON.parse(localStorage.getItem('security-event-details') || '[]');
     securityEvents.push({
-      ...event,
+      ..._event,
       errorId: errorLog.id,
       context: {
         url: errorLog.url,
@@ -416,13 +416,13 @@ class ErrorHandler {
     localStorage.setItem('security-event-details', JSON.stringify(securityEvents.slice(-100)));
     
     // Trigger enhanced monitoring for repeated events
-    this.checkForSecurityPatterns(event);
+    this.checkForSecurityPatterns(_event);
   }
   
   private checkForSecurityPatterns(newEvent: SecurityEvent): void {
     const _events = JSON.parse(localStorage.getItem('security-event-details') || '[]');
     const oneHourAgo = Date.now() - (60 * 60 * 1000);
-    const recentEvents = events.filter((event: { timestamp?: string }) => 
+    const recentEvents = _events.filter((event: { timestamp?: string }) =>
       new Date(event.timestamp || Date.now()).getTime() > oneHourAgo
     );
     
@@ -616,8 +616,8 @@ class ErrorHandler {
     });
 
     // Enhanced statistics with context analysis
-    const _contextAnalysis = this.analyzeErrorContext(logs);
-    
+    const contextAnalysis = this.analyzeErrorContext(logs);
+
     return {
       total: logs.length,
       last24Hours: last24Hours.length,
@@ -635,17 +635,17 @@ class ErrorHandler {
       const recentLogs = logs.slice(-50); // Analyze last 50 errors
       
       // Page-based error analysis
-      const _errorsByPage = recentLogs.reduce((acc: unknown, log) => {
+      const errorsByPage = recentLogs.reduce((acc: unknown, log) => {
         const page = log.userContext?.currentPage || log.url || 'unknown';
         acc[page] = (acc[page] || 0) + 1;
         return acc;
       }, {});
-      
+
       // User action correlation
-      const _errorsWithActions = recentLogs.filter(log => 
+      const errorsWithActions = recentLogs.filter(log =>
         log.userContext?.userActions && log.userContext.userActions.length > 0
       );
-      
+
       const commonActionBeforeError = errorsWithActions.reduce((acc: unknown, log) => {
         const lastAction = log.userContext?.userActions[0];
         if (lastAction) {

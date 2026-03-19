@@ -439,18 +439,10 @@ class ProjectHealthEnhancer {
   }
 
   private async addCSPMeta(): Promise<boolean> {
-    try {
-      if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
-        const meta = document.createElement('meta');
-        meta.httpEquiv = 'Content-Security-Policy';
-        meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';";
-        document.head.appendChild(meta);
-      }
-      return true;
-    } catch (error) {
-      console.error('CSP addition failed:', error);
-      return false;
-    }
+    // CSP is set via HTTP headers in netlify.toml — do not inject a meta tag,
+    // as it would create a more-restrictive second policy that blocks GA and other
+    // allowed third-party origins.
+    return true;
   }
 
   private async encryptSensitiveData(): Promise<boolean> {

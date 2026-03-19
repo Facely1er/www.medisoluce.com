@@ -343,9 +343,9 @@ class Analytics {
   trackError(errorType: string, errorData: string | { message: string; [key: string]: unknown }) {
     if (!this.isEnabled) return;
     
-    const _errorMessage = typeof errorData === 'string' ? errorData : errorData.message;
-    const _errorContext = typeof errorData === 'object' ? errorData : {};
-    
+    const errorMessage = typeof errorData === 'string' ? errorData : errorData.message;
+    const errorContext = typeof errorData === 'object' ? errorData : {};
+
     try {
       if (window.gtag) {
         window.gtag('event', 'exception', {
@@ -374,7 +374,7 @@ class Analytics {
   private log(...args: unknown[]) {
     if (!this.isProduction) {
       if (!import.meta.env.PROD) {
-        console.log($1);
+        console.log(...args);
       }
     }
   }
