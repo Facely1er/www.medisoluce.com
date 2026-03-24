@@ -174,7 +174,12 @@ class Analytics {
         gtag('js', new Date());
         gtag('config', trackingId, {
           page_title: document.title,
-          page_location: window.location.href
+          page_location: window.location.href,
+          anonymize_ip: true,
+          cookie_flags: 'SameSite=None;Secure',
+          linker: {
+            domains: ['cybercorrect.com', 'www.cybercorrect.com', 'workspace.cybercorrect.com', 'cybercaution.com', 'www.cybercaution.com', 'platform.cybercaution.com', 'toolkits.cybercaution.com', 'vendorsoluce.com', 'www.vendorsoluce.com', 'platform.vendorsoluce.com', 'portal.vendorsoluce.com', 'cybersoluce.com', 'lite.cybersoluce.com', 'technosoluce.com', 'app.technosoluce.com', 'medisoluce.com', 'www.medisoluce.com', 'ermits.com', 'www.ermits.com', 'socialcaution.com', 'www.socialcaution.com', 'pandagarde.com', 'www.pandagarde.com']
+          }
         });
         
         this.log('Analytics initialized with tracking ID:', trackingId);
