@@ -80,17 +80,31 @@ npm run test:coverage
    cp env.example .env.local
    ```
 
-2. Configure your Supabase credentials in `.env.local`:
-   ```env
-   VITE_SUPABASE_URL=https://your-project-id.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-key-here
-   ```
-   
-   Get these values from your [Supabase project dashboard](https://app.supabase.com/project/YOUR_PROJECT/settings/api)
+2. Choose an auth mode in `.env.local`:
+   - **Demo/trial local mode (no Supabase auth):**
+     ```env
+     VITE_AUTH_PROVIDER=local
+     VITE_ENABLE_BILLING=false
+     ```
+   - **Client deployment mode (real Supabase auth):**
+     ```env
+     VITE_AUTH_PROVIDER=supabase
+     VITE_SUPABASE_URL=https://your-project-id.supabase.co
+     VITE_SUPABASE_ANON_KEY=your-anon-key-here
+     VITE_ENABLE_BILLING=true
+     ```
 
-3. Install dependencies: `npm install`
+3. Configure your Supabase credentials when using `VITE_AUTH_PROVIDER=supabase`:
+    ```env
+    VITE_SUPABASE_URL=https://your-project-id.supabase.co
+    VITE_SUPABASE_ANON_KEY=your-anon-key-here
+    ```
+    
+    Get these values from your [Supabase project dashboard](https://app.supabase.com/project/YOUR_PROJECT/settings/api)
 
-4. Start dev server: `npm run dev`
+4. Install dependencies: `npm install`
+
+5. Start dev server: `npm run dev`
 
 **Note:** For production deployment, use `env.production.example` as a template and set environment variables in your deployment platform (Vercel, Netlify, etc.).
 

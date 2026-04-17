@@ -50,6 +50,7 @@ import TranslationGuard from './components/i18n/TranslationGuard';
 import ErrorBoundary from './components/ui/ErrorBoundary';
 import { ToastProvider, useToast } from './components/ui/Toast';
 import { analytics } from './utils/analytics';
+import { isBillingEnabled } from './config/runtimeConfig';
 import './i18n';
 import HealthDashboard from './components/ui/HealthDashboard';
 
@@ -151,8 +152,8 @@ function AppContent() {
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
           <Route path="/pricing/ransomware" element={<RansomwarePricingPage />} />
           <Route path="/pricing/continuity" element={<ContinuityPricingPage />} />
-          <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
-          <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
+          <Route path="/checkout/success" element={isBillingEnabled ? <CheckoutSuccessPage /> : <Navigate to="/pricing" replace />} />
+          <Route path="/checkout/cancel" element={isBillingEnabled ? <CheckoutCancelPage /> : <Navigate to="/pricing" replace />} />
           <Route path="/segments" element={<SegmentAnalysisPage />} />
           <Route path="/faq" element={<FAQPage />} />
         </Routes>

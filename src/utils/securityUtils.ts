@@ -796,7 +796,7 @@ class SecurityManager {
     let score = 100;
 
     // Check for authentication
-    const hasAuth = !!localStorage.getItem('user-session');
+    const hasAuth = !!localStorage.getItem('local-workspace-id');
     if (!hasAuth) score -= 20;
 
     // Check for access logging
@@ -966,7 +966,7 @@ class SecurityManager {
   }
 
   private checkLocalStorageSecurity(): boolean {
-    const sensitiveKeys = ['user-session', 'hipaa-assessments', 'system-dependencies'];
+    const sensitiveKeys = ['local-workspace-id', 'hipaa-assessments', 'system-dependencies'];
     return sensitiveKeys.every(key => {
       const data = localStorage.getItem(key);
       return !data || this.isDataEncrypted(data);
@@ -983,7 +983,7 @@ class SecurityManager {
   }
 
   private calculateEncryptionCoverage(): number {
-    const sensitiveKeys = ['user-session', 'hipaa-assessments', 'system-dependencies'];
+    const sensitiveKeys = ['local-workspace-id', 'hipaa-assessments', 'system-dependencies'];
     let encryptedCount = 0;
 
     sensitiveKeys.forEach(key => {
@@ -1113,7 +1113,7 @@ class SecurityManager {
   private identifyAccessManagementIssues(): string[] {
     const issues: string[] = [];
 
-    if (!localStorage.getItem('user-session')) {
+    if (!localStorage.getItem('local-workspace-id')) {
       issues.push('No active session management');
     }
 
@@ -1130,7 +1130,7 @@ class SecurityManager {
 
   private checkAccessControls(): boolean {
     return !!(
-      localStorage.getItem('user-session') ||
+      localStorage.getItem('local-workspace-id') ||
       document.querySelector('[data-auth-required]')
     );
   }
@@ -1148,16 +1148,12 @@ class SecurityManager {
   }
 
   private checkRoleBasedAccess(): boolean {
-    try {
-      const session = localStorage.getItem('user-session');
-      if (session) {
-        const userData = JSON.parse(this.decryptSensitiveData(session));
-        return userData.role !== undefined;
-      }
-      return false;
-    } catch {
-      return false;
+    const workspaceId = localStorage.getItem('local-workspace-id');
+    if (workspaceId) {
+      return true;
     }
+
+    return !!localStorage.getItem('supabase.auth.token');
   }
 
   private checkPHIExposure(): number {

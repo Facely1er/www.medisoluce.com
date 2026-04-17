@@ -31,8 +31,14 @@ class EnvironmentValidator {
     const warnings: string[] = [];
     const errors: string[] = [];
 
+    const requiredKeys = [...this.config.required];
+    const authProvider = import.meta.env.VITE_AUTH_PROVIDER || 'supabase';
+    if (authProvider === 'supabase') {
+      requiredKeys.push('VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY');
+    }
+
     // Check required variables
-    for (const key of this.config.required) {
+    for (const key of requiredKeys) {
       const value = import.meta.env[key];
       if (!value || value.trim() === '') {
         missing.push(key);
@@ -54,7 +60,7 @@ class EnvironmentValidator {
     this.validateFormats(errors, warnings);
 
     return {
-      valid: missing.length === 0,
+      valid: errors.length === 0,
       missing,
       warnings,
       errors
@@ -147,52 +153,48 @@ export const envValidator = new EnvironmentValidator(medisoluceEnvConfig);
 /**
  * Validate environment on app startup
  * Call this early in the application lifecycle
- * Never throws - always returns result for graceful degradation
+ * Throws in Supabase mode when required auth env vars are missing
  */
 export function validateEnvironment(): ValidationResult {
-  try {
-    const result = envValidator.validate();
+  const result = envValidator.validate();
 
-    if (result.errors.length > 0) {
-      console.error('❌ Environment validation failed:', result.errors);
-      if (envValidator.isProduction()) {
-        // In production, log to error tracking service (with fallback)
-        console.error('Critical environment variables are missing. Application may not function correctly.');
-        
-        // Try to log to error tracking, but don't fail if it's not available
-        import('./errorHandler')
-          .then(({ errorHandler }) => {
-            errorHandler.logError({
-              type: 'validation',
-              message: 'Environment validation failed',
-              url: typeof window !== 'undefined' ? window.location.href : undefined
-            });
-          })
-          .catch(() => {
-            // Error handler not available - continue anyway
+  if (result.errors.length > 0) {
+    console.error('❌ Environment validation failed:', result.errors);
+    const authProvider = import.meta.env.VITE_AUTH_PROVIDER || 'supabase';
+    if (authProvider === 'supabase') {
+      throw new Error(
+        'Supabase mode requires VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY. ' +
+        'Set both variables or set VITE_AUTH_PROVIDER=local for demo/trial mode.'
+      );
+    }
+    if (envValidator.isProduction()) {
+      // In production, log to error tracking service (with fallback)
+      console.error('Critical environment variables are missing. Application may not function correctly.');
+      
+      // Try to log to error tracking, but don't fail if it's not available
+      import('./errorHandler')
+        .then(({ errorHandler }) => {
+          errorHandler.logError({
+            type: 'validation',
+            message: 'Environment validation failed',
+            url: typeof window !== 'undefined' ? window.location.href : undefined
           });
-      }
+        })
+        .catch(() => {
+          // Error handler not available - continue anyway
+        });
     }
-
-    if (result.warnings.length > 0 && envValidator.isProduction()) {
-      console.warn('⚠️ Environment validation warnings:', result.warnings);
-    }
-
-    if (result.valid && result.warnings.length === 0) {
-      console.log('✅ Environment validation passed');
-    }
-
-    return result;
-  } catch (error) {
-    // Never throw - always return a result
-    console.warn('Environment validation encountered an error:', error);
-    return {
-      valid: true, // Assume valid to allow app to continue
-      missing: [],
-      warnings: ['Environment validation check failed, but continuing'],
-      errors: []
-    };
   }
+
+  if (result.warnings.length > 0 && envValidator.isProduction()) {
+    console.warn('⚠️ Environment validation warnings:', result.warnings);
+  }
+
+  if (result.valid && result.warnings.length === 0) {
+    console.log('✅ Environment validation passed');
+  }
+
+  return result;
 }
 
 /**
@@ -215,4 +217,3 @@ export function isProduction(): boolean {
 export function isDevelopment(): boolean {
   return envValidator.isDevelopment();
 }
-

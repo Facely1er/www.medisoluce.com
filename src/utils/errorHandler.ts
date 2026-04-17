@@ -560,8 +560,8 @@ class ErrorHandler {
 
   private getCurrentUserId(): string | undefined {
     try {
-      const session = localStorage.getItem('user-session');
-      return session ? JSON.parse(session).sessionId : undefined;
+      const workspaceId = localStorage.getItem('local-workspace-id');
+      return workspaceId || undefined;
     } catch {
       return undefined;
     }

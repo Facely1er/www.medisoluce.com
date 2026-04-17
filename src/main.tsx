@@ -9,6 +9,7 @@ import { performanceEnhancer } from './utils/performanceEnhancer';
 import { logger } from './utils/logger';
 import { validateEnvironment } from './utils/envValidation';
 import { initializeCSPViolationReporting } from './utils/cspViolationReporter';
+import { isSupabaseAuthEnabled } from './config/runtimeConfig';
 
 interface UserInteraction {
   type: string;
@@ -148,10 +149,17 @@ const initializeHealthSystem = async () => {
 try {
   const envValidation = validateEnvironment();
   if (!envValidation.valid) {
+    if (isSupabaseAuthEnabled) {
+      throw new Error(
+        'Startup blocked: Supabase mode requires VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY. Provide both variables or set VITE_AUTH_PROVIDER=local for demo/trial mode.'
+      );
+    }
     console.error('Environment validation failed. Some features may not work correctly.');
   }
 } catch (error) {
-  // Never fail app startup due to validation errors
+  if (isSupabaseAuthEnabled) {
+    throw error;
+  }
   console.warn('Environment validation check failed, but continuing:', error);
 }
 

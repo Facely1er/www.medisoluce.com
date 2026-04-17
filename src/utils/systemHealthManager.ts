@@ -573,7 +573,7 @@ class SystemHealthManager {
   private hasSecureLocalStorage(): boolean {
     try {
       // Check if sensitive data is encrypted
-      const sensitiveKeys = ['user-session', 'hipaa-assessments', 'system-dependencies'];
+      const sensitiveKeys = ['local-workspace-id', 'hipaa-assessments', 'system-dependencies'];
       return sensitiveKeys.every(key => {
         const data = localStorage.getItem(key);
         return !data || !this.containsSensitiveData(data);

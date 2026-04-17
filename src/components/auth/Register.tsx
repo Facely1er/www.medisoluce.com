@@ -1,18 +1,19 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { UserPlus, Shield, AlertTriangle } from 'lucide-react';
+import { UserPlus, AlertTriangle } from 'lucide-react';
 import { useToast } from '../ui/Toast';
 import { validateSecureHealthcareInput, rateLimiter } from '../../utils/validation';
 import { securityUtils } from '../../utils/securityUtils';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import { authProvider, isSupabaseAuthEnabled } from '../../config/runtimeConfig';
+import { supabase } from '../../lib/supabase';
 
 interface RegisterFormData {
   email: string;
   password: string;
   confirmPassword: string;
-  enableMFA: boolean;
 }
 
 const Register: React.FC = () => {
@@ -20,10 +21,9 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>();
   const [passwordStrength, setPasswordStrength] = React.useState<{ score: number; feedback: string[] }>({ score: 0, feedback: [] });
-  const [mfaSetupKey, setMfaSetupKey] = React.useState<string | null>(null);
-  
+
   const watchPassword = watch('password');
-  
+
   React.useEffect(() => {
     if (watchPassword) {
       const strength = securityUtils.checkPasswordStrength(watchPassword);
@@ -32,10 +32,9 @@ const Register: React.FC = () => {
   }, [watchPassword]);
 
   const onSubmit = async (data: RegisterFormData) => {
-    // Enhanced input validation with security scanning
     const emailValidation = validateSecureHealthcareInput(data.email, 'contact');
     const passwordValidation = validateSecureHealthcareInput(data.password, 'general');
-    
+
     if (!emailValidation.isValid || !passwordValidation.isValid) {
       const allErrors = [...emailValidation.errors, ...passwordValidation.errors];
       showToast({
@@ -43,106 +42,109 @@ const Register: React.FC = () => {
         title: 'Invalid input detected',
         message: allErrors[0] || 'Please check your input and try again.'
       });
-      
+
       securityUtils.logSecurityEvent('invalid_registration_input', {
         emailErrors: emailValidation.errors,
         passwordErrors: passwordValidation.errors
       }, 'medium');
       return;
     }
-    
-    // Rate limiting for registration
+
     const registerAttemptKey = `register-${data.email}`;
-    if (!rateLimiter.canAttempt(registerAttemptKey, 2, 60 * 60 * 1000)) { // 2 attempts per hour per email
+    if (!rateLimiter.canAttempt(registerAttemptKey, 2, 60 * 60 * 1000)) {
       showToast({
         type: 'error',
         title: 'Registration limit exceeded',
         message: 'Too many registration attempts. Please wait an hour before trying again.'
       });
-      
+
       securityUtils.logSecurityEvent('registration_rate_limit_exceeded', {
         email: data.email
       }, 'medium');
       return;
     }
-    
-    // Enhanced password validation
+
     const submittedPasswordValidation = securityUtils.checkPasswordStrength(data.password);
-    if (submittedPasswordValidation.score < 4) { // Stricter requirement for healthcare
+    if (submittedPasswordValidation.score < 4) {
       showToast({
         type: 'error',
         title: 'Password too weak',
         message: 'Please choose a stronger password to protect your healthcare data. Use a mix of upper/lowercase letters, numbers, and special characters.'
       });
-      
+
       securityUtils.logSecurityEvent('weak_password_attempt', {
         email: data.email,
         passwordScore: submittedPasswordValidation.score
       }, 'low');
       return;
     }
-    
+
     const registrationId = Date.now().toString();
     securityUtils.logSecurityEvent('registration_attempt', {
       email: data.email,
-      mfaRequested: data.enableMFA,
       attemptId: registrationId
     }, 'low');
-    
+
     try {
-      // Simulate registration process
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Generate MFA setup key if requested
-      if (data.enableMFA) {
-        const mfaKey = securityUtils.generateMFASecret();
-        setMfaSetupKey(mfaKey);
-        localStorage.setItem(`mfa-secret-${data.email}`, securityUtils.encryptSensitiveData(mfaKey));
-        localStorage.setItem(`mfa-enabled-${data.email}`, 'true');
-      }
-      
-      // Store user data locally
-      const userData = securityUtils.encryptSensitiveData(JSON.stringify({
+      const { error } = await supabase.auth.signUp({
         email: data.email,
-        registrationTime: new Date().toISOString(),
-        sessionId: registrationId,
-        mfaEnabled: data.enableMFA,
-        securityLevel: data.enableMFA ? 'high' : 'standard',
-        passwordScore: submittedPasswordValidation.score,
-        accountCreated: true,
-        lastActivity: Date.now()
-      }));
-      localStorage.setItem('user-session', userData);
-      
+        password: data.password,
+        options: {
+          emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/login` : undefined
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
       securityUtils.logSecurityEvent('successful_registration', {
         email: data.email,
-        mfaEnabled: data.enableMFA,
         attemptId: registrationId
       }, 'low');
-      
+
       showToast({
         type: 'success',
         title: 'Account created!',
-        message: data.enableMFA ? 
-          'Account created with enhanced security! Please save your MFA setup key.' : 
-          'Welcome to MediSoluce.'
+        message: 'Check your inbox to confirm your account, then sign in.'
       });
-      
-      navigate('/dashboard');
+
+      navigate('/login');
     } catch (error) {
       securityUtils.logSecurityEvent('registration_failed', {
         email: data.email,
         error: error instanceof Error ? error.message : 'Unknown error',
         attemptId: registrationId
       }, 'medium');
+
       showToast({
         type: 'error',
         title: 'Registration failed',
-        message: 'Please try again.'
+        message: error instanceof Error ? error.message : 'Please try again.'
       });
-      console.error('Error signing up:', error);
     }
   };
+
+  if (!isSupabaseAuthEnabled) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <Card className="max-w-md w-full p-8 text-center">
+          <UserPlus className="mx-auto h-12 w-12 text-primary-500" />
+          <h2 className="mt-6 text-2xl font-heading font-bold text-gray-900 dark:text-white">
+            Registration disabled in local demo mode
+          </h2>
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
+            This demo runs with VITE_AUTH_PROVIDER={authProvider}. Deploy with VITE_AUTH_PROVIDER=supabase to enable account creation.
+          </p>
+          <div className="mt-6">
+            <Link to="/dashboard">
+              <Button fullWidth>Continue to Dashboard</Button>
+            </Link>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -219,25 +221,6 @@ const Register: React.FC = () => {
             )}
           </div>
 
-          <div>
-            <div className="flex items-center space-x-2">
-              <input
-                id="enableMFA"
-                type="checkbox"
-                {...register('enableMFA')}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-              />
-              <label htmlFor="enableMFA" className="text-sm text-gray-700 dark:text-gray-300 flex items-center">
-                <Shield className="h-4 w-4 text-primary-500 mr-1" />
-                Enable Multi-Factor Authentication (Recommended)
-              </label>
-            </div>
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Adds an extra layer of security to protect your healthcare compliance data
-            </p>
-          </div>
-
-          {/* Password Strength Indicator */}
           {watchPassword && (
             <div className="p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
               <div className="flex items-center space-x-2 mb-2">
@@ -266,27 +249,6 @@ const Register: React.FC = () => {
                   ))}
                 </ul>
               )}
-            </div>
-          )}
-
-          {/* MFA Setup Display */}
-          {mfaSetupKey && (
-            <div className="p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-md">
-              <div className="flex items-center space-x-2 mb-2">
-                <Shield className="h-5 w-5 text-primary-500" />
-                <span className="font-medium text-primary-800 dark:text-primary-200">
-                  MFA Setup Key
-                </span>
-              </div>
-              <p className="text-sm text-primary-700 dark:text-primary-300 mb-2">
-                Save this key in your authenticator app (Google Authenticator, Authy, etc.):
-              </p>
-              <div className="bg-white dark:bg-gray-800 p-2 rounded border font-mono text-sm break-all">
-                {mfaSetupKey}
-              </div>
-              <p className="text-xs text-primary-600 dark:text-primary-400 mt-2">
-                Store this key securely - you'll need it to access your account
-              </p>
             </div>
           )}
 

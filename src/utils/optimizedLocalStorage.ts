@@ -52,7 +52,7 @@ const STORAGE_CONFIG: StorageConfig = {
   maxSize: 5 * 1024 * 1024, // 5MB limit
   compressionThreshold: 1024, // Compress data > 1KB
   encryptionKeys: [
-    'user-session',
+    'local-workspace-id',
     'hipaa-assessments',
     'system-dependencies',
     'comprehensive-assessments',
@@ -62,7 +62,7 @@ const STORAGE_CONFIG: StorageConfig = {
     'audit-logs'
   ],
   ttl: {
-    'user-session': 24 * 60 * 60 * 1000, // 24 hours
+    'local-workspace-id': 24 * 60 * 60 * 1000, // 24 hours
     'hipaa-assessments': 30 * 24 * 60 * 60 * 1000, // 30 days
     'system-dependencies': 7 * 24 * 60 * 60 * 1000, // 7 days
     'comprehensive-assessments': 30 * 24 * 60 * 60 * 1000, // 30 days

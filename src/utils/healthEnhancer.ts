@@ -447,7 +447,7 @@ class ProjectHealthEnhancer {
 
   private async encryptSensitiveData(): Promise<boolean> {
     try {
-      const sensitiveKeys = ['user-session', 'assessment-data', 'system-data'];
+      const sensitiveKeys = ['local-workspace-id', 'assessment-data', 'system-data'];
       
       sensitiveKeys.forEach(key => {
         const data = localStorage.getItem(key);
