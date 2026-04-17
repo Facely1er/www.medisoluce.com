@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { securityUtils } from '../utils/securityUtils';
-import backendService from '../services/backendService';
+import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -8,10 +8,30 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 // Service role key for admin operations (only set via environment variable)
 const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const createDisabledClient = (clientName: 'public' | 'admin'): SupabaseClient => (
+  new Proxy({} as SupabaseClient, {
+    get() {
+      throw new Error(
+        `Supabase ${clientName} client is unavailable because VITE_AUTH_PROVIDER is set to "local".`
+      );
+    }
+  })
+);
+
+if (isSupabaseAuthEnabled && (!supabaseUrl || !supabaseAnonKey)) {
+  throw new Error(
+    'Supabase auth is enabled but required env vars are missing. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY, or switch VITE_AUTH_PROVIDER=local for demo/trial mode.'
+  );
+}
+
+export const supabase: SupabaseClient = isSupabaseAuthEnabled
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : createDisabledClient('public');
 
 // Admin client for service operations
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+export const supabaseAdmin: SupabaseClient = isSupabaseAuthEnabled
+  ? (supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : supabase)
+  : createDisabledClient('admin');
 
 // Enhanced security wrapper for Supabase operations with schema prefixing
 const secureSupabaseWrapper = {
@@ -119,36 +139,28 @@ const secureSupabaseWrapper = {
   }
 };
 
-// Helper functions for common Supabase operations using backend service
+// Helper functions for common Supabase operations
 export const auth = {
   signUp: async (email: string, password: string) => {
-    const result = await backendService.AuthenticationService.signUp(email, password);
-    if (!result.success) {
-      throw new Error(result.error);
-    }
-    return result.data;
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
   },
 
   signIn: async (email: string, password: string) => {
-    const result = await backendService.AuthenticationService.signIn(email, password);
-    if (!result.success) {
-      throw new Error(result.error);
-    }
-    return result.data;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   },
 
   signOut: async () => {
-    const result = await backendService.AuthenticationService.signOut();
-    if (!result.success) {
-      throw new Error(result.error);
-    }
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   },
 
   resetPassword: async (email: string) => {
-    const result = await backendService.AuthenticationService.resetPassword(email);
-    if (!result.success) {
-      throw new Error(result.error);
-    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) throw error;
   },
 
   getSession: async () => {
@@ -172,6 +184,3 @@ export const getTableName = (table: string): string => {
   }
   return `medisoluce.${table}`;
 };
-
-// Export backend service for direct use
-export { backendService };

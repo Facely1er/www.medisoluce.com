@@ -701,13 +701,13 @@ class AdvancedSecurityScanner {
   private hasAccessControls(): boolean {
     // Check for access control indicators
     return !!(
-      localStorage.getItem('user-session') ||
+      localStorage.getItem('local-workspace-id') ||
       document.querySelector('button[aria-label*="sign out"], a[href*="logout"]')
     );
   }
 
   private calculateEncryptionCoverage(): number {
-    const sensitiveKeys = ['user-session', 'hipaa-assessments', 'system-dependencies'];
+    const sensitiveKeys = ['local-workspace-id', 'hipaa-assessments', 'system-dependencies'];
     let encryptedCount = 0;
 
     sensitiveKeys.forEach(key => {

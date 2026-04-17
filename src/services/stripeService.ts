@@ -7,6 +7,7 @@
  */
 
 import { getAllPolicyUrls, getStripeTermsConfig } from '../utils/policyUrls';
+import { isBillingEnabled } from '../config/runtimeConfig';
 
 export interface CheckoutSessionParams {
   priceId: string;
@@ -39,6 +40,10 @@ export interface CheckoutSessionResponse {
 export async function createCheckoutSession(
   params: CheckoutSessionParams
 ): Promise<CheckoutSessionResponse> {
+  if (!isBillingEnabled) {
+    throw new Error('Billing is disabled for this deployment. Set VITE_ENABLE_BILLING=true to enable checkout.');
+  }
+
   const policyUrls = getAllPolicyUrls();
   const termsConfig = getStripeTermsConfig();
 
@@ -129,6 +134,10 @@ export async function createPortalSession(
   customerId: string,
   returnUrl?: string
 ): Promise<string> {
+  if (!isBillingEnabled) {
+    throw new Error('Billing is disabled for this deployment. Set VITE_ENABLE_BILLING=true to enable customer portal.');
+  }
+
   const apiUrl = import.meta.env.VITE_API_URL || '/api';
   const endpoint = `${apiUrl}/create-portal-session`;
 
@@ -151,4 +160,3 @@ export async function createPortalSession(
   const data = await response.json();
   return data.url;
 }
-

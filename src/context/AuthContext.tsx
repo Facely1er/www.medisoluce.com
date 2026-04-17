@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { type Session } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
+import { authProvider, getLocalWorkspaceId, isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 interface User {
   id: string;
@@ -9,7 +12,8 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signOut: () => void;
+  authProvider: 'local' | 'supabase';
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,54 +23,70 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored user session
-    const storedSession = localStorage.getItem('user-session');
-    if (storedSession) {
-      const userData = JSON.parse(storedSession);
-      setUser({
-        id: userData.sessionId,
-        email: userData.email,
-        loginTime: userData.loginTime || userData.registrationTime
-      });
+    if (!isSupabaseAuthEnabled) {
+      getLocalWorkspaceId();
+      setUser(null);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
-  }, []);
-  
-  // Listen for storage changes (for multi-tab support)
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'user-session') {
-        if (e.newValue) {
-          const userData = JSON.parse(e.newValue);
-          setUser({
-            id: userData.sessionId,
-            email: userData.email,
-            loginTime: userData.loginTime || userData.registrationTime
-          });
-        } else {
+
+    const toUser = (session: Session | null): User | null => {
+      if (!session?.user?.id || !session.user.email) {
+        return null;
+      }
+
+      return {
+        id: session.user.id,
+        email: session.user.email,
+        loginTime: session.user.last_sign_in_at ?? undefined
+      };
+    };
+
+    const initializeSession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error('Failed to fetch Supabase session:', error.message);
           setUser(null);
+        } else {
+          setUser(toUser(data.session));
         }
+      } catch (error) {
+        console.error('Unexpected session initialization error:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+
+    initializeSession();
+
+    const { data: authStateChange } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(toUser(session));
+      setLoading(false);
+    });
+
+    return () => authStateChange.subscription.unsubscribe();
   }, []);
 
+  const signOut = async () => {
+    if (!isSupabaseAuthEnabled) {
+      setUser(null);
+      return;
+    }
 
-
-
-
-  const signOut = () => {
-    localStorage.removeItem('user-session');
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      throw error;
+    }
     setUser(null);
   };
-
 
   return (
     <AuthContext.Provider value={{
       user,
       loading,
+      authProvider,
       signOut,
     }}>
       {children}

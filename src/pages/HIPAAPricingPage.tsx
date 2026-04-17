@@ -13,6 +13,7 @@ import { useTrial } from '../hooks/useTrial';
 import TrialActivationModal from '../components/trial/TrialActivationModal';
 import TrialBanner from '../components/trial/TrialBanner';
 import { useToast } from '../components/ui/Toast';
+import { authProvider, isBillingEnabled } from '../config/runtimeConfig';
 
 const HIPAAPricingPage: React.FC = () => {
   const { t } = useTranslation();
@@ -274,6 +275,11 @@ const HIPAAPricingPage: React.FC = () => {
             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               {t('pricing.hipaa.limits_disclaimer')}
             </p>
+            {!isBillingEnabled && (
+              <p className="mt-3 text-sm text-warning-600 dark:text-warning-400 max-w-2xl mx-auto">
+                {t('pricing_common.billing_disabled_demo', 'Billing and paid checkout are disabled in this demo/trial deployment.')}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -347,9 +353,13 @@ const HIPAAPricingPage: React.FC = () => {
                               showToast({
                                 type: 'info',
                                 title: t('pricing_common.sign_in_required'),
-                                message: t('pricing_common.sign_in_required_message')
+                                message: authProvider === 'local'
+                                  ? t('pricing_common.local_demo_auth_disabled', 'This demo is local-only. Sign-in is disabled until VITE_AUTH_PROVIDER=supabase is configured.')
+                                  : t('pricing_common.sign_in_required_message')
                               });
-                              navigate('/login');
+                              if (authProvider !== 'local') {
+                                navigate('/login');
+                              }
                             }
                           }}
                         >
@@ -361,7 +371,11 @@ const HIPAAPricingPage: React.FC = () => {
                           className="w-full" 
                           size="lg" 
                           variant="outline"
+                          disabled={!isBillingEnabled}
                           onClick={() => {
+                            if (!isBillingEnabled) {
+                              return;
+                            }
                             showToast({
                               type: 'info',
                               title: t('pricing_common.trial_already_used'),
@@ -369,7 +383,7 @@ const HIPAAPricingPage: React.FC = () => {
                             });
                           }}
                         >
-                          {t('pricing_common.upgrade_to_continue')}
+                          {isBillingEnabled ? t('pricing_common.upgrade_to_continue') : t('pricing_common.billing_disabled_short', 'Billing disabled in demo')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (
@@ -453,4 +467,3 @@ const HIPAAPricingPage: React.FC = () => {
 };
 
 export default HIPAAPricingPage;
-
