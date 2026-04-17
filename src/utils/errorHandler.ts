@@ -72,7 +72,19 @@ class ErrorHandler {
   }
 
   private generateSessionId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    if (typeof crypto !== 'undefined') {
+      if ('randomUUID' in crypto) {
+        return crypto.randomUUID();
+      }
+
+      if ('getRandomValues' in crypto) {
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+        return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+      }
+    }
+
+    return `${Date.now()}-${this.config.environment}`;
   }
 
   private initializeExternalMonitoring() {

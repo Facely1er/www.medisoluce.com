@@ -277,7 +277,7 @@ const HIPAAPricingPage: React.FC = () => {
             </p>
             {!isBillingEnabled && (
               <p className="mt-3 text-sm text-warning-600 dark:text-warning-400 max-w-2xl mx-auto">
-                Billing and paid checkout are disabled in this demo/trial deployment.
+                {t('pricing_common.billing_disabled_demo', 'Billing and paid checkout are disabled in this demo/trial deployment.')}
               </p>
             )}
           </div>
@@ -354,7 +354,7 @@ const HIPAAPricingPage: React.FC = () => {
                                 type: 'info',
                                 title: t('pricing_common.sign_in_required'),
                                 message: authProvider === 'local'
-                                  ? 'This demo is local-only. Sign-in is disabled until VITE_AUTH_PROVIDER=supabase is configured.'
+                                  ? t('pricing_common.local_demo_auth_disabled', 'This demo is local-only. Sign-in is disabled until VITE_AUTH_PROVIDER=supabase is configured.')
                                   : t('pricing_common.sign_in_required_message')
                               });
                               if (authProvider !== 'local') {
@@ -383,7 +383,7 @@ const HIPAAPricingPage: React.FC = () => {
                             });
                           }}
                         >
-                          {isBillingEnabled ? t('pricing_common.upgrade_to_continue') : 'Billing disabled in demo'}
+                          {isBillingEnabled ? t('pricing_common.upgrade_to_continue') : t('pricing_common.billing_disabled_short', 'Billing disabled in demo')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (

@@ -9,6 +9,7 @@ import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { authProvider, isSupabaseAuthEnabled } from '../../config/runtimeConfig';
 import { supabase } from '../../lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 interface RegisterFormData {
   email: string;
@@ -17,6 +18,7 @@ interface RegisterFormData {
 }
 
 const Register: React.FC = () => {
+  const { t } = useTranslation();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<RegisterFormData>();
@@ -131,14 +133,17 @@ const Register: React.FC = () => {
         <Card className="max-w-md w-full p-8 text-center">
           <UserPlus className="mx-auto h-12 w-12 text-primary-500" />
           <h2 className="mt-6 text-2xl font-heading font-bold text-gray-900 dark:text-white">
-            Registration disabled in local demo mode
+            {t('auth.local_demo_register_disabled', 'Registration disabled in local demo mode')}
           </h2>
           <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-            This demo runs with VITE_AUTH_PROVIDER={authProvider}. Deploy with VITE_AUTH_PROVIDER=supabase to enable account creation.
+            {t(
+              'auth.local_demo_register_disabled_message',
+              `This demo runs with VITE_AUTH_PROVIDER=${authProvider}. Deploy with VITE_AUTH_PROVIDER=supabase to enable account creation.`
+            )}
           </p>
           <div className="mt-6">
             <Link to="/dashboard">
-              <Button fullWidth>Continue to Dashboard</Button>
+              <Button fullWidth>{t('auth.continue_to_dashboard', 'Continue to Dashboard')}</Button>
             </Link>
           </div>
         </Card>

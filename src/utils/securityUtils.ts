@@ -1148,12 +1148,38 @@ class SecurityManager {
   }
 
   private checkRoleBasedAccess(): boolean {
-    const workspaceId = localStorage.getItem('local-workspace-id');
-    if (workspaceId) {
-      return true;
+    const tokenCandidates: string[] = [];
+
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key) continue;
+      if (key.includes('auth-token') || key === 'supabase.auth.token') {
+        const tokenValue = localStorage.getItem(key);
+        if (tokenValue) {
+          tokenCandidates.push(tokenValue);
+        }
+      }
     }
 
-    return !!localStorage.getItem('supabase.auth.token');
+    const hasRoleInToken = tokenCandidates.some((rawToken) => {
+      try {
+        const parsedToken = JSON.parse(rawToken);
+        const accessToken = parsedToken?.access_token
+          || parsedToken?.currentSession?.access_token
+          || parsedToken?.session?.access_token;
+
+        if (typeof accessToken !== 'string' || !accessToken.includes('.')) {
+          return false;
+        }
+
+        const payload = JSON.parse(atob(accessToken.split('.')[1]));
+        return !!(payload.role || payload.app_metadata?.role || payload.user_metadata?.role);
+      } catch {
+        return false;
+      }
+    });
+
+    return hasRoleInToken;
   }
 
   private checkPHIExposure(): number {
