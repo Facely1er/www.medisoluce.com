@@ -30,7 +30,7 @@ export default defineConfig({
             }
           },
           {
-            urlPattern: /^https:\/\/(?!fonts\.googleapis\.com|fonts\.gstatic\.com).*/i,
+            urlPattern: /^https:\/\/(?!fonts\.googleapis\.com|fonts\.gstatic\.com|www\.googletagmanager\.com|www\.google-analytics\.com|region1\.google-analytics\.com).*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'offlineCache',
@@ -87,25 +87,10 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: process.env.NODE_ENV !== 'production',
-    minify: 'terser',
+    minify: 'esbuild',
     target: 'esnext',
     cssTarget: 'chrome80',
     reportCompressedSize: true,
-    terserOptions: {
-      compress: {
-        drop_debugger: true,
-        drop_console: process.env.NODE_ENV === 'production',
-        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
-        passes: 2
-      },
-      mangle: {
-        safari10: true
-      },
-      format: {
-        comments: false,
-        ecma: 2015
-      }
-    },
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
