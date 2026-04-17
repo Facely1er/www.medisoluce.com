@@ -147,6 +147,8 @@ export default defineConfig({
   esbuild: {
     legalComments: 'none',
     target: 'es2015',
-    exclude: ['@sentry/browser']
+    exclude: ['@sentry/browser'],
+    drop: ['debugger'],
+    pure: process.env.NODE_ENV === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
   }
 });
