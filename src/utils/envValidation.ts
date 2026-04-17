@@ -2,6 +2,7 @@
  * Environment Variable Validation
  * Validates required and optional environment variables at runtime
  */
+import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 interface EnvConfig {
   required: string[];
@@ -32,8 +33,7 @@ class EnvironmentValidator {
     const errors: string[] = [];
 
     const requiredKeys = [...this.config.required];
-    const authProvider = import.meta.env.VITE_AUTH_PROVIDER || 'supabase';
-    if (authProvider === 'supabase') {
+    if (isSupabaseAuthEnabled) {
       requiredKeys.push('VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY');
     }
 
@@ -160,8 +160,7 @@ export function validateEnvironment(): ValidationResult {
 
   if (result.errors.length > 0) {
     console.error('❌ Environment validation failed:', result.errors);
-    const authProvider = import.meta.env.VITE_AUTH_PROVIDER || 'supabase';
-    if (authProvider === 'supabase') {
+    if (isSupabaseAuthEnabled) {
       throw new Error(
         'Supabase mode requires VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY. ' +
         'Set both variables or set VITE_AUTH_PROVIDER=local for demo/trial mode.'
