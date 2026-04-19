@@ -37,7 +37,34 @@ function getSupabaseAdmin() {
 }
 
 /**
- * Upsert a subscription record in medisoluce.subscriptions.
+ * Upsert an invoice record in medisoluce.invoices.
+ */
+async function upsertInvoice(supabase, invoice, status) {
+  const record = {
+    stripe_invoice_id: invoice.id,
+    stripe_customer_id: invoice.customer,
+    stripe_subscription_id: invoice.subscription,
+    amount_paid: invoice.amount_paid ?? null,
+    amount_due: invoice.amount_due ?? null,
+    currency: invoice.currency,
+    status,
+    paid_at:
+      status === 'paid' && invoice.status_transitions?.paid_at
+        ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
+        : null,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = await supabase
+    .from('medisoluce.invoices')
+    .upsert(record, { onConflict: 'stripe_invoice_id' });
+
+  if (error) {
+    throw new Error(`Failed to upsert invoice ${invoice.id} (status=${status}): ${error.message}`);
+  }
+}
+
+
  * Also updates the user's plan in medisoluce.profiles.
  */
 async function upsertSubscription(supabase, subscription) {
@@ -61,7 +88,9 @@ async function upsertSubscription(supabase, subscription) {
     .upsert(record, { onConflict: 'stripe_subscription_id' });
 
   if (error) {
-    throw new Error(`Failed to upsert subscription ${subscription.id}: ${error.message}`);
+    throw new Error(
+      `Failed to upsert subscription ${subscription.id} (status=${subscription.status}): ${error.message}`
+    );
   }
 
   // Mirror the active/cancelled state on the user profile
@@ -164,59 +193,29 @@ module.exports = async (req, res) => {
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object;
         console.log('Invoice payment succeeded:', invoice.id);
-
-        const { error } = await supabase
-          .from('medisoluce.invoices')
-          .upsert({
-            stripe_invoice_id: invoice.id,
-            stripe_customer_id: invoice.customer,
-            stripe_subscription_id: invoice.subscription,
-            amount_paid: invoice.amount_paid,
-            currency: invoice.currency,
-            status: 'paid',
-            paid_at: invoice.status_transitions?.paid_at
-              ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
-              : new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          }, { onConflict: 'stripe_invoice_id' });
-
-        if (error) {
-          console.error('Failed to record invoice payment:', error.message);
-        }
+        await upsertInvoice(supabase, invoice, 'paid');
         break;
       }
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object;
         console.error('Invoice payment failed:', invoice.id, 'customer:', invoice.customer);
-
-        const { error } = await supabase
-          .from('medisoluce.invoices')
-          .upsert({
-            stripe_invoice_id: invoice.id,
-            stripe_customer_id: invoice.customer,
-            stripe_subscription_id: invoice.subscription,
-            amount_due: invoice.amount_due,
-            currency: invoice.currency,
-            status: 'payment_failed',
-            updated_at: new Date().toISOString(),
-          }, { onConflict: 'stripe_invoice_id' });
-
-        if (error) {
-          console.error('Failed to record failed invoice:', error.message);
-        }
+        await upsertInvoice(supabase, invoice, 'payment_failed');
 
         // Update profile to reflect payment failure so the UI can prompt the user
-        const { error: profileError } = await supabase
+        const { data: updatedProfiles, error: profileError } = await supabase
           .from('medisoluce.profiles')
           .update({
             subscription_status: 'past_due',
             updated_at: new Date().toISOString(),
           })
-          .eq('stripe_customer_id', invoice.customer);
+          .eq('stripe_customer_id', invoice.customer)
+          .select('id');
 
         if (profileError) {
           console.error('Failed to update profile subscription_status to past_due:', profileError.message);
+        } else if (!updatedProfiles || updatedProfiles.length === 0) {
+          console.warn('invoice.payment_failed: no profile found for Stripe customer', invoice.customer);
         }
         break;
       }
