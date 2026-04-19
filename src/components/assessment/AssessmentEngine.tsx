@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { useTierLimit } from '../../hooks/useTierLimit';
+import { useAuth } from '../../context/AuthContext';
 import { analytics } from '../../utils/analytics';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
@@ -62,6 +63,7 @@ const AssessmentEngine: React.FC<AssessmentEngineProps> = ({
   // Privacy-by-design: Store assessment results locally
   const [savedAssessments, setSavedAssessments] = useLocalStorage('hipaa-assessments', []);
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { canSave, atLimit, limit } = useTierLimit({
     productId: 'hipaa',
     limitKey: 'hipaaAssessments',
@@ -349,32 +351,34 @@ const AssessmentEngine: React.FC<AssessmentEngineProps> = ({
                 </div>
               )}
 
-              {/* Account creation prompt — shown only to unauthenticated users after assessment */}
-              <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 rounded-lg">
-                <div className="flex items-start gap-3">
-                  <User className="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-primary-800 dark:text-primary-200 mb-1">
-                      Your results are saved in this browser
-                    </p>
-                    <p className="text-sm text-primary-700 dark:text-primary-300 mb-3">
-                      Create a free account to access your results from any device and track your compliance progress over time.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Link to="/register">
-                        <Button size="sm">
-                          Create Free Account
-                        </Button>
-                      </Link>
-                      <Link to="/login">
-                        <Button size="sm" variant="outline">
-                          Sign In
-                        </Button>
-                      </Link>
+              {/* Account creation prompt — only shown to unauthenticated users after assessment */}
+              {!user && (
+                <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-700 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <User className="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-primary-800 dark:text-primary-200 mb-1">
+                        Your results are saved in this browser
+                      </p>
+                      <p className="text-sm text-primary-700 dark:text-primary-300 mb-3">
+                        Create a free account to access your results from any device and track your compliance progress over time.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <Link to="/register">
+                          <Button size="sm">
+                            Create Free Account
+                          </Button>
+                        </Link>
+                        <Link to="/login">
+                          <Button size="sm" variant="outline">
+                            Sign In
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
                 <Button

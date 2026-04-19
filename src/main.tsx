@@ -161,6 +161,11 @@ try {
     // Render a visible error page rather than crashing silently with a blank screen
     const rootEl = document.getElementById('root');
     if (rootEl) {
+      // Escape the error message to prevent XSS — never interpolate raw error strings into innerHTML
+      const safeMessage = document.createElement('p');
+      safeMessage.textContent = (error as Error).message;
+      const escapedMessage = safeMessage.innerHTML;
+
       rootEl.innerHTML = `
         <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f9fafb;font-family:sans-serif;padding:1rem">
           <div style="max-width:480px;width:100%;background:#fff;border-radius:0.75rem;box-shadow:0 4px 24px rgba(0,0,0,.1);padding:2rem;text-align:center">
@@ -169,7 +174,7 @@ try {
             <p style="color:#6b7280;margin-bottom:1.5rem;font-size:.95rem">
               Required environment variables are missing. The application cannot start without Supabase credentials.
             </p>
-            <p style="background:#fef2f2;border:1px solid #fecaca;border-radius:.5rem;padding:.75rem;color:#b91c1c;font-size:.8rem;text-align:left;white-space:pre-wrap;word-break:break-word">${(error as Error).message}</p>
+            <p style="background:#fef2f2;border:1px solid #fecaca;border-radius:.5rem;padding:.75rem;color:#b91c1c;font-size:.8rem;text-align:left;white-space:pre-wrap;word-break:break-word">${escapedMessage}</p>
             <p style="color:#9ca3af;font-size:.75rem;margin-top:1.5rem">If you are the site owner, please set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> in your deployment environment.</p>
           </div>
         </div>
