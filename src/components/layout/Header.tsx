@@ -106,7 +106,7 @@ const Header: React.FC = () => {
               <Link
                 key={primaryNavItems[0].path}
                 to={primaryNavItems[0].path}
-                className={`px-2 py-1 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                className={`px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                   location.pathname === primaryNavItems[0].path
                     ? 'text-primary-600 dark:text-primary-400'
                     : 'text-gray-600 dark:text-gray-300'
@@ -126,7 +126,7 @@ const Header: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-2 py-1 text-xs font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
+                  className={`px-2 py-1 text-sm font-medium rounded transition hover:text-primary-600 dark:hover:text-primary-400 ${
                     location.pathname === item.path
                       ? 'text-primary-600 dark:text-primary-400'
                       : 'text-gray-600 dark:text-gray-300'

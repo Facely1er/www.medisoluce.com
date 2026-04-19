@@ -186,25 +186,27 @@ function App() {
                   <ToastProvider>
                     <ToastInitializer />
                     <AppContent />
-                    <React.Suspense fallback={null}>
-                      {!import.meta.env.PROD && (
-                        <PerformanceMonitor showDebugInfo={true} />
-                      )}
-                      <ServiceWorkerManager />
-                      {!import.meta.env.PROD && (
-                        <HealthOptimizer showInProduction={false} autoOptimize={true} />
-                      )}
-                      {!import.meta.env.PROD && (
-                        <ProductionReadinessIndicator showInProduction={false} />
-                      )}
-                      {!import.meta.env.PROD && (
-                        <HealthEnhancementDashboard 
-                          autoEnhance={true} 
-                          showInProduction={false} 
-                          position="minimal" 
-                        />
-                      )}
-                    </React.Suspense>
+                    <ErrorBoundary>
+                      <React.Suspense fallback={null}>
+                        {!import.meta.env.PROD && (
+                          <PerformanceMonitor showDebugInfo={true} />
+                        )}
+                        <ServiceWorkerManager />
+                        {!import.meta.env.PROD && (
+                          <HealthOptimizer showInProduction={false} autoOptimize={true} />
+                        )}
+                        {!import.meta.env.PROD && (
+                          <ProductionReadinessIndicator showInProduction={false} />
+                        )}
+                        {!import.meta.env.PROD && (
+                          <HealthEnhancementDashboard 
+                            autoEnhance={true} 
+                            showInProduction={false} 
+                            position="minimal" 
+                          />
+                        )}
+                      </React.Suspense>
+                    </ErrorBoundary>
                   </ToastProvider>
                 </TranslationGuard>
               </LocaleProvider>

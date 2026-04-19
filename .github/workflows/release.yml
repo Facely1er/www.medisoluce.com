@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run type checking
+        run: npm run type-check
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_GA_TRACKING_ID: ${{ secrets.VITE_GA_TRACKING_ID }}
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL }}
+          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING }}
+          VITE_ENABLE_ANALYTICS: ${{ secrets.VITE_ENABLE_ANALYTICS }}
+          VITE_ENABLE_ERROR_TRACKING: ${{ secrets.VITE_ENABLE_ERROR_TRACKING }}
+
+      - name: Create dist archive
+        run: |
+          cd dist
+          zip -r ../medisoluce-${{ github.ref_name }}.zip .
+          cd ..
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: MediSoluce ${{ github.ref_name }}
+          body: |
+            ## MediSoluce ${{ github.ref_name }}
+
+            ### Download
+            - **`medisoluce-${{ github.ref_name }}.zip`** — pre-built static site ready for self-hosting (serve with nginx, Apache, or any static file host)
+
+            ### Self-Hosting
+            Extract the zip and serve the contents with any static file server:
+            ```bash
+            unzip medisoluce-${{ github.ref_name }}.zip -d dist
+            npx serve dist
+            ```
+            Or copy `dist/` contents to your nginx/Apache web root.
+
+            ### Docker
+            ```bash
+            docker build -t medisoluce:${{ github.ref_name }} .
+            docker run -p 80:80 medisoluce:${{ github.ref_name }}
+            ```
+          files: |
+            medisoluce-${{ github.ref_name }}.zip
+          generate_release_notes: true

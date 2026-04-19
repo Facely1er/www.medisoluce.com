@@ -128,28 +128,36 @@ const DashboardPage: React.FC = () => {
     },
   ];
 
+  // Generate relative due dates from today rather than hardcoded 2024 values
+  const today = new Date();
+  const daysFromNow = (days: number): string => {
+    const d = new Date(today);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
   const tasks = [
     {
       title: t('dashboard.tasks.risk_assessment.title'),
-      dueDate: '2024-03-25',
+      dueDate: daysFromNow(7),
       priority: t('dashboard.priorities.high'),
       type: t('dashboard.task_types.assessment'),
     },
     {
       title: t('dashboard.tasks.access_controls.title'),
-      dueDate: '2024-03-28',
+      dueDate: daysFromNow(14),
       priority: t('dashboard.priorities.medium'),
       type: t('dashboard.task_types.security'),
     },
     {
       title: t('dashboard.tasks.privacy_policies.title'),
-      dueDate: '2024-04-01',
+      dueDate: daysFromNow(21),
       priority: t('dashboard.priorities.medium'),
       type: t('dashboard.task_types.policy'),
     },
     {
       title: t('dashboard.tasks.training_review.title'),
-      dueDate: '2024-04-05',
+      dueDate: daysFromNow(30),
       priority: t('dashboard.priorities.low'),
       type: t('dashboard.task_types.training'),
     },
@@ -233,10 +241,8 @@ const DashboardPage: React.FC = () => {
               )}
               
               {trainingProgress.length === 0 && (
-                <a
-                  href="https://training.medisoluce.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/training"
                   className="group p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all"
                   data-analytics="dashboard-recommendation"
                   data-action="staff-training"
@@ -251,7 +257,7 @@ const DashboardPage: React.FC = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     Build your team's compliance expertise with interactive training modules
                   </p>
-                </a>
+                </Link>
               )}
               
               {/* Always show advanced options */}

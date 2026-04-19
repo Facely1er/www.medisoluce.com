@@ -33,6 +33,16 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_GA_TRACKING_ID: ${{ secrets.VITE_GA_TRACKING_ID }}
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL }}
+          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING }}
+          VITE_ENABLE_ANALYTICS: ${{ secrets.VITE_ENABLE_ANALYTICS }}
+          VITE_ENABLE_ERROR_TRACKING: ${{ secrets.VITE_ENABLE_ERROR_TRACKING }}
           
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -40,30 +50,6 @@ jobs:
           name: dist
           path: dist
           retention-days: 7
-
-  deploy-vercel:
-    needs: test-and-build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-          
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
 
   deploy-netlify:
     needs: test-and-build
