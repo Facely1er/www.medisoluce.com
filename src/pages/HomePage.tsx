@@ -139,76 +139,7 @@ const HomePage: React.FC = () => {
         ctaLink="/hipaa-check"
       />
       
-      {/* Journey Preview - Above the fold */}
-      <div className="relative -mt-12 z-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8 max-w-5xl mx-auto"
-          >
-            <div className="text-center mb-6">
-              <p className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase tracking-wide mb-2">
-                Your Compliance Journey
-              </p>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                4 Steps to Complete Healthcare Compliance
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { step: 1, title: 'Assess', time: '~10 min', icon: <ShieldCheck className="h-5 w-5" />, color: 'primary' },
-                { step: 2, title: 'Map Systems', time: '~15 min', icon: <Server className="h-5 w-5" />, color: 'secondary' },
-                { step: 3, title: 'Analyze Impact', time: '~12 min', icon: <BarChart className="h-5 w-5" />, color: 'accent' },
-                { step: 4, title: 'Plan Recovery', time: '~20 min', icon: <FileText className="h-5 w-5" />, color: 'success' },
-              ].map((item, idx) => (
-                <div key={item.step} className="relative">
-                  <div className="flex flex-col items-center text-center">
-                    <div className={`w-12 h-12 rounded-full bg-${item.color}-100 dark:bg-${item.color}-900/30 flex items-center justify-center text-${item.color}-600 dark:text-${item.color}-400 mb-2`}>
-                      {item.icon}
-                    </div>
-                    <div className="font-semibold text-sm text-gray-900 dark:text-white">
-                      {item.title}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      ~{item.time}
-                    </div>
-                  </div>
-                  {idx < 3 && (
-                    <div className="hidden lg:block absolute top-6 left-full w-full">
-                      <div className="h-0.5 bg-gradient-to-r from-gray-300 to-transparent dark:from-gray-600 dark:to-transparent"></div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                <div className="flex items-center gap-1">
-                  <CheckCircle className="h-4 w-4 text-success-500" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="hidden sm:flex items-center gap-1">
-                  <CheckCircle className="h-4 w-4 text-success-500" />
-                  <span>Progress auto-saved</span>
-                </div>
-              </div>
-              <Link to="/hipaa-check">
-                <Button size="sm" className="whitespace-nowrap">
-                  Start Now
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-   
-
+      
       {/* Stats Section */}
       <section className="py-20 bg-white dark:bg-gray-800 mt-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
