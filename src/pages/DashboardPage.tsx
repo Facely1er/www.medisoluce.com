@@ -32,12 +32,19 @@ const DashboardPage: React.FC = () => {
   const [impactAssessments] = useLocalStorage('business-impact-assessments', []);
   const [trainingProgress] = useLocalStorage('training-progress', []);
   
-  // Calculate real metrics from stored data
+  // Calculate real metrics from stored data — no fabricated fallbacks
+  const TOTAL_TRAINING_MODULES = 4;
   const latestAssessment = savedAssessments[savedAssessments.length - 1];
-  const complianceScore = latestAssessment?.result?.percentage || 87;
-  const openIssues = latestAssessment?.result?.recommendations?.filter(r => r.priority === 'high').length || 3;
-  const totalSystems = 24; // This would be calculated from actual dependency mapping
-  const staffTrained = 95; // This would come from training completion data
+  const complianceScore: number | null = latestAssessment?.result?.percentage ?? null;
+  const openIssues: number | null = latestAssessment
+    ? (latestAssessment.result?.recommendations?.filter((r: { priority: string }) => r.priority === 'high').length ?? 0)
+    : null;
+  const totalSystems = dependencies.length;
+  const staffTrained: number | null = trainingProgress.length > 0
+    ? Math.round(
+        (new Set(trainingProgress.map((t: { moduleId: string }) => t.moduleId)).size / TOTAL_TRAINING_MODULES) * 100
+      )
+    : null;
   
   // Recent activities for quick access
   const recentActivities = [
@@ -83,47 +90,47 @@ const DashboardPage: React.FC = () => {
     }
   ];
 
-  // Generate trend data based on assessments
-  const complianceData = [
-    { name: 'Jan', score: Math.max(complianceScore - 12, 0) },
-    { name: 'Feb', score: Math.max(complianceScore - 9, 0) },
-    { name: 'Mar', score: Math.max(complianceScore - 5, 0) },
-    { name: 'Apr', score: Math.max(complianceScore - 2, 0) },
-    { name: 'May', score: Math.max(complianceScore - 4, 0) },
-    { name: 'Jun', score: complianceScore },
-  ];
+  // Trend data reflects actual saved assessments only — no synthetic history
+  const complianceData = savedAssessments.map((a: { date: string; result: { percentage: number } }) => ({
+    name: new Date(a.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+    score: a.result?.percentage ?? 0,
+  }));
 
+  const highRiskCount = latestAssessment?.result?.recommendations?.filter((r: { priority: string }) => r.priority === 'high').length ?? 0;
+  const mediumRiskCount = latestAssessment?.result?.recommendations?.filter((r: { priority: string }) => r.priority === 'medium').length ?? 0;
+  const lowRiskCount = latestAssessment?.result?.recommendations?.filter((r: { priority: string }) => r.priority === 'low').length ?? 0;
   const riskData = [
-    { name: 'High', value: 3 },
-    { name: 'Medium', value: 8 },
-    { name: 'Low', value: 15 },
+    { name: 'High', value: highRiskCount },
+    { name: 'Medium', value: mediumRiskCount },
+    { name: 'Low', value: lowRiskCount },
   ];
+  const hasRiskData = highRiskCount + mediumRiskCount + lowRiskCount > 0;
 
   const COLORS = ['#dc3545', '#ffc107', '#198754'];
 
   const metrics = [
     {
       title: t('dashboard.compliance_score'),
-      value: `${complianceScore}%`,
-      change: '+2%',
+      value: complianceScore !== null ? `${complianceScore}%` : '—',
+      link: complianceScore === null ? { to: '/hipaa-check', label: 'Run assessment →' } : null,
       icon: <Shield className="h-6 w-6 text-primary-500" />,
     },
     {
       title: t('dashboard.open_issues'),
-      value: openIssues.toString(),
-      change: openIssues <= 3 ? '-3' : '+' + (openIssues - 3),
+      value: openIssues !== null ? openIssues.toString() : '—',
+      link: openIssues === null ? { to: '/hipaa-check', label: 'Run assessment →' } : null,
       icon: <AlertTriangle className="h-6 w-6 text-warning-500" />,
     },
     {
       title: t('dashboard.systems_monitored'),
-      value: totalSystems.toString(),
-      change: '+2',
+      value: totalSystems > 0 ? totalSystems.toString() : '—',
+      link: totalSystems === 0 ? { to: '/dependency-manager', label: 'Map systems →' } : null,
       icon: <Server className="h-6 w-6 text-secondary-500" />,
     },
     {
       title: t('dashboard.staff_trained'),
-      value: `${staffTrained}%`,
-      change: '+5%',
+      value: staffTrained !== null ? `${staffTrained}%` : '—',
+      link: staffTrained === null ? { to: '/training', label: 'Start training →' } : null,
       icon: <Users className="h-6 w-6 text-success-500" />,
     },
   ];
@@ -322,11 +329,6 @@ const DashboardPage: React.FC = () => {
                   <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                     {metric.icon}
                   </div>
-                  <span className={`text-sm font-medium ${
-                    metric.change.startsWith('+') ? 'text-success-500' : 'text-accent-500'
-                  }`}>
-                    {metric.change}
-                  </span>
                 </div>
                 <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                   {metric.title}
@@ -334,6 +336,14 @@ const DashboardPage: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {metric.value}
                 </p>
+                {metric.link && (
+                  <Link
+                    to={metric.link.to}
+                    className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                  >
+                    {metric.link.label}
+                  </Link>
+                )}
               </Card>
             </motion.div>
           ))}
@@ -346,20 +356,29 @@ const DashboardPage: React.FC = () => {
               {t('dashboard.compliance_trend')}
             </h3>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={complianceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="score"
-                    stroke="#0073e6"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              {complianceData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={complianceData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Line
+                      type="monotone"
+                      dataKey="score"
+                      stroke="#0073e6"
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <p className="text-gray-500 dark:text-gray-400 mb-2">No assessments yet</p>
+                  <Link to="/hipaa-check" className="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+                    Run assessment →
+                  </Link>
+                </div>
+              )}
             </div>
           </Card>
 
@@ -368,25 +387,34 @@ const DashboardPage: React.FC = () => {
               {t('dashboard.risk_distribution')}
             </h3>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={riskData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                    label
-                  >
-                    {riskData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              {hasRiskData ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={riskData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label
+                    >
+                      {riskData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <p className="text-gray-500 dark:text-gray-400 mb-2">No risk data yet</p>
+                  <Link to="/hipaa-check" className="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+                    Run assessment →
+                  </Link>
+                </div>
+              )}
             </div>
           </Card>
         </div>
