@@ -33,7 +33,7 @@ function getSupabaseAdmin() {
   if (!url || !key) {
     throw new Error('Supabase admin credentials are not configured (VITE_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)');
   }
-  return createClient(url, key);
+  return createClient(url, key, { db: { schema: 'medisoluce' } });
 }
 
 /**
@@ -56,7 +56,7 @@ async function upsertInvoice(supabase, invoice, status) {
   };
 
   const { error } = await supabase
-    .from('medisoluce.invoices')
+    .from('invoices')
     .upsert(record, { onConflict: 'stripe_invoice_id' });
 
   if (error) {
@@ -64,7 +64,8 @@ async function upsertInvoice(supabase, invoice, status) {
   }
 }
 
-
+/**
+ * Upsert a subscription record in medisoluce.subscriptions.
  * Also updates the user's plan in medisoluce.profiles.
  */
 async function upsertSubscription(supabase, subscription) {
@@ -84,7 +85,7 @@ async function upsertSubscription(supabase, subscription) {
   };
 
   const { error } = await supabase
-    .from('medisoluce.subscriptions')
+    .from('subscriptions')
     .upsert(record, { onConflict: 'stripe_subscription_id' });
 
   if (error) {
@@ -96,7 +97,7 @@ async function upsertSubscription(supabase, subscription) {
   // Mirror the active/cancelled state on the user profile
   const isActive = subscription.status === 'active' || subscription.status === 'trialing';
   const { error: profileError } = await supabase
-    .from('medisoluce.profiles')
+    .from('profiles')
     .update({
       subscription_status: subscription.status,
       subscription_id: subscription.id,
@@ -160,7 +161,7 @@ module.exports = async (req, res) => {
           // Link the Stripe customer ID to the Supabase user via email
           if (session.customer_email) {
             const { error } = await supabase
-              .from('medisoluce.profiles')
+              .from('profiles')
               .update({
                 stripe_customer_id: session.customer,
                 updated_at: new Date().toISOString(),
@@ -204,7 +205,7 @@ module.exports = async (req, res) => {
 
         // Update profile to reflect payment failure so the UI can prompt the user
         const { data: updatedProfiles, error: profileError } = await supabase
-          .from('medisoluce.profiles')
+          .from('profiles')
           .update({
             subscription_status: 'past_due',
             updated_at: new Date().toISOString(),
