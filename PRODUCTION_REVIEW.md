@@ -1,7 +1,6 @@
 # MediSoluce Production Readiness Review
-**Date:** 2026-03-05
-**Branch:** `claude/review-production-readiness-LTIEq`
-**Reviewer:** Claude Code (automated full-stack audit)
+**Original review:** 2026-03-05 (`claude/review-production-readiness-LTIEq`)
+**Last updated:** 2026-09-05 (`cursor/production-readiness-fixes`, on top of `main` @ `99150ea`)
 
 ---
 
@@ -9,83 +8,59 @@
 
 MediSoluce is a well-structured React + Vite SPA targeting healthcare compliance officers, IT directors, and operations managers. The platform's **core product concept is strong** — a privacy-first, 4-step HIPAA compliance journey with localStorage-based persistence is a genuinely differentiated positioning.
 
-However, several critical issues block production readiness, and the value proposition, customer journey, and UI/UX each have addressable gaps that would meaningfully improve conversion.
+As of 2026-09-05 every engineering blocker from the March review and from the September re-audit has been resolved (see §1). What remains before a paid launch is **environment configuration and a Stripe end-to-end test**, not code. The UI/UX, value-proposition and customer-journey observations in §2–§4 are still open and are conversion improvements rather than release blockers.
 
-**Overall Ratings:**
+**Overall Ratings (2026-09-05):**
 
 | Area | Score | Status |
 |---|---|---|
-| Production Readiness | 58/100 | 🔴 Needs work |
-| UI/UX | 71/100 | 🟡 Good with gaps |
-| Value Proposition Clarity | 62/100 | 🟡 Unclear freemium boundary |
-| Customer Journey | 67/100 | 🟡 Journey defined but leaky |
+| Production Readiness | 88/100 | 🟢 Ready for demo launch; paid launch pending env + Stripe test |
+| UI/UX | 71/100 | 🟡 Good with gaps (unchanged) |
+| Value Proposition Clarity | 62/100 | 🟡 Unclear freemium boundary (unchanged) |
+| Customer Journey | 67/100 | 🟡 Journey defined but leaky (unchanged) |
+
+**Verification gate (`npm run verify:production`, Node 20.20.2):** lint 0 errors · `tsc --noEmit` clean · 14 test files / 107 tests passing · all 11 serverless entries parse · production build emits `sw.js` + `workbox-*.js`, main chunk 307 kB (84 kB gzipped), no Rollup warnings.
 
 ---
 
 ## 1. Production Readiness
 
-### 1.1 Critical Bugs Fixed in This PR
+### 1.1 Resolved
 
-#### ✅ FIXED — Broken internal routes (`/pricing/bundles`, `/pricing/calculator`)
-- **File:** `src/pages/PricingOverviewPage.tsx` lines 236, 307, 336
-- **Problem:** Three CTAs in the Pricing Overview page linked to `/pricing/bundles` and `/pricing/calculator` which don't exist in `App.tsx`. Clicking these buttons produced a blank page or used the service worker fallback, showing the homepage instead of an error.
-- **Fix:** Redirected all three to `/contact` which is the appropriate next step for bundle/custom pricing inquiries.
+| Issue (severity at time of report) | Resolution | Where |
+|---|---|---|
+| 🔴 Wildcard CORS on Stripe checkout **and portal** endpoints (Vercel *and* Netlify) | Shared core reflects the request origin only if it is `VITE_APP_BASE_URL` or a platform preview URL; `success_url`/`cancel_url`/`return_url` must be on an allowed origin; `price_id` must be in the server-side catalog (`STRIPE_ALLOWED_PRICE_IDS` or `STRIPE_PRICE_*`) | `api/stripeCheckoutCore.cjs`, `api/create-*.js`, `netlify/functions/create-*.js` |
+| 🔴 Checkout unreachable — no UI path called `redirectToCheckout`; no price IDs | Price IDs come from `VITE_STRIPE_PRICE_<PRODUCT>_<TIER>`; `useCheckout` drives billing-flag → price → sign-in → redirect. Professional "Upgrade to Continue" now opens Stripe Checkout; falls back to `/contact` if unconfigured. Also fixed the hard-coded English `'Start Free Trial'` comparison that disabled trials in French | `src/config/stripePrices.ts`, `src/hooks/useCheckout.ts`, `src/pages/*PricingPage.tsx` |
+| 🔴 Authentication was localStorage-only | `AuthContext` uses `supabase.auth.getSession()` / `onAuthStateChange`; explicit `local` demo mode via `VITE_AUTH_PROVIDER` | `src/context/AuthContext.tsx`, `src/config/runtimeConfig.ts` |
+| 🟠 Dead `/pricing/bundles`, `/pricing/calculator` CTAs (the March fix did not land) | Repointed to `/contact`, per-role pricing pages and `/business-impact` | `src/pages/PricingOverviewPage.tsx` |
+| 🟠 `vite build` fails on Node ≥ 22 (no service worker emitted) | `engines.node: "20.x"` + `.npmrc engine-strict=true`; CI/Netlify/Docker already pin 20 | `package.json`, `.npmrc` |
+| 🟠 `npm audit` had 2 high advisories and CI ran it with `continue-on-error` | `npm audit fix` applied (lodash 4.18.1, ws 8.21.3); CI now gates on `npm audit --omit=dev --audit-level=high`, with an informational all-deps pass | `package-lock.json`, `.github/workflows/ci.yml` |
+| 🟠 Google Analytics loaded unconditionally from `index.html` with a cross-domain linker | Inline tag removed. gtag loads only when `VITE_ENABLE_ANALYTICS=true`, `VITE_GA_TRACKING_ID` is set, **and** the visitor accepts the consent banner; choice is changeable on `/cookie-policy` | `index.html`, `src/utils/analytics.ts`, `src/utils/consent.ts`, `src/components/ui/CookieConsent.tsx` |
+| 🟠 Lazy tools shared one silent `Suspense fallback={null}` | Wrapped in their own `ErrorBoundary`; routes now lazy-loaded behind a visible `RouteFallback` | `src/App.tsx` |
+| 🟡 CSP `report-uri /api/csp-violation` pointed at a non-existent endpoint | Endpoint added for both platforms (bounded body, `application/csp-report` + Reporting API, always 204) | `api/cspViolationCore.cjs`, `api/csp-violation.js`, `netlify/functions/csp-violation.js` |
+| 🟡 No Content-Security-Policy | CSP set in `netlify.toml` / `vercel.json` (`frame-ancestors 'none'`, `object-src 'none'`, `upgrade-insecure-requests`, reporting) | `netlify.toml`, `vercel.json` |
+| 🟡 Supabase env vars never validated | Required when `VITE_AUTH_PROVIDER=supabase`; startup renders a visible configuration error instead of a blank page. Billing-on-without-price-IDs now warns | `src/utils/envValidation.ts`, `src/main.tsx` |
+| 🟡 Dashboard hardcoded metrics / 2024 due dates / `training.medisoluce.com` link | Honest empty states; relative due dates; internal `/training` route | `src/pages/DashboardPage.tsx` |
+| 🟡 PWA `scope: '/app'` mismatch | `start_url` / `scope` are `/` | `vite.config.ts` |
+| 🟡 `coverage/`, `test-results.json`, `backend-test-report.json`, `.vercel/` committed | Untracked and ignored | `.gitignore` |
+| 🟡 1.2 MB main chunk; mixed static/dynamic imports (`supabase`, `comprehensiveHealthManager`, `serviceFallback`) | Route-level `React.lazy`; dynamic `supabase` import made static (already in root bundle) | `src/App.tsx`, `src/utils/comprehensiveHealthManager.ts` |
+| 🟡 Vercel and Netlify handlers were hand-duplicated | Webhook, checkout/portal and CSP logic each live in one shared core | `api/*Core.{js,cjs}` |
 
-#### ✅ FIXED — No 404 page
-- **File:** `src/App.tsx` + new `src/pages/NotFoundPage.tsx`
-- **Problem:** No catch-all `*` route existed. Any mis-typed URL silently rendered an empty layout (header + footer, blank content).
-- **Fix:** Created a `NotFoundPage` with helpful CTAs and registered `<Route path="*">` as the last route in `App.tsx`.
+### 1.2 Open — configuration and operational (not code)
 
-#### ✅ FIXED — Dashboard displayed misleading hardcoded data
-- **File:** `src/pages/DashboardPage.tsx`
-- **Problem:** New users with no assessments saw `87%` compliance score, `3` open issues, `24` systems monitored, `95%` staff trained — all fake fallback values. The compliance trend chart generated artificial backwards-extrapolated data from the hardcoded 87 score. This damages trust if a user recognizes the data is not theirs.
-- **Fix:** All four metrics now show `—` with an actionable link (e.g., "Run assessment →") when no real data exists. Charts show an empty state prompt instead of fabricated trend lines.
+| Priority | Item | Notes |
+|---|---|---|
+| 🔴 Before a **paid** launch | Set in Netlify: `VITE_AUTH_PROVIDER=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ENABLE_BILLING=true`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_STRIPE_PRICE_{HIPAA,RANSOMWARE,CONTINUITY}_PROFESSIONAL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `VITE_APP_BASE_URL=https://www.medisoluce.com` | The default auth provider is now `local` (demo) and `deploy.yml` falls back to it when the secret is unset — production silently runs in demo mode unless `supabase` is set explicitly |
+| 🔴 Before a **paid** launch | Create the three Professional Prices in Stripe, register the `/api/webhook` endpoint, and run one test-mode purchase on a deploy preview (pricing → Checkout → `/checkout/success` → subscription upserted in Supabase) | Checkout code is live but inert until price IDs exist |
+| 🟠 | Confirm a single deploy path: GitHub Actions (`deploy.yml`) **or** Netlify Git auto-build, not both | A static-only Git deploy can wipe the serverless functions, including the Stripe webhook |
+| 🟡 | Post-deploy smoke: no `googletagmanager` request before consent; foreign-origin `POST /api/create-checkout-session` gets a non-matching `Access-Control-Allow-Origin`; CSP reports appear in the `csp-violation` function logs | Use the CSP reports to remove `'unsafe-inline'`/`'unsafe-eval'` from `script-src` over time |
 
-#### ✅ FIXED — Header had no Login/Sign Up CTA for unauthenticated users
-- **File:** `src/components/layout/Header.tsx`
-- **Problem:** The header showed nothing where account controls appear when a user is not logged in. New visitors had no persistent entry point for account creation without scrolling to a CTA.
-- **Fix:** Added a "Sign In" text link and a "Get Started" primary button for unauthenticated users in both desktop and mobile navs.
+### 1.3 Known residuals (accepted, non-blocking)
 
----
-
-### 1.2 Remaining Production Issues (Not Fixed in This PR)
-
-#### 🔴 CRITICAL — Authentication is localStorage-only, no real server auth
-- **Files:** `src/context/AuthContext.tsx`, `src/components/auth/Login.tsx`, `src/components/auth/Register.tsx`
-- **Problem:** The auth system reads/writes a `user-session` JSON object directly from `localStorage`. There is no actual verification against a backend — no Supabase auth calls, no JWT validation. A user can create a fake session by typing `localStorage.setItem('user-session', '{"sessionId":"x","email":"test@x.com"}')` in the browser console.
-- **Impact:** Any feature gated on `user` state can be trivially bypassed. Trial management and pricing checks that depend on `user.id` are not secure.
-- **Recommendation:** Integrate Supabase Auth (the SDK is already installed). Replace `localStorage.getItem('user-session')` with `supabase.auth.getSession()` and listen to `supabase.auth.onAuthStateChange`.
-
-#### 🔴 CRITICAL — Stripe API endpoint has wildcard CORS (`Access-Control-Allow-Origin: *`)
-- **File:** `api/create-checkout-session.js` line 15
-- **Problem:** The payment endpoint that creates Stripe Checkout sessions accepts requests from any origin. This means any website could POST to your `/api/create-checkout-session` to create sessions under your Stripe account.
-- **Recommendation:** Restrict to your domain: `res.setHeader('Access-Control-Allow-Origin', process.env.VITE_APP_BASE_URL || 'https://www.medisoluce.com')`.
-
-#### 🟠 HIGH — No error boundary around async route chunks (lazy-loaded components)
-- **File:** `src/App.tsx` lines 57–61
-- **Problem:** `PerformanceMonitor`, `ServiceWorkerManager`, `ProductionReadinessIndicator`, `HealthOptimizer`, and `HealthEnhancementDashboard` are all lazy-loaded with `React.lazy()` but share a single `<React.Suspense fallback={null}>`. If any of these chunks fail to load (network error, chunk hash mismatch after deployment), the silent `fallback={null}` means the user sees nothing. The main `ErrorBoundary` won't catch Suspense failures.
-- **Recommendation:** Wrap lazy-loaded tools in their own `ErrorBoundary` or add a fallback that logs a warning.
-
-#### 🟠 HIGH — Stripe price IDs are never configured — checkout will always fail
-- **Files:** `src/pages/HIPAAPricingPage.tsx`, `src/pages/RansomwarePricingPage.tsx`, `src/pages/ContinuityPricingPage.tsx`
-- **Problem:** The checkout buttons call `redirectToCheckout({ priceId: ... })` but the `priceId` values appear to come from translations or hardcoded strings that are not real Stripe Price IDs (format `price_...`). Without valid Stripe price IDs and `VITE_STRIPE_PUBLISHABLE_KEY` + `STRIPE_SECRET_KEY` set, every checkout attempt will throw a 500 error.
-- **Recommendation:** Set real Stripe Price IDs in environment variables (or a config file) and validate they exist on startup.
-
-#### 🟡 MEDIUM — `env.example` references `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` but they are never validated
-- **File:** `src/utils/envValidation.ts` line 136 validates `VITE_STRIPE_PUBLISHABLE_KEY` but Supabase keys are not checked. If they're missing, Supabase client initialization fails silently and auth/data features break with no user feedback.
-
-#### 🟡 MEDIUM — Training recommendation links to external `https://training.medisoluce.com` which may not exist
-- **File:** `src/pages/DashboardPage.tsx` line ~252
-- **Problem:** The "Start Training" recommendation card links to `https://training.medisoluce.com` with `target="_blank"`. If this subdomain doesn't exist, users get a broken external link.
-- **Recommendation:** Change to `/training` (internal route) which exists and works.
-
-#### 🟡 MEDIUM — No Content Security Policy header
-- **File:** `vite.config.ts`, `nginx.conf`
-- **Problem:** The server sets `X-Content-Type-Options`, `X-Frame-Options`, and `X-XSS-Protection` but no `Content-Security-Policy`. On a healthcare platform handling PHI data (even locally), a CSP is an important defense-in-depth measure.
-
-#### 🟡 MEDIUM — Service Worker `scope: '/app'` conflicts with routes
-- **File:** `vite.config.ts` lines 57–58
-- **Problem:** The PWA manifest sets `start_url: '/app'` and `scope: '/app'` but all actual routes live at `/` (e.g., `/hipaa-check`, not `/app/hipaa-check`). The service worker shortcuts point to `/app/hipaa-check` etc. which are redirect targets in `App.tsx`, but the scope mismatch means the PWA won't properly cache the actual application routes.
+- `react-router-dom` 6.x carries two **moderate** advisories (open-redirect via backslash, SSR deserialization); the fix is the v7 major.
+- 85 pre-existing `@typescript-eslint/no-explicit-any` lint warnings (0 errors).
+- `ProtectedRoute` is a passthrough by design (privacy-first). In Supabase mode, `/dashboard` and `/profile` rely on components handling a null user rather than a route guard.
+- CSP `script-src` still allows `'unsafe-inline'` and `'unsafe-eval'` plus `bolt.new` / `vercel.live`; tighten once report data confirms nothing depends on them.
 
 ---
 
@@ -188,8 +163,8 @@ Awareness → [Homepage] → Intent → [Assessment Start] → Activation → [C
 - The entire free tool flow requires no email. This means there's zero way to follow up with users who complete assessments but don't convert to paid plans.
 - **Recommendation:** Add an optional (non-blocking) email prompt after assessment completion: "Email me my compliance report" — which both delivers value and captures a lead.
 
-#### 🟠 The pricing page journey is broken — Bundle pricing dead-links
-- (Fixed in this PR) Three CTAs on `/pricing` linked to non-existent `/pricing/bundles` route, silently redirecting users to homepage (via service worker fallback), losing them entirely at the highest-intent page.
+#### ✅ The pricing page journey was broken — Bundle pricing dead-links
+- (Fixed 2026-09-05) Three CTAs on `/pricing` linked to the non-existent `/pricing/bundles` and `/pricing/calculator` routes, silently redirecting users to the homepage via the service worker fallback at the highest-intent page.
 
 #### 🟠 No cross-tool handoff messaging
 - After completing Step 1 (HIPAA Assessment), the result page shows recommendations but doesn't contextually suggest "Your low score on encryption suggests you should also map your system dependencies in Step 2." The journey steps are visually connected on the homepage but functionally disconnected in the actual tool flow.
@@ -198,42 +173,63 @@ Awareness → [Homepage] → Intent → [Assessment Start] → Activation → [C
 #### 🟠 Dashboard is the wrong "home" for logged-in users
 - The `/dashboard` route is the default destination for authenticated users (linked from nav), but new users see empty charts and "—" metrics (after our fix). A better authenticated home page would be a "Getting Started" checklist that guides users through the 4-step journey rather than empty analytics.
 
-#### 🟡 The training external link goes to `https://training.medisoluce.com`
-- This appears to be an external subdomain that may not exist. Users who click "Begin Compliance Training" from the dashboard recommendation may land on a 404 or error page.
+#### ✅ The training external link went to `https://training.medisoluce.com`
+- (Fixed) The dashboard recommendation now links to the internal `/training` route.
 
 ---
 
-## 5. Quick-Win Recommendations Summary
+## 5. Recommendations Summary
 
-### Immediate (do in this sprint)
+Engineering blockers are cleared (§1.1). The remaining items are product/conversion work, in suggested order:
+
+### Next sprint
 
 | Priority | Issue | Effort |
 |---|---|---|
-| 🔴 | Fix CORS in `api/create-checkout-session.js` | 5 min |
-| 🔴 | Implement real Supabase auth | 2–4 hrs |
 | 🔴 | Add post-assessment account creation prompt | 1 hr |
-| 🟠 | Fix training link (`training.medisoluce.com` → `/training`) | 5 min |
+| 🟠 | Clarify freemium boundary with a simple comparison section on the homepage | 1 hr |
 | 🟠 | Remove duplicate journey section from homepage | 15 min |
-| 🟠 | Clarify freemium boundary with a simple comparison section | 1 hr |
+| 🟠 | Add optional email capture after assessment completion | 2 hrs |
+| 🟠 | Add cross-tool handoff messaging on results pages | 2–3 hrs |
+| 🟡 | Increase nav link font size from `text-xs` to `text-sm` | 10 min |
 
-### Next Sprint
+### Later
 
 | Priority | Issue | Effort |
 |---|---|---|
 | 🟠 | Replace Demo page with interactive product screenshots | 1 day |
-| 🟠 | Add email capture after assessment completion | 2 hrs |
-| 🟠 | Add cross-tool handoff messaging on results pages | 2–3 hrs |
-| 🟡 | Increase nav link font size from `text-xs` to `text-sm` | 10 min |
-| 🟡 | Add Content Security Policy header | 30 min |
+| 🟠 | Upgrade `react-router-dom` to v7 (clears the remaining moderate advisories) | ½ day |
+| 🟡 | Tighten CSP `script-src` using production violation reports | 1 hr |
+| 🟡 | Real route guard in `ProtectedRoute` for Supabase-mode account pages | 1 hr |
 
 ---
 
-## 6. Files Changed in This PR
+## 6. Change History
+
+### 2026-09-05 — `cursor/production-readiness-fixes` (commits `7e807bd`, `83e7100`, `ef0cdd4`)
+
+| Area | Files |
+|---|---|
+| Shared serverless cores, origin-restricted CORS, redirect + price allow-lists, CSP report sink | `api/stripeCheckoutCore.cjs`, `api/cspViolationCore.cjs`, `api/create-checkout-session.js`, `api/create-portal-session.js`, `api/csp-violation.js`, `netlify/functions/create-checkout-session.js`, `netlify/functions/create-portal-session.js`, `netlify/functions/csp-violation.js`, `netlify.toml` |
+| Self-serve checkout wiring | `src/config/stripePrices.ts`, `src/hooks/useCheckout.ts`, `src/pages/HIPAAPricingPage.tsx`, `src/pages/RansomwarePricingPage.tsx`, `src/pages/ContinuityPricingPage.tsx`, `src/services/stripeService.ts`, `src/utils/envValidation.ts`, `src/vite-env.d.ts` |
+| Dead pricing CTAs | `src/pages/PricingOverviewPage.tsx` |
+| Consent-gated analytics | `index.html`, `src/utils/analytics.ts`, `src/utils/consent.ts`, `src/components/ui/CookieConsent.tsx`, `src/pages/CookiePolicyPage.tsx`, `src/App.tsx`, `src/i18n/locales/{en,fr}.ts` |
+| Build / CI gates | `package.json`, `.npmrc`, `package-lock.json`, `.github/workflows/{ci,deploy,staging,release}.yml`, `scripts/verify-functions.js` |
+| Code splitting | `src/App.tsx`, `src/utils/comprehensiveHealthManager.ts`, `vite.config.ts` |
+| Repo hygiene | `.gitignore` (+ removal of tracked `coverage/`, `test-results.json`, `backend-test-report.json`, `.vercel/`) |
+| Env documentation | `.env.example`, `.env.production.example`, `env.example` |
+| Tests | `src/test/stripeCheckoutCore.test.ts`, `src/test/cspViolationCore.test.ts`, `src/config/__tests__/stripePrices.test.ts`, `src/utils/__tests__/consent.test.ts`, `src/config/__tests__/runtimeConfig.test.ts` |
+
+### 2026-09-05 — PR #63 (`cursor/fix-webhook-and-dashboard-metrics`)
+
+Shared Stripe webhook core for Vercel/Netlify, webhook parse-check in CI, honest dashboard metrics.
+
+### 2026-03-05 — `claude/review-production-readiness-LTIEq`
 
 | File | Change |
 |---|---|
-| `src/pages/PricingOverviewPage.tsx` | Fixed 3 broken `/pricing/bundles` and `/pricing/calculator` links → `/contact` |
 | `src/App.tsx` | Added `NotFoundPage` import + catch-all `<Route path="*">` |
 | `src/pages/NotFoundPage.tsx` | **New file** — 404 page with helpful CTAs |
 | `src/components/layout/Header.tsx` | Added Login/Sign Up CTAs for unauthenticated users (desktop + mobile) |
-| `src/pages/DashboardPage.tsx` | Removed hardcoded metric fallbacks; charts/metrics now show real data or honest empty states |
+| `src/pages/DashboardPage.tsx` | Removed hardcoded metric fallbacks; charts/metrics show real data or honest empty states |
+| `src/pages/PricingOverviewPage.tsx` | Intended fix for `/pricing/bundles` links — did not land; completed 2026-09-05 |

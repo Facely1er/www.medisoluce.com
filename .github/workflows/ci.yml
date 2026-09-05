@@ -7,6 +7,13 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   NODE_VERSION: '20'
 
@@ -14,6 +21,7 @@ jobs:
   ci:
     name: Lint, Type-check & Test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     permissions:
       contents: read
@@ -42,8 +50,8 @@ jobs:
         env:
           NODE_ENV: test
 
-      - name: Parse serverless webhooks
-        run: npm run verify:webhooks
+      - name: Parse serverless functions
+        run: npm run verify:functions
 
       - name: Security audit (high)
         continue-on-error: true

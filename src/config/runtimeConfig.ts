@@ -2,7 +2,7 @@ export type AuthProvider = 'local' | 'supabase';
 
 export const LOCAL_WORKSPACE_ID_KEY = 'local-workspace-id';
 
-export function resolveAuthProvider(rawProvider?: string, mode?: string): AuthProvider {
+export function resolveAuthProvider(rawProvider?: string): AuthProvider {
   if (rawProvider === 'local' || rawProvider === 'supabase') {
     return rawProvider;
   }
@@ -11,14 +11,11 @@ export function resolveAuthProvider(rawProvider?: string, mode?: string): AuthPr
     console.warn(`Invalid VITE_AUTH_PROVIDER value "${rawProvider}". Falling back to default.`);
   }
 
-  if ((mode ?? import.meta.env.MODE) === 'test') {
-    return 'local';
-  }
-
-  return 'supabase';
+  // Demo-safe default. Opt into Supabase with VITE_AUTH_PROVIDER=supabase.
+  return 'local';
 }
 
-export const authProvider = resolveAuthProvider(import.meta.env.VITE_AUTH_PROVIDER, import.meta.env.MODE);
+export const authProvider = resolveAuthProvider(import.meta.env.VITE_AUTH_PROVIDER);
 export const isSupabaseAuthEnabled = authProvider === 'supabase';
 export const isBillingEnabled = import.meta.env.VITE_ENABLE_BILLING === 'true';
 

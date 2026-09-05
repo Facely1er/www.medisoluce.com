@@ -29,6 +29,7 @@ const PricingOverviewPage: React.FC = () => {
       savings: t('pricing.overview.role_recommendations.executive.savings'),
       features: t('pricing.overview.role_recommendations.executive.features', { returnObjects: true }) as string[],
       painPoint: t('pricing.overview.role_recommendations.executive.pain_point'),
+      href: '/contact',
       icon: <Briefcase className="h-12 w-12" />
     },
     compliance: {
@@ -39,6 +40,7 @@ const PricingOverviewPage: React.FC = () => {
       savings: t('pricing.overview.role_recommendations.compliance.savings'),
       features: t('pricing.overview.role_recommendations.compliance.features', { returnObjects: true }) as string[],
       painPoint: t('pricing.overview.role_recommendations.compliance.pain_point'),
+      href: '/pricing/hipaa',
       icon: <Shield className="h-12 w-12" />
     },
     it: {
@@ -49,6 +51,7 @@ const PricingOverviewPage: React.FC = () => {
       savings: t('pricing.overview.role_recommendations.it.savings'),
       features: t('pricing.overview.role_recommendations.it.features', { returnObjects: true }) as string[],
       painPoint: t('pricing.overview.role_recommendations.it.pain_point'),
+      href: '/contact',
       icon: <Wrench className="h-12 w-12" />
     },
     operations: {
@@ -59,6 +62,7 @@ const PricingOverviewPage: React.FC = () => {
       savings: t('pricing.overview.role_recommendations.operations.savings'),
       features: t('pricing.overview.role_recommendations.operations.features', { returnObjects: true }) as string[],
       painPoint: t('pricing.overview.role_recommendations.operations.pain_point'),
+      href: '/pricing/continuity',
       icon: <FileText className="h-12 w-12" />
     },
     practice: {
@@ -69,6 +73,7 @@ const PricingOverviewPage: React.FC = () => {
       savings: t('pricing.overview.role_recommendations.practice.savings'),
       features: t('pricing.overview.role_recommendations.practice.features', { returnObjects: true }) as string[],
       painPoint: t('pricing.overview.role_recommendations.practice.pain_point'),
+      href: '/pricing/hipaa',
       icon: <Users className="h-12 w-12" />
     }
   };
@@ -233,7 +238,7 @@ const PricingOverviewPage: React.FC = () => {
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
               {t('pricing.overview.complete_bundle_subtitle')}
             </p>
-            <Link to="/pricing/bundles">
+            <Link to="/contact">
               <Button size="lg">
                 {t('pricing.overview.view_bundle_pricing')}
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -304,7 +309,7 @@ const PricingOverviewPage: React.FC = () => {
                   )}
                 </div>
 
-                <Link to="/pricing/bundles">
+                <Link to={rec.href}>
                   <Button variant="outline" size="sm" className="w-full">
                     {t('pricing.overview.view_recommended_plan')}
                   </Button>
@@ -333,7 +338,7 @@ const PricingOverviewPage: React.FC = () => {
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
-              <Link to="/pricing/calculator">
+              <Link to="/business-impact">
                 <Button variant="outline" size="lg" className="!bg-transparent !text-white !border-white hover:!bg-white hover:!text-primary-700">
                   {t('pricing.overview.calculate_savings')}
                   <Calculator className="h-4 w-4 ml-2" />

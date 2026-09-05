@@ -2,7 +2,8 @@
  * Environment Variable Validation
  * Validates required and optional environment variables at runtime
  */
-import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
+import { isBillingEnabled, isSupabaseAuthEnabled } from '../config/runtimeConfig';
+import { getConfiguredPriceCount } from '../config/stripePrices';
 
 interface EnvConfig {
   required: string[];
@@ -100,6 +101,18 @@ class EnvironmentValidator {
     if (appBaseUrl && !appBaseUrl.match(/^https?:\/\/.+/)) {
       errors.push('VITE_APP_BASE_URL must be a valid URL (http:// or https://)');
     }
+
+    // Billing requires at least one Stripe Price ID or every upgrade CTA falls back to /contact
+    if (isBillingEnabled) {
+      if (!import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY) {
+        warnings.push('VITE_ENABLE_BILLING=true but VITE_STRIPE_PUBLISHABLE_KEY is not set');
+      }
+      if (getConfiguredPriceCount() === 0) {
+        warnings.push(
+          'VITE_ENABLE_BILLING=true but no VITE_STRIPE_PRICE_* IDs are configured; upgrade buttons will route to /contact'
+        );
+      }
+    }
   }
 
   /**
@@ -140,6 +153,9 @@ const medisoluceEnvConfig: EnvConfig = {
     'VITE_SENTRY_DSN',
     'VITE_GA_TRACKING_ID',
     'VITE_STRIPE_PUBLISHABLE_KEY',
+    'VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL',
+    'VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL',
+    'VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL',
     'VITE_APP_BASE_URL'
   ],
   defaults: {

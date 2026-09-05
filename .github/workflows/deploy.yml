@@ -1,10 +1,23 @@
 name: Deploy to Production
 
+# Deploys dist + netlify/functions. If the site is also connected to Netlify
+# Git, disable auto-build there or disable this job — otherwise a static-only
+# Git deploy can wipe serverless functions (including Stripe webhooks).
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+  statuses: write
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 env:
   NODE_VERSION: '20'
@@ -12,38 +25,51 @@ env:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 20
+
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run type checking
         run: npm run type-check
-        
+
+      - name: Parse serverless functions
+        run: npm run verify:functions
+
       - name: Build application
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER }}
+          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER || 'local' }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_STRIPE_PRICE_HIPAA_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_HIPAA_ESSENTIAL }}
+          VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL }}
+          VITE_STRIPE_PRICE_RANSOMWARE_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_RANSOMWARE_ESSENTIAL }}
+          VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL }}
+          VITE_STRIPE_PRICE_CONTINUITY_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_CONTINUITY_ESSENTIAL }}
+          VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL }}
           VITE_GA_TRACKING_ID: ${{ secrets.VITE_GA_TRACKING_ID }}
           VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
-          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL }}
-          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING }}
+          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL || 'https://www.medisoluce.com' }}
+          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING || 'false' }}
           VITE_ENABLE_ANALYTICS: ${{ secrets.VITE_ENABLE_ANALYTICS }}
           VITE_ENABLE_ERROR_TRACKING: ${{ secrets.VITE_ENABLE_ERROR_TRACKING }}
-          
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -54,29 +80,41 @@ jobs:
   deploy-netlify:
     needs: test-and-build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: github.ref == 'refs/heads/main'
-    
+
+    permissions:
+      contents: read
+      deployments: write
+      statuses: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
-          
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v2
-        with:
-          publish-dir: './dist'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
+
+      - name: Require Netlify credentials
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 5
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "::error::Set NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID as GitHub Actions secrets, or disable this job and deploy via Netlify Git."
+            exit 1
+          fi
+
+      - name: Deploy site and functions to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx --yes netlify-cli deploy --prod --dir=dist --functions=netlify/functions --message "github ${GITHUB_SHA}"

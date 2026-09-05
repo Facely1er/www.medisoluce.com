@@ -5,11 +5,15 @@ command = "npx vite build"
 # Node 20 required: global `crypto` (used by serialize-javascript / @rollup/plugin-terser) is not defined in Node 18.
 [build.environment]
 NODE_VERSION = "20"
+# Public demo defaults. Override in the Netlify UI for a paid client deploy.
+VITE_AUTH_PROVIDER = "local"
+VITE_ENABLE_BILLING = "false"
+VITE_APP_BASE_URL = "https://www.medisoluce.com"
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  included_files = ["api/stripeWebhookCore.js"]
+  included_files = ["api/stripeWebhookCore.js", "api/stripeCheckoutCore.cjs", "api/cspViolationCore.cjs"]
 
 # API before SPA fallback. Existing files in dist/ are served first (no force).
 [[redirects]]

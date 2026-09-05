@@ -14,12 +14,14 @@ import TrialActivationModal from '../components/trial/TrialActivationModal';
 import TrialBanner from '../components/trial/TrialBanner';
 import { useToast } from '../components/ui/Toast';
 import { authProvider, isBillingEnabled } from '../config/runtimeConfig';
+import { useCheckout } from '../hooks/useCheckout';
 
 const RansomwarePricingPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { startCheckout, isRedirecting } = useCheckout('ransomware');
   const [dynamicPricing, setDynamicPricing] = useState<CalculatedPricing | null>(null);
   const [showTrialModal, setShowTrialModal] = useState(false);
   const [selectedTier, setSelectedTier] = useState<'essential' | 'professional' | 'enterprise' | null>(null);
@@ -357,7 +359,7 @@ const RansomwarePricingPage: React.FC = () => {
             {tiers.map((tier, idx) => {
               const tierKey = tier.name.toLowerCase() as 'essential' | 'professional' | 'enterprise';
               const hasActiveTrial = activeTrial?.tier === tierKey;
-              const canStartTrial = tier.cta === 'Start Free Trial' && isEligible('ransomware') && !hasActiveTrial;
+              const canStartTrial = tierKey === 'professional' && isEligible('ransomware') && !hasActiveTrial;
               
               return (
                 <motion.div
@@ -437,24 +439,21 @@ const RansomwarePricingPage: React.FC = () => {
                           {tier.cta}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
-                      ) : tier.cta === t('pricing.ransomware.tiers.professional.cta') && !isEligible('ransomware') ? (
+                      ) : tierKey === 'professional' && !isEligible('ransomware') ? (
                         <Button 
                           className="w-full" 
                           size="lg" 
-                          variant="outline"
-                          disabled={!isBillingEnabled}
+                          variant={tier.popular ? 'primary' : 'outline'}
+                          disabled={!isBillingEnabled || isRedirecting}
                           onClick={() => {
-                            if (!isBillingEnabled) {
-                              return;
-                            }
-                            showToast({
-                              type: 'info',
-                              title: t('pricing_common.trial_already_used'),
-                              message: t('pricing_common.trial_already_used_message')
-                            });
+                            void startCheckout('professional');
                           }}
                         >
-                          {isBillingEnabled ? t('pricing_common.upgrade_to_continue') : t('pricing_common.billing_disabled_short', 'Billing disabled in demo')}
+                          {isRedirecting
+                            ? t('pricing_common.redirecting_to_checkout', 'Redirecting to checkout…')
+                            : isBillingEnabled
+                              ? t('pricing_common.upgrade_to_continue')
+                              : t('pricing_common.billing_disabled_short', 'Billing disabled in demo')}
                           <ArrowRight className="h-4 w-4 ml-2" />
                         </Button>
                       ) : (

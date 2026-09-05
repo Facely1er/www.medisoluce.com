@@ -5,6 +5,13 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   NODE_VERSION: '20'
 
@@ -12,6 +19,7 @@ jobs:
   build-and-release:
     name: Build & Publish Release
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     permissions:
       contents: write
@@ -37,18 +45,27 @@ jobs:
         env:
           NODE_ENV: test
 
+      - name: Parse serverless functions
+        run: npm run verify:functions
+
       - name: Build application
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER }}
+          VITE_AUTH_PROVIDER: ${{ secrets.VITE_AUTH_PROVIDER || 'local' }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_STRIPE_PRICE_HIPAA_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_HIPAA_ESSENTIAL }}
+          VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL }}
+          VITE_STRIPE_PRICE_RANSOMWARE_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_RANSOMWARE_ESSENTIAL }}
+          VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL }}
+          VITE_STRIPE_PRICE_CONTINUITY_ESSENTIAL: ${{ secrets.VITE_STRIPE_PRICE_CONTINUITY_ESSENTIAL }}
+          VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL: ${{ secrets.VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL }}
           VITE_GA_TRACKING_ID: ${{ secrets.VITE_GA_TRACKING_ID }}
           VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
-          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL }}
-          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING }}
+          VITE_APP_BASE_URL: ${{ secrets.VITE_APP_BASE_URL || 'https://www.medisoluce.com' }}
+          VITE_ENABLE_BILLING: ${{ secrets.VITE_ENABLE_BILLING || 'false' }}
           VITE_ENABLE_ANALYTICS: ${{ secrets.VITE_ENABLE_ANALYTICS }}
           VITE_ENABLE_ERROR_TRACKING: ${{ secrets.VITE_ENABLE_ERROR_TRACKING }}
 
