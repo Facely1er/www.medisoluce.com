@@ -1,6 +1,6 @@
 // Translation helper utilities for complex scenarios
 
-import { TFunction } from 'i18next';
+import { TFunction, TOptions } from 'i18next';
 
 // Translation key builder for dynamic keys
 export const buildTranslationKey = (
@@ -16,7 +16,7 @@ export const safeTranslate = (
   t: TFunction, 
   key: string, 
   fallback: string, 
-  options?: any
+  options?: TOptions
 ): string => {
   const translation = t(key, { defaultValue: null, ...options });
   return translation || fallback || key;

@@ -121,7 +121,7 @@ function RouteFallback() {
 
 function AppContent() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <Router>
       <Layout>
         <React.Suspense fallback={<RouteFallback />}>
         <Routes>
