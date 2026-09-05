@@ -2,12 +2,18 @@
  * Netlify Function - Create Stripe Checkout Session
  * Endpoint: /.netlify/functions/create-checkout-session (also /api/create-checkout-session)
  *
- * Thin adapter over api/stripeCheckoutCore.js (shared with the Vercel
- * function). CORS is restricted to VITE_APP_BASE_URL.
+ * Thin adapter over api/stripeCheckoutCore.cjs (shared with the Vercel
+ * function). CORS is restricted to VITE_APP_BASE_URL. Stripe is initialised
+ * lazily so a missing STRIPE_SECRET_KEY returns 503 with CORS headers instead
+ * of crashing the function at cold start (Netlify 502).
  */
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { corsHeaders, createCheckoutSession, parseJsonBody } = require('../../api/stripeCheckoutCore.cjs');
+const {
+  corsHeaders,
+  createCheckoutSession,
+  parseJsonBody,
+  getStripeClient,
+} = require('../../api/stripeCheckoutCore.cjs');
 
 exports.handler = async (event) => {
   const requestOrigin = event.headers?.origin || event.headers?.Origin;
@@ -23,11 +29,16 @@ exports.handler = async (event) => {
     return json(405, { error: 'Method not allowed' });
   }
 
+  const client = getStripeClient();
+  if (client.error) {
+    return json(client.status, { error: client.error });
+  }
+
   const body = parseJsonBody(event.body);
   if (body === null) {
     return json(400, { error: 'Invalid JSON body' });
   }
 
-  const result = await createCheckoutSession(stripe, body);
+  const result = await createCheckoutSession(client.stripe, body);
   return json(result.status, result.body);
 };

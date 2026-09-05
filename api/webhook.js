@@ -3,14 +3,22 @@
  *
  * Required env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
  * VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+ *
+ * Stripe is initialised lazily so a missing key returns 503 instead of a
+ * cold-start crash.
  */
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getSupabaseAdmin, handleStripeEvent } = require('./stripeWebhookCore');
+const { getStripeClient } = require('./stripeCheckoutCore.cjs');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const client = getStripeClient();
+  if (client.error) {
+    return res.status(client.status).json({ error: client.error });
   }
 
   const sig = req.headers['stripe-signature'];
@@ -24,7 +32,7 @@ module.exports = async (req, res) => {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    event = client.stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
@@ -39,10 +47,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    await handleStripeEvent(stripe, supabase, event);
+    await handleStripeEvent(client.stripe, supabase, event);
     return res.status(200).json({ received: true });
-  } catch (error) {
-    console.error('Error handling webhook event:', error);
+  } catch (err) {
+    console.error('Error handling webhook event:', err);
     return res.status(500).json({ error: 'Error processing webhook' });
   }
 };

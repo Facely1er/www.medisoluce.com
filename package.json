@@ -51,6 +51,7 @@
     "verify:translations": "node scripts/verify-translations.js",
     "verify:functions": "node scripts/verify-functions.js",
     "verify:webhooks": "npm run verify:functions",
+    "smoke:production": "node scripts/smoke-production.js",
     "verify:production": "npm run lint && npm run type-check && npm test && npm run verify:functions && npm run build"
   },
   "dependencies": {

@@ -8,6 +8,7 @@ const {
   createCheckoutSession,
   createPortalSession,
   getConfiguredPriceIds,
+  getStripeClient,
   isAllowedUrl,
   parseJsonBody,
 } = require('../../api/stripeCheckoutCore.cjs');
@@ -140,5 +141,21 @@ describe('stripeCheckoutCore', () => {
     });
     expect(result.status).toBe(200);
     expect(result.body.url).toContain('billing.stripe.com');
+  });
+
+  it('getStripeClient returns 503 when STRIPE_SECRET_KEY is missing', () => {
+    delete process.env.STRIPE_SECRET_KEY;
+    const result = getStripeClient();
+    expect(result.stripe).toBeUndefined();
+    expect(result.status).toBe(503);
+    expect(result.error).toMatch(/STRIPE_SECRET_KEY/);
+  });
+
+  it('getStripeClient constructs a client when the key is set', () => {
+    process.env.STRIPE_SECRET_KEY = 'sk_test_smoke';
+    const result = getStripeClient();
+    expect(result.error).toBeUndefined();
+    expect(result.stripe).toBeDefined();
+    expect(typeof result.stripe.webhooks?.constructEvent).toBe('function');
   });
 });

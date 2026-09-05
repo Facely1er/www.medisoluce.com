@@ -1,10 +1,13 @@
 /**
  * Netlify Function - Stripe Webhook Handler
  * Endpoint: /.netlify/functions/webhook (also /api/webhook via netlify.toml)
+ *
+ * Stripe is initialised lazily so a missing STRIPE_SECRET_KEY returns 503
+ * instead of a cold-start Netlify 502.
  */
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getSupabaseAdmin, handleStripeEvent } = require('../../api/stripeWebhookCore');
+const { getStripeClient } = require('../../api/stripeCheckoutCore.cjs');
 
 exports.handler = async (event) => {
   const json = (statusCode, body) => ({
@@ -17,6 +20,11 @@ exports.handler = async (event) => {
     return json(405, { error: 'Method not allowed' });
   }
 
+  const client = getStripeClient();
+  if (client.error) {
+    return json(client.status, { error: client.error });
+  }
+
   const sig = event.headers['stripe-signature'];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -27,7 +35,7 @@ exports.handler = async (event) => {
 
   let stripeEvent;
   try {
-    stripeEvent = stripe.webhooks.constructEvent(event.body, sig, webhookSecret);
+    stripeEvent = client.stripe.webhooks.constructEvent(event.body, sig, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return json(400, { error: `Webhook Error: ${err.message}` });
@@ -42,10 +50,10 @@ exports.handler = async (event) => {
   }
 
   try {
-    await handleStripeEvent(stripe, supabase, stripeEvent);
+    await handleStripeEvent(client.stripe, supabase, stripeEvent);
     return json(200, { received: true });
-  } catch (error) {
-    console.error('Error handling webhook event:', error);
+  } catch (err) {
+    console.error('Error handling webhook event:', err);
     return json(500, { error: 'Error processing webhook' });
   }
 };

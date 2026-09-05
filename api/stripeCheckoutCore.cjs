@@ -282,6 +282,29 @@ function parseJsonBody(raw) {
   }
 }
 
+/**
+ * Lazily construct a Stripe client. Callers must never invoke
+ * `require('stripe')(process.env.STRIPE_SECRET_KEY)` at module top-level:
+ * an unset key throws during cold start and turns every request (including
+ * CORS OPTIONS) into a Netlify 502 before headers can be written.
+ *
+ * Returns { stripe } or { error, status }.
+ */
+function getStripeClient() {
+  const apiKey = process.env.STRIPE_SECRET_KEY;
+  if (!apiKey || typeof apiKey !== 'string' || !apiKey.trim()) {
+    return { status: 503, error: 'Stripe is not configured (STRIPE_SECRET_KEY missing)' };
+  }
+  try {
+    // eslint-disable-next-line global-require
+    const Stripe = require('stripe');
+    return { stripe: new Stripe(apiKey.trim()) };
+  } catch (error) {
+    console.error('Failed to initialise Stripe client:', error);
+    return { status: 503, error: 'Stripe client failed to initialise' };
+  }
+}
+
 module.exports = {
   getBaseUrl,
   getAllowedOrigins,
@@ -293,4 +316,5 @@ module.exports = {
   createCheckoutSession,
   createPortalSession,
   parseJsonBody,
+  getStripeClient,
 };
