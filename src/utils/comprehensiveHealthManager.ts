@@ -1,5 +1,4 @@
 // Comprehensive health management system for production deployment
-import { supabase } from '../lib/supabase';
 import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 interface HealthCategory {
@@ -230,9 +229,9 @@ class ComprehensiveHealthManager {
         return true;
       }
 
-      // The client is already part of the root bundle (AuthContext imports it
-      // statically), so a static import here avoids a mixed static/dynamic
-      // import that defeats code-splitting.
+      // Loaded on demand: the Supabase chunk is only fetched in Supabase mode
+      // (src/lib/supabase.ts is pinned to its own chunk in vite.config.ts).
+      const { supabase } = await import('../lib/supabase');
       const { error } = await supabase.auth.getSession();
       
       // If we get a response (even if no session), Supabase is accessible
