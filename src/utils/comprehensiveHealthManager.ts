@@ -1,4 +1,6 @@
 // Comprehensive health management system for production deployment
+import { supabase } from '../lib/supabase';
+import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 interface HealthCategory {
   score: number;
@@ -223,10 +225,14 @@ class ComprehensiveHealthManager {
 
   private async testSupabaseConnectivity(): Promise<boolean> {
     try {
-      // Dynamic import to avoid errors if Supabase is not configured
-      const { supabase } = await import('../lib/supabase');
-      
-      // Test basic connectivity with a simple session check
+      // Local/demo mode has no Supabase client — not configured is not a failure.
+      if (!isSupabaseAuthEnabled) {
+        return true;
+      }
+
+      // The client is already part of the root bundle (AuthContext imports it
+      // statically), so a static import here avoids a mixed static/dynamic
+      // import that defeats code-splitting.
       const { error } = await supabase.auth.getSession();
       
       // If we get a response (even if no session), Supabase is accessible

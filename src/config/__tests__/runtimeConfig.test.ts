@@ -16,12 +16,11 @@ describe('runtimeConfig', () => {
     });
   });
 
-  it('defaults auth provider to supabase outside test mode', () => {
-    expect(resolveAuthProvider(undefined, 'production')).toBe('supabase');
-  });
-
-  it('uses local auth provider in test mode when unset', () => {
-    expect(resolveAuthProvider(undefined, 'test')).toBe('local');
+  it('defaults auth provider to local and honors explicit values', () => {
+    expect(resolveAuthProvider(undefined)).toBe('local');
+    expect(resolveAuthProvider('local')).toBe('local');
+    expect(resolveAuthProvider('supabase')).toBe('supabase');
+    expect(resolveAuthProvider('okta')).toBe('local');
   });
 
   it('generates and persists a local workspace id', () => {

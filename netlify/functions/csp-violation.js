@@ -4,7 +4,7 @@
  * Target of `report-uri /api/csp-violation` in the CSP header.
  */
 
-const { handleCspReport } = require('../../api/cspViolationCore');
+const { handleCspReport } = require('../../api/cspViolationCore.cjs');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {

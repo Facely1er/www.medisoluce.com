@@ -43,14 +43,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Google Analytics 4 - inline so it always loads -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VEQXJHYNHG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-VEQXJHYNHG', { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure', linker: { domains: ['cybercorrect.com','www.cybercorrect.com','workspace.cybercorrect.com','cybercaution.com','www.cybercaution.com','platform.cybercaution.com','toolkits.cybercaution.com','vendorsoluce.com','www.vendorsoluce.com','platform.vendorsoluce.com','portal.vendorsoluce.com','cybersoluce.com','lite.cybersoluce.com','technosoluce.com','app.technosoluce.com','medisoluce.com','www.medisoluce.com','ermits.com','www.ermits.com','socialcaution.com','www.socialcaution.com','pandagarde.com','www.pandagarde.com'] } });
-    </script>
+    <!-- Analytics is loaded at runtime by src/utils/analytics.ts only when
+         VITE_ENABLE_ANALYTICS=true and the visitor has granted consent. -->
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="MediSoluce - Healthcare Compliance Platform">

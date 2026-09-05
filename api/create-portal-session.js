@@ -10,10 +10,10 @@
  */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { corsHeaders, createPortalSession, parseJsonBody } = require('./stripeCheckoutCore');
+const { corsHeaders, createPortalSession, parseJsonBody } = require('./stripeCheckoutCore.cjs');
 
 module.exports = async (req, res) => {
-  Object.entries(corsHeaders()).forEach(([key, value]) => res.setHeader(key, value));
+  Object.entries(corsHeaders(req.headers.origin)).forEach(([key, value]) => res.setHeader(key, value));
 
   if (req.method === 'OPTIONS') {
     return res.status(204).end();

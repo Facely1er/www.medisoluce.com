@@ -129,6 +129,18 @@ export default defineConfig({
           if (id.includes('performanceOptimizer.ts')) {
             return 'performance';
           }
+
+          // Modules imported both statically and dynamically elsewhere: pin them to a
+          // named chunk so Rollup does not warn and the dynamic imports stay cheap.
+          if (id.includes('/src/utils/serviceFallback.ts')) {
+            return 'fallback';
+          }
+          if (id.includes('/src/lib/supabase.ts')) {
+            return 'supabase';
+          }
+          if (id.includes('/src/utils/comprehensiveHealthManager.ts') || id.includes('/src/components/health/HealthOptimizer.tsx')) {
+            return 'health';
+          }
         }
       }
     },

@@ -3,45 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
-import HIPAACheckPage from './pages/HIPAACheckPage';
-import DependencyManagerPage from './pages/DependencyManagerPage';
-import BusinessImpactPage from './pages/BusinessImpactPage';
-import ContinuityPage from './pages/ContinuityPage';
-import ContactPage from './pages/ContactPage';
-import ThanksPage from './pages/ThanksPage';
-import DashboardPage from './pages/DashboardPage';
-import DemoPage from './pages/DemoPage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
-import CookiePolicyPage from './pages/CookiePolicyPage';
-import ECommercePolicyPage from './pages/ECommercePolicyPage';
-import TermsCombinedPage from './pages/TermsCombinedPage';
-import ProductionReadinessPage from './pages/ProductionReadinessPage';
-import DeploymentPage from './pages/DeploymentPage';
-import SecurityDashboard from './components/security/SecurityDashboard';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import ForgotPassword from './components/auth/ForgotPassword';
-import ProfilePage from './pages/ProfilePage';
-import RansomwarePage from './pages/RansomwarePage';
-import RansomwareResiliencePage from './pages/RansomwareResiliencePage';
-import RansomwareThreatDashboardPage from './pages/RansomwareThreatDashboardPage';
-import HealthDashboardPage from './pages/HealthDashboardPage';
-import TrainingPage from './pages/TrainingPage';
-import TrainingModulePage from './pages/training/TrainingModulePage';
-import TrainingMaterialsPage from './pages/training/TrainingMaterialsPage';
-import Certificate from './components/training/Certificate';
-import ToolkitPage from './pages/ToolkitPage';
-import EnhancedAssessmentEngine from './components/assessment/EnhancedAssessmentEngine';
-import RansomwareAssessment from './components/assessment/RansomwareAssessment';
-import PricingOverviewPage from './pages/PricingOverviewPage';
-import HIPAAPricingPage from './pages/HIPAAPricingPage';
-import RansomwarePricingPage from './pages/RansomwarePricingPage';
-import ContinuityPricingPage from './pages/ContinuityPricingPage';
-import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
-import CheckoutCancelPage from './pages/CheckoutCancelPage';
-import SegmentAnalysisPage from './pages/SegmentAnalysisPage';
-import FAQPage from './pages/FAQPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -53,7 +14,50 @@ import { ToastProvider, useToast } from './components/ui/Toast';
 import { analytics } from './utils/analytics';
 import { isBillingEnabled } from './config/runtimeConfig';
 import './i18n';
-import HealthDashboard from './components/ui/HealthDashboard';
+import LoadingSpinner from './components/ui/LoadingSpinner';
+import CookieConsent from './components/ui/CookieConsent';
+
+// Route-level code splitting: every page except the home page is its own chunk.
+const HIPAACheckPage = React.lazy(() => import('./pages/HIPAACheckPage'));
+const DependencyManagerPage = React.lazy(() => import('./pages/DependencyManagerPage'));
+const BusinessImpactPage = React.lazy(() => import('./pages/BusinessImpactPage'));
+const ContinuityPage = React.lazy(() => import('./pages/ContinuityPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const ThanksPage = React.lazy(() => import('./pages/ThanksPage'));
+const DashboardPage = React.lazy(() => import('./pages/DashboardPage'));
+const DemoPage = React.lazy(() => import('./pages/DemoPage'));
+const PrivacyPage = React.lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = React.lazy(() => import('./pages/TermsPage'));
+const CookiePolicyPage = React.lazy(() => import('./pages/CookiePolicyPage'));
+const ECommercePolicyPage = React.lazy(() => import('./pages/ECommercePolicyPage'));
+const TermsCombinedPage = React.lazy(() => import('./pages/TermsCombinedPage'));
+const ProductionReadinessPage = React.lazy(() => import('./pages/ProductionReadinessPage'));
+const DeploymentPage = React.lazy(() => import('./pages/DeploymentPage'));
+const SecurityDashboard = React.lazy(() => import('./components/security/SecurityDashboard'));
+const Login = React.lazy(() => import('./components/auth/Login'));
+const Register = React.lazy(() => import('./components/auth/Register'));
+const ForgotPassword = React.lazy(() => import('./components/auth/ForgotPassword'));
+const ProfilePage = React.lazy(() => import('./pages/ProfilePage'));
+const RansomwarePage = React.lazy(() => import('./pages/RansomwarePage'));
+const RansomwareResiliencePage = React.lazy(() => import('./pages/RansomwareResiliencePage'));
+const RansomwareThreatDashboardPage = React.lazy(() => import('./pages/RansomwareThreatDashboardPage'));
+const HealthDashboardPage = React.lazy(() => import('./pages/HealthDashboardPage'));
+const TrainingPage = React.lazy(() => import('./pages/TrainingPage'));
+const TrainingModulePage = React.lazy(() => import('./pages/training/TrainingModulePage'));
+const TrainingMaterialsPage = React.lazy(() => import('./pages/training/TrainingMaterialsPage'));
+const Certificate = React.lazy(() => import('./components/training/Certificate'));
+const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
+const EnhancedAssessmentEngine = React.lazy(() => import('./components/assessment/EnhancedAssessmentEngine'));
+const RansomwareAssessment = React.lazy(() => import('./components/assessment/RansomwareAssessment'));
+const PricingOverviewPage = React.lazy(() => import('./pages/PricingOverviewPage'));
+const HIPAAPricingPage = React.lazy(() => import('./pages/HIPAAPricingPage'));
+const RansomwarePricingPage = React.lazy(() => import('./pages/RansomwarePricingPage'));
+const ContinuityPricingPage = React.lazy(() => import('./pages/ContinuityPricingPage'));
+const CheckoutSuccessPage = React.lazy(() => import('./pages/CheckoutSuccessPage'));
+const CheckoutCancelPage = React.lazy(() => import('./pages/CheckoutCancelPage'));
+const SegmentAnalysisPage = React.lazy(() => import('./pages/SegmentAnalysisPage'));
+const FAQPage = React.lazy(() => import('./pages/FAQPage'));
+const HealthDashboard = React.lazy(() => import('./components/ui/HealthDashboard'));
 
 // Lazy load development tools
 const PerformanceMonitor = React.lazy(() => import('./components/ui/PerformanceMonitor'));
@@ -62,9 +66,10 @@ const ProductionReadinessIndicator = React.lazy(() => import('./components/ui/Pr
 const HealthOptimizer = React.lazy(() => import('./components/health/HealthOptimizer'));
 const HealthEnhancementDashboard = React.lazy(() => import('./components/ui/HealthEnhancementDashboard'));
 
-// Initialize analytics with fallback (never throw) - same GA4 tag as technoSoluce/ERMITS (G-VEQXJHYNHG)
+// Register analytics (never throw). Nothing is loaded until VITE_ENABLE_ANALYTICS=true,
+// VITE_GA_TRACKING_ID is set, and the visitor grants consent via <CookieConsent />.
 try {
-  analytics.init(import.meta.env.VITE_GA_TRACKING_ID || 'G-VEQXJHYNHG');
+  analytics.init(import.meta.env.VITE_GA_TRACKING_ID);
 } catch (error) {
   // Silently fail - analytics is optional, app continues normally
   if (!import.meta.env.PROD) {
@@ -106,10 +111,19 @@ function setupGlobalToast() {
 
 setupGlobalToast();
 
+function RouteFallback() {
+  return (
+    <div className="min-h-[50vh] flex items-center justify-center" role="status" aria-live="polite">
+      <LoadingSpinner size="lg" />
+    </div>
+  );
+}
+
 function AppContent() {
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Layout>
+        <React.Suspense fallback={<RouteFallback />}>
         <Routes>
           {/* PWA app scope: redirect /app* to current routes until Phase 2 moves app under /app */}
           <Route path="/app" element={<Navigate to="/dashboard" replace />} />
@@ -159,7 +173,9 @@ function AppContent() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        </React.Suspense>
       </Layout>
+      <CookieConsent />
     </Router>
   );
 }

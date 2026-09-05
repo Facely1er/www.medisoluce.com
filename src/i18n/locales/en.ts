@@ -879,6 +879,19 @@ const enTranslation = {
     "updates": "Updates to This Policy",
     "contact_us": "Contact Us"
   },
+
+  // Analytics consent banner
+  "consent": {
+    "title": "Help us improve MediSoluce",
+    "message": "We would like to use Google Analytics to understand how the platform is used. No assessment data or patient information is ever sent — only anonymized usage statistics. You can change your choice at any time from the Cookie Policy page.",
+    "accept": "Allow analytics",
+    "decline": "Decline",
+    "learn_more": "Cookie Policy",
+    "aria_label": "Analytics consent",
+    "status_granted": "Analytics are currently allowed.",
+    "status_denied": "Analytics are currently declined.",
+    "status_unknown": "You have not made a choice yet."
+  },
   
   // Language selector
   "language": {
@@ -2096,7 +2109,16 @@ const enTranslation = {
     "start_free_assessment": "Start Free Assessment",
     "contact_sales": "Contact Sales",
     "trial_started_success": "Trial Started!",
-    "trial_started_success_message": "Your free trial has begun. Enjoy full access!"
+    "trial_started_success_message": "Your free trial has begun. Enjoy full access!",
+    "billing_disabled_short": "Billing disabled in demo",
+    "billing_disabled_demo": "Billing and paid checkout are disabled in this demo/trial deployment.",
+    "local_demo_auth_disabled": "This demo is local-only. Sign-in is disabled until VITE_AUTH_PROVIDER=supabase is configured.",
+    "sign_in_required_checkout": "Please sign in or create an account to subscribe.",
+    "checkout_unavailable": "Checkout Unavailable",
+    "checkout_unavailable_message": "Self-serve checkout is not configured for this plan yet. Contact sales and we will set you up.",
+    "checkout_error": "Checkout Failed",
+    "checkout_error_message": "We could not start checkout. Please try again or contact sales.",
+    "redirecting_to_checkout": "Redirecting to checkout…"
   }
 };
 

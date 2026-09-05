@@ -2,14 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Settings } from 'lucide-react';
 import Card from '../components/ui/Card';
+import Button from '../components/ui/Button';
 import SEOHead from '../components/ui/SEOHead';
 import ReactMarkdown from 'react-markdown';
+import {
+  getAnalyticsConsent,
+  isAnalyticsFeatureEnabled,
+  onAnalyticsConsentChange,
+  setAnalyticsConsent,
+  type ConsentState,
+} from '../utils/consent';
 
 const CookiePolicyPage: React.FC = () => {
   const { t } = useTranslation();
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [consent, setConsent] = useState<ConsentState>(() => getAnalyticsConsent());
+
+  useEffect(() => onAnalyticsConsentChange(setConsent), []);
 
   useEffect(() => {
     const loadPolicy = async () => {
@@ -49,6 +60,36 @@ const CookiePolicyPage: React.FC = () => {
               {t('cookies.title')}
             </h1>
           </div>
+
+          {isAnalyticsFeatureEnabled && (
+            <Card className="p-6 mb-8">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                {t('cookies.your_choices')}
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                {t('consent.message')}
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  variant={consent === 'granted' ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => setAnalyticsConsent('granted')}
+                >
+                  {t('consent.accept')}
+                </Button>
+                <Button
+                  variant={consent === 'denied' ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => setAnalyticsConsent('denied')}
+                >
+                  {t('consent.decline')}
+                </Button>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {t(`consent.status_${consent}`)}
+                </span>
+              </div>
+            </Card>
+          )}
 
           <Card className="p-8">
             {loading && (

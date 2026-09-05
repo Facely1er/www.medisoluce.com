@@ -6,7 +6,7 @@
  * Stripe Checkout Sessions. Never use your Stripe secret key in frontend code.
  */
 
-import { getAllPolicyUrls, getStripeTermsConfig } from '../utils/policyUrls';
+import { getAllPolicyUrls } from '../utils/policyUrls';
 import { isBillingEnabled } from '../config/runtimeConfig';
 
 export interface CheckoutSessionParams {
@@ -45,7 +45,6 @@ export async function createCheckoutSession(
   }
 
   const policyUrls = getAllPolicyUrls();
-  const termsConfig = getStripeTermsConfig();
 
   // Get API URL - supports both Vercel and Netlify deployments
   const apiUrl = import.meta.env.VITE_API_URL || '/api';
@@ -77,8 +76,8 @@ export async function createCheckoutSession(
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Failed to create checkout session' }));
-    throw new Error(error.message || 'Failed to create checkout session');
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || payload.message || 'Failed to create checkout session');
   }
 
   const data = await response.json();
@@ -153,8 +152,8 @@ export async function createPortalSession(
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Failed to create portal session' }));
-    throw new Error(error.message || 'Failed to create portal session');
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || payload.message || 'Failed to create portal session');
   }
 
   const data = await response.json();

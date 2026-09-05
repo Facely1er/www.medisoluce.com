@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Test/build artifacts
+coverage
+test-results.json
+backend-test-report.json
+security-audit-report.json
+stats.html
+
+# Platform-local project metadata
+.vercel
+.netlify
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

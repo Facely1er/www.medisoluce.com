@@ -905,6 +905,19 @@ const frTranslation = {
     "updates": "Mises à Jour de Cette Politique",
     "contact_us": "Nous Contacter"
   },
+
+  // Bandeau de consentement analytique
+  "consent": {
+    "title": "Aidez-nous à améliorer MediSoluce",
+    "message": "Nous souhaitons utiliser Google Analytics pour comprendre comment la plateforme est utilisée. Aucune donnée d'évaluation ni information patient n'est transmise — uniquement des statistiques d'utilisation anonymisées. Vous pouvez modifier votre choix à tout moment depuis la page Politique de Cookies.",
+    "accept": "Autoriser les statistiques",
+    "decline": "Refuser",
+    "learn_more": "Politique de Cookies",
+    "aria_label": "Consentement aux statistiques",
+    "status_granted": "Les statistiques sont actuellement autorisées.",
+    "status_denied": "Les statistiques sont actuellement refusées.",
+    "status_unknown": "Vous n'avez pas encore fait de choix."
+  },
   // Demo page
   "demo": {
     "title": "Démo Interactive de la Plateforme",
@@ -2096,7 +2109,16 @@ const frTranslation = {
     "start_free_assessment": "Démarrer l'Évaluation Gratuite",
     "contact_sales": "Contacter les Ventes",
     "trial_started_success": "Essai Démarré!",
-    "trial_started_success_message": "Votre essai gratuit a commencé. Profitez d'un accès complet!"
+    "trial_started_success_message": "Votre essai gratuit a commencé. Profitez d'un accès complet!",
+    "billing_disabled_short": "Facturation désactivée en démo",
+    "billing_disabled_demo": "La facturation et le paiement sont désactivés dans ce déploiement de démonstration/essai.",
+    "local_demo_auth_disabled": "Cette démo est locale uniquement. La connexion est désactivée tant que VITE_AUTH_PROVIDER=supabase n'est pas configuré.",
+    "sign_in_required_checkout": "Veuillez vous connecter ou créer un compte pour vous abonner.",
+    "checkout_unavailable": "Paiement Indisponible",
+    "checkout_unavailable_message": "Le paiement en libre-service n'est pas encore configuré pour ce forfait. Contactez les ventes et nous vous accompagnerons.",
+    "checkout_error": "Échec du Paiement",
+    "checkout_error_message": "Impossible de démarrer le paiement. Veuillez réessayer ou contacter les ventes.",
+    "redirecting_to_checkout": "Redirection vers le paiement…"
   }
 };
 

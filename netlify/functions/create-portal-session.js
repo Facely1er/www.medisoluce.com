@@ -7,14 +7,16 @@
  */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { corsHeaders, createPortalSession, parseJsonBody } = require('../../api/stripeCheckoutCore');
+const { corsHeaders, createPortalSession, parseJsonBody } = require('../../api/stripeCheckoutCore.cjs');
 
 exports.handler = async (event) => {
-  const headers = { 'Content-Type': 'application/json', ...corsHeaders() };
+  const requestOrigin = event.headers?.origin || event.headers?.Origin;
+  const cors = corsHeaders(requestOrigin);
+  const headers = { 'Content-Type': 'application/json', ...cors };
   const json = (statusCode, body) => ({ statusCode, headers, body: JSON.stringify(body) });
 
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: corsHeaders(), body: '' };
+    return { statusCode: 204, headers: cors, body: '' };
   }
 
   if (event.httpMethod !== 'POST') {

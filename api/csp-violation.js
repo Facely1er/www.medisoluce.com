@@ -3,7 +3,7 @@
  * Target of `report-uri /api/csp-violation` in vercel.json.
  */
 
-const { handleCspReport } = require('./cspViolationCore');
+const { handleCspReport } = require('./cspViolationCore.cjs');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {

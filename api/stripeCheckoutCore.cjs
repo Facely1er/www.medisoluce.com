@@ -6,7 +6,9 @@
  * Environment Variables:
  * - STRIPE_SECRET_KEY: server-side Stripe key
  * - VITE_APP_BASE_URL: canonical site origin; the only origin allowed by CORS
- * - URL: Netlify-provided site URL (fallback when VITE_APP_BASE_URL is unset)
+ * - URL / DEPLOY_PRIME_URL / VERCEL_URL: platform deploy URLs also allowed
+ * - STRIPE_ALLOWED_PRICE_IDS: optional exclusive comma-separated Price catalog
+ * - VITE_STRIPE_PRICE_* / STRIPE_PRICE_*: catalog used when the allow-list is unset
  */
 
 const DEFAULT_ORIGIN = 'https://www.medisoluce.com';
@@ -83,6 +85,41 @@ function isAllowedUrl(candidate) {
   return Boolean(origin) && getAllowedOrigins().has(origin);
 }
 
+const PRICE_ID_PATTERN = /^price_[A-Za-z0-9]+$/;
+
+function parseCommaSeparatedPriceIds(raw) {
+  const ids = new Set();
+  for (const part of String(raw || '').split(',')) {
+    const id = part.trim();
+    if (PRICE_ID_PATTERN.test(id)) ids.add(id);
+  }
+  return ids;
+}
+
+/**
+ * Price IDs this deployment is allowed to bill. When STRIPE_ALLOWED_PRICE_IDS
+ * is set it is the exclusive catalog (comma-separated). Otherwise every
+ * VITE_STRIPE_PRICE_* / STRIPE_PRICE_* env value that looks like a Stripe
+ * Price ID is accepted. An empty catalog means checkout is not configured.
+ */
+function getConfiguredPriceIds() {
+  if (typeof process.env.STRIPE_ALLOWED_PRICE_IDS === 'string') {
+    return parseCommaSeparatedPriceIds(process.env.STRIPE_ALLOWED_PRICE_IDS);
+  }
+
+  const ids = new Set();
+  for (const [key, value] of Object.entries(process.env)) {
+    if (!/^(VITE_)?STRIPE_PRICE_/.test(key) || typeof value !== 'string') continue;
+    const id = value.trim();
+    if (PRICE_ID_PATTERN.test(id)) ids.add(id);
+  }
+  return ids;
+}
+
+function isAllowedPriceId(priceId) {
+  return typeof priceId === 'string' && getConfiguredPriceIds().has(priceId);
+}
+
 /**
  * Validate the request body and build Stripe Checkout Session params.
  * Returns { error, status } on validation failure, or { params }.
@@ -102,6 +139,19 @@ function buildCheckoutParams(body) {
 
   if (!price_id || typeof price_id !== 'string') {
     return { status: 400, error: 'price_id is required' };
+  }
+
+  if (!PRICE_ID_PATTERN.test(price_id)) {
+    return { status: 400, error: 'price_id is invalid' };
+  }
+
+  const catalog = getConfiguredPriceIds();
+  if (catalog.size === 0) {
+    return { status: 503, error: 'Stripe price catalog is not configured' };
+  }
+
+  if (!catalog.has(price_id)) {
+    return { status: 400, error: 'price_id is not an allowed catalog price' };
   }
 
   if (!success_url || !cancel_url) {
@@ -157,6 +207,10 @@ function buildCheckoutParams(body) {
  * Create a Checkout Session. Returns { status, body } ready to serialise.
  */
 async function createCheckoutSession(stripe, body) {
+  if (!stripe || typeof stripe.checkout?.sessions?.create !== 'function') {
+    return { status: 503, body: { error: 'Billing is not configured' } };
+  }
+
   const built = buildCheckoutParams(body);
   if (built.error) {
     return { status: built.status, body: { error: built.error } };
@@ -184,6 +238,10 @@ async function createCheckoutSession(stripe, body) {
  * Create a Customer Portal session. Returns { status, body }.
  */
 async function createPortalSession(stripe, body) {
+  if (!stripe || typeof stripe.billingPortal?.sessions?.create !== 'function') {
+    return { status: 503, body: { error: 'Billing is not configured' } };
+  }
+
   const { customer_id, return_url } = body || {};
 
   if (!customer_id || typeof customer_id !== 'string') {
@@ -226,6 +284,10 @@ function parseJsonBody(raw) {
 
 module.exports = {
   getBaseUrl,
+  getAllowedOrigins,
+  isAllowedUrl,
+  isAllowedPriceId,
+  getConfiguredPriceIds,
   corsHeaders,
   buildCheckoutParams,
   createCheckoutSession,

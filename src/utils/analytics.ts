@@ -1,4 +1,10 @@
 // Analytics utilities for tracking user interactions
+import {
+  getAnalyticsConsent,
+  isAnalyticsFeatureEnabled,
+  onAnalyticsConsentChange,
+} from './consent';
+
 declare global {
   interface Window {
     dataLayer: unknown[];
@@ -22,10 +28,15 @@ interface AnalyticsEvent {
 class Analytics {
   private isEnabled: boolean = false;
   private isProduction: boolean = false;
+  private trackingId: string | null = null;
+  private scriptLoaded: boolean = false;
+  private unsubscribeConsent: (() => void) | null = null;
 
   constructor() {
     this.isProduction = import.meta.env.PROD;
-    this.isEnabled = this.isProduction && typeof window !== 'undefined';
+    // Events are only ever sent once gtag has been loaded, which requires the
+    // feature flag AND explicit visitor consent (see init/loadGtag).
+    this.isEnabled = false;
     
     // Enhanced error tracking for production
     if (this.isProduction) {
@@ -130,9 +141,52 @@ class Analytics {
     }
   }
 
-  // Initialize analytics (Google Analytics, etc.) with fallback
+  /**
+   * Register the tracking ID and load Google Analytics only when:
+   *   - running in a production build,
+   *   - VITE_ENABLE_ANALYTICS=true and VITE_GA_TRACKING_ID is set,
+   *   - the visitor has granted analytics consent.
+   * If consent is not yet given, we wait for the consent event and load then.
+   */
   init(trackingId?: string) {
-    if (!this.isEnabled || !trackingId) return;
+    if (!this.isProduction || typeof window === 'undefined') return;
+    if (!isAnalyticsFeatureEnabled || !trackingId) return;
+
+    this.trackingId = trackingId;
+
+    if (getAnalyticsConsent() === 'granted') {
+      this.loadGtag();
+      return;
+    }
+
+    if (!this.unsubscribeConsent) {
+      this.unsubscribeConsent = onAnalyticsConsentChange((state) => {
+        if (state === 'granted') {
+          this.loadGtag();
+        } else {
+          this.isEnabled = false;
+        }
+      });
+    }
+  }
+
+  /**
+   * Whether analytics is currently sending events (consent granted + gtag loaded).
+   */
+  isActive(): boolean {
+    return this.isEnabled;
+  }
+
+  private loadGtag() {
+    const trackingId = this.trackingId;
+    if (!trackingId) return;
+
+    if (this.scriptLoaded) {
+      this.isEnabled = true;
+      return;
+    }
+    this.scriptLoaded = true;
+    this.isEnabled = true;
 
     const initAnalytics = () => {
       try {
