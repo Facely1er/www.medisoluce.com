@@ -186,20 +186,27 @@ export default defineConfig({
 
           // Modules imported both statically and dynamically elsewhere: pin them to a
           // named chunk so Rollup does not warn and the dynamic imports stay cheap.
+          // Do NOT force HealthOptimizer / comprehensiveHealthManager / lib/supabase here —
+          // that re-introduced a static edge from the entry chunk into the 200 kB supabase
+          // client (and Vite then modulepreloaded it on every page). Those stay async.
           if (id.includes('/src/utils/serviceFallback.ts')) {
             return 'fallback';
-          }
-          if (id.includes('/src/lib/supabase.ts')) {
-            return 'supabase';
-          }
-          if (id.includes('/src/utils/comprehensiveHealthManager.ts') || id.includes('/src/components/health/HealthOptimizer.tsx')) {
-            return 'health';
           }
         }
       }
     },
     cssCodeSplit: true,
-    emptyOutDir: true
+    emptyOutDir: true,
+    // Avoid preloading heavy, rarely-needed async chunks on first paint. Vite would
+    // otherwise modulepreload every static dependency of every dynamic import() reachable
+    // from the entry (supabase via production health monitoring, charts, markdown, …).
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter(
+          (dep) =>
+            !/(^|\/)(supabase|charts|markdown|sentry|health)[^/]*\.js$/.test(dep)
+        ),
+    },
   },
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
