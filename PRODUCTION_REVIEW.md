@@ -1,6 +1,6 @@
 # MediSoluce Production Readiness Review
 **Original review:** 2026-03-05 (`claude/review-production-readiness-LTIEq`)
-**Last updated:** 2026-09-05 (`cursor/production-readiness-fixes`, on top of `main` @ `99150ea`)
+**Last updated:** 2026-09-05 (`cursor/post-merge-smoke-and-hardening`, post PR #64 smoke)
 
 ---
 
@@ -8,18 +8,20 @@
 
 MediSoluce is a well-structured React + Vite SPA targeting healthcare compliance officers, IT directors, and operations managers. The platform's **core product concept is strong** — a privacy-first, 4-step HIPAA compliance journey with localStorage-based persistence is a genuinely differentiated positioning.
 
-As of 2026-09-05 every engineering blocker from the March review and from the September re-audit has been resolved (see §1). What remains before a paid launch is **environment configuration and a Stripe end-to-end test**, not code. The UI/UX, value-proposition and customer-journey observations in §2–§4 are still open and are conversion improvements rather than release blockers.
+As of 2026-09-05 every engineering blocker from the March review and from the September re-audit has been resolved in code (see §1). A **post-deploy smoke** against `https://www.medisoluce.com` after PR #64 found one operational gap: Stripe serverless functions cold-start 502 when `STRIPE_SECRET_KEY` is unset (fixed in this branch via lazy `getStripeClient()`). What remains before a paid launch is **Netlify env configuration and a Stripe end-to-end test**.
 
 **Overall Ratings (2026-09-05):**
 
 | Area | Score | Status |
 |---|---|---|
-| Production Readiness | 88/100 | 🟢 Ready for demo launch; paid launch pending env + Stripe test |
+| Production Readiness | 90/100 | 🟢 Demo-ready after smoke-fix deploy; paid launch pending env + Stripe test |
 | UI/UX | 71/100 | 🟡 Good with gaps (unchanged) |
 | Value Proposition Clarity | 62/100 | 🟡 Unclear freemium boundary (unchanged) |
 | Customer Journey | 67/100 | 🟡 Journey defined but leaky (unchanged) |
 
-**Verification gate (`npm run verify:production`, Node 20.20.2):** lint 0 errors · `tsc --noEmit` clean · 14 test files / 107 tests passing · all 11 serverless entries parse · production build emits `sw.js` + `workbox-*.js`, main chunk 307 kB (84 kB gzipped), no Rollup warnings.
+**Verification gate (`npm run verify:production`, Node 20.20.2):** lint 0 errors · `tsc --noEmit` clean · tests passing · all serverless entries parse · production build emits `sw.js` · `npm audit --omit=dev` = 0 vulnerabilities (react-router 7).
+
+**Post-deploy smoke (`npm run smoke:production` against live):** 16/21 passed on #64 deploy (routes, CSP, no inline GA, CSP report sink). 5 failures were checkout/portal/webhook **502** from top-level `require('stripe')(undefined)` — fixed by lazy init; re-run smoke after this branch deploys (expect 21/21, with 503 until `STRIPE_SECRET_KEY` is set).
 
 ---
 
@@ -32,33 +34,33 @@ As of 2026-09-05 every engineering blocker from the March review and from the Se
 | 🔴 Wildcard CORS on Stripe checkout **and portal** endpoints (Vercel *and* Netlify) | Shared core reflects the request origin only if it is `VITE_APP_BASE_URL` or a platform preview URL; `success_url`/`cancel_url`/`return_url` must be on an allowed origin; `price_id` must be in the server-side catalog (`STRIPE_ALLOWED_PRICE_IDS` or `STRIPE_PRICE_*`) | `api/stripeCheckoutCore.cjs`, `api/create-*.js`, `netlify/functions/create-*.js` |
 | 🔴 Checkout unreachable — no UI path called `redirectToCheckout`; no price IDs | Price IDs come from `VITE_STRIPE_PRICE_<PRODUCT>_<TIER>`; `useCheckout` drives billing-flag → price → sign-in → redirect. Professional "Upgrade to Continue" now opens Stripe Checkout; falls back to `/contact` if unconfigured. Also fixed the hard-coded English `'Start Free Trial'` comparison that disabled trials in French | `src/config/stripePrices.ts`, `src/hooks/useCheckout.ts`, `src/pages/*PricingPage.tsx` |
 | 🔴 Authentication was localStorage-only | `AuthContext` uses `supabase.auth.getSession()` / `onAuthStateChange`; explicit `local` demo mode via `VITE_AUTH_PROVIDER` | `src/context/AuthContext.tsx`, `src/config/runtimeConfig.ts` |
+| 🔴 Stripe functions cold-start **502** when `STRIPE_SECRET_KEY` unset (found in post-#64 smoke) | Lazy `getStripeClient()` — OPTIONS returns 204 with CORS; unconfigured POST returns 503 with origin-restricted ACO (never reflects attacker Origin) | `api/stripeCheckoutCore.cjs`, checkout/portal/webhook adapters |
 | 🟠 Dead `/pricing/bundles`, `/pricing/calculator` CTAs (the March fix did not land) | Repointed to `/contact`, per-role pricing pages and `/business-impact` | `src/pages/PricingOverviewPage.tsx` |
 | 🟠 `vite build` fails on Node ≥ 22 (no service worker emitted) | `engines.node: "20.x"` + `.npmrc engine-strict=true`; CI/Netlify/Docker already pin 20 | `package.json`, `.npmrc` |
-| 🟠 `npm audit` had 2 high advisories and CI ran it with `continue-on-error` | `npm audit fix` applied (lodash 4.18.1, ws 8.21.3); CI now gates on `npm audit --omit=dev --audit-level=high`, with an informational all-deps pass | `package-lock.json`, `.github/workflows/ci.yml` |
+| 🟠 `npm audit` had 2 high advisories and CI ran it with `continue-on-error` | Prod audit gate is real; react-router 7 clears remaining moderates (`npm audit --omit=dev` = 0) | `package-lock.json`, `.github/workflows/ci.yml` |
 | 🟠 Google Analytics loaded unconditionally from `index.html` with a cross-domain linker | Inline tag removed. gtag loads only when `VITE_ENABLE_ANALYTICS=true`, `VITE_GA_TRACKING_ID` is set, **and** the visitor accepts the consent banner; choice is changeable on `/cookie-policy` | `index.html`, `src/utils/analytics.ts`, `src/utils/consent.ts`, `src/components/ui/CookieConsent.tsx` |
 | 🟠 Lazy tools shared one silent `Suspense fallback={null}` | Wrapped in their own `ErrorBoundary`; routes now lazy-loaded behind a visible `RouteFallback` | `src/App.tsx` |
-| 🟡 CSP `report-uri /api/csp-violation` pointed at a non-existent endpoint | Endpoint added for both platforms (bounded body, `application/csp-report` + Reporting API, always 204) | `api/cspViolationCore.cjs`, `api/csp-violation.js`, `netlify/functions/csp-violation.js` |
+| 🟡 CSP `report-uri /api/csp-violation` pointed at a non-existent endpoint | Endpoint added for both platforms (bounded body, `application/csp-report` + Reporting API, always 204) — live smoke confirmed **204** | `api/cspViolationCore.cjs`, `api/csp-violation.js`, `netlify/functions/csp-violation.js` |
 | 🟡 No Content-Security-Policy | CSP set in `netlify.toml` / `vercel.json` (`frame-ancestors 'none'`, `object-src 'none'`, `upgrade-insecure-requests`, reporting) | `netlify.toml`, `vercel.json` |
 | 🟡 Supabase env vars never validated | Required when `VITE_AUTH_PROVIDER=supabase`; startup renders a visible configuration error instead of a blank page. Billing-on-without-price-IDs now warns | `src/utils/envValidation.ts`, `src/main.tsx` |
 | 🟡 Dashboard hardcoded metrics / 2024 due dates / `training.medisoluce.com` link | Honest empty states; relative due dates; internal `/training` route | `src/pages/DashboardPage.tsx` |
 | 🟡 PWA `scope: '/app'` mismatch | `start_url` / `scope` are `/` | `vite.config.ts` |
 | 🟡 `coverage/`, `test-results.json`, `backend-test-report.json`, `.vercel/` committed | Untracked and ignored | `.gitignore` |
-| 🟡 1.2 MB main chunk; mixed static/dynamic imports (`supabase`, `comprehensiveHealthManager`, `serviceFallback`) | Route-level `React.lazy`; dynamic `supabase` import made static (already in root bundle) | `src/App.tsx`, `src/utils/comprehensiveHealthManager.ts` |
+| 🟡 Large first-paint / mixed static-dynamic imports | Route-level lazy loading; Supabase deferred; package-name chunking; charts/markdown/sentry off modulepreload path | `src/App.tsx`, `src/context/AuthContext.tsx`, `vite.config.ts` |
 | 🟡 Vercel and Netlify handlers were hand-duplicated | Webhook, checkout/portal and CSP logic each live in one shared core | `api/*Core.{js,cjs}` |
 
 ### 1.2 Open — configuration and operational (not code)
 
 | Priority | Item | Notes |
 |---|---|---|
-| 🔴 Before a **paid** launch | Set in Netlify: `VITE_AUTH_PROVIDER=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ENABLE_BILLING=true`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_STRIPE_PRICE_{HIPAA,RANSOMWARE,CONTINUITY}_PROFESSIONAL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `VITE_APP_BASE_URL=https://www.medisoluce.com` | The default auth provider is now `local` (demo) and `deploy.yml` falls back to it when the secret is unset — production silently runs in demo mode unless `supabase` is set explicitly |
+| 🔴 Before a **paid** launch | Set in Netlify: `VITE_AUTH_PROVIDER=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ENABLE_BILLING=true`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_STRIPE_PRICE_{HIPAA,RANSOMWARE,CONTINUITY}_PROFESSIONAL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_ALLOWED_PRICE_IDS`, `VITE_APP_BASE_URL=https://www.medisoluce.com` | Demo launch only needs `VITE_APP_BASE_URL`. Without `STRIPE_SECRET_KEY`, checkout/portal correctly return **503** (after smoke-fix deploy), not 502 |
 | 🔴 Before a **paid** launch | Create the three Professional Prices in Stripe, register the `/api/webhook` endpoint, and run one test-mode purchase on a deploy preview (pricing → Checkout → `/checkout/success` → subscription upserted in Supabase) | Checkout code is live but inert until price IDs exist |
 | 🟠 | Confirm a single deploy path: GitHub Actions (`deploy.yml`) **or** Netlify Git auto-build, not both | A static-only Git deploy can wipe the serverless functions, including the Stripe webhook |
-| 🟡 | Post-deploy smoke: no `googletagmanager` request before consent; foreign-origin `POST /api/create-checkout-session` gets a non-matching `Access-Control-Allow-Origin`; CSP reports appear in the `csp-violation` function logs | Use the CSP reports to remove `'unsafe-inline'`/`'unsafe-eval'` from `script-src` over time |
+| 🟡 | After each deploy: `npm run smoke:production` | Asserts routes, CSP, no inline GA, CSP report sink, and that evil Origin is never reflected on `/api/create-checkout-session` |
 
 ### 1.3 Known residuals (accepted, non-blocking)
 
-- `react-router-dom` 6.x carries two **moderate** advisories (open-redirect via backslash, SSR deserialization); the fix is the v7 major.
-- 85 pre-existing `@typescript-eslint/no-explicit-any` lint warnings (0 errors).
+- Pre-existing `@typescript-eslint/no-explicit-any` lint warnings (0 errors).
 - `ProtectedRoute` is a passthrough by design (privacy-first). In Supabase mode, `/dashboard` and `/profile` rely on components handling a null user rather than a route guard.
 - CSP `script-src` still allows `'unsafe-inline'` and `'unsafe-eval'` plus `bolt.new` / `vercel.live`; tighten once report data confirms nothing depends on them.
 
