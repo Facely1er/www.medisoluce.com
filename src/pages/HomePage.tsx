@@ -471,7 +471,7 @@ const HomePage: React.FC = () => {
               </div>
               <div className="mt-4 pt-4 border-t border-primary-200 dark:border-primary-800 text-center">
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  <strong>Privacy First:</strong> All data stored locally in your browser. No personal information collected.
+                  <strong>Privacy First:</strong> The public demo stores assessments in this browser. Paid client deployments can use Supabase accounts; no card is required to start a free assessment.
                 </p>
               </div>
             </div>
@@ -769,7 +769,7 @@ const HomePage: React.FC = () => {
             </div>
             
             <div className="mt-6 text-xs text-primary-200">
-              All tools available immediately • No credit card required • Cancel anytime
+              Free: assessments, reports, and local browser storage. Paid plans add team features and billed checkout. No card needed to start.
             </div>
           </div>
         </div>
