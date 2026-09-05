@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { type Session } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 import { authProvider, getLocalWorkspaceId, isSupabaseAuthEnabled } from '../config/runtimeConfig';
 
 interface User {
@@ -18,6 +17,23 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function toUser(session: Session | null): User | null {
+  if (!session?.user?.id || !session.user.email) {
+    return null;
+  }
+
+  return {
+    id: session.user.id,
+    email: session.user.email,
+    loginTime: session.user.last_sign_in_at ?? undefined,
+  };
+}
+
+/**
+ * AuthProvider never statically imports `@supabase/supabase-js`. In local/demo
+ * mode that keeps the ~200 kB supabase client out of the initial bundle; in
+ * supabase mode it is fetched once on mount.
+ */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,43 +46,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    const toUser = (session: Session | null): User | null => {
-      if (!session?.user?.id || !session.user.email) {
-        return null;
-      }
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
 
-      return {
-        id: session.user.id,
-        email: session.user.email,
-        loginTime: session.user.last_sign_in_at ?? undefined
-      };
-    };
-
-    const initializeSession = async () => {
+    const initialize = async () => {
       try {
+        const { supabase } = await import('../lib/supabase');
+        if (cancelled) return;
+
         const { data, error } = await supabase.auth.getSession();
+        if (cancelled) return;
+
         if (error) {
           console.error('Failed to fetch Supabase session:', error.message);
           setUser(null);
         } else {
           setUser(toUser(data.session));
         }
+
+        const { data: authStateChange } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (!cancelled) {
+            setUser(toUser(session));
+            setLoading(false);
+          }
+        });
+        unsubscribe = () => authStateChange.subscription.unsubscribe();
       } catch (error) {
-        console.error('Unexpected session initialization error:', error);
-        setUser(null);
+        if (!cancelled) {
+          console.error('Unexpected session initialization error:', error);
+          setUser(null);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    initializeSession();
+    void initialize();
 
-    const { data: authStateChange } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(toUser(session));
-      setLoading(false);
-    });
-
-    return () => authStateChange.subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   const signOut = async () => {
@@ -75,6 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
+    const { supabase } = await import('../lib/supabase');
     const { error } = await supabase.auth.signOut();
     if (error) {
       throw error;
@@ -83,12 +106,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      authProvider,
-      signOut,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        authProvider,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

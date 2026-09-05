@@ -2,6 +2,48 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+/**
+ * Resolve the npm package name (scoped or not) from a Rollup module id.
+ * e.g. ".../node_modules/@supabase/supabase-js/dist/x.js" -> "@supabase/supabase-js"
+ *      ".../node_modules/.pnpm/react@18/node_modules/react/index.js" -> "react"
+ */
+function packageNameFromId(id: string): string | null {
+  const marker = 'node_modules/';
+  const idx = id.lastIndexOf(marker);
+  if (idx === -1) return null;
+  const rest = id.slice(idx + marker.length).split('/');
+  if (rest[0]?.startsWith('@')) {
+    return rest.length > 1 ? `${rest[0]}/${rest[1]}` : rest[0];
+  }
+  return rest[0] || null;
+}
+
+/** Packages in the react-markdown / unified pipeline that lack a shared prefix. */
+const MARKDOWN_PACKAGES = new Set([
+  'react-markdown',
+  'unified',
+  'bail',
+  'trough',
+  'is-plain-obj',
+  'devlop',
+  'decode-named-character-reference',
+  'character-entities',
+  'property-information',
+  'space-separated-tokens',
+  'comma-separated-tokens',
+  'html-url-attributes',
+  'estree-util-is-identifier-name',
+  'style-to-object',
+  'style-to-js',
+  'inline-style-parser',
+  'trim-lines',
+  'zwitch',
+  'longest-streak',
+  'ccount',
+  'markdown-table',
+  'escape-string-regexp',
+]);
+
 export default defineConfig({
   plugins: [
     react(),
@@ -99,22 +141,34 @@ export default defineConfig({
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'vendor';
+            const pkg = packageNameFromId(id);
+            if (!pkg) return 'vendor';
+
+            // Core runtime that every route needs.
+            if (['react', 'react-dom', 'scheduler', 'react-router', 'react-router-dom', 'react-helmet-async'].includes(pkg)) {
+              return 'react-vendor';
             }
-            if (id.includes('framer-motion') || id.includes('lucide-react')) {
+            if (pkg === 'framer-motion' || pkg === 'lucide-react') {
               return 'ui';
             }
-            if (id.includes('recharts')) {
+            // recharts and its d3/victory dependency tree; only chart-heavy routes load it.
+            if (pkg === 'recharts' || pkg === 'recharts-scale' || pkg === 'victory-vendor' || pkg.startsWith('d3-') || pkg === 'internmap' || pkg === 'delaunator' || pkg === 'robust-predicates') {
               return 'charts';
             }
-            if (id.includes('i18next') || id.includes('react-i18next')) {
+            // react-markdown pulls in the whole unified/remark/micromark pipeline; policy pages only.
+            if (MARKDOWN_PACKAGES.has(pkg) || pkg.startsWith('micromark') || pkg.startsWith('mdast-') || pkg.startsWith('hast-') || pkg.startsWith('unist-') || pkg.startsWith('remark-') || pkg.startsWith('rehype-') || pkg.startsWith('vfile')) {
+              return 'markdown';
+            }
+            if (pkg === 'i18next' || pkg === 'react-i18next' || pkg.startsWith('i18next-')) {
               return 'i18n';
             }
-            if (id.includes('@supabase/supabase-js')) {
+            if (pkg.startsWith('@supabase/')) {
               return 'supabase';
             }
-            if (id.includes('react-hook-form')) {
+            if (pkg.startsWith('@sentry/')) {
+              return 'sentry';
+            }
+            if (pkg === 'react-hook-form' || pkg.startsWith('@hookform/') || pkg === 'zod') {
               return 'forms';
             }
             return 'vendor';
