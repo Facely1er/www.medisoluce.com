@@ -24,7 +24,16 @@ class CentralizedLogger {
   private config: LoggingConfig;
   private logBuffer: LogEntry[] = [];
   private isDevelopment: boolean;
-  private errorHandler?: any;
+  private errorHandler?: {
+    logError: (entry: {
+      type: string;
+      message: string;
+      url?: string;
+      userAgent?: string;
+      stack?: string;
+      context?: Record<string, unknown>;
+    }) => void;
+  };
 
   constructor() {
     this.isDevelopment = !import.meta.env.PROD;

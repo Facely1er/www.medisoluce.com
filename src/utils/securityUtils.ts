@@ -396,8 +396,8 @@ class SecurityManager {
   }
 
   private alertCriticalThreat(threat: SecurityThreat): void {
-    if (typeof window !== 'undefined' && (window as any).showToast) {
-      (window as any).showToast({
+    if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
+      window.showToast({
         type: 'error',
         title: 'Critical Security Threat',
         message: `${threat.description} - Immediate attention required`,
