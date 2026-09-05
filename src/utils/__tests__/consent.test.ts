@@ -7,9 +7,26 @@ import {
   setAnalyticsConsent,
 } from '../consent';
 
+/**
+ * The global test setup replaces localStorage with vi.fn() stubs that do not
+ * retain values. Install a real in-memory store so persistence can be asserted.
+ */
+function installMemoryStorage() {
+  const store = new Map<string, string>();
+  Object.defineProperty(window, 'localStorage', {
+    configurable: true,
+    value: {
+      getItem: (key: string) => (store.has(key) ? store.get(key)! : null),
+      setItem: (key: string, value: string) => void store.set(key, String(value)),
+      removeItem: (key: string) => void store.delete(key),
+      clear: () => store.clear(),
+    },
+  });
+}
+
 describe('analytics consent store', () => {
   beforeEach(() => {
-    window.localStorage.clear();
+    installMemoryStorage();
   });
 
   it('defaults to unknown when nothing is stored', () => {
@@ -49,7 +66,7 @@ describe('analytics consent store', () => {
 
 describe('analytics bootstrap', () => {
   it('does not inject the Google Analytics script without consent', async () => {
-    window.localStorage.clear();
+    installMemoryStorage();
     const { analytics } = await import('../analytics');
 
     analytics.init('G-TESTTEST');
