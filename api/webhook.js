@@ -1,29 +1,12 @@
 /**
  * Vercel Serverless Function - Stripe Webhook Handler
- * 
- * This endpoint handles Stripe webhook events for payment processing,
- * subscription updates, and other payment-related events.
- * 
- * Environment Variables Required:
- * - STRIPE_SECRET_KEY: Your Stripe secret key
- * - STRIPE_WEBHOOK_SECRET: Your Stripe webhook signing secret
- * - VITE_SUPABASE_URL: Supabase project URL
- * - SUPABASE_SERVICE_ROLE_KEY: Supabase service role key (admin access)
- * 
- * Webhook Setup:
- * 1. In Stripe Dashboard, go to Developers > Webhooks
- * 2. Add endpoint: https://your-domain.com/api/webhook
- * 3. Select events to listen to:
- *    - checkout.session.completed
- *    - customer.subscription.created
- *    - customer.subscription.updated
- *    - customer.subscription.deleted
- *    - invoice.payment_succeeded
- *    - invoice.payment_failed
- * 4. Copy the webhook signing secret to STRIPE_WEBHOOK_SECRET
+ *
+ * Required env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
+ * VITE_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
  */
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+ 
 const { createClient } = require('@supabase/supabase-js');
 
 // Admin client using service role key — bypasses RLS for server-side operations
@@ -110,7 +93,9 @@ async function upsertSubscription(supabase, subscription) {
     console.error('Failed to update profile for customer', subscription.customer, profileError.message);
   }
 }
-
+ 
+const { getSupabaseAdmin, handleStripeEvent } = require('./stripeWebhookCore');
+ 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -127,12 +112,7 @@ module.exports = async (req, res) => {
   let event;
 
   try {
-    // Verify webhook signature
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      webhookSecret
-    );
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
@@ -146,8 +126,8 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: 'Database not configured' });
   }
 
-  // Handle the event
   try {
+ 
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
@@ -226,10 +206,12 @@ module.exports = async (req, res) => {
     }
 
     // Return success response
+ 
+    await handleStripeEvent(stripe, supabase, event);
+ 
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error('Error handling webhook event:', error);
     return res.status(500).json({ error: 'Error processing webhook' });
   }
-}
-
+};
