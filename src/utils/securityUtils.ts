@@ -432,8 +432,8 @@ class SecurityManager {
       element.value = '';
       element.style.borderColor = '#dc3545';
       
-      if (typeof window !== 'undefined' && (window as any).showToast) {
-        (window as any).showToast({
+      if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
+        window.showToast({
           type: 'error',
           title: 'Security Threat Blocked',
           message: 'Potentially malicious input detected and blocked',
@@ -943,7 +943,12 @@ class SecurityManager {
     return JSON.parse(localStorage.getItem('csp-violations') || '[]');
   }
 
-  private checkSecurityHeaders(): any {
+  private checkSecurityHeaders(): {
+    xFrameOptions: boolean;
+    xContentTypeOptions: boolean;
+    xXSSProtection: boolean;
+    referrerPolicy: boolean;
+  } {
     return {
       xFrameOptions: true, // Set via HTTP headers (configured in netlify.toml and vercel.json)
       xContentTypeOptions: !!document.querySelector('meta[http-equiv="X-Content-Type-Options"]'),
@@ -952,7 +957,12 @@ class SecurityManager {
     };
   }
 
-  private analyzeCookies(): any {
+  private analyzeCookies(): {
+    total: number;
+    secureCount: number;
+    httpOnlyCount: number;
+    insecureCount: number;
+  } {
     const cookies = document.cookie.split(';');
     const secureCount = cookies.filter(cookie => cookie.includes('Secure')).length;
     const httpOnlyCount = cookies.filter(cookie => cookie.includes('HttpOnly')).length;
@@ -1304,7 +1314,12 @@ class SecurityManager {
     return this.vulnerabilities;
   }
 
-  private assessCompliance(): any {
+  private assessCompliance(): {
+    hipaa: boolean;
+    hitech: boolean;
+    encryption: number;
+    auditTrail: boolean;
+  } {
     return {
       hipaa: this.checkHIPAACompliance(),
       hitech: this.checkHITECHCompliance(),
