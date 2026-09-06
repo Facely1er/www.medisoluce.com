@@ -8,7 +8,7 @@ The backend has been successfully completed with full schema differentiation for
 
 ### 1. ✅ Supabase Credentials Updated
 All configuration files have been updated with new Supabase credentials:
-- **New Supabase URL**: `https://xsjkufcheftfprmkaelj.supabase.co`
+- **New Supabase URL**: `https://your-project-id.supabase.co`
 - **New Anon Key**: Updated in all files
 - **Files Updated**:
   - `src/lib/supabase.ts`
@@ -95,7 +95,7 @@ Complete database schema with differentiated tables:
 ### Step 1: Deploy Database Schema
 
 1. **Connect to Supabase Dashboard**:
-   - Go to https://supabase.com/dashboard/project/xsjkufcheftfprmkaelj
+   - Go to https://app.supabase.com/project/_/settings/api
    - Navigate to SQL Editor
 
 2. **Run Schema SQL**:
