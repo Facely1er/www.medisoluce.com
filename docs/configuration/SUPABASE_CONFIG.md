@@ -1,54 +1,47 @@
 # Supabase Configuration
 
-## Environment Variables
+Supabase is **optional**. The default demo uses `VITE_AUTH_PROVIDER=local` and does not create a client.
 
-Create a `.env` file in the root of your project with the following variables:
+Use this guide only when you want real sign-in (`VITE_AUTH_PROVIDER=supabase`).
 
-```bash
-# Supabase Configuration
-VITE_SUPABASE_URL=https://nkgekxipzzvceesdjsrh.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rZ2VreGlwenp2Y2Vlc2Rqc3JoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NTc0MTUsImV4cCI6MjA3MzQzMzQxNX0.W-598e6_uv5ES9DqgVr9ExdeY4uzZxcIZulrvioGqpA
+## Environment variables
 
-# Optional: Service role key for admin operations
-# Get this from your Supabase Dashboard > Settings > API
+Copy `.env.example` to `.env.local` (development) or set the same keys on the host (production). Do not commit real values.
+
+```env
+VITE_AUTH_PROVIDER=supabase
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+Get the URL and anon key from [Supabase → Project Settings → API](https://app.supabase.com/project/_/settings/api).
+
+Server-only (never a `VITE_` prefix, never in frontend bundles):
+
+```env
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-## Updated Files
+There are **no hardcoded project URL or key fallbacks** in `src/lib/supabase.ts`. Missing keys in Supabase mode block startup with a visible configuration error.
 
-The following files have been updated with your new Supabase credentials:
+## What Supabase is used for today
 
-- `src/lib/supabase.ts` - Main Supabase client configuration
-- `src/services/backendService.ts` - Backend service configuration
-- `src/services/apiService.ts` - API service configuration
-- `scripts/setup-backend.js` - Backend setup script
-- `scripts/test-backend.js` - Backend test script
-- `scripts/simple-deploy.js` - Simple deployment script
-- `scripts/deploy-database.js` - Database deployment script
+- Auth: `signInWithPassword`, `signUp`, `resetPasswordForEmail`, session in `AuthContext`
+- Not used for product persistence: assessments, training, and plans still write to `localStorage`
 
-## Important Notes
+Schema files under `database/` describe a `medisoluce` schema if you later enable cloud sync. That sync path is not wired in the UI.
 
-1. **Environment Variables**: The code now reads from `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` environment variables first, with the provided credentials as fallback values.
+## Local vs production files
 
-2. **Service Role Key**: For admin operations, you'll need to get your service role key from your Supabase dashboard:
-   - Go to https://supabase.com/dashboard/project/nkgekxipzzvceesdjsrh/settings/api
-   - Copy the `service_role` key
-   - Add it to your `.env` file as `SUPABASE_SERVICE_ROLE_KEY`
+| File | Use |
+|------|-----|
+| `.env.example` | Local demo template → copy to `.env.local` |
+| `.env.production.example` | Host checklist (Netlify / Vercel / CI) |
 
-3. **Local Development**: Make sure to create a `.env` file in the project root for local development. This file should not be committed to version control (it should already be in `.gitignore`).
+Do not create a committed `.env` with live credentials.
 
-4. **Production Deployment**: Set these environment variables in your deployment platform (Vercel, Netlify, etc.):
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY` (if needed)
+## Related
 
-## Testing
-
-To verify the configuration is working, you can run:
-
-```bash
-npm run dev
-```
-
-The application should now connect to your new Supabase project.
-
+- [docs/REAL_IMPLEMENTATION_CAPABILITIES.md](../REAL_IMPLEMENTATION_CAPABILITIES.md)
+- [database/README.md](../../database/README.md)
+- [docs/configuration/MULTI_PROJECT_SUPABASE_SETUP.md](MULTI_PROJECT_SUPABASE_SETUP.md)

@@ -132,7 +132,7 @@ This comprehensive verification confirms that all MediSoluce features are **func
 - ✅ HealthService - Health monitoring
 
 **Supabase Configuration:**
-- URL: `https://nkgekxipzzvceesdjsrh.supabase.co`
+- URL: `https://your-project-id.supabase.co`
 - Schema: `medisoluce` (isolated schema)
 - Authentication: Functional
 - RLS (Row Level Security): Configured

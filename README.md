@@ -1,31 +1,38 @@
-# React + TypeScript + Vite
-
 # MediSoluce Healthcare Compliance Platform
 
-A comprehensive healthcare compliance platform that combines HIPAA compliance assessment, technology dependency management, and business continuity planning to protect patient data and ensure operational resilience.
+A healthcare compliance workspace for HIPAA assessment, technology dependency mapping, business continuity planning, ransomware guidance, staff training, and downloadable policy templates.
 
-## 🏥 Features
+Core product data lives in the browser (`localStorage`). Cloud accounts and paid checkout are optional and off by default.
 
-- **HIPAA Compliance Assessment** - Comprehensive 10-question evaluation with scoring and recommendations
-- **Technology Dependency Mapping** - Visualize and secure critical healthcare system relationships
-- **Business Impact Analysis** - Assess operational and financial risks from system failures
-- **Business Continuity Planning** - Develop comprehensive recovery strategies
-- **Ransomware Protection** - Specialized healthcare cybersecurity guidance
-- **Staff Training Platform** - Interactive compliance education with certification
-- **Resource Toolkit** - Expert-designed templates, policies, and implementation guides
+For what is actually wired versus simulated, see [docs/REAL_IMPLEMENTATION_CAPABILITIES.md](docs/REAL_IMPLEMENTATION_CAPABILITIES.md). For launch status, see [PRODUCTION_REVIEW.md](PRODUCTION_REVIEW.md).
 
-## 🔒 Privacy-First Design
+## Features
 
-- **Local Data Storage** - All user data stored locally on device
-- **No Account Required** - Use anonymously or create optional account for sync
-- **HIPAA-Compliant Architecture** - Designed for healthcare data protection
-- **Zero Data Collection** - No tracking or data collection without consent
+- **HIPAA Compliance Assessment** — 10-question evaluation with scoring and recommendations
+- **Technology Dependency Mapping** — Inventory and export critical system relationships
+- **Business Impact Analysis** — Operational and financial risk from system failures
+- **Business Continuity Planning** — Recovery plans stored locally
+- **Ransomware Protection** — Assessment and training module
+- **Staff Training** — Four interactive modules with quizzes (HIPAA, dependencies, continuity, ransomware)
+- **Resource Toolkit** — Templates and guides in `public/downloads/`
 
-## 🚀 Quick Start
+## Privacy-first design
+
+- **Local data storage** — Assessments, plans, and training progress stay on-device in demo mode
+- **No account required** — Default `VITE_AUTH_PROVIDER=local` skips sign-in
+- **Optional cloud auth** — Set `VITE_AUTH_PROVIDER=supabase` plus project keys for real accounts
+- **No tracking by default** — Google Analytics and Sentry load only when enabled and the visitor accepts cookies
+
+This app is designed around HIPAA *workflows* (assessment, training, templates). It is not a certified HIPAA control environment. Browser storage is not treated as encrypted PHI storage.
+
+## Quick start
 
 ```bash
-# Install dependencies
+# Install dependencies (Node 20.x)
 npm install
+
+# Copy env template
+cp .env.example .env.local
 
 # Start development server
 npm run dev
@@ -37,172 +44,101 @@ npm test
 npm run build
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
-# Run all tests
 npm test
-
-# Run tests in watch mode
 npm run test:watch
-
-# Run tests with UI
 npm run test:ui
-
-# Generate coverage report
 npm run test:coverage
 ```
 
-## 🏗️ Tech Stack
+## Tech stack
 
-- **Frontend:** React 18 + TypeScript + Vite
-- **Styling:** Tailwind CSS with custom healthcare design system
-- **State Management:** React Hooks + Context API
-- **Data Storage:** localStorage (privacy-first) + optional Supabase
-- **Animations:** Framer Motion
+- **Frontend:** React 18 + TypeScript + Vite 7
+- **Routing:** React Router 7
+- **Styling:** Tailwind CSS
+- **State:** React hooks + context
+- **Data:** localStorage (default) + optional Supabase auth
 - **Charts:** Recharts
 - **Testing:** Vitest + React Testing Library
-- **Build:** Vite with production optimizations
+- **PWA:** vite-plugin-pwa (service worker)
 
-## 📊 Performance
+## Development
 
-- **Lighthouse Score:** 95+ across all metrics
-- **Core Web Vitals:** Optimized for healthcare workflows
-- **Bundle Size:** Optimized with code splitting
-- **Caching Strategy:** Progressive loading with service worker
+### Environment setup
 
-## 🔧 Development
+1. Copy `.env.example` to `.env.local`:
 
-### Environment Setup
-
-1. Copy `env.example` to `.env.local`:
    ```bash
-   cp env.example .env.local
+   cp .env.example .env.local
    ```
 
-2. Choose an auth mode in `.env.local`:
-   - **Demo/trial local mode (no Supabase auth):**
+2. Choose a mode in `.env.local`:
+
+   - **Demo (default):**
      ```env
      VITE_AUTH_PROVIDER=local
      VITE_ENABLE_BILLING=false
      ```
-   - **Client deployment mode (real Supabase auth):**
+   - **Client deploy with accounts and checkout:**
      ```env
      VITE_AUTH_PROVIDER=supabase
      VITE_SUPABASE_URL=https://your-project-id.supabase.co
      VITE_SUPABASE_ANON_KEY=your-anon-key-here
      VITE_ENABLE_BILLING=true
      ```
+     Prefer Stripe Payment Links (`VITE_STRIPE_PAYMENT_LINK_*`). Price IDs plus `STRIPE_SECRET_KEY` are the API fallback. See `.env.example`.
 
-3. Configure your Supabase credentials when using `VITE_AUTH_PROVIDER=supabase`:
-    ```env
-    VITE_SUPABASE_URL=https://your-project-id.supabase.co
-    VITE_SUPABASE_ANON_KEY=your-anon-key-here
-    ```
-    
-    Get these values from your [Supabase project dashboard](https://app.supabase.com/project/YOUR_PROJECT/settings/api)
+3. Get Supabase values from the [project API settings](https://app.supabase.com/project/_/settings/api) when using Supabase mode.
 
-4. Install dependencies: `npm install`
+4. `npm install` then `npm run dev`
 
-5. Start dev server: `npm run dev`
+For production hosts, use `.env.production.example` as the variable checklist. Vite bakes `VITE_*` values at build time, so change env then redeploy.
 
-**Note:** For production deployment, use `env.production.example` as a template and set environment variables in your deployment platform (Vercel, Netlify, etc.).
-
-### Code Quality
+### Code quality
 
 ```bash
-# Type checking
 npm run type-check
-
-# Linting
 npm run lint
-
-# Build analysis
 npm run build:analyze
 ```
 
-## 🚢 Deployment
+## Deployment
 
-### Vercel (Recommended)
+See [docs/deployment/DEPLOYMENT.md](docs/deployment/DEPLOYMENT.md) and `.env.production.example`.
+
 ```bash
-# Deploy to Vercel
+# Vercel
 vercel --prod
+
+# Netlify
+netlify deploy --prod --dir=dist
 ```
 
-### Netlify
-```bash
-# Deploy to Netlify
-netlify deploy --prod
-```
+Self-host: `npm run build`, then serve `dist` with `index.html` as the SPA fallback.
 
-### Self-Hosted
-```bash
-# Build for production
-npm run build
+## Internationalization
 
-# Serve with your preferred web server
-# Note: Configure server to serve index.html for all routes (SPA)
-```
+English and French are shipped. Locale-aware date/number formatting is enabled. RTL CSS exists for future locales; Arabic and Spanish are not loaded in the i18n bundle.
 
-## 🏥 Healthcare Compliance
-
-- **HIPAA Compliant** - Designed for healthcare data protection
-- **Security Headers** - Comprehensive CSP, HSTS, and security controls
-- **Audit Trail** - All user actions logged for compliance
-- **Data Encryption** - All sensitive data encrypted in storage
-- **Access Controls** - Role-based permissions and authentication
-
-## 📈 Monitoring & Analytics
-
-- **Error Tracking** - Production-ready error monitoring
-- **Performance Monitoring** - Core Web Vitals and custom metrics
-- **Health Checks** - Automated system health validation
-- **Comprehensive Health Management** - Advanced health monitoring, auto-healing, and predictive analysis
-- **Security Monitoring** - CSP violation tracking and security alerts
-
-## 🔐 Security Features
-
-- **Content Security Policy** - Comprehensive CSP implementation
-- **HTTPS Enforcement** - Automatic HTTPS redirects
-- **Secure Headers** - HSTS, X-Frame-Options, and more
-- **Input Sanitization** - XSS protection and input validation
-- **Rate Limiting** - Protection against abuse and brute force
-
-## 📱 Progressive Web App
-
-- **Offline Capabilities** - Service worker for offline access
-- **Installable** - PWA installation prompts
-- **Push Notifications** - System update notifications
-- **Background Sync** - Data synchronization when online
-
-## 🌐 Internationalization
-
-- **Multi-Language Support** - English and French translations
-- **Locale-Aware Formatting** - Dates, numbers, and currencies
-- **RTL Support Ready** - Architecture supports RTL languages
-- **Dynamic Language Switching** - Real-time language changes
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
+5. Ensure `npm test`, `npm run lint`, and `npm run type-check` pass
+6. Open a pull request
 
-## 📞 Support
+## Support
 
 - **Email:** support@medisoluce.com
-- **Documentation:** [docs.medisoluce.com](https://docs.medisoluce.com)
-- **Issues:** [GitHub Issues](https://github.com/medisoluce/platform/issues)
+- **Docs in this repo:** [docs/DOCUMENTATION_ORGANIZATION.md](docs/DOCUMENTATION_ORGANIZATION.md)
+- **Issues:** [GitHub Issues](https://github.com/Facely1er/www.medisoluce.com/issues)
 
-## 📄 License
+## License
 
-Copyright © 2024 ERMITS. All rights reserved.
+Copyright © 2026 ERMITS. All rights reserved.
 
 This software is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
-
----
-
-**Built with ❤️ for Healthcare Professionals**

@@ -1,8 +1,9 @@
 name: Deploy to Staging
 
+# PR previews come from Netlify Git. Keep this workflow manual so a second
+# GitHub Actions preview cannot overwrite functions.
+
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
@@ -20,6 +21,7 @@ env:
 
 jobs:
   test-build-deploy:
+    if: ${{ vars.ENABLE_GH_RUNNERS == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
 

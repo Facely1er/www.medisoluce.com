@@ -815,6 +815,8 @@ const frTranslation = {
   "dashboard": {
     "title": "Tableau de Bord de Conformité",
     "subtitle": "Aperçu du statut de conformité de votre organisation et des indicateurs clés",
+    "privacy_local": "Vos données sont stockées localement sur cet appareil. Aucun compte n'est requis pour cette démo.",
+    "privacy_supabase": "Vos données peuvent se synchroniser lorsque vous êtes connecté. Créez un compte pour utiliser ce tableau de bord depuis un autre appareil.",
     "compliance_score": "Score de Conformité",
     "open_issues": "Problèmes Ouverts",
     "systems_monitored": "Systèmes Surveillés",

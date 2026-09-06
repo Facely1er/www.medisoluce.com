@@ -3,12 +3,12 @@
 ## 🚀 Pre-Deployment Checklist
 
 ### 1. Environment Variables
-- [ ] Copy `.env.example` to `.env.production`
-- [ ] Set `VITE_SUPABASE_URL` to your production Supabase URL
-- [ ] Set `VITE_SUPABASE_ANON_KEY` to your production Supabase anon key
-- [ ] Set `VITE_GA_TRACKING_ID` if using Google Analytics
-- [ ] Set `VITE_SENTRY_DSN` if using Sentry for error tracking
-- [ ] Verify all required environment variables are set
+- [ ] Use `.env.production.example` as the host checklist
+- [ ] Set `VITE_AUTH_PROVIDER` (`local` or `supabase`) and `VITE_ENABLE_BILLING`
+- [ ] Set `VITE_APP_BASE_URL` to the production domain
+- [ ] For paid checkout, set `VITE_STRIPE_PAYMENT_LINK_*` (preferred) or Price IDs + `STRIPE_SECRET_KEY`
+- [ ] Set `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` only if `VITE_AUTH_PROVIDER=supabase`
+- [ ] Set `VITE_GA_TRACKING_ID` / `VITE_SENTRY_DSN` if using analytics or Sentry
 
 ### 2. Security Audit
 - [ ] Run `npm run security:check`

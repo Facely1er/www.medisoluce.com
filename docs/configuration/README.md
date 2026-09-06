@@ -10,7 +10,7 @@ This folder contains configuration guides and setup instructions for various ser
 
 ## Key Files
 
-- `SUPABASE_CONFIG.md` - Supabase configuration guide
+- `SUPABASE_CONFIG.md` — optional Supabase auth; copy `.env.example`, never commit live keys
 - `MULTI_PROJECT_SUPABASE_SETUP.md` - Multi-project Supabase setup
 - `MONITORING_SETUP_GUIDE.md` - Monitoring setup instructions
 

@@ -221,7 +221,7 @@ Engineering blockers are cleared (§1.1). The remaining items are product/conver
 | Build / CI gates | `package.json`, `.npmrc`, `package-lock.json`, `.github/workflows/{ci,deploy,staging,release}.yml`, `scripts/verify-functions.js` |
 | Code splitting | `src/App.tsx`, `src/utils/comprehensiveHealthManager.ts`, `vite.config.ts` |
 | Repo hygiene | `.gitignore` (+ removal of tracked `coverage/`, `test-results.json`, `backend-test-report.json`, `.vercel/`) |
-| Env documentation | `.env.example`, `.env.production.example`, `env.example` |
+| Env documentation | `.env.example`, `.env.production.example` |
 | Tests | `src/test/stripeCheckoutCore.test.ts`, `src/test/cspViolationCore.test.ts`, `src/config/__tests__/stripePrices.test.ts`, `src/utils/__tests__/consent.test.ts`, `src/config/__tests__/runtimeConfig.test.ts` |
 
 ### 2026-09-05 — PR #63 (`cursor/fix-webhook-and-dashboard-metrics`)

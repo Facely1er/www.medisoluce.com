@@ -1,13 +1,10 @@
 name: Deploy to Production
 
-# Deploys dist + netlify/functions. If the site is also connected to Netlify
-# Git, disable auto-build there or disable this job — otherwise a static-only
-# Git deploy can wipe serverless functions (including Stripe webhooks).
+# Production deploys via Netlify Git (netlify.toml build + functions).
+# This workflow is manual and opt-in so it cannot race a Git-connected
+# Netlify build and wipe serverless functions.
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -24,6 +21,7 @@ env:
 
 jobs:
   test-and-build:
+    if: ${{ vars.ENABLE_GH_RUNNERS == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -78,10 +76,10 @@ jobs:
           retention-days: 7
 
   deploy-netlify:
+    if: ${{ vars.ENABLE_GH_RUNNERS == 'true' }}
     needs: test-and-build
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: github.ref == 'refs/heads/main'
 
     permissions:
       contents: read
@@ -109,7 +107,7 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "::error::Set NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID as GitHub Actions secrets, or disable this job and deploy via Netlify Git."
+            echo "::error::Set NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID as GitHub Actions secrets, or deploy via Netlify Git."
             exit 1
           fi
 

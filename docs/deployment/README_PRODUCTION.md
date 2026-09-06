@@ -25,13 +25,13 @@ docker-compose up -d
 
 1. **Copy environment template:**
    ```bash
-   cp .env.example .env.production
+   cp .env.production.example .env.production
    ```
 
-2. **Set your production values:**
-   - `VITE_SUPABASE_URL` - Your Supabase production URL
-   - `VITE_SUPABASE_ANON_KEY` - Your Supabase production key
-   - `VITE_GA_TRACKING_ID` - Google Analytics ID (optional)
+2. **Set host values** (see `.env.production.example`):
+   - Demo: `VITE_AUTH_PROVIDER=local`, `VITE_ENABLE_BILLING=false`
+   - Paid: Payment Links plus optional `VITE_AUTH_PROVIDER=supabase`
+   - Optional: `VITE_GA_TRACKING_ID`, `VITE_SENTRY_DSN`
 
 3. **Test production build:**
    ```bash

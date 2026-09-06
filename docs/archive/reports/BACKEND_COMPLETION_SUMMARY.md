@@ -8,7 +8,7 @@ The backend has been successfully completed with full schema differentiation for
 
 ### 1. ✅ Supabase Credentials Updated
 All configuration files have been updated with new Supabase credentials:
-- **New Supabase URL**: `https://xsjkufcheftfprmkaelj.supabase.co`
+- **New Supabase URL**: `https://your-project-id.supabase.co`
 - **New Anon Key**: Updated in all files
 - **Files Updated**:
   - `src/lib/supabase.ts`
@@ -95,7 +95,7 @@ Complete database schema with differentiated tables:
 ### Step 1: Deploy Database Schema
 
 1. **Connect to Supabase Dashboard**:
-   - Go to https://supabase.com/dashboard/project/xsjkufcheftfprmkaelj
+   - Go to https://app.supabase.com/project/_/settings/api
    - Navigate to SQL Editor
 
 2. **Run Schema SQL**:
@@ -135,13 +135,13 @@ AND table_name IN ('user_profiles', 'assessments', 'security_events');
 
 Create `.env` file in project root:
 ```bash
-VITE_SUPABASE_URL=https://xsjkufcheftfprmkaelj.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzamt1ZmNoZWZ0ZnBybWthZWxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4Nzk2OTUsImV4cCI6MjA3MzQ1NTY5NX0.aa9-S5cgyFe-UrTRL6tpX52UqrLcqwADjecPv7xiiyQ
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 ```
 
 **Get Service Role Key**:
-- Go to https://supabase.com/dashboard/project/xsjkufcheftfprmkaelj/settings/api
+- Go to https://app.supabase.com/project/_/settings/api
 - Copy the `service_role` key
 - Add to `.env` file
 
