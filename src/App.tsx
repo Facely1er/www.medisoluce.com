@@ -13,6 +13,7 @@ import ErrorBoundary from './components/ui/ErrorBoundary';
 import { ToastProvider, useToast } from './components/ui/Toast';
 import { analytics } from './utils/analytics';
 import { isBillingEnabled } from './config/runtimeConfig';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import './i18n';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import CookieConsent from './components/ui/CookieConsent';
@@ -140,7 +141,7 @@ function AppContent() {
           <Route path="/continuity" element={<ContinuityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/thanks" element={<ThanksPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/demo" element={<DemoPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
@@ -162,7 +163,7 @@ function AppContent() {
           <Route path="/security" element={<SecurityDashboard />} />
           <Route path="/production-readiness" element={<ProductionReadinessPage />} />
           <Route path="/deployment" element={<DeploymentPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/pricing" element={<PricingOverviewPage />} />
           <Route path="/pricing/hipaa" element={<HIPAAPricingPage />} />
           <Route path="/pricing/ransomware" element={<RansomwarePricingPage />} />

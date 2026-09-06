@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { LogIn } from 'lucide-react';
 import { useToast } from '../ui/Toast';
@@ -21,7 +21,16 @@ const Login: React.FC = () => {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>();
+
+  const returnPath = (() => {
+    const from = (location.state as { from?: string } | null)?.from;
+    if (typeof from === 'string' && from.startsWith('/') && !from.startsWith('//') && from !== '/login') {
+      return from;
+    }
+    return '/dashboard';
+  })();
 
   const onSubmit = async (data: LoginFormData) => {
     const emailValidation = validateSecureHealthcareInput(data.email, 'contact');
@@ -110,7 +119,7 @@ const Login: React.FC = () => {
         title: 'Welcome back!',
         message: 'You have successfully signed in.'
       });
-      navigate('/dashboard');
+      navigate(returnPath);
     } catch (error) {
       const failedAttempts = JSON.parse(localStorage.getItem(`failed-logins-${data.email}`) || '[]');
       failedAttempts.push(Date.now());

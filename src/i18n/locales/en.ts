@@ -815,6 +815,8 @@ const enTranslation = {
   "dashboard": {
     "title": "Compliance Dashboard",
     "subtitle": "Overview of your organization's compliance status and key metrics",
+    "privacy_local": "Your data is stored locally on this device. No account is required for this demo.",
+    "privacy_supabase": "Your data can sync when you are signed in. Create an account to use this dashboard from another device.",
     "compliance_score": "Compliance Score",
     "open_issues": "Open Issues",
     "systems_monitored": "Systems Monitored",

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Shield, AlertTriangle, Activity, FileText, Server, Users, ArrowRight, User } from 'lucide-react';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { isSupabaseAuthEnabled } from '../config/runtimeConfig';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import AnalyticsDashboard from '../components/analytics/AnalyticsDashboard';
@@ -189,9 +190,17 @@ const DashboardPage: React.FC = () => {
                   Privacy-First Design
                 </h3>
                 <p className="text-blue-700 dark:text-blue-300 text-sm">
-                  Your data is stored locally on your device. No account required. 
-                  Optionally <a href="/login" className="underline hover:text-blue-600">create an account</a> to sync across devices and access additional features.
+                  {isSupabaseAuthEnabled
+                    ? t('dashboard.privacy_supabase', 'Your data can sync when you are signed in. Create an account to use this dashboard from another device.')
+                    : t('dashboard.privacy_local', 'Your data is stored locally on this device. No account is required for this demo.')}
                 </p>
+                {isSupabaseAuthEnabled && (
+                  <p className="text-blue-600 dark:text-blue-400 text-sm mt-1">
+                    <Link to="/login" className="underline hover:text-blue-600">{t('login')}</Link>
+                    {' · '}
+                    <Link to="/register" className="underline hover:text-blue-600">{t('register')}</Link>
+                  </p>
+                )}
                 {savedAssessments.length > 0 && (
                   <p className="text-blue-600 dark:text-blue-400 text-sm mt-1">
                     📊 {savedAssessments.length} assessment{savedAssessments.length !== 1 ? 's' : ''} saved locally
