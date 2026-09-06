@@ -142,11 +142,12 @@ async function main() {
   if (failed.length) {
     console.error('\nFailures:');
     for (const f of failed) console.error(`  - ${f.name}: ${f.detail || ''}`);
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 }
 
 main().catch((err) => {
   console.error(err);
-  process.exit(1);
+  process.exitCode = 1;
 });

@@ -13,7 +13,7 @@ VITE_APP_BASE_URL = "https://www.medisoluce.com"
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  included_files = ["api/stripeWebhookCore.js", "api/stripeCheckoutCore.cjs", "api/cspViolationCore.cjs"]
+  included_files = ["api/stripeWebhookCore.cjs", "api/stripeCheckoutCore.cjs", "api/cspViolationCore.cjs"]
 
 # API before SPA fallback. Existing files in dist/ are served first (no force).
 [[redirects]]

@@ -7,7 +7,7 @@ import { existsSync } from 'node:fs';
 
 const files = [
   'api/webhook.js',
-  'api/stripeWebhookCore.js',
+  'api/stripeWebhookCore.cjs',
   'api/stripeCheckoutCore.cjs',
   'api/cspViolationCore.cjs',
   'api/create-checkout-session.js',

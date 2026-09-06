@@ -6,7 +6,7 @@
  * instead of a cold-start Netlify 502.
  */
 
-const { getSupabaseAdmin, handleStripeEvent } = require('../../api/stripeWebhookCore');
+const { getSupabaseAdmin, handleStripeEvent } = require('../../api/stripeWebhookCore.cjs');
 const { getStripeClient } = require('../../api/stripeCheckoutCore.cjs');
 
 exports.handler = async (event) => {

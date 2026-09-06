@@ -8,7 +8,7 @@
  * cold-start crash.
  */
 
-const { getSupabaseAdmin, handleStripeEvent } = require('./stripeWebhookCore');
+const { getSupabaseAdmin, handleStripeEvent } = require('./stripeWebhookCore.cjs');
 const { getStripeClient } = require('./stripeCheckoutCore.cjs');
 
 module.exports = async (req, res) => {
