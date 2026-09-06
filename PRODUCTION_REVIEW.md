@@ -53,8 +53,8 @@ As of 2026-09-05 every engineering blocker from the March review and from the Se
 
 | Priority | Item | Notes |
 |---|---|---|
-| 🔴 Before a **paid** launch | Set in Netlify: `VITE_AUTH_PROVIDER=supabase`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_ENABLE_BILLING=true`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_STRIPE_PRICE_{HIPAA,RANSOMWARE,CONTINUITY}_PROFESSIONAL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_ALLOWED_PRICE_IDS`, `VITE_APP_BASE_URL=https://www.medisoluce.com` | Demo launch only needs `VITE_APP_BASE_URL`. Without `STRIPE_SECRET_KEY`, checkout/portal correctly return **503** (after smoke-fix deploy), not 502 |
-| 🔴 Before a **paid** launch | Create the three Professional Prices in Stripe, register the `/api/webhook` endpoint, and run one test-mode purchase on a deploy preview (pricing → Checkout → `/checkout/success` → subscription upserted in Supabase) | Checkout code is live but inert until price IDs exist |
+| 🔴 Before a **paid** launch | **Preferred (Payment Links):** Netlify `VITE_ENABLE_BILLING=true`, `VITE_STRIPE_PAYMENT_LINK_{HIPAA,RANSOMWARE,CONTINUITY}_PROFESSIONAL=https://buy.stripe.com/...`, `VITE_APP_BASE_URL=https://www.medisoluce.com`, then **redeploy** (Vite bakes `VITE_*` at build). Optional: Supabase auth vars if you want accounts. | No `STRIPE_SECRET_KEY` needed for taking payment via Payment Links. Demo launch can keep billing false. |
+| 🔴 Before a **paid** launch | Create three Professional **Payment Links** in Stripe; set after-payment redirect to `https://www.medisoluce.com/checkout/success?session_id={CHECKOUT_SESSION_ID}`; smoke one test purchase per product | Fallback path still supports Price IDs + `/api/create-checkout-session` + webhook if you need Supabase subscription rows |
 | 🟠 | Confirm a single deploy path: GitHub Actions (`deploy.yml`) **or** Netlify Git auto-build, not both | A static-only Git deploy can wipe the serverless functions, including the Stripe webhook |
 | 🟡 | After each deploy: `npm run smoke:production` | Asserts routes, CSP, no inline GA, CSP report sink, and that evil Origin is never reflected on `/api/create-checkout-session` |
 
