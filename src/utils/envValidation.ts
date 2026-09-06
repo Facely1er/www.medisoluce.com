@@ -3,7 +3,7 @@
  * Validates required and optional environment variables at runtime
  */
 import { isBillingEnabled, isSupabaseAuthEnabled } from '../config/runtimeConfig';
-import { getConfiguredPriceCount } from '../config/stripePrices';
+import { getConfiguredPaymentLinkCount, hasAnyStripePrice } from '../config/stripePrices';
 
 interface EnvConfig {
   required: string[];
@@ -155,6 +155,9 @@ const medisoluceEnvConfig: EnvConfig = {
     'VITE_SENTRY_DSN',
     'VITE_GA_TRACKING_ID',
     'VITE_STRIPE_PUBLISHABLE_KEY',
+    'VITE_STRIPE_PAYMENT_LINK_HIPAA_PROFESSIONAL',
+    'VITE_STRIPE_PAYMENT_LINK_RANSOMWARE_PROFESSIONAL',
+    'VITE_STRIPE_PAYMENT_LINK_CONTINUITY_PROFESSIONAL',
     'VITE_STRIPE_PRICE_HIPAA_PROFESSIONAL',
     'VITE_STRIPE_PRICE_RANSOMWARE_PROFESSIONAL',
     'VITE_STRIPE_PRICE_CONTINUITY_PROFESSIONAL',
