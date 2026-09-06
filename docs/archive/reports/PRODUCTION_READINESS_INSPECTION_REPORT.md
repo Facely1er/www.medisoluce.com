@@ -97,8 +97,8 @@ The MediSoluce Healthcare Compliance Platform demonstrates **strong production r
 **⚠️ CRITICAL SECURITY ISSUE:**
 - ❌ **Hardcoded Supabase credentials** in `src/services/backendService.ts`:
   ```typescript
-  url: import.meta.env.VITE_SUPABASE_URL || 'https://nkgekxipzzvceesdjsrh.supabase.co',
-  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+  url: import.meta.env.VITE_SUPABASE_URL || 'https://your-project-id.supabase.co',
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '<redacted>'
   ```
   **Risk**: Credentials exposed in source code and build artifacts
   **Action Required**: Remove hardcoded fallbacks, require environment variables

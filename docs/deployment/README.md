@@ -1,18 +1,11 @@
-# Deployment Documentation
+# Deployment documentation
 
-This folder contains all deployment-related documentation, guides, and status reports.
+## Guides
 
-## Contents
+- [DEPLOYMENT.md](DEPLOYMENT.md) — host env and platform options
+- [README_PRODUCTION.md](README_PRODUCTION.md) — short deploy commands
+- [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) — pre-deploy checklist
 
-- **Deployment Guides**: Step-by-step deployment instructions
-- **Deployment Checklists**: Pre-deployment checklists and requirements
-- **Production Documentation**: Production deployment guides and status
-- **Deployment Reports**: Deployment completion summaries and status updates
+Env templates: `.env.example` (local), `.env.production.example` (host).
 
-## Key Files
-
-- `DEPLOYMENT.md` - Main deployment guide
-- `DEPLOYMENT_CHECKLIST.md` - Pre-deployment checklist
-- `README_PRODUCTION.md` - Production deployment quick start guide
-- `PRODUCTION_DEPLOYMENT.md` - Production deployment instructions
-
+Dated “deployment complete” snapshots: [docs/archive/deployment/](../archive/deployment/).
