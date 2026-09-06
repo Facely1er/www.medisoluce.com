@@ -132,7 +132,31 @@ const frTranslation = {
     "subtitle": "Évaluez la conformité de votre organisation aux exigences HIPAA et obtenez des recommandations personnalisées.",
     "self_assessment": "Auto-évaluation HIPAA",
     "description": "Répondez aux questions suivantes pour évaluer votre niveau actuel de conformité HIPAA.",
-    "english_only_notice": "Note: Le contenu de l'évaluation est en anglais uniquement."
+    "english_only_notice": "Note: Le contenu de l'évaluation est en anglais uniquement.",
+    "step1_complete": "Étape 1 terminée",
+    "your_score": "Votre score de conformité :"
+  },
+
+  "assessment_followup": {
+    "saved_title": "Vos résultats sont enregistrés dans ce navigateur",
+    "saved_local_message": "Cette démo conserve votre évaluation sur cet appareil uniquement. Rien n'est envoyé à un serveur.",
+    "saved_account_message": "Créez un compte gratuit pour accéder à vos résultats depuis n'importe quel appareil et suivre vos progrès.",
+    "create_account": "Créer un compte gratuit",
+    "sign_in": "Se connecter",
+    "email_title": "M'envoyer ce rapport par e-mail",
+    "email_help": "Ouvre votre application de messagerie avec le rapport dans le corps du message. L'adresse reste sur votre appareil — nous ne la collectons pas.",
+    "email_placeholder": "vous@organisation.org",
+    "email_submit": "Ouvrir l'e-mail",
+    "email_invalid": "Saisissez une adresse e-mail valide.",
+    "email_opened": "Votre application de messagerie devrait s'ouvrir avec le rapport. Si rien ne se produit, téléchargez le rapport.",
+    "email_subject": "Rapport d'évaluation HIPAA ({{score}} %)",
+    "email_body": "Score de conformité HIPAA : {{score}} % ({{points}})\n\nRecommandations :\n{{recommendations}}\n\nGénéré par MediSoluce. Les résultats restent dans votre navigateur sauf si vous choisissez de les enregistrer ailleurs.",
+    "no_recommendations": "Aucune enregistrée.",
+    "next_step_title": "Prochaine étape recommandée",
+    "next_step_cta": "Passer à l'étape 2 : Cartographier vos systèmes",
+    "handoff_low": "Votre évaluation a révélé d'importantes lacunes. Cartographier les dépendances systèmes ensuite montre où les données patients sont le plus exposées si un système tombe.",
+    "handoff_mid": "Vous avez une base solide. Cartographiez vos systèmes ensuite pour voir quelles dépendances technologiques nécessitent encore des garanties HIPAA plus fortes.",
+    "handoff_high": "Bon score. Cartographiez vos systèmes ensuite pour documenter les flux de DPI à mesure que votre environnement évolue."
   },
   
   // Dependency Manager page
