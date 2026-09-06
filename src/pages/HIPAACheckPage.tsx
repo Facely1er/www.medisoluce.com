@@ -526,41 +526,12 @@ const HIPAACheckPage: React.FC = () => {
                 <div className="text-center mb-6">
                   <CheckCircle className="h-12 w-12 text-success-500 mx-auto mb-4" />
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    Step 1 Complete! 🎉
+                    {t('hipaa.step1_complete')}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Your compliance score: <strong className="text-primary-600 dark:text-primary-400">{assessmentResult.percentage}%</strong>
+                    {t('hipaa.your_score')}{' '}
+                    <strong className="text-primary-600 dark:text-primary-400">{assessmentResult.percentage}%</strong>
                   </p>
-                </div>
-                
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-6">
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-                    Recommended Next Step:
-                  </h4>
-                  {assessmentResult.percentage < 50 ? (
-                    <p className="text-gray-700 dark:text-gray-300 mb-4">
-                      Based on your assessment, you have significant compliance gaps. We recommend starting with <strong>Step 2: Map Your Systems</strong> to identify critical technology dependencies that need attention.
-                    </p>
-                  ) : assessmentResult.percentage < 75 ? (
-                    <p className="text-gray-700 dark:text-gray-300 mb-4">
-                      You have a solid foundation, but there's room for improvement. Continue to <strong>Step 2: Map Your Systems</strong> to understand how your technology infrastructure supports compliance.
-                    </p>
-                  ) : (
-                    <p className="text-gray-700 dark:text-gray-300 mb-4">
-                      Excellent compliance score! To maintain and strengthen your position, proceed to <strong>Step 2: Map Your Systems</strong> to ensure your technology dependencies are properly secured.
-                    </p>
-                  )}
-                  
-                  <Link to="/dependency-manager">
-                    <Button 
-                      size="lg" 
-                      className="w-full sm:w-auto"
-                      icon={<ArrowRight className="h-5 w-5" />}
-                      iconPosition="right"
-                    >
-                      Continue to Step 2: Map Your Systems
-                    </Button>
-                  </Link>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
