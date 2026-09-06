@@ -236,7 +236,7 @@ const Header: React.FC = () => {
               <ChevronDown className={`w-4 h-4 transition-transform ${mobileSolutionsOpen ? 'rotate-180' : ''}`} />
             </button>
             {mobileSolutionsOpen && (
-              <div className="pl-4 pb-2 space-y-0.5 border-l-2 border-gray-200 dark:border-gray-600 ml-4">
+              <div className="pl-3 pb-2 space-y-0.5 border-l border-gray-200 dark:border-gray-600 ml-2">
                 {solutionsGroups.map((group) => (
                   <div key={group.title} className="pt-2">
                     <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-2 pb-1">

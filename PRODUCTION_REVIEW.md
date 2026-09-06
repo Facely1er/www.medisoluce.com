@@ -189,18 +189,20 @@ Engineering blockers are cleared (§1.1). The remaining items are product/conver
 | Priority | Issue | Effort |
 |---|---|---|
 | 🔴 | Add post-assessment account creation prompt | 1 hr |
-| 🟠 | Clarify freemium boundary with a simple comparison section on the homepage | 1 hr |
-| 🟠 | Remove duplicate journey section from homepage | 15 min |
+| ✅ | Clarify freemium boundary with a simple comparison section on the homepage | Done 2026-09-05 |
+| ✅ | Remove duplicate journey section from homepage | Already absent on current `HomePage` |
 | 🟠 | Add optional email capture after assessment completion | 2 hrs |
 | 🟠 | Add cross-tool handoff messaging on results pages | 2–3 hrs |
-| 🟡 | Increase nav link font size from `text-xs` to `text-sm` | 10 min |
+| ✅ | Increase nav link / Solutions dropdown font size to `text-sm` | Done 2026-09-05 |
+| ✅ | Soften homepage bottom CTAs (one primary + text links) | Done 2026-09-05 |
+| ✅ | Hero subtitle carousel contrast in light mode | Done 2026-09-05 |
 
 ### Later
 
 | Priority | Issue | Effort |
 |---|---|---|
 | 🟠 | Replace Demo page with interactive product screenshots | 1 day |
-| 🟠 | Upgrade `react-router-dom` to v7 (clears the remaining moderate advisories) | ½ day |
+| 🟠 | Upgrade `react-router-dom` to v7 (clears the remaining moderate advisories) | Done (`^7.18.3`) |
 | 🟡 | Tighten CSP `script-src` using production violation reports | 1 hr |
 | 🟡 | Real route guard in `ProtectedRoute` for Supabase-mode account pages | 1 hr |
 

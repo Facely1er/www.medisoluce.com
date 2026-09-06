@@ -130,10 +130,10 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
               className="mt-8"
             >
               {Array.isArray(subtitle) ? (
-                <div className="relative p-8 rounded-2xl bg-white/10 dark:bg-gray-800/20 backdrop-blur-sm border border-white/20 dark:border-gray-700/30">
+                <div className="relative p-8 rounded-2xl bg-white/70 dark:bg-gray-800/50 backdrop-blur-sm border border-white/40 dark:border-gray-700/40 shadow-sm">
                   <TextCarousel 
                     texts={subtitle}
-                    className="text-xl md:text-2xl text-gray-800 dark:text-gray-100 max-w-4xl mx-auto font-medium leading-relaxed"
+                    className="text-xl md:text-2xl text-gray-900 dark:text-gray-100 max-w-4xl mx-auto font-medium leading-relaxed"
                     interval={5000}
                   />
                   {/* Decorative elements around the carousel */}

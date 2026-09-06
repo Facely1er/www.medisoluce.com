@@ -83,6 +83,26 @@ const frTranslation = {
     "ready_strengthen": "Prêt à renforcer votre conformité en matière de santé?",
     "ready_strengthen_subtitle": "Commencez avec notre évaluation HIPAA gratuite aujourd'hui.",
     "contact_sales": "Contacter les ventes",
+    "access_toolkit": "Accéder à la boîte à outils",
+    "freemium": {
+      "title": "Gratuit pour toujours. Passez au niveau supérieur quand vous en avez besoin.",
+      "subtitle": "Commencez avec des évaluations complètes dans votre navigateur — sans carte bancaire. Les plans payants débloquent les fonctions d'équipe et de facturation quand vous êtes prêt.",
+      "free_label": "Gratuit pour toujours",
+      "free_items": [
+        "Évaluations HIPAA, rançongiciel et continuité",
+        "Scores, recommandations et rapports téléchargeables",
+        "Stockage local dans le navigateur, respectueux de la vie privée",
+        "Boîte à outils et modules de formation"
+      ],
+      "paid_label": "Plans payants",
+      "paid_items": [
+        "Collaboration d'équipe et espaces partagés",
+        "Exports avancés et support prioritaire",
+        "Facturation en libre-service et gestion d'abonnement"
+      ],
+      "compare_pricing": "Comparer les plans"
+    },
+    "cta_footnote": "Gratuit : évaluations, rapports et stockage local. Les plans payants ajoutent l'équipe et le paiement. Aucune carte pour commencer.",
     "compliance_journey": "Votre Parcours de Conformité",
     "journey_step_1": "Évaluer l'État Actuel",
     "journey_step_1_desc": "Évaluation HIPAA",

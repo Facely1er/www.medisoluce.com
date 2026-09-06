@@ -83,6 +83,26 @@ const enTranslation = {
     "ready_strengthen": "Ready to strengthen your healthcare compliance?",
     "ready_strengthen_subtitle": "Get started with our free HIPAA assessment today.",
     "contact_sales": "Contact Sales",
+    "access_toolkit": "Access Toolkit",
+    "freemium": {
+      "title": "Free forever. Upgrade when you need more.",
+      "subtitle": "Start with full assessments in your browser — no credit card. Paid plans unlock team and billing features when you are ready.",
+      "free_label": "Free forever",
+      "free_items": [
+        "HIPAA, ransomware, and continuity assessments",
+        "Scores, recommendations, and downloadable reports",
+        "Privacy-first local browser storage",
+        "Resource toolkit and training modules"
+      ],
+      "paid_label": "Paid plans",
+      "paid_items": [
+        "Team collaboration and shared workspaces",
+        "Advanced exports and priority support",
+        "Self-serve billing and subscription management"
+      ],
+      "compare_pricing": "Compare plans"
+    },
+    "cta_footnote": "Free: assessments, reports, and local browser storage. Paid plans add team features and billed checkout. No card needed to start.",
     "compliance_journey": "Your Compliance Journey",
     "journey_step_1": "Assess Current State",
     "journey_step_1_desc": "HIPAA Assessment",

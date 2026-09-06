@@ -138,10 +138,60 @@ const HomePage: React.FC = () => {
         ctaText={t('start_free_assessment')}
         ctaLink="/hipaa-check"
       />
-      
+
+      {/* Free vs paid — clarify freemium boundary before stats */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-10">
+            <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
+              {t('home.freemium.title')}
+            </h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              {t('home.freemium.subtitle')}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            <div>
+              <h3 className="text-lg font-semibold text-primary-700 dark:text-primary-400 mb-4">
+                {t('home.freemium.free_label')}
+              </h3>
+              <ul className="space-y-3">
+                {(t('home.freemium.free_items', { returnObjects: true }) as string[]).map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                    <CheckCircle className="h-5 w-5 text-success-500 flex-shrink-0 mt-0.5" aria-hidden />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                {t('home.freemium.paid_label')}
+              </h3>
+              <ul className="space-y-3">
+                {(t('home.freemium.paid_items', { returnObjects: true }) as string[]).map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                    <CheckCircle className="h-5 w-5 text-primary-500 flex-shrink-0 mt-0.5" aria-hidden />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <Link
+                  to="/pricing"
+                  className="inline-flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline"
+                >
+                  {t('home.freemium.compare_pricing')}
+                  <ArrowRight className="ml-1 h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* Stats Section */}
-      <section className="py-20 bg-white dark:bg-gray-800 mt-16">
+      <section className="py-20 bg-white dark:bg-gray-800 mt-0">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white">
@@ -738,38 +788,34 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center">
+            <div className="flex flex-col items-center gap-4">
               <Link to="/hipaa-check">
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="!bg-white !text-primary-700 !border-white hover:!bg-gray-50 hover:!text-primary-800 hover:!border-gray-100 focus:ring-white font-semibold px-6 py-3 min-w-max whitespace-nowrap"
+                  className="!bg-white !text-primary-700 !border-white hover:!bg-gray-50 hover:!text-primary-800 hover:!border-gray-100 focus:ring-white font-semibold px-8 py-3 min-w-max whitespace-nowrap"
                 >
                   {t('start_free_assessment')}
                 </Button>
               </Link>
-              <Link to="/contact">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="!bg-white/10 !border-white !text-white hover:!bg-white/20 hover:!text-white hover:!border-white focus:ring-white font-semibold backdrop-blur-sm px-6 py-3 min-w-max whitespace-nowrap"
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+                <Link
+                  to="/contact"
+                  className="text-primary-100 hover:text-white underline-offset-4 hover:underline"
                 >
                   {t('home.contact_sales')}
-                </Button>
-              </Link>
-              <Link to="/toolkit">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="!bg-white/10 !border-white !text-white hover:!bg-white/20 hover:!text-white hover:!border-white focus:ring-white font-semibold backdrop-blur-sm px-6 py-3 min-w-max whitespace-nowrap"
+                </Link>
+                <Link
+                  to="/toolkit"
+                  className="text-primary-100 hover:text-white underline-offset-4 hover:underline"
                 >
-                  Access Toolkit
-                </Button>
-              </Link>
+                  {t('home.access_toolkit')}
+                </Link>
+              </div>
             </div>
             
             <div className="mt-6 text-xs text-primary-200">
-              Free: assessments, reports, and local browser storage. Paid plans add team features and billed checkout. No card needed to start.
+              {t('home.cta_footnote')}
             </div>
           </div>
         </div>
