@@ -40,7 +40,7 @@ Importance Score: 85/100
 - Automated healing actions for compliance issues
 
 ### Security Event Classification
-Path: src/services/securityUtils.ts
+Path: src/utils/securityUtils.ts
 Importance Score: 80/100
 
 - Healthcare breach severity assessment

@@ -1,16 +1,8 @@
-# Implementation Documentation
+# Implementation documentation
 
-This folder contains implementation summaries and guides for specific features and integrations.
+Living setup guides for integrations. Session write-ups from 2024–2026 live in [docs/archive/](../archive/README.md).
 
-## Contents
+## Current
 
-- **Feature Implementation**: Summaries of feature implementations
-- **Integration Guides**: Third-party service integration documentation
-- **Policy Setup**: Policy configuration and setup guides
-
-## Key Files
-
-- `STRIPE_CHECKOUT_IMPLEMENTATION_SUMMARY.md` - Stripe checkout integration
-- `STRIPE_CHECKOUT_POLICIES_SETUP.md` - Stripe policy configuration
-- `FREE_TRIAL_IMPLEMENTATION_SUMMARY.md` - Free trial feature implementation
-
+- [STRIPE_BACKEND_SETUP.md](STRIPE_BACKEND_SETUP.md) — Payment Links (preferred) and Checkout Session fallback
+- [FREE_TRIAL_IMPLEMENTATION_SUMMARY.md](FREE_TRIAL_IMPLEMENTATION_SUMMARY.md) — trial behavior (localStorage)

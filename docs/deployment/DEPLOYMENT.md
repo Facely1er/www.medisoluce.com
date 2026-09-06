@@ -4,8 +4,8 @@
 
 ### Prerequisites
 
-1. **Environment Variables**: Create a `.env.production` file based on `.env.example`
-2. **Supabase Project**: Set up your Supabase project at https://supabase.com
+1. **Environment Variables**: Use `.env.production.example` as the host checklist. Demo launch can keep `VITE_AUTH_PROVIDER=local` and `VITE_ENABLE_BILLING=false`. Vite bakes `VITE_*` at build time.
+2. **Supabase (optional)**: Required only when `VITE_AUTH_PROVIDER=supabase`
 3. **Domain**: Have your custom domain ready
 4. **SSL Certificate**: Ensure SSL is configured (automatic with Vercel/Netlify)
 
@@ -30,11 +30,13 @@ npm i -g vercel
 vercel --prod
 ```
 
-**Environment Variables to Set in Vercel Dashboard:**
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-- `VITE_GA_TRACKING_ID` (optional)
-- `VITE_SENTRY_DSN` (optional)
+**Environment variables (see `.env.production.example`):**
+- `VITE_AUTH_PROVIDER` (`local` or `supabase`)
+- `VITE_ENABLE_BILLING` (`true` only for paid checkout)
+- `VITE_APP_BASE_URL`
+- Prefer `VITE_STRIPE_PAYMENT_LINK_*` for checkout (no `STRIPE_SECRET_KEY` needed)
+- `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` only in supabase mode
+- `VITE_GA_TRACKING_ID` / `VITE_SENTRY_DSN` (optional)
 
 ## 2. Netlify Deployment
 
