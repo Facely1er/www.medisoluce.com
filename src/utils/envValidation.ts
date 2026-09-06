@@ -102,14 +102,16 @@ class EnvironmentValidator {
       errors.push('VITE_APP_BASE_URL must be a valid URL (http:// or https://)');
     }
 
-    // Billing requires at least one Stripe Price ID or every upgrade CTA falls back to /contact
+    // Billing requires at least one Payment Link or Price ID, or upgrade CTAs fall back to /contact
     if (isBillingEnabled) {
-      if (!import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY) {
-        warnings.push('VITE_ENABLE_BILLING=true but VITE_STRIPE_PUBLISHABLE_KEY is not set');
-      }
-      if (getConfiguredPriceCount() === 0) {
+      if (getConfiguredPaymentLinkCount() === 0 && !import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY) {
         warnings.push(
-          'VITE_ENABLE_BILLING=true but no VITE_STRIPE_PRICE_* IDs are configured; upgrade buttons will route to /contact'
+          'VITE_ENABLE_BILLING=true but neither Payment Links nor VITE_STRIPE_PUBLISHABLE_KEY are set'
+        );
+      }
+      if (!hasAnyStripePrice()) {
+        warnings.push(
+          'VITE_ENABLE_BILLING=true but no VITE_STRIPE_PAYMENT_LINK_* or VITE_STRIPE_PRICE_* values are configured; upgrade buttons will route to /contact'
         );
       }
     }
