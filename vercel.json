@@ -4,6 +4,18 @@
   "framework": "vite",
   "installCommand": "npm install --production=false",
   "devCommand": "npm run dev",
+  "redirects": [
+    {
+      "source": "/sitemap",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap/",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

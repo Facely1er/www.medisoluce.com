@@ -122,10 +122,10 @@ export const priorityKeywords = {
   '/toolkit': ['compliance resources', 'policy templates', 'healthcare toolkit']
 };
 
-// Generate sitemap data for better crawling
+// Marketing sitemap membership — keep in sync with scripts/lib/seoMarketingRoutes.mjs
 export const generateSitemapData = () => {
   const pages = [
-    { url: '/', priority: 1.0, changefreq: 'monthly' },
+    { url: '/', priority: 1.0, changefreq: 'weekly' },
     { url: '/hipaa-check', priority: 0.9, changefreq: 'monthly' },
     { url: '/dependency-manager', priority: 0.8, changefreq: 'monthly' },
     { url: '/business-impact', priority: 0.8, changefreq: 'monthly' },
@@ -133,11 +133,19 @@ export const generateSitemapData = () => {
     { url: '/ransomware', priority: 0.8, changefreq: 'monthly' },
     { url: '/training', priority: 0.7, changefreq: 'monthly' },
     { url: '/toolkit', priority: 0.7, changefreq: 'monthly' },
-    { url: '/dashboard', priority: 0.6, changefreq: 'weekly' },
-    { url: '/contact', priority: 0.5, changefreq: 'quarterly' },
-    { url: '/privacy', priority: 0.3, changefreq: 'yearly' },
-    { url: '/terms', priority: 0.3, changefreq: 'yearly' }
+    { url: '/comprehensive-assessment', priority: 0.7, changefreq: 'monthly' },
+    { url: '/security', priority: 0.6, changefreq: 'monthly' },
+    { url: '/pricing', priority: 0.8, changefreq: 'monthly' },
+    { url: '/pricing/hipaa', priority: 0.6, changefreq: 'monthly' },
+    { url: '/pricing/ransomware', priority: 0.6, changefreq: 'monthly' },
+    { url: '/pricing/continuity', priority: 0.6, changefreq: 'monthly' },
+    { url: '/contact', priority: 0.6, changefreq: 'monthly' },
+    { url: '/faq', priority: 0.7, changefreq: 'monthly' },
+    { url: '/privacy', priority: 0.4, changefreq: 'yearly' },
+    { url: '/terms', priority: 0.4, changefreq: 'yearly' },
+    { url: '/cookie-policy', priority: 0.3, changefreq: 'yearly' },
+    { url: '/ecommerce-policy', priority: 0.3, changefreq: 'yearly' },
   ];
-  
+
   return pages;
 };
