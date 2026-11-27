@@ -92,10 +92,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      # netlify-cli / @netlify/api currently require Node >= 22.12; keep the
+      # app build on NODE_VERSION 20 (engines + vite-plugin-pwa).
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '22'
 
       - name: Download build artifacts
         uses: actions/download-artifact@v6
