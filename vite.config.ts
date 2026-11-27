@@ -144,15 +144,25 @@ export default defineConfig({
             const pkg = packageNameFromId(id);
             if (!pkg) return 'vendor';
 
-            // Core runtime that every route needs.
-            if (['react', 'react-dom', 'scheduler', 'react-router', 'react-router-dom', 'react-helmet-async'].includes(pkg)) {
-              return 'react-vendor';
-            }
+            // Only isolate truly async-heavy trees. React, react-router, Sentry, and
+            // shared helpers stay in the default vendor chunk — splitting them caused
+            // circular chunk graphs (vendor ↔ react-vendor / vendor ↔ sentry) that
+            // left React undefined at boot on production
+            // ("Cannot read properties of undefined (reading 'PureComponent')").
             if (pkg === 'framer-motion' || pkg === 'lucide-react') {
               return 'ui';
             }
             // recharts and its d3/victory dependency tree; only chart-heavy routes load it.
-            if (pkg === 'recharts' || pkg === 'recharts-scale' || pkg === 'victory-vendor' || pkg.startsWith('d3-') || pkg === 'internmap' || pkg === 'delaunator' || pkg === 'robust-predicates') {
+            if (
+              pkg === 'recharts' ||
+              pkg === 'recharts-scale' ||
+              pkg === 'react-smooth' ||
+              pkg === 'victory-vendor' ||
+              pkg.startsWith('d3-') ||
+              pkg === 'internmap' ||
+              pkg === 'delaunator' ||
+              pkg === 'robust-predicates'
+            ) {
               return 'charts';
             }
             // react-markdown pulls in the whole unified/remark/micromark pipeline; policy pages only.
@@ -164,9 +174,6 @@ export default defineConfig({
             }
             if (pkg.startsWith('@supabase/')) {
               return 'supabase';
-            }
-            if (pkg.startsWith('@sentry/')) {
-              return 'sentry';
             }
             if (pkg === 'react-hook-form' || pkg.startsWith('@hookform/') || pkg === 'zod') {
               return 'forms';
