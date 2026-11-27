@@ -21,6 +21,19 @@ from = "/api/*"
 to = "/.netlify/functions/:splat"
 status = 200
 
+# Bare /sitemap must not return SPA HTML (GSC: "Sitemap appears to be an HTML page")
+[[redirects]]
+from = "/sitemap"
+to = "/sitemap.xml"
+status = 301
+force = true
+
+[[redirects]]
+from = "/sitemap/"
+to = "/sitemap.xml"
+status = 301
+force = true
+
 [[redirects]]
 from = "/*"
 to = "/index.html"

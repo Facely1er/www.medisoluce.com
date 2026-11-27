@@ -2,22 +2,15 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://medisoluce.com/sitemap.xml
-
-# Important pages
-Allow: /hipaa-check
-Allow: /dependency-manager
-Allow: /business-impact
-Allow: /continuity
-Allow: /ransomware
-Allow: /training
-Allow: /toolkit
-Allow: /dashboard
-
-# Block admin/auth pages from indexing
+Sitemap: https://www.medisoluce.com/sitemap.xml
+# Auth / app / transactional
 Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
-
-# Performance optimization
-Crawl-delay: 1
+Disallow: /dashboard
+Disallow: /checkout/
+Disallow: /profile
+Disallow: /health
+Disallow: /health-dashboard
+Disallow: /api/
+Disallow: /admin/
